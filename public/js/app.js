@@ -33056,7 +33056,8 @@ function lifecycleMixin (Vue) {
     }
     // if parent is an HOC, update its $el as well
     if (vm.$vnode && vm.$parent && vm.$vnode === vm.$parent._vnode) {
-      vm.$parent.$el = vm.$el;
+        // noinspection JSAnnotator
+        vm.$parent.$el = vm.$el;
     }
     // updated hook is called by the scheduler to ensure that children are
     // updated in a parent's updated hook.
