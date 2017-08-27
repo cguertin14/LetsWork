@@ -27,17 +27,21 @@
         }
         .nav > li > a:hover, .nav > li > a:focus {
             text-decoration: none;
-            background-color: transparent;
+            background-color: #535353;
+        }
+        .nav .open > a, .nav .open > a:hover, .nav .open > a:focus{
+            text-decoration: none;
+            background-color: #535353;
         }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded navbar-theme">
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded navbar-theme navbar-fixed-top">
     <a class="navbar-brand" style="color: #ffffff;" href="#">
         <img src="{{asset('image/LetsWw.png')}}" width="auto" height="25" class="d-inline-block align-top" alt="">
     </a>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
+        <ul class="nav navbar-nav">
             <li class="nav-item active">
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
@@ -58,17 +62,27 @@
                 </div>
             </li>
         </ul>
-        {{--@if (!Auth::check())--}}
-            {{--<ul class="nav navbar-nav navbar-right">--}}
-                {{--<li><a href="{{route('')}}" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span> Sign Up</a></li>--}}
-                {{--<li><a href="{{route('')}}" style="color: white"><span class="glyphicon glyphicon-log-in" style="color: white"></span> Login</a></li>--}}
-            {{--</ul>--}}
-        {{--@else--}}
-            {{--<ul class="nav navbar-nav navbar-right">--}}
-                {{--<li><a href="#" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span>{{Auth::user()->name}}</a></li>--}}
-                {{--<li><a href="#" style="color: white"><span class="glyphicon glyphicon-log-in" style="color: white"></span> Logout</a></li>--}}
-            {{--</ul>--}}
-        {{--@endif--}}
+        <div class="nav navbar-nav navbar-right">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+            @if (!Auth::check())
+                <ul class="nav navbar-nav">
+                    <li><a href="" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span> Sign Up</a></li>
+                    <li><a href="" style="color: white"><span class="glyphicon glyphicon-log-in" style="color: white"></span> Login</a></li>
+                </ul>
+            @else
+                <ul class="nav navbar-nav">
+                    <li><a href="#" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span>{{Auth::user()->name}}</a></li>
+                    <li><a href="#" style="color: white"><span class="glyphicon glyphicon-log-in" style="color: white"></span> Logout</a></li>
+                </ul>
+            @endif
+        </div>
     </div>
 </nav>
 
