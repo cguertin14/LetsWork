@@ -13,40 +13,72 @@
         <link href="{{asset('css/libs.css')}}" rel="stylesheet">
         <link href="{{asset('css/app.css')}}" rel="stylesheet">
         @yield('styles')
+
+        <style>
+            .navbar-theme {
+                background-color: #464646;
+                color: #FFFFFF;
+            }
+            .navbar {
+                position: relative;
+            }
+            .nav-item,.nav-link {
+                color: #FFFFFF !important;
+            }
+            .nav > li > a:hover, .nav > li > a:focus {
+                text-decoration: none;
+                background-color: transparent;
+            }
+        </style>
     </head>
     <body>
-    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand" href="#">Navbar</a>
+        <nav class="navbar navbar-toggleable-md navbar-light bg-faded navbar-theme">
+            <a class="navbar-brand" style="color: #ffffff;" href="#">
+                <img src="{{asset('image/LetsWw.png')}}" width="auto" height="25" class="d-inline-block align-top" alt="">
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown link
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                </ul>
+                @if (!Auth::check())
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{route('')}}" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span> Sign Up</a></li>
+                        <li><a href="{{route('')}}" style="color: white"><span class="glyphicon glyphicon-log-in" style="color: white"></span> Login</a></li>
+                    </ul>
+                @else
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span>{{Auth::user()->name)}}</a></li>
+                        <li><a href="#" style="color: white"><span class="glyphicon glyphicon-log-in" style="color: white"></span> Logout</a></li>
+                    </ul>
+                @endif
+            </div>
+        </nav>
 
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav mr-auto mt-2 mt-md-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0 navbar-right">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+        <div id="body">
+            @yield('content')
         </div>
-    </nav>
-
-        @yield('content')
-
 
         <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
         <script src="https://npmcdn.com/bootstrap@4.0.0-alpha.6/dist/js/bootstrap.min.js"></script>
         <script src="{{asset('js/libs.js')}}"></script>
         @yield('scripts')
-
     </body>
 </html>
