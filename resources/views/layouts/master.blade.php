@@ -65,7 +65,7 @@
                     </ul>
                 @else
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span>{{Auth::user()->name)}}</a></li>
+                        <li><a href="#" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span>{{Auth::user()->name}}</a></li>
                         <li><a href="#" style="color: white"><span class="glyphicon glyphicon-log-in" style="color: white"></span> Logout</a></li>
                     </ul>
                 @endif
