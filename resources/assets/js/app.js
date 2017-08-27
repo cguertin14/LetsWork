@@ -5,7 +5,12 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+window.$ = window.jQuery = require('jquery')
+require('bootstrap-sass');
+
+$( document ).ready(function() {
+    console.log($.fn.tooltip.Constructor.VERSION);
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
