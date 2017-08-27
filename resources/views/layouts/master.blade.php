@@ -18,9 +18,11 @@
         @yield('styles')
     </head>
     <body>
-
-        <nav class="navbar">
-
+        <nav class="navbar navbar-light bg-faded">
+            <a class="navbar-brand" href="#">
+                <img src="public/image/LetsWorkLogo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                Lets Work
+            </a>
         </nav>
 
         @yield('content')
