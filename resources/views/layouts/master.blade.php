@@ -11,6 +11,7 @@
         @yield('styles')
     </head>
     <body>
+<<<<<<< HEAD
         <nav class="navbar navbar-inverse bg-inverse navbar-toggleable-md">
             <div class="container">
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleContainer" aria-controls="navbarsExampleContainer" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +45,11 @@
                     </form>
                 </div>
             </div>
+=======
+
+        <nav class="navbar">
+
+>>>>>>> parent of 1ac42f4... image
         </nav>
 
         @yield('content')
