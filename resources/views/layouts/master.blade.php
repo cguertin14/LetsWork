@@ -83,6 +83,11 @@
     </div>
 </nav>
 
+<div id="nav-margin"></div>
+<script>$(function () {
+        $("#nav-margin").height($("nav.navbar").height());
+    });</script>
+
 <div id="body">
     @yield('content')
 </div>
