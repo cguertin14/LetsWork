@@ -19,9 +19,6 @@
             background-color: #464646;
             color: #FFFFFF;
         }
-        .navbar {
-            position: relative;
-        }
         .nav-item,.nav-link {
             color: #FFFFFF !important;
         }
@@ -42,7 +39,7 @@
     </a>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="nav navbar-nav">
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
