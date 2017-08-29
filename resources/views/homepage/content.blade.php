@@ -1,9 +1,14 @@
 @extends('layouts.master')
 
+@section('title')
+    Page d'accueil
+@endsection
+
 @section('content')
 
+
     <div class="container">
-        <h1>ALLO</h1>
+        <h1>HomePage</h1>
     </div>
 
 @endsection

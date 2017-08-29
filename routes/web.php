@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home.content');
-});
+Route::get('/', ['as' => 'homepage.content', function () {
+    return view('homepage.content');
+}]);
 
 Auth::routes();
 
