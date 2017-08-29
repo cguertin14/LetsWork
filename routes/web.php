@@ -15,8 +15,6 @@ Route::get('/', ['as' => 'homepage.content', function () {
     return view('homepage.content');
 }]);
 
-Route::resource('/test','TestController');
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
