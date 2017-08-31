@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFiletypesTable extends Migration
+class CreateAvailabilityElementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,14 @@ class CreateFiletypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('filetypes', function (Blueprint $table) {
+        Schema::create('availability_elements', function (Blueprint $table) {
             $table->increments('id');
+            $table->dateTime('begin');
+            $table->dateTime('end');
+            $table->integer('availability_id')->unsigned()->index();
             $table->timestamps();
+
+            $table->foreign('availability_id')->references('id')->on('availabilities')->onDelete('cascade');
         });
     }
 
@@ -26,6 +31,6 @@ class CreateFiletypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('filetypes');
+        Schema::dropIfExists('availability_elements');
     }
 }

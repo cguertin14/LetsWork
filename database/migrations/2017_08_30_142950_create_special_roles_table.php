@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSpecialrolesTable extends Migration
+class CreateSpecialRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateSpecialrolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('specialroles', function (Blueprint $table) {
+        Schema::create('special_roles', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('company_id')->unsigned()->index();
+            $table->string('content');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateSpecialrolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('specialroles');
+        Schema::dropIfExists('special_roles');
     }
 }
