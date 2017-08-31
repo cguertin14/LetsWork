@@ -6,9 +6,6 @@
             background-color: #464646;
             color: #FFFFFF;
         }
-        .navbar {
-            position: relative;
-        }
         .nav-item,.nav-link {
             color: #FFFFFF !important;
         }
