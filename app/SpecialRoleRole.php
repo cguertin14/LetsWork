@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class SpecialRoleRole extends Model
+class SpecialRoleRole extends Pivot
 {
     //
 }
