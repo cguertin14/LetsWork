@@ -23,7 +23,7 @@
 @section('contenu')
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded navbar-theme navbar-fixed-top">
         <a class="navbar-brand" style="color: #ffffff;" href="{{route('homepage.content')}}">
-            <img src="{{asset('image/LetsWw.png')}}" width="auto" height="25" class="d-inline-block align-top" alt="">
+            <img src="{{asset('image/letsworkw.svg')}}" width="auto" height="25" class="d-inline-block align-top" alt="">
         </a>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="nav navbar-nav">
