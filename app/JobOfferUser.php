@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class JobOfferUser extends Model
+class JobOfferUser extends Pivot
 {
     //
 }
