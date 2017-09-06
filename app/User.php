@@ -27,8 +27,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function files()
-    {
+    public function admin() {
+        return $this->belongsTo('App\User');
+    }
+
+    public function files() {
         return $this->hasMany('App\File');
     }
 }
