@@ -2,9 +2,10 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class UserFile extends Model
+class UserFile extends Pivot
 {
     //
+    public $timestamps = false;
 }
