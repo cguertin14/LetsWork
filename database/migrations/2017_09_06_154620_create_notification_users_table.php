@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserFilesTable extends Migration
+class CreateNotificationUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateUserFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_files', function (Blueprint $table) {
+        Schema::create('notification_users', function (Blueprint $table) {
+            $table->integer('notification_id')->unsigned()->index();
             $table->integer('user_id')->unsigned()->index();
-            $table->integer('file_id')->unsigned()->index();
+            $table->boolean('seen')->default(0);
+            $table->timestamps();
 
+            $table->foreign('notification_id')->references('id')->on('notifications')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('file_id')->references('id')->on('files')->onDelete('cascade');
         });
     }
 
@@ -29,6 +31,6 @@ class CreateUserFilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_files');
+        Schema::dropIfExists('notification_users');
     }
 }

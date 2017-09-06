@@ -16,6 +16,7 @@ class CreateJobOfferUsersTable extends Migration
         Schema::create('job_offer_users', function (Blueprint $table) {
             $table->integer('job_offer_id')->unsigned()->index();
             $table->integer('user_id')->unsigned()->index();
+            $table->timestamps();
 
             $table->foreign('job_offer_id')->references('id')->on('job_offers')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

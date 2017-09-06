@@ -16,6 +16,7 @@ class CreateMessageFilesTable extends Migration
         Schema::create('message_files', function (Blueprint $table) {
             $table->integer('message_id')->unsigned()->index();
             $table->integer('file_id')->unsigned()->index();
+            $table->timestamps();
 
             $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
             $table->foreign('file_id')->references('id')->on('files')->onDelete('cascade');
