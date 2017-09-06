@@ -17,7 +17,6 @@ class CreateScheduleChangesTable extends Migration
         Schema::create('schedule_changes', function (Blueprint $table) {
             $table->increments('id');
             $table->boolean('confirmed')->default(0);
-            //$table->tinyInteger('confirmed')->default(0);
             $table->integer('employee_to_change_id')->unsigned()->index();
             $table->integer('employee_to_accept_id')->unsigned()->index();
             $table->integer('schedule_element_id')->unsigned()->index();

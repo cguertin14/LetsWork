@@ -16,6 +16,7 @@ class CreateSkillSpecialRolesTable extends Migration
         Schema::create('skill_special_roles', function (Blueprint $table) {
             $table->integer('skill_id')->unsigned()->index();
             $table->integer('special_role_id')->unsigned()->index();
+            $table->timestamps();
 
             $table->foreign('skill_id')->references('id')->on('skills')->onDelete('cascade');
             $table->foreign('special_role_id')->references('id')->on('special_roles')->onDelete('cascade');

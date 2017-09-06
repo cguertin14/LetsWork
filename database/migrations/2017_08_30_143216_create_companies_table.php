@@ -17,11 +17,11 @@ class CreateCompaniesTable extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->text('description');
-            $table->integer('owner_id')->unsigned()->index();
+            $table->integer('user_id')->unsigned()->index();
             $table->integer('company_type_id')->unsigned()->index();
             $table->timestamps();
 
-            $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('company_type_id')->references('id')->on('company_types')->onDelete('cascade');
         });
     }

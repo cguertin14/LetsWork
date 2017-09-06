@@ -27,6 +27,26 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function notifications() {
+        return $this->belongsToMany('App\Notification')->using('App\NotificationUser')->withTimestamps();
+    }
+
+    public function messages() {
+        return $this->hasMany('App\Messages');
+    }
+
+    public function joboffers() {
+        return $this->belongsToMany('App\JobOffer')->using('App\JobOfferUser')->withTimestamps();
+    }
+
+    public function employees() {
+        return $this->hasMany('App\Employee');
+    }
+
+    public function companies() {
+        return $this->hasMany('App\Company');
+    }
+
     public function admin() {
         return $this->belongsTo('App\User');
     }
