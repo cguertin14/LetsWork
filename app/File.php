@@ -9,11 +9,11 @@ class File extends Model
     //
     public function filetype()
     {
-        return $this->hasOne('App/FileType');
+        return $this->hasOne('App\FileType');
     }
 
     public function owner()
     {
-        return $this->hasOne('App/User');
+        return $this->hasOne('App\User');
     }
 }
