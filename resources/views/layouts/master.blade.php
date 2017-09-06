@@ -21,52 +21,33 @@
 @endsection
 
 @section('contenu')
-    <nav class="navbar navbar-toggleable-md navbar-light bg-faded navbar-theme navbar-fixed-top">
-        <a class="navbar-brand" style="color: #ffffff;" href="{{route('homepage.content')}}">
-            <img src="{{asset('image/LetsWw.png')}}" width="auto" height="25" class="d-inline-block align-top" alt="">
-        </a>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="nav navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{route('homepage.content')}}">Home<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown link
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li>
-            </ul>
-            <div class="nav navbar-nav navbar-right">
-                <form class="navbar-form" role="search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Chercher..." name="q">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                        </div>
-                    </div>
-                </form>
-                @if (!Auth::check())
-                    <ul class="nav navbar-nav">
-                        <li><a href="/register" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span> S'inscrire</a></li>
-                        <li><a href="/login" style="color: white"><span class="glyphicon glyphicon-log-in" style="color: white"></span> Se Connecter</a></li>
-                    </ul>
-                @else
-                    <ul class="nav navbar-nav">
-                        <li><a href="#" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span>{{Auth::user()->name}}</a></li>
-                        <li><a href="#" style="color: white"><span class="glyphicon glyphicon-log-out" style="color: white"></span> Se déconnecter</a></li>
-                    </ul>
-                @endif
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded navbar-theme navbar-fixed-top navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarNavDropdown">
+                    <span class="sr-only" style="background-color: white; border-color: white">Toggle navigation</span>
+                    <span class="icon-bar" style="background-color: white; border-color: white"></span>
+                    <span class="icon-bar" style="background-color: white; border-color: white"></span>
+                    <span class="icon-bar" style="background-color: white; border-color: white"></span>
+                </button>
+                <a class="navbar-brand" style="color: #ffffff;" href="{{route('homepage.content')}}">
+                    <img src="{{asset('image/LetsWw.png')}}" width="auto" height="25" class="d-inline-block align-top" alt="">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <div class="nav navbar-nav navbar-right">
+                    @if (!Auth::check())
+                        <ul class="nav navbar-nav">
+                            <li><a href="/login" style="color: white"><span class="glyphicon glyphicon-log-in" style="color: white"></span> Se Connecter</a></li>
+                            <li><a href="/register" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span> S'inscrire</a></li>
+                        </ul>
+                    @else
+                        <ul class="nav navbar-nav">
+                            <li><a href="#" style="color: white"><span class="glyphicon glyphicon-log-out" style="color: white"></span> Se déconnecter</a></li>
+                            <li><a href="#" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span>{{Auth::user()->name}}</a></li>
+                        </ul>
+                    @endif
+                </div>
             </div>
         </div>
     </nav>
