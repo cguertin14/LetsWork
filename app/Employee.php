@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
+    public function punches()
+    {
+        return $this->hasMany('App\Punch');
+    }
+    //
     public function availabilities() {
         return $this->hasMany('App\Availability');
     }
