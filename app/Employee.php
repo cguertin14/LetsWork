@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
+    public function punches()
+    {
+        return $this->hasMany('App\Punch');
+    }
     //
 }
