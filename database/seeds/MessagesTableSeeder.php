@@ -15,7 +15,7 @@ class MessagesTableSeeder extends Seeder
         foreach (range(1, 10) as $index) {
             foreach (range(1,10) as $index2)
             {
-                \App\Employee::create([
+                \App\Message::create([
                     'sender_id' => $index,
                     'receiver_id' => $index2,
                     'content' => $faker->text()
