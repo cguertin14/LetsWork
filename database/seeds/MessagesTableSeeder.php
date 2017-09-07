@@ -12,12 +12,12 @@ class MessagesTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        foreach (range(1, 10) as $index) {
-            foreach (range(1,10) as $index2)
-            {
+        $users = \App\User::all();
+        foreach ($users as $user1) {
+            foreach ($users as $user2) {
                 \App\Message::create([
-                    'sender_id' => $index,
-                    'receiver_id' => $index2,
+                    'sender_id' => $user1->id,
+                    'receiver_id' => $user2->id,
                     'content' => $faker->text()
                 ]);
             }
