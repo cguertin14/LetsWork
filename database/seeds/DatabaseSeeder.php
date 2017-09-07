@@ -13,8 +13,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        //factory(\App\User::class,10)->create();
+
         $this->call(UsersSeeder::class);
         $this->call(FileTypesSeeder::class);
+//        $this->call(EmployeesTableSeeder::class);
+        $this->call(MessagesTableSeeder::class);
     }
 }
