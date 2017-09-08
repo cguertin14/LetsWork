@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class FileTypesSeeder extends Seeder
+class FileTypesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

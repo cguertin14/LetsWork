@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Seeder;
 
 class EmployeesTableSeeder extends Seeder
@@ -12,9 +13,10 @@ class EmployeesTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        foreach (range(1, 10) as $index) {
+        $users = User::all();
+        foreach ($users as $user) {
             \App\Employee::create([
-                'user_id' => $index
+                'user_id' => $user->id
             ]);
         }
     }

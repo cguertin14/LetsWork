@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class UsersSeeder extends Seeder
+class UsersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,7 +16,7 @@ class UsersSeeder extends Seeder
             \App\User::create([
                 'name' => $faker->name,
                 'email' => $faker->safeEmail,
-                'password' => bcrypt('1111111'),
+                'password' => bcrypt('letswork'),
                 'remember_token' => str_random(10)
             ]);
         }

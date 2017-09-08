@@ -34,7 +34,7 @@ class User extends Authenticatable
     public function sentmessages() {
         return $this->hasMany('App\Messages');
     }
-    public function receicedmessages() {
+    public function receivedmessages() {
         return $this->hasMany('App\Messages');
     }
 
@@ -57,5 +57,4 @@ class User extends Authenticatable
     public function files() {
         return $this->hasMany('App\File');
     }
-
 }
