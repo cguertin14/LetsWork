@@ -18,7 +18,8 @@ class FilesTableSeeder extends Seeder
             \App\File::create([
                 'user_id' => $user->id,
                 'file_type_id' => $filetype->id,
-                'content' => $filetype->content === '.jpg' || $filetype->content === '.png' ? $faker->imageUrl() : $faker->file('')
+                'content' => $filetype->content === '.jpg' || $filetype->content === '.png' ? $faker->imageUrl() :
+                    'http://www.stm.info/sites/default/files/pictures/a-plan_metro_blanc_2016.pdf'
             ]);
         }
     }

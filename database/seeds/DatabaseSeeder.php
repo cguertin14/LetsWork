@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
         DB::table('messages')->truncate();
         DB::table('company_types')->truncate();
         DB::table('files')->truncate();
+        DB::table('roles')->truncate();
+        DB::table('message_files')->truncate();
 
         $this->call(UsersTableSeeder::class);
         $this->call(FileTypesTableSeeder::class);
@@ -26,5 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MessagesTableSeeder::class);
         $this->call(CompanyTypesTableSeeder::class);
         $this->call(FilesTableSeeder::class);
+        $this->call(RolesTableSeeder::class);
+        //$this->call(MessageFilesTableSeeder::class);
     }
 }
