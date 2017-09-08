@@ -31,7 +31,10 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Notification')->using('App\NotificationUser')->withTimestamps();
     }
 
-    public function messages() {
+    public function sentmessages() {
+        return $this->hasMany('App\Messages');
+    }
+    public function receivedmessages() {
         return $this->hasMany('App\Messages');
     }
 
@@ -54,5 +57,4 @@ class User extends Authenticatable
     public function files() {
         return $this->hasMany('App\File');
     }
-
 }

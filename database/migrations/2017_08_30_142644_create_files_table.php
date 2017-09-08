@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -23,6 +24,7 @@ class CreateFilesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('file_type_id')->references('id')->on('file_types')->onDelete('cascade');
         });
+        DB::statement('alter table files MODIFY content LONGBLOB');
     }
 
     /**
@@ -32,6 +34,8 @@ class CreateFilesTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('files');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
