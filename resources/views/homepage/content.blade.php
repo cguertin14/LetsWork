@@ -1,9 +1,5 @@
 @extends('layouts.master')
 
-@section('title')
-Home
-@endsection
-
 @section('styles')
     <style>
         body {
@@ -18,7 +14,7 @@ Home
 
     <div class="container" style="margin-top: 150px">
         <div class="pull-left" style="width: 50%">
-            <p class="title1">Cherchez, appliquez et travaillez</p>
+            <p class="title1">Cherchez, appliquez <br> et travaillez</p>
             <p class="title2">
                 Grâce à une application web polyvalente <br> permettant la gestion de votre milieu <br> de travail
             </p>
