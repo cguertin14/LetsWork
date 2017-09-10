@@ -2,26 +2,12 @@
 
 @section('styles')
     <style>
-        .navbar-theme {
-            background-color: #464646;
-            color: #FFFFFF;
-        }
-        .nav-item,.nav-link {
-            color: #FFFFFF !important;
-        }
-        .nav > li > a:hover, .nav > li > a:focus {
-            text-decoration: none;
-            background-color: #535353;
-        }
-        .nav .open > a, .nav .open > a:hover, .nav .open > a:focus{
-            text-decoration: none;
-            background-color: #535353;
-        }
+
     </style>
 @endsection
 
 @section('contenu')
-    <nav class="navbar navbar-toggleable-md navbar-light bg-faded navbar-theme navbar-fixed-top navbar-static-top">
+    <nav class="navbar navbar-default navbar-theme navbar-static-top navbar-toggleable-md bg-faded" style="margin-bottom: 0">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarNavDropdown">
