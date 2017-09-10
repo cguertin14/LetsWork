@@ -24,8 +24,9 @@
 }
 
 .title1 {
+    margin-top: 20px;
     font-size: 50px;
-    text-align: justify;
+    line-height: normal;
     color: #000000;
 }
 
