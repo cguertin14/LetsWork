@@ -37,12 +37,12 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <div class="nav navbar-nav navbar-right">
                     @if (!Auth::check())
-                        <ul class="nav navbar-nav">
+                        <ul class="nav navbar-nav mr-auto">
                             <li><a href="/login" style="color: white"><span class="glyphicon glyphicon-log-in" style="color: white"></span> Se Connecter</a></li>
                             <li><a href="/register" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span> S'inscrire</a></li>
                         </ul>
                     @else
-                        <ul class="nav navbar-nav">
+                        <ul class="nav navbar-nav mr-auto">
                             <li><a href="#" style="color: white"><span class="glyphicon glyphicon-log-out" style="color: white"></span> Se déconnecter</a></li>
                             <li><a href="#" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span>{{Auth::user()->name}}</a></li>
                         </ul>
