@@ -1,0 +1,21 @@
+/*BASIC CSS FOR CENTERING DIV IN PAGE  -->  inner inside middle inside outer*/
+
+.outer {
+    display: table!important;
+    position: absolute!important;
+    height: 100%!important;
+    width: 100%!important;
+}
+
+.middle {
+    display: table-cell!important;
+    vertical-align: middle!important;
+}
+
+.inner {
+    margin-left: auto!important;
+    margin-right: auto!important;
+    width: auto/*whatever width you want*/ !important;
+}
+
+/*BASIC CSS FOR CENTERING DIV IN PAGE (END)*/

@@ -5,7 +5,8 @@ mix.js('resources/assets/js/app.js', 'public/js')
 
 mix.styles([
     'resources/assets/css/bootstrap.css',
-    'resources/assets/css/homepage.css'
+    'resources/assets/css/homepage.css',
+    'resources/assets/css/tools.css'
 ],'public/css/libs.css');
 
 mix.scripts([

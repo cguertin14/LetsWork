@@ -11,7 +11,6 @@
 @endsection
 
 @section('content')
-
     <div class="container" style="margin-top: 150px">
         <div class="pull-left" style="width: 50%">
             <p class="title1">Cherchez, appliquez <br> et travaillez</p>
