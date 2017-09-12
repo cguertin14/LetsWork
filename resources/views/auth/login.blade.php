@@ -34,7 +34,7 @@
 
                                                 @if ($errors->has('email'))
                                                     <span class="help-block">
-                                                        <strong>{{--{{ $errors->first('email') }}--}} Mauvaise adresse courriel</strong>
+                                                        <strong>{{ $errors->first('email') }}</strong>
                                                     </span>
                                                 @endif
                                             </div>
@@ -45,7 +45,7 @@
                                                 <input id="password" type="password" class="form-control" name="password" required placeholder="Mot de passe">
                                                 @if ($errors->has('password'))
                                                     <span class="help-block">
-                                                        <strong>{{--{{{ $errors->first('password') }}--}}Mauvais mot de passe</strong>
+                                                        <strong>{{ $errors->first('password') }}</strong>
                                                     </span>
                                                 @endif
                                             </div>
