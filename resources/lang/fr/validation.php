@@ -59,7 +59,7 @@ return [
     'min'                  => [
         'numeric' => 'Le :attribute doit être au moins :min.',
         'file'    => 'Le :attribute doit être au moins :min kilobytes.',
-        'string'  => 'Le :attribute doit être au moins :min characters.',
+        'string'  => 'Le :attribute doit être au moins :min caractères.',
         'array'   => 'Le :attribute doit avoir au moins :min items.',
     ],
     'not_in'               => 'The selected :attribute is invalid.',
