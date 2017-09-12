@@ -9352,7 +9352,6 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
 
 .title2 {
     font-size: 20px;
-    text-align: justify;
     color: #000000;
 }
 
@@ -9360,6 +9359,8 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
     font-size: 20px;
     color: #000000;
 }
+/*BASIC CSS FOR CENTERING DIV IN PAGE  -->  inner inside middle inside outer*/
+
 .outer {
     display: table!important;
     position: absolute!important;
@@ -9376,4 +9377,30 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
     margin-left: auto!important;
     margin-right: auto!important;
     width: auto/*whatever width you want*/ !important;
+}
+
+.purplebtn {
+    background-color: #552AD6 !important;
+    color: white;
+}
+
+/*BASIC CSS FOR CENTERING DIV IN PAGE (END)*/
+
+/* Center div horizontally (inside is inside of wrapper) */
+
+.wrapper {
+    text-align: center;
+}
+.inside {
+    display: inline-block;
+}
+.title {
+    color: white;
+    font-size: 50px;
+    line-height: normal;
+}
+
+.warning {
+    color: white;
+    font-size: 20px;
 }
