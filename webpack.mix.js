@@ -7,7 +7,7 @@ mix.styles([
     'resources/assets/css/bootstrap.css',
     'resources/assets/css/homepage.css',
     'resources/assets/css/tools.css',
-    'resources/assets/css/forgetpassword.css',
+    'resources/assets/css/forgetpassword.css'
 ],'public/css/libs.css');
 
 mix.scripts([
