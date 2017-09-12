@@ -11,21 +11,26 @@
 @endsection
 
 @section('content')
-
-    <div class="container" style="margin-top: 150px">
-        <div class="pull-left" style="width: 50%">
-            <p class="title1">Cherchez, appliquez <br> et travaillez</p>
-            <p class="title2">
-                Grâce à une application web polyvalente <br> permettant la gestion de votre milieu <br> de travail
-            </p>
-            <div class="form-group" style="margin-top: 40px">
-                <a href="">
-                    <button type="button" class="btn btn-enterprise">
-                        Commencer à chercher les entreprises
-                    </button>
-                </a>
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+                <div class="container">
+                    <div class="text-center" style="margin-bottom: 20%">
+                        <p class="title1">Cherchez, appliquez <br> et travaillez</p>
+                        <p class="title2">
+                            Grâce à une application web polyvalente <br> permettant la gestion de votre milieu <br> de travail
+                        </p>
+                        <div class="form-group" style="margin-top: 40px">
+                            <a href="">
+                                <button type="button" class="btn btn-enterprise">
+                                    Commencer à chercher les entreprises
+                                </button>
+                            </a>
+                        </div>
+                        <a href="" class="link">ou créez votre propre entreprise</a>
+                    </div>
+                </div>
             </div>
-            <a href="" class="link">ou créez votre propre entreprise</a>
         </div>
     </div>
 
