@@ -2,8 +2,10 @@
 
 namespace Illuminate\Auth\Notifications;
 
+use App\User;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Auth;
 
 class ResetPassword extends Notification
 {
@@ -45,8 +47,10 @@ class ResetPassword extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('You are receiving this email because we received a password reset request for your account.')
-            ->action('Reset Password', url(config('app.url').route('password.reset', $this->token, false)))
-            ->line('If you did not request a password reset, no further action is required.');
+            ->from('support@letswork.dev')
+            ->subject('Réinitialisation du mot de passe')
+            ->line('vous pouvez réinitialiser votre mot de passe allant sur le lien suivant: ')
+            ->action('Réinitialiser le mot de passe', url(config('app.url').route('password.reset', $this->token, false)))
+            ->line('Si vous n\'avez pas fait de demande pour réinitialiser votre mot de passe, aucune autre action n\'est nécessaire.');
     }
 }
