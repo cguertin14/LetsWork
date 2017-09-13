@@ -11,7 +11,7 @@
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarNavDropdown">
-                    <span class="sr-only" style="background-color: white; border-color: white">Toggle navigation</span>
+                    <span class="sr-only" style="border-color: white">Toggle navigation</span>
                     <span class="icon-bar" style="background-color: white; border-color: white"></span>
                     <span class="icon-bar" style="background-color: white; border-color: white"></span>
                     <span class="icon-bar" style="background-color: white; border-color: white"></span>
@@ -20,6 +20,7 @@
                     <img src="{{asset('image/LetsWw.png')}}" width="auto" height="25" class="d-inline-block align-top" alt="">
                 </a>
             </div>
+
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <div class="nav navbar-nav navbar-right">
                     @if (!Auth::check())
@@ -35,7 +36,7 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href=""> <!--AJOUTER LIEN ICI-->
+                                        <a href="/profile"> <!--AJOUTER LIEN ICI-->
                                             Éditer mon profil
                                         </a>
 
@@ -55,12 +56,49 @@
                     @endif
                 </div>
             </div>
+
         </div>
     </nav>
 
-    <div id="body">
-        @yield('content')
-    </div>
+    @if(\Illuminate\Support\Facades\Auth::check())
+        <div id="wrapper">
+            <div id="sidebar-wrapper">
+                <ul class="nav">
+                    <li style="width: 100%;">
+                        <a href="#">Categories<span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li>
+                                <a href="flot.html">Flot Charts</a>
+                            </li>
+                            <li>
+                                <a href="morris.html">Morris.js Charts</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Page content section -->
+            <div id="page-content-wrapper">
+                <div class="page-content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                @yield('content')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End of content section -->
+        </div>
+    @else
+        <div id="body">
+            @yield('content')
+        </div>
+    @endif
+
 
     <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
     <script src="https://npmcdn.com/bootstrap@4.0.0-alpha.6/dist/js/bootstrap.min.js"></script>

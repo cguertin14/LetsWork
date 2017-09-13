@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed77f295bf1d2b58117fc2c716e47274",
+    "content-hash": "63100345fea1f3dc30adbada4647d3a5",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -970,6 +970,48 @@
                 "php"
             ],
             "time": "2017-09-02T17:10:46+00:00"
+        },
+        {
+            "name": "onokumus/metismenu",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/onokumus/metismenu.git",
+                "reference": "d03f6129a8c764419ae81d1c34d7434dd0dc508b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/onokumus/metismenu/zipball/d03f6129a8c764419ae81d1c34d7434dd0dc508b",
+                "reference": "d03f6129a8c764419ae81d1c34d7434dd0dc508b",
+                "shasum": ""
+            },
+            "suggest": {
+                "components/jquery": ">=1.9"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Osman Nuri Okumus",
+                    "email": "onokumus@gmail.com",
+                    "homepage": "http://onokumus.com"
+                }
+            ],
+            "description": "A jQuery menu plugin",
+            "homepage": "https://github.com/onokumus/metisMenu",
+            "keywords": [
+                "JS",
+                "bootstrap",
+                "css",
+                "jquery",
+                "menu",
+                "plugin",
+                "web"
+            ],
+            "time": "2017-09-07 19:15:09"
         },
         {
             "name": "paragonie/random_compat",
@@ -3647,7 +3689,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "onokumus/metismenu": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
