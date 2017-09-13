@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-    protected $fillable = ['name','description','user_id','company_type_id'];
+    public $fillable = ['name','description','telephone','email','ville','adresse','zipcode','pays','user_id','company_type_id'];
 
     public function owner() {
         return $this->belongsTo('App\User');

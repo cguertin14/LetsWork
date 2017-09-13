@@ -57,7 +57,13 @@
                 {{Form::text("zipcode","", array('class' => 'form-control',"placeholder"=>"Code postal"))}}
             </div>
             <div class="col-md-6">
-                {{Form::select('pays', $country_list,null, array('class' => 'form-control custom-select'))}}
+                {{Form::select('pays', $country_list,0, array('class' => 'form-control custom-select'))}}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                {{Form::select('company_type_id', $companyTypes ,0, array('class' => 'form-control custom-select'))}}
             </div>
         </div>
         <br>
