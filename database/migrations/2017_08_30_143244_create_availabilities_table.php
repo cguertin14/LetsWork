@@ -16,9 +16,11 @@ class CreateAvailabilitiesTable extends Migration
         Schema::create('availabilities', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('employee_id')->unsigned()->index();
+            $table->integer('company_id')->unsigned()->index();
             $table->timestamps();
 
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
     }
 
