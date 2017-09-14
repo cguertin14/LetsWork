@@ -18,6 +18,8 @@ class CreateSpecialRolesTable extends Migration
             $table->integer('company_id')->unsigned()->index();
             $table->string('content');
             $table->timestamps();
+
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
     }
 
