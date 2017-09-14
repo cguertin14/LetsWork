@@ -19,6 +19,7 @@ class CreateAvailabilitiesTable extends Migration
             $table->integer('company_id')->unsigned()->index();
             $table->timestamps();
 
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
     }
