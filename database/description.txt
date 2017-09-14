@@ -55,5 +55,40 @@ table availibility_elements
 	C'est la table qui permet à l'utilisateur de définir les quart de travail ou il sera disponible dans un horaire de disponibilité.
 
 table punches
-	Table permettant de chronométrer le temp de travail des employés.
+	Table permettant de chronométrer le temp de travail des employés dans leur companie.
 
+table admins
+	Cette table permet de savoir qui sont les utilisateurs étants les administrateur du site web.
+
+table files
+	C'est la table ou sont stockés tout les fichiers du site web en format blob.
+
+table file_types
+	Permet de spécifier un type de fichier. Est lier à la table de fichier pour savoir de quel type sont chaque fichier.
+
+table messages
+	Permet aux utilisateurs de faires des messages d'un à l'autre.
+
+table message_files
+	Table pivot permettant de lier plusieurs fichiers à un messages pour pouvoir envoyer des fichiers d'un utilisateur à un autre.
+
+table posts
+	Permet au gestionnare d'une compagnie de faires des messages à tout les employés d'une compagnie.
+
+table post_files
+	Permet d'inclure plusieurs fichiers sur un message destiné aux membre d'une compagnie.
+
+table schedule_changes
+	Permet de faire un changement d'horaire entre deux employés sur un quart de travail nécéssitant un rôle spécial précis.
+
+table notifications
+	Permet de créer des notifications pouvant etre vue par un ou plusieurs utilisateurs.
+
+table notification_users
+	Table pivot fesant le lien entre les notifications et les utilisateurs devant voir ceux-çi.
+
+table migrations
+	Table créer par Laravel pour permettre la migration des structures de données de php à la base de donnée.
+
+table password_resets
+	Permet de créer un token pour réinitialiser le mot de passe lier à l'émail d'un utilisateur.
