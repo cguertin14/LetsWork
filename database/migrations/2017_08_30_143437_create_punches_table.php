@@ -18,9 +18,11 @@ class CreatePunchesTable extends Migration
             $table->dateTime('datebegin');
             $table->dateTime('dateend');
             $table->integer('employee_id')->unsigned()->index();
+            $table->integer('company_id')->unsigned()->index();
             $table->timestamps();
 
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
     }
 
