@@ -49,4 +49,7 @@ table job_offer_users
 	Cette table permet de savoir qu'elle utilisateur à appliquer sur qu'elle offre d'emploi.
 
 table availabilities
-	Cette table permet à l'utilisateur de définir des quart de travail ou il sera disponible pour travailler.
+	Cette table permet à l'utilisateur de définir un horaire de disponibilité de travail.
+
+table availibility_elements
+	C'est la table qui permet à l'utilisateur de définir les quart de travail ou il sera disponible dans un horaire de disponibilité.
