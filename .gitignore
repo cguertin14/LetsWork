@@ -1,6 +1,7 @@
 /node_modules
 /public/storage
 /storage/*.key
+/vendor
 /laradock
 /.idea
 /config/database.php
