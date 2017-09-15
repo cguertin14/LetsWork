@@ -59,6 +59,13 @@
             <div id="sidebar-wrapper">
                 <div id="mySidenav" class="sidenav">
                     <ul style="list-style-type: none">
+                        <li id="dropdown">
+                            <a href="#">Compagnies</a>
+                            <ul class="collapse" style="list-style-type: none">
+                                <li><a href="/company">Index</a></li>
+                                <li><a href="/company/create">Créer</a></li>
+                            </ul>
+                        </li>
                         <li><a href="#">About</a></li>
                         <li id="dropdown">
                             <a href="#">Services</a>
