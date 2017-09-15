@@ -1,17 +1,11 @@
 @extends('layouts.top')
 
-@section('styles')
-    <style>
-
-    </style>
-@endsection
-
 @section('contenu')
     <nav class="navbar navbar-default navbar-theme navbar-static-top navbar-toggleable-md bg-faded" style="margin-bottom: 0">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarNavDropdown">
-                    <span class="sr-only" style="background-color: white; border-color: white">Toggle navigation</span>
+                    <span class="sr-only" style="border-color: white">Toggle navigation</span>
                     <span class="icon-bar" style="background-color: white; border-color: white"></span>
                     <span class="icon-bar" style="background-color: white; border-color: white"></span>
                     <span class="icon-bar" style="background-color: white; border-color: white"></span>
@@ -20,6 +14,7 @@
                     <img src="{{asset('image/LetsWw.png')}}" width="auto" height="25" class="d-inline-block align-top" alt="">
                 </a>
             </div>
+
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <div class="nav navbar-nav navbar-right">
                     @if (!Auth::check())
@@ -35,7 +30,7 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href=""> <!--AJOUTER LIEN ICI-->
+                                        <a href="/profile"> <!--AJOUTER LIEN ICI-->
                                             Éditer mon profil
                                         </a>
 
@@ -55,13 +50,66 @@
                     @endif
                 </div>
             </div>
+
         </div>
     </nav>
 
-    <div id="body">
-        @yield('content')
-    </div>
+    @if(\Illuminate\Support\Facades\Auth::check())
+        <div id="wrapper">
+            <div id="sidebar-wrapper">
+                <div id="mySidenav" class="sidenav">
+                    <ul style="list-style-type: none">
+                        <li><a href="#">About</a></li>
+                        <li id="dropdown">
+                            <a href="#">Services</a>
+                            <ul class="collapse" style="list-style-type: none">
+                                <li><a href="">Test1</a></li>
+                                <li><a href="">Test2</a></li>
+                                <li><a href="">Test3</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Clients</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
 
+            <!-- Page content section -->
+            <div id="page-content-wrapper">
+                <div class="page-content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                @yield('content')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End of content section -->
+        </div>
+    @else
+        <div id="body">
+            @yield('content')
+        </div>
+    @endif
+
+    <script>
+        $(document).ready(function () {
+            dropdown("#dropdown");
+        });
+
+        function dropdown(name) {
+            $(name).click(function () {
+                if ($(name).find("ul").hasClass("in")) {
+                    $(name).find("ul").removeClass("in");
+                }
+                else {
+                    $(name).find("ul").addClass("in");
+                }
+            });
+        }
+    </script>
     {{--<script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>--}}
     {{--<script src="https://npmcdn.com/bootstrap@4.0.0-alpha.6/dist/js/bootstrap.min.js"></script>--}}
     <script src="{{asset('js/libs.js')}}"></script>
