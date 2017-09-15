@@ -17,6 +17,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
+        return view("company.index");
     }
 
     /**
@@ -57,6 +58,8 @@ class CompanyController extends Controller
     {
         $namewithspace= str_replace('-',' ',$name);
         $data=Company::all()->where('name','=',$namewithspace)->first();
+        if($data==null)
+            return redirect("company/index");
         return view('company.show',compact('data'));
     }
 
