@@ -15,13 +15,6 @@ Route::get('/', ['as' => 'homepage.content', function () {
     return view('homepage.content');
 }]);
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/test1', ['as' => 'company.create', function () {
-    return view('company.create');
-}]);
-
-
 Auth::routes();
 
 Route::group(['middleware' => 'ConnectedUserOnly'], function() {
@@ -30,3 +23,4 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     //Route::put('/profile',['ProfileController@update', 'as' => 'user']);
 
 });
+Route::resource('company', 'CompanyController');
