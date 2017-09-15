@@ -15,8 +15,8 @@ class CreateSpecialRolesTable extends Migration
     {
         Schema::create('special_roles', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('company_id')->unsigned()->index();
             $table->string('content');
+            $table->integer('company_id')->unsigned()->index();
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
