@@ -20,7 +20,7 @@ Auth::routes();
 Route::group(['middleware' => 'ConnectedUserOnly'], function() {
 
     Route::get('/profile','ProfileController@view', ['as' => 'user']);
-    //Route::put('/profile',['ProfileController@update', 'as' => 'user']);
+    Route::patch('/profile/update','ProfileController@update', ['as' => 'user']);
 
 });
 Route::resource('company', 'CompanyController');

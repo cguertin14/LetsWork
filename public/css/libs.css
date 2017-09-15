@@ -9499,3 +9499,20 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
     color: white;
     font-size: 20px;
 }
+.employee {
+    width: 100%;
+}
+
+.header {
+    color: #ffffff;
+}
+
+.employee p {
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.section-title {
+    color: #FFFFFF;
+    font-size: 15px;
+}

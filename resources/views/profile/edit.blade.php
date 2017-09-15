@@ -1,21 +1,73 @@
 @extends('layouts.master')
 
-@section('content')
+@section('styles')
+    <style>
+        body {
+            background-color: #5d5d5d;
+        }
+    </style>
+@endsection
 
-    <div class="col-md-4" style="height: 100%;">
-        <h1 class="text-center">Mon profil</h1>
-        <div class="text-center" style="width:100%; height:200px">
-            <img src="http://www.garcard.com/images/garcard_symbol.png" style="border-radius: 50%">
+@section('content')
+    <div class="col-md-12" style="height: 100%;">
+        <div class="row">
+            <div class="col-md-4">
+                <h1 class="header">Mon profil</h1>
+                <br>
+                <div style="width:100%; height:70%">
+                    <img width="150px" height="150px" src="http://www.garcard.com/images/garcard_symbol.png" style="border-radius: 50%">
+                </div>
+                <div class="employee">
+                    <p>{{ $user->name }}</p>
+                    @if($user->employees)
+                        @foreach ($user->companies as $company)
+                            <p>{{ $company->employees->special_role }}</p>
+                            <p>{{  }}</p>
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+            <br>
+            <div class="col-md-8" style="margin-top: 20px">
+                {!! Form::model($user,['method' => 'PATCH', 'action' => 'ProfileController@update', $user->id]) !!}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {!! Form::label('name', 'Name', ['class' => 'section-title']) !!}
+                                {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {!! Form::label('email', 'Adresse Courriel', ['class' => 'section-title']) !!}
+                                {!! Form::text('email
+                                ', null, ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row pull-bottom">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {!! Form::label('name', 'Name', ['class' => 'section-title']) !!}
+                                {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {!! Form::label('name', 'Name', ['class' => 'section-title']) !!}
+                                {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        {!! Form::submit('Soumettre', ['class' => 'btn purplebtn pull-right']) !!}
+                    </div>
+
+                {!! Form::close() !!}
+            </div>
         </div>
-        <p class="text-center">{{ $user->name }}</p>
-        @if($user->employees)
-            <ul>
-                @foreach ($user->companies as $company)
-                    <li><p class="text-center">{{ $company->employees->name }}</p></li>
-                    <li><p class="text-center">{{  }}</p></li>
-                @endforeach
-            </ul>
-        @endif
     </div>
 
 @endsection
