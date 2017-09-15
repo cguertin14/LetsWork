@@ -9320,14 +9320,14 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
 /*# sourceMappingURL=bootstrap.css.map */
 
 #wrapper {
-  padding-left: 250px;
+  padding-left: 300px;
   transition: all 0.4s ease 0s;
 }
 
 #sidebar-wrapper {
-  margin-left: -250px;
-  left: 250px;
-  width: 250px;
+  margin-left: -300px;
+  left: 300px;
+  width: 300px;
   background: #CCC;
   position: fixed;
   height: 100%;
@@ -9362,21 +9362,54 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
 
   #wrapper.active {
     position: relative;
-    left: 250px;
+    left: 300px;
   }
 
   #wrapper.active #sidebar-wrapper {
-    left: 250px;
-    width: 250px;
+    left: 300px;
+    width: 300px;
     transition: all 0.4s ease 0s;
   }
 }
 
-.sidebar .nav-second-level li,
-.sidebar .nav-third-level li {
-  border-bottom: 0;
+.sidenav {
+  height: 100%;
+  width: 300px;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #333333;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
 }
 
-.sidebar .nav-second-level li a {
-  padding-left: 37px;
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none !important;
+  font-size: 25px;
+  color: #ffffff !important;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #818181 !important;
+  text-decoration: none;
+}
+
+.collapse.in {
+  display: block;
+  height: auto;
+  transition: height 2s;
+}
+
+.collapse {
+  display: none;
+  height: 0px;
+}
+
+.navbar {
+  border: 0px solid transparent !important;
 }

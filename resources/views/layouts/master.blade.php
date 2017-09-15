@@ -1,11 +1,5 @@
 @extends('layouts.top')
 
-@section('styles')
-    <style>
-
-    </style>
-@endsection
-
 @section('contenu')
     <nav class="navbar navbar-default navbar-theme navbar-static-top navbar-toggleable-md bg-faded" style="margin-bottom: 0">
         <div class="container">
@@ -63,20 +57,21 @@
     @if(\Illuminate\Support\Facades\Auth::check())
         <div id="wrapper">
             <div id="sidebar-wrapper">
-                <ul class="nav">
-                    <li style="width: 100%;">
-                        <a href="#">Categories<span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
-                        <ul class="nav nav-second-level collapse">
-                            <li>
-                                <a href="flot.html">Flot Charts</a>
-                            </li>
-                            <li>
-                                <a href="morris.html">Morris.js Charts</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                </ul>
+                <div id="mySidenav" class="sidenav">
+                    <ul style="list-style-type: none">
+                        <li><a href="#">About</a></li>
+                        <li id="dropdown">
+                            <a href="#">Services</a>
+                            <ul class="collapse" style="list-style-type: none">
+                                <li><a href="">Test1</a></li>
+                                <li><a href="">Test2</a></li>
+                                <li><a href="">Test3</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Clients</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
             </div>
 
             <!-- Page content section -->
@@ -99,7 +94,22 @@
         </div>
     @endif
 
+    <script>
+        $(document).ready(function () {
+            dropdown("#dropdown");
+        });
 
+        function dropdown(name) {
+            $(name).click(function () {
+                if ($(name).find("ul").hasClass("in")) {
+                    $(name).find("ul").removeClass("in");
+                }
+                else {
+                    $(name).find("ul").addClass("in");
+                }
+            });
+        }
+    </script>
     <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
     <script src="https://npmcdn.com/bootstrap@4.0.0-alpha.6/dist/js/bootstrap.min.js"></script>
     <script src="{{asset('js/libs.js')}}"></script>
