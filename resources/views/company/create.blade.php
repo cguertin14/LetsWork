@@ -69,7 +69,7 @@
         <br>
         <div class="row">
             <div class="col-md-12">
-            {{Form::textarea("description", "" ,array('class' => 'form-control',"placeholder"=>"description","rows"=>3))}}
+            {{Form::textarea("description", "" ,array('class' => 'form-control',"placeholder"=>"Description","rows"=>3))}}
             </div>
         </div>
         <br>
