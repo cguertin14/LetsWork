@@ -15,7 +15,7 @@ class CreateCompaniesTable extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->text('description');
             $table->string('telephone');
             $table->string('email');
@@ -29,6 +29,7 @@ class CreateCompaniesTable extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('company_type_id')->references('id')->on('company_types')->onDelete('cascade');
+            $table->unique(["id","name"]);
         });
     }
 

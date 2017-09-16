@@ -31,6 +31,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FilesTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         //$this->call(MessageFilesTableSeeder::class);
-        //$this->call(CompanyTableSeeder::class);
+        $this->call(CompanyTableSeeder::class);
     }
 }
