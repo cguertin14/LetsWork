@@ -15,10 +15,12 @@ Route::get('/', ['as' => 'homepage.content', function () {
     return view('homepage.content');
 }]);
 
-Route::get('/test1', ['as' => 'company.create', function () {
-    return view('company.create');
-}]);
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => 'ConnectedUserOnly'], function() {
+
+    Route::get('/profile','ProfileController@view', ['as' => 'user']);
+    //Route::put('/profile',['ProfileController@update', 'as' => 'user']);
+
+});
+Route::resource('company', 'CompanyController');
