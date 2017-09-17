@@ -11,7 +11,7 @@
 @section('content')
     <div class="col-md-12" style="height: 100%;">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <h1 class="header">Mon profil</h1>
                 <br>
                 <div style="width:100%; height:70%">
@@ -22,13 +22,13 @@
                     @if($user->employees)
                         @foreach ($user->companies as $company)
                             <p>{{ $company->employees->special_role }}</p>
-                            <p>{{  }}</p>
+                            <p>{{ $company->name }}</p>
                         @endforeach
                     @endif
                 </div>
             </div>
             <br>
-            <div class="col-md-8" style="margin-top: 20px">
+            <div class="col-md-9" style="margin-top: 5%">
                 {!! Form::model($user,['method' => 'PATCH', 'action' => 'ProfileController@update', $user->id]) !!}
                     <div class="row">
                         <div class="col-md-6">
@@ -40,8 +40,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 {!! Form::label('email', 'Adresse Courriel', ['class' => 'section-title']) !!}
-                                {!! Form::text('email
-                                ', null, ['class' => 'form-control']) !!}
+                                {!! Form::text('email', null, ['class' => 'form-control']) !!}
                             </div>
                         </div>
                     </div>
@@ -62,7 +61,7 @@
                     </div>
 
                     <div class="form-group">
-                        {!! Form::submit('Soumettre', ['class' => 'btn purplebtn pull-right']) !!}
+                        {!! Form::submit('Modifier le profil', ['class' => 'btn purplebtn pull-right']) !!}
                     </div>
 
                 {!! Form::close() !!}

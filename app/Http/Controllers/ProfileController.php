@@ -15,6 +15,8 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-
+        $connectedUser = Auth::user();
+        $connectedUser->update($request->all());
+        return redirect('/');
     }
 }
