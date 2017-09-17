@@ -70,9 +70,17 @@ class CompanyController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($name)
     {
-        //
+        $namewithspace= str_replace('-',' ',$name);
+        $data=Company::all()->where('name','=',$namewithspace)->first();
+        if($data==null)
+            return redirect()->back();
+        $companyTypes = array();
+        foreach (CompanyType::all() as $item) {
+            $companyTypes[$item['id']] = $item['content'];
+        }
+        return view('company.edit',compact(['data','companyTypes']));
     }
 
     /**
@@ -84,7 +92,9 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        Company::find($id)->update($data);
+        return "Bravo compagnie modifier";
     }
 
     /**
