@@ -2,12 +2,25 @@
 
 namespace App;
 
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use Sluggable;
+    use SluggableScopeHelpers;
+
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name',
+            ]
+        ];
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +28,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','phone_number','first_name','last_name'
+        'name', 'email', 'password','phone_number','first_name','last_name','slug'
     ];
 
     /**
@@ -60,5 +73,9 @@ class User extends Authenticatable
 
     public function files() {
         return $this->hasMany('App\File');
+    }
+
+    public function photo() {
+        return $this->hasOne('App\Photo');
     }
 }

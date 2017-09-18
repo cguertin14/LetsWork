@@ -19,9 +19,10 @@ Auth::routes();
 
 Route::group(['middleware' => 'ConnectedUserOnly'], function() {
 
-    Route::get('/profile','ProfileController@view', ['as' => 'user']);
-    Route::patch('/profile/update','ProfileController@update', ['as' => 'user']);
+    Route::get('/profile/{slug}','ProfileController@view', ['as' => 'user']);
+    Route::patch('/profile/{slug}/update','ProfileController@update', ['as' => 'user']);
+    Route::patch('/profile/uploadphoto','ProfileController@uploadphoto', ['as' => 'user']);
+    Route::get('/profile/getphoto','ProfileController@getphoto', ['as' => 'user']);
+    Route::resource('company', 'CompanyController');
 
 });
-
-Route::resource('company', 'CompanyController');

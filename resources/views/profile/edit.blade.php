@@ -5,28 +5,48 @@
         body {
             background-color: #5d5d5d;
         }
+        .dropzone {
+            background-color: #c9c9c9 !important;
+        }
     </style>
 @endsection
 
 @section('content')
     <div class="row layout">
         <div class="col-md-12 text-center">
-            <h1 class="header">Mon profil</h1>
             <br>
             <div style="width:100%; height:70%">
-                <img id="image" width="150px" height="150px" src="http://www.garcard.com/images/garcard_symbol.png" style="border-radius: 50%">
+                @if ($user->photo)
+                    <img id="image" width="200px" height="auto" src="data:image/png;base64,{{$user->photo->source}}" style="border-radius: 50%">
+                @else
+                    <img id="image" width="200px" height="200px" src="{{asset('image/default-profile.png')}}" style="border-radius: 50%">
+                @endif
             </div>
             <div class="employee">
                 <p>{{ $user->fullname }}</p>
-                @if($user->employees)
-                    @foreach ($user->companies as $company)
-                        <p>{{ $company->employees->special_role }}</p>
-                        <p>{{ $company->name }}</p>
-                    @endforeach
-                @endif
+                {{--@if($user->employees)--}}
+                    {{--@foreach ($user->companies as $company)--}}
+                        {{--<p>{{ $company->employees->special_role }}</p>--}}
+                        {{--<p>{{ $company->name }}</p>--}}
+                    {{--@endforeach--}}
+                {{--@endif--}}
+            </div>
+            <br>
+            <div class="col-md-12">
+                <div class="centre">
+                    {!! Form::open(['method' => 'PATCH', 'action' => 'ProfileController@uploadphoto', 'class' => 'dropzone','id' => 'files']) !!}
+                        <div class="text-center">
+                            <div class="row dz-default dz-message">
+                                <img src="{{asset('image/purple_plus.png')}}" width="10%" height="10%" alt="">
+                            </div>
+                            <div class="row dz-default dz-message">
+                                <strong>Changer la photo de profil</strong>
+                            </div>
+                        </div>
+                    {!! Form::close() !!}
+                </div>
             </div>
         </div>
-        <br>
         <div class="col-md-12" style="margin-top: 5%;">
             <div class="centre">
                 {!! Form::model($user,['method' => 'PATCH', 'action' => 'ProfileController@update', $user->id]) !!}
@@ -69,4 +89,28 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+    <script>
+        Dropzone.autoDiscover = false;
+        $("#files").dropzone({
+            url: '/profile/uploadphoto',
+            acceptedFiles: "image/jpeg,image/png,image/gif",
+            maxFiles: 1,
+            maxfilesexceeded: function(file) {
+                this.removeAllFiles();
+                this.addFile(file);
+            },
+            queuecomplete: function () {
+                $.get({
+                    url: '/profile/getphoto',
+                    success: function(result) {
+                        $("#image").attr('src',"data:image/png;base64," + result.source);
+                        $("#image").reload();
+                    }
+                });
+            }
+        });
+    </script>
 @endsection

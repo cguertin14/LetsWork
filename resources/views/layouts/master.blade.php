@@ -30,7 +30,7 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="/profile"> <!--AJOUTER LIEN ICI-->
+                                        <a href="/profile/{{\Illuminate\Support\Facades\Auth::user()->slug}}"> <!--AJOUTER LIEN ICI-->
                                             Éditer mon profil
                                         </a>
 

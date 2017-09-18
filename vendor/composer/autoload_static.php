@@ -312,7 +312,7 @@ class ComposerStaticInitc292a21027e643014c72741018844c57
         'CreateCompanyTypesTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_29_143226_create_company_types_table.php',
         'CreateEmployeeSpecialRolesTable' => __DIR__ . '/../..' . '/database/migrations/2017_09_06_171116_create_employee_special_roles_table.php',
         'CreateEmployeesTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_29_143251_create_employees_table.php',
-        'CreateFileTypesTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_29_142938_create_file_types_table.php',
+        'CreateFileTypesTable' => __DIR__ . '/../..',
         'CreateFilesTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_30_142644_create_files_table.php',
         'CreateJobOfferUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_09_06_124032_create_job_offer_users_table.php',
         'CreateJobOffersTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_30_143238_create_job_offers_table.php',
