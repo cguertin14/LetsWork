@@ -13,10 +13,16 @@ class CompanyTableSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
         //$previous =
-        foreach (range(1,10) as $index) {
+        foreach (range(10,20) as $index) {
             \App\Company::create([
                 'name' => $faker->companySuffix,
                 'description' => $faker->company,
+                'telephone' => $faker->phoneNumber,
+                'email' => $faker->email,
+                'ville' => $faker->city,
+                'adresse' => $faker->address,
+                'zipcode' => $faker->postcode,
+                'pays' => $faker->country,
                 'company_type_id' => \App\CompanyType::all()->random()->id,
                 'user_id' => \App\User::all()->random()->id,
             ]);

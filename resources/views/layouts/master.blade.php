@@ -59,6 +59,13 @@
             <div id="sidebar-wrapper">
                 <div id="mySidenav" class="sidenav">
                     <ul style="list-style-type: none">
+                        <li id="dropdown">
+                            <a href="#">Compagnies</a>
+                            <ul class="collapse" style="list-style-type: none">
+                                <li><a href="/company">Index</a></li>
+                                <li><a href="/company/create">Créer</a></li>
+                            </ul>
+                        </li>
                         <li><a href="#">About</a></li>
                         <li id="dropdown">
                             <a href="#">Services</a>
@@ -93,6 +100,7 @@
             @yield('content')
         </div>
     @endif
+    <script src="{{asset('js/libs.js')}}"></script>
 
     <script>
         $(document).ready(function () {
@@ -110,8 +118,7 @@
             });
         }
     </script>
-    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
-    <script src="https://npmcdn.com/bootstrap@4.0.0-alpha.6/dist/js/bootstrap.min.js"></script>
-    <script src="{{asset('js/libs.js')}}"></script>
+    {{--<script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>--}}
+    {{--<script src="https://npmcdn.com/bootstrap@4.0.0-alpha.6/dist/js/bootstrap.min.js"></script>--}}
     @yield('scripts')
 @endsection
