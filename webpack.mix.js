@@ -9,7 +9,7 @@ mix.styles([
 ],'public/css/libs.css');
 
 mix.scripts([
-    'resources/assets/js/jquery-3.2.1.js',
+    'node_modules/jquery/dist/jquery.js',
     'resources/assets/js/tether.js',
     'node_modules/bootstrap-sass/assets/javascripts/bootstrap.js',
 ],'public/js/libs.js');
