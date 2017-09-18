@@ -1,15 +1,10 @@
-<div class="card">
-    <div class="card-header" role="tab" id="heading{{$cardname}}">
-        <h5 class="mb-0">
-            <a data-toggle="collapse" data-parent="#{{$idaccordion}}" href="#collapse{{$cardname}}" aria-expanded="false" aria-controls="collapse{{$cardname}}">
-                {{$cardlink}}
-            </a>
-        </h5>
+<div class="col-sm-6 col-md-4">
+<div class="thumbnail">
+    <img src="..." alt="Logo">
+    <div class="caption">
+        <h3>{{$cardname}}</h3>
+        <p>{{$cardbody}}</p>
+        <p><a href="{{$cardlink}}" class="btn btn-primary purplebtn" role="button">{{$cardlinktext}}</a></p>
     </div>
-
-    <div id="collapse{{$cardname}}" class="collapse" role="tabpanel" aria-labelledby="heading{{$cardname}}">
-        <div class="card-body">
-            {{$cardbody}}
-        </div>
-    </div>
+</div>
 </div>

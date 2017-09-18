@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-sm-4 col-md-6">
                 <div class="row">
                     <h4 class="h4">{{$data['adresse']}}</h4>
                 </div>
