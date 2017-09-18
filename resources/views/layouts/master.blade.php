@@ -16,14 +16,14 @@
             </div>
 
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <div class="nav navbar-nav navbar-right">
+                <div class="navbar-right">
                     @if (!Auth::check())
-                        <ul class="nav navbar-nav mr-auto">
+                        <ul class="nav navbar-nav">
                             <li><a href="/login" style="color: white"><span class="glyphicon glyphicon-log-in" style="color: white"></span> Se Connecter</a></li>
                             <li><a href="/register" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span> S'inscrire</a></li>
                         </ul>
                     @else
-                        <ul class="nav navbar-nav mr-auto">
+                        <ul class="nav navbar-nav">
                             <li>
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: white">
                                     <span class="glyphicon glyphicon-user" style="color: white"></span>{{Auth::user()->name}}
