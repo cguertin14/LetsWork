@@ -20,7 +20,7 @@
                             Lien vers {{$compagny["name"]}}
                     @endslot
                     @slot('cardbody')
-                            {{ $compagny["description"] }}
+                            {{ substr($compagny["description"],0,155)."..." }}
                     @endslot
                 @endcomponent
             @endforeach

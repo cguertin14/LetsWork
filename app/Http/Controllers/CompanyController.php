@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CompanyType;
+use App\JobOffer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Company;
@@ -57,11 +58,12 @@ class CompanyController extends Controller
      */
     public function show($name)
     {
-        $namewithspace= str_replace('-',' ',$name);
-        $data=Company::all()->where('name','=',$namewithspace)->first();
-        if($data==null)
+        $data=Company::all()->where('name','=',$name)->first();
+        if($data==null) {
             return redirect("company/index");
-        return view('company.show',compact('data'));
+        }
+        $joboffers=$data->joboffers;
+        return view('company.show',compact(['data','joboffers']));
     }
 
     /**
@@ -72,8 +74,7 @@ class CompanyController extends Controller
      */
     public function edit($name)
     {
-        $namewithspace= str_replace('-',' ',$name);
-        $data=Company::all()->where('name','=',$namewithspace)->first();
+        $data=Company::all()->where('name','=',$name)->first();
         if($data==null)
             return redirect()->back();
         $companyTypes = array();
