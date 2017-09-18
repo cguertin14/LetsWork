@@ -21,6 +21,9 @@
 @endsection
 
 @section('content')
+
+    @include('include.tinyeditor')
+
     <div class="col-md-12">
         <h1 class="h1" style="color: white">Création d'entreprise</h1>
         {{Form::open(array('action' => 'CompanyController@store'))}}

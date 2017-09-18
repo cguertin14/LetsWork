@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','phone_number','first_name','last_name'
     ];
 
     /**
@@ -26,6 +26,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function getFullNameAttribute() {
+        return $this->first_name . " " . $this->last_name;
+    }
 
     public function notifications() {
         return $this->belongsToMany('App\Notification')->using('App\NotificationUser')->withTimestamps();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,8 +16,8 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        $connectedUser = Auth::user();
-        $connectedUser->update($request->all());
+        $user = Auth::user();
+        $user->update($request->all());
         return redirect('/');
     }
 }

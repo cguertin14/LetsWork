@@ -100,25 +100,25 @@
             @yield('content')
         </div>
     @endif
-    <script src="{{asset('js/libs.js')}}"></script>
 
-    <script>
-        $(document).ready(function () {
-            dropdown("#dropdown");
-        });
-
-        function dropdown(name) {
-            $(name).click(function () {
-                if ($(name).find("ul").hasClass("in")) {
-                    $(name).find("ul").removeClass("in");
-                }
-                else {
-                    $(name).find("ul").addClass("in");
-                }
+    @section('scripts')
+        <script>
+            $(document).ready(function () {
+                dropdown("#dropdown");
             });
-        }
-    </script>
+
+            function dropdown(name) {
+                $(name).click(function () {
+                    if ($(name).find("ul").hasClass("in")) {
+                        $(name).find("ul").removeClass("in");
+                    }
+                    else {
+                        $(name).find("ul").addClass("in");
+                    }
+                });
+            }
+        </script>
+    @endsection
     {{--<script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>--}}
     {{--<script src="https://npmcdn.com/bootstrap@4.0.0-alpha.6/dist/js/bootstrap.min.js"></script>--}}
-    @yield('scripts')
 @endsection

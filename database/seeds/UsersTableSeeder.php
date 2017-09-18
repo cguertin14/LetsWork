@@ -15,6 +15,9 @@ class UsersTableSeeder extends Seeder
         foreach (range(1,10) as $index) {
             \App\User::create([
                 'name' => $faker->name,
+                'phone_number' => $faker->phoneNumber,
+                'first_name' => $faker->firstName,
+                'last_name' => $faker->lastName,
                 'email' => $faker->safeEmail,
                 'password' => bcrypt('letswork'),
                 'remember_token' => str_random(10)

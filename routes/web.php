@@ -23,4 +23,5 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     Route::patch('/profile/update','ProfileController@update', ['as' => 'user']);
 
 });
+
 Route::resource('company', 'CompanyController');

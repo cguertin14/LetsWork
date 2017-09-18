@@ -19,6 +19,7 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
+    "inputmask": "^3.3.8",
     "node-sass": "^4.5.3"
   }
 }

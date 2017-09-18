@@ -12045,6 +12045,10 @@ return Tether;
 
 }));
 
+$(document).ready(function ($) {
+    $(".phone-number").mask("(999) 999-9999");
+});
+
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.

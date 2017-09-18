@@ -33,3 +33,15 @@
 .inside {
     display: inline-block;
 }
+
+div.layout
+{
+    text-align: center;
+}
+div.centre
+{
+    text-align: left;
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+}
