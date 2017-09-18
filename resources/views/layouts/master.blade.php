@@ -1,7 +1,7 @@
 @extends('layouts.top')
 
 @section('contenu')
-    <nav class="navbar navbar-default navbar-theme navbar-static-top navbar-toggleable-md bg-faded" style="margin-bottom: 0">
+    <nav class="navbar navbar-default navbar-theme navbar-fixed-top navbar-toggleable-md bg-faded" style="margin-bottom: 0">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarNavDropdown">
@@ -82,21 +82,17 @@
             </div>
 
             <!-- Page content section -->
-            <div id="page-content-wrapper">
+            <div id="page-content-wrapper"  style="padding-top: 60px;">
                 <div class="page-content">
                     <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-12">
-                                @yield('content')
-                            </div>
-                        </div>
+                        @yield('content')
                     </div>
                 </div>
             </div>
             <!-- End of content section -->
         </div>
     @else
-        <div id="body">
+        <div id="body" style="padding-top: 60px;">
             @yield('content')
         </div>
     @endif
