@@ -15,8 +15,8 @@ class CompanyTableSeeder extends Seeder
         //$previous =
         foreach (range(10,20) as $index) {
             \App\Company::create([
-                'name' => $faker->companySuffix,
-                'description' => $faker->company,
+                'name' => $faker->company,
+                'description' => $faker->text(800),
                 'telephone' => $faker->phoneNumber,
                 'email' => $faker->email,
                 'ville' => $faker->city,

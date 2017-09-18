@@ -7,20 +7,20 @@
 @endsection
 
 @section('content')
-        <div id="accordion" role="tablist" aria-multiselectable="true">
+        <div>
             @foreach($compagnies as $compagny)
                 @component('components.accordion-card')
                     @slot('cardname')
-                            {{ $compagny["id"] }}
+                        {{ $compagny["name"] }}
                     @endslot
                     @slot('cardlink')
-                            {{ $compagny["name"] }}
+                            /company/{{ $compagny["name"] }}
                     @endslot
-                    @slot('idaccordion')
-                            accordion
+                    @slot('cardlinktext')
+                            Lien vers {{$compagny["name"]}}
                     @endslot
                     @slot('cardbody')
-                            {{ $compagny["description"] }}
+                            {{ substr($compagny["description"],0,155)."..." }}
                     @endslot
                 @endcomponent
             @endforeach

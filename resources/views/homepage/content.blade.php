@@ -23,13 +23,13 @@
                                 Grâce à une application web polyvalente <br> permettant la gestion de votre milieu <br> de travail
                             </p>
                             <div class="form-group" style="margin-top: 40px">
-                                <a href="">
-                                    <button type="button" class="btn btn-enterprise">
+                                <a href="/company">
+                                    <button type="button" class="btn btn-enterprise" role="button">
                                         Commencer à chercher les entreprises
                                     </button>
                                 </a>
                             </div>
-                            <a href="" class="link">ou créez votre propre entreprise</a>
+                            <a href="/company/create" class="link">ou créez votre propre entreprise</a>
                         </div>
                     </div>
                 </div>
