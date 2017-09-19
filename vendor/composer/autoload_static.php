@@ -312,10 +312,7 @@ class ComposerStaticInitc292a21027e643014c72741018844c57
     );
 
     public static $classMap = array (
-<<<<<<< HEAD
         'AddColumnPhotoIdToUsers' => __DIR__ . '/../..' . '/database/migrations/2017_09_18_163255_add_column_photo_id_to_users.php',
-=======
->>>>>>> ludo
         'App\\Admin' => __DIR__ . '/../..' . '/app/Admin.php',
         'App\\Availability' => __DIR__ . '/../..' . '/app/Availability.php',
         'App\\AvailabilityElement' => __DIR__ . '/../..' . '/app/AvailabilityElement.php',
@@ -348,10 +345,7 @@ class ComposerStaticInitc292a21027e643014c72741018844c57
         'App\\MessageFile' => __DIR__ . '/../..' . '/app/MessageFile.php',
         'App\\Notification' => __DIR__ . '/../..' . '/app/Notification.php',
         'App\\NotificationUser' => __DIR__ . '/../..' . '/app/NotificationUser.php',
-<<<<<<< HEAD
         'App\\Photo' => __DIR__ . '/../..' . '/app/Photo.php',
-=======
->>>>>>> ludo
         'App\\Post' => __DIR__ . '/../..' . '/app/Post.php',
         'App\\PostFile' => __DIR__ . '/../..' . '/app/PostFile.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
@@ -373,7 +367,6 @@ class ComposerStaticInitc292a21027e643014c72741018844c57
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',
         'Carbon\\CarbonInterval' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
         'Carbon\\Exceptions\\InvalidDateException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php',
-<<<<<<< HEAD
         'Cocur\\Slugify\\Bridge\\Laravel\\SlugifyFacade' => __DIR__ . '/..' . '/cocur/slugify/src/Bridge/Laravel/SlugifyFacade.php',
         'Cocur\\Slugify\\Bridge\\Laravel\\SlugifyServiceProvider' => __DIR__ . '/..' . '/cocur/slugify/src/Bridge/Laravel/SlugifyServiceProvider.php',
         'Cocur\\Slugify\\Bridge\\Latte\\SlugifyHelper' => __DIR__ . '/..' . '/cocur/slugify/src/Bridge/Latte/SlugifyHelper.php',
@@ -395,8 +388,6 @@ class ComposerStaticInitc292a21027e643014c72741018844c57
         'Cocur\\Slugify\\RuleProvider\\RuleProviderInterface' => __DIR__ . '/..' . '/cocur/slugify/src/RuleProvider/RuleProviderInterface.php',
         'Cocur\\Slugify\\Slugify' => __DIR__ . '/..' . '/cocur/slugify/src/Slugify.php',
         'Cocur\\Slugify\\SlugifyInterface' => __DIR__ . '/..' . '/cocur/slugify/src/SlugifyInterface.php',
-=======
->>>>>>> ludo
         'Collective\\Html\\Componentable' => __DIR__ . '/..' . '/laravelcollective/html/src/Componentable.php',
         'Collective\\Html\\Eloquent\\FormAccessible' => __DIR__ . '/..' . '/laravelcollective/html/src/Eloquent/FormAccessible.php',
         'Collective\\Html\\FormBuilder' => __DIR__ . '/..' . '/laravelcollective/html/src/FormBuilder.php',
@@ -447,14 +438,11 @@ class ComposerStaticInitc292a21027e643014c72741018844c57
         'Cron\\MinutesField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/MinutesField.php',
         'Cron\\MonthField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/MonthField.php',
         'Cron\\YearField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/YearField.php',
-<<<<<<< HEAD
         'Cviebrock\\EloquentSluggable\\ServiceProvider' => __DIR__ . '/..' . '/cviebrock/eloquent-sluggable/src/ServiceProvider.php',
         'Cviebrock\\EloquentSluggable\\Services\\SlugService' => __DIR__ . '/..' . '/cviebrock/eloquent-sluggable/src/Services/SlugService.php',
         'Cviebrock\\EloquentSluggable\\Sluggable' => __DIR__ . '/..' . '/cviebrock/eloquent-sluggable/src/Sluggable.php',
         'Cviebrock\\EloquentSluggable\\SluggableObserver' => __DIR__ . '/..' . '/cviebrock/eloquent-sluggable/src/SluggableObserver.php',
         'Cviebrock\\EloquentSluggable\\SluggableScopeHelpers' => __DIR__ . '/..' . '/cviebrock/eloquent-sluggable/src/SluggableScopeHelpers.php',
-=======
->>>>>>> ludo
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'DeepCopy\\DeepCopy' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/DeepCopy.php',
         'DeepCopy\\Exception\\CloneException' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/Exception/CloneException.php',

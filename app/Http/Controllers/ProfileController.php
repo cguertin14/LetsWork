@@ -12,6 +12,9 @@ class ProfileController extends Controller
 {
     public function view($slug)
     {
+        if($slug=="photo")
+            return  $this->photo();
+        
         $user = User::findBySlugOrFail($slug);
         return view('profile.edit',compact('user'));
     }
