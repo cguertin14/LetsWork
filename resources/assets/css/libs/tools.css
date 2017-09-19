@@ -1,0 +1,48 @@
+/*BASIC CSS FOR CENTERING DIV IN PAGE  -->  inner inside middle inside outer*/
+
+.outer {
+    display: table!important;
+    position: absolute!important;
+    height: 100%!important;
+    width: 100%!important;
+}
+
+.middle {
+    display: table-cell!important;
+    vertical-align: middle!important;
+}
+
+.inner {
+    margin-left: auto!important;
+    margin-right: auto!important;
+    width: auto/*whatever width you want*/ !important;
+}
+
+.purplebtn {
+    background-color: #552AD6 !important;
+    color: white;
+    font-size: 17px !important;
+}
+
+/*BASIC CSS FOR CENTERING DIV IN PAGE (END)*/
+
+/* Center div horizontally (inside is inside of wrapper) */
+
+.wrapper {
+    text-align: center;
+}
+.inside {
+    display: inline-block;
+}
+
+div.layout
+{
+    text-align: center;
+}
+div.centre
+{
+    text-align: left;
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+}

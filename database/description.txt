@@ -1,0 +1,94 @@
+Description de la base de donnée pour le projet Letswork.
+
+table users
+	La table utilisateur est la table principales de notre base de donnée. Sans etre dans cele-ci, un utilisateur du site web pourra seulement parcourir les différentes entreprises sans pouvoir profiter du systeme de gestion intégré au site web. Cette table contient toutes les information de base permettant d'identifier et de connecté un utilisateur.
+
+table companies
+	La table compagnie permet au utilisateurs s'inscrivant à notre site web de se créer une compagnie possédant différentes caractéristiques. L'utilisateur créant cette compagnie en devient le CEO, il est donc le propriétaire de cette compagnie et en devient donc le principale manager.
+
+table company_types
+	Cette table permet de stocker les différents types de compagnie possible, pour ensuite les lier a une compagnie.
+
+table employees
+	La table employée permet de lier un utilisateur comme étant employée.
+
+table company_employees.
+	Cette table est une table pivot permettant de lier un employé a une ou plusieurs compagnies.
+
+table schedules
+	La table d'horaire permet de créer des horaires et de lier ceux-ci à une compagnie. Cette table est la première table du module composé des tables horaires.
+
+table schedule_elements
+	La tabe d'éléments d'horaire permet de spécifier les différents quart de travail lier à un horaire. Cette table est la deuxième table du module composé des tables horaires.
+
+table schedule_elements_special_roles
+	Cette table est la table pivot liant la table d'élément d'horaire au rôles spéciaux nécéssaire ainsi qu'à l'employé devant travailer lors de ce quart. Cette table est la troisème table du module composé des tables horaires.
+
+table special_roles
+	Cette table permet au gestionnaire d'une compagnie de créer des rôles spéciaux. Ces rôles s'ont les différents postes qu'occupe les employés d'une compagnie. Ces rôles sont lier à une table de rôle de base, ce qui permet de déduire les droits des rôles spécianx selon les droits des rôles de base.
+
+table special_role_roles
+	Cette table est une table pivot permettant de lier plusieurs rôles à un rôle spécial.
+
+table roles
+	La table de rôle de base.
+
+table skill_special_roles
+	Permet de faire le lien par une table pivot entre les compétences nécéssaire à un rôle spécial et les compétances.
+
+table skills
+	La table des différentes compétences existantes.
+
+table employee_special_roles
+	Table pivot permettant de lier les rôles qu'un employé à appris/occupé/obtenue à l'employé.
+
+table job_offers
+	Cette table permet au gestionnaire d'une compagnie de créer une offre d'emploi ou un utilisateur pourra appliquer. Cette offre d'emploi à le poste que l'employé devra occuper lier.
+
+table job_offer_users
+	Cette table permet de savoir qu'elle utilisateur à appliquer sur qu'elle offre d'emploi.
+
+table availabilities
+	Cette table permet à l'utilisateur de définir un horaire de disponibilité de travail pour chaque compagnie avec laquelle il travail.
+
+table availibility_elements
+	C'est la table qui permet à l'utilisateur de définir les quart de travail ou il sera disponible dans un horaire de disponibilité.
+
+table punches
+	Table permettant de chronométrer le temp de travail des employés dans leur companie.
+
+table admins
+	Cette table permet de savoir qui sont les utilisateurs étants les administrateur du site web.
+
+table files
+	C'est la table ou sont stockés tout les fichiers du site web en format blob.
+
+table file_types
+	Permet de spécifier un type de fichier. Est lier à la table de fichier pour savoir de quel type sont chaque fichier.
+
+table messages
+	Permet aux utilisateurs de faires des messages d'un à l'autre.
+
+table message_files
+	Table pivot permettant de lier plusieurs fichiers à un messages pour pouvoir envoyer des fichiers d'un utilisateur à un autre.
+
+table posts
+	Permet au gestionnare d'une compagnie de faires des messages à tout les employés d'une compagnie.
+
+table post_files
+	Permet d'inclure plusieurs fichiers sur un message destiné aux membre d'une compagnie.
+
+table schedule_changes
+	Permet de faire un changement d'horaire entre deux employés sur un quart de travail nécéssitant un rôle spécial précis.
+
+table notifications
+	Permet de créer des notifications pouvant etre vue par un ou plusieurs utilisateurs.
+
+table notification_users
+	Table pivot fesant le lien entre les notifications et les utilisateurs devant voir ceux-çi.
+
+table migrations
+	Table créer par Laravel pour permettre la migration des structures de données de php à la base de donnée.
+
+table password_resets
+	Permet de créer un token pour réinitialiser le mot de passe lier à l'émail d'un utilisateur.
