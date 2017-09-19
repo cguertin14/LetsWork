@@ -6,7 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+<<<<<<< HEAD
     'AddColumnPhotoIdToUsers' => $baseDir . '/database/migrations/2017_09_18_163255_add_column_photo_id_to_users.php',
+=======
+>>>>>>> ludo
     'App\\Admin' => $baseDir . '/app/Admin.php',
     'App\\Availability' => $baseDir . '/app/Availability.php',
     'App\\AvailabilityElement' => $baseDir . '/app/AvailabilityElement.php',
@@ -39,7 +42,10 @@ return array(
     'App\\MessageFile' => $baseDir . '/app/MessageFile.php',
     'App\\Notification' => $baseDir . '/app/Notification.php',
     'App\\NotificationUser' => $baseDir . '/app/NotificationUser.php',
+<<<<<<< HEAD
     'App\\Photo' => $baseDir . '/app/Photo.php',
+=======
+>>>>>>> ludo
     'App\\Post' => $baseDir . '/app/Post.php',
     'App\\PostFile' => $baseDir . '/app/PostFile.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
@@ -61,6 +67,7 @@ return array(
     'Carbon\\Carbon' => $vendorDir . '/nesbot/carbon/src/Carbon/Carbon.php',
     'Carbon\\CarbonInterval' => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
     'Carbon\\Exceptions\\InvalidDateException' => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php',
+<<<<<<< HEAD
     'Cocur\\Slugify\\Bridge\\Laravel\\SlugifyFacade' => $vendorDir . '/cocur/slugify/src/Bridge/Laravel/SlugifyFacade.php',
     'Cocur\\Slugify\\Bridge\\Laravel\\SlugifyServiceProvider' => $vendorDir . '/cocur/slugify/src/Bridge/Laravel/SlugifyServiceProvider.php',
     'Cocur\\Slugify\\Bridge\\Latte\\SlugifyHelper' => $vendorDir . '/cocur/slugify/src/Bridge/Latte/SlugifyHelper.php',
@@ -82,6 +89,8 @@ return array(
     'Cocur\\Slugify\\RuleProvider\\RuleProviderInterface' => $vendorDir . '/cocur/slugify/src/RuleProvider/RuleProviderInterface.php',
     'Cocur\\Slugify\\Slugify' => $vendorDir . '/cocur/slugify/src/Slugify.php',
     'Cocur\\Slugify\\SlugifyInterface' => $vendorDir . '/cocur/slugify/src/SlugifyInterface.php',
+=======
+>>>>>>> ludo
     'Collective\\Html\\Componentable' => $vendorDir . '/laravelcollective/html/src/Componentable.php',
     'Collective\\Html\\Eloquent\\FormAccessible' => $vendorDir . '/laravelcollective/html/src/Eloquent/FormAccessible.php',
     'Collective\\Html\\FormBuilder' => $vendorDir . '/laravelcollective/html/src/FormBuilder.php',
@@ -132,11 +141,14 @@ return array(
     'Cron\\MinutesField' => $vendorDir . '/mtdowling/cron-expression/src/Cron/MinutesField.php',
     'Cron\\MonthField' => $vendorDir . '/mtdowling/cron-expression/src/Cron/MonthField.php',
     'Cron\\YearField' => $vendorDir . '/mtdowling/cron-expression/src/Cron/YearField.php',
+<<<<<<< HEAD
     'Cviebrock\\EloquentSluggable\\ServiceProvider' => $vendorDir . '/cviebrock/eloquent-sluggable/src/ServiceProvider.php',
     'Cviebrock\\EloquentSluggable\\Services\\SlugService' => $vendorDir . '/cviebrock/eloquent-sluggable/src/Services/SlugService.php',
     'Cviebrock\\EloquentSluggable\\Sluggable' => $vendorDir . '/cviebrock/eloquent-sluggable/src/Sluggable.php',
     'Cviebrock\\EloquentSluggable\\SluggableObserver' => $vendorDir . '/cviebrock/eloquent-sluggable/src/SluggableObserver.php',
     'Cviebrock\\EloquentSluggable\\SluggableScopeHelpers' => $vendorDir . '/cviebrock/eloquent-sluggable/src/SluggableScopeHelpers.php',
+=======
+>>>>>>> ludo
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'DeepCopy\\DeepCopy' => $vendorDir . '/myclabs/deep-copy/src/DeepCopy/DeepCopy.php',
     'DeepCopy\\Exception\\CloneException' => $vendorDir . '/myclabs/deep-copy/src/DeepCopy/Exception/CloneException.php',
