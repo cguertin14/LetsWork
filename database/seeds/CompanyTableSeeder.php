@@ -23,6 +23,7 @@ class CompanyTableSeeder extends Seeder
                 'adresse' => $faker->address,
                 'zipcode' => $faker->postcode,
                 'pays' => $faker->country,
+                'slug' => $faker->slug(),
                 'company_type_id' => \App\CompanyType::all()->random()->id,
                 'user_id' => \App\User::all()->random()->id,
             ]);

@@ -66,8 +66,7 @@
                                 <li><a href="/company/create">Créer</a></li>
                             </ul>
                         </li>
-                        <li><a href="#">About</a></li>
-                        <li id="dropdown">
+                        <li class="dropdown">
                             <a href="#">Services</a>
                             <ul class="collapse" style="list-style-type: none">
                                 <li><a href="">Test1</a></li>
@@ -75,7 +74,7 @@
                                 <li><a href="">Test3</a></li>
                             </ul>
                         </li>
-                        <li><a href="#">Clients</a></li>
+                        <li><a href="{{route('company.absence')}}">Demande d'absence</a></li>
                         <li><a href="#">Contact</a></li>
                     </ul>
                 </div>

@@ -11,7 +11,8 @@ mix.styles([
     'resources/assets/css/libs/forgetpassword.css',
     'resources/assets/css/libs/dropzone.css',
     'resources/assets/css/libs/basic.css',
-    'resources/assets/css/libs/sidemenu.css'
+    'resources/assets/css/libs/sidemenu.css',
+    'resources/assets/css/libs/404page.css'
 ],'public/css/libs.css');
 
 mix.scripts([

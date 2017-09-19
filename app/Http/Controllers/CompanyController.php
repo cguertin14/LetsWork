@@ -108,4 +108,9 @@ class CompanyController extends Controller
     {
         //
     }
+
+    public function absence($slug) {
+        $company = Company::findBySlugOrFail($slug);
+        return view('company.absence',compact('company'));
+    }
 }

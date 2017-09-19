@@ -23,6 +23,7 @@ class CreateCompaniesTable extends Migration
             $table->string('adresse');
             $table->string('zipcode');
             $table->string('pays');
+            $table->string('slug');
             $table->integer('user_id')->unsigned()->index();
             $table->integer('company_type_id')->unsigned()->index();
             $table->timestamps();
