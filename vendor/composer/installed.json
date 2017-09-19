@@ -3708,6 +3708,62 @@
         ]
     },
     {
+        "name": "doctrine/instantiator",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/doctrine/instantiator.git",
+            "reference": "185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/doctrine/instantiator/zipball/185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda",
+            "reference": "185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.1"
+        },
+        "require-dev": {
+            "athletic/athletic": "~0.1.8",
+            "ext-pdo": "*",
+            "ext-phar": "*",
+            "phpunit/phpunit": "^6.2.3",
+            "squizlabs/php_codesniffer": "^3.0.2"
+        },
+        "time": "2017-07-22T11:58:36+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.2.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Doctrine\\Instantiator\\": "src/Doctrine/Instantiator/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Marco Pivetta",
+                "email": "ocramius@gmail.com",
+                "homepage": "http://ocramius.github.com/"
+            }
+        ],
+        "description": "A small, lightweight utility to instantiate objects in PHP without invoking their constructors",
+        "homepage": "https://github.com/doctrine/instantiator",
+        "keywords": [
+            "constructor",
+            "instantiate"
+        ]
+    },
+    {
         "name": "twbs/bootstrap",
         "version": "v4.0.0-beta",
         "version_normalized": "4.0.0.0-beta",
@@ -3761,41 +3817,48 @@
         ]
     },
     {
-        "name": "doctrine/instantiator",
-        "version": "1.0.5",
-        "version_normalized": "1.0.5.0",
+        "name": "cocur/slugify",
+        "version": "v2.5",
+        "version_normalized": "2.5.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/doctrine/instantiator.git",
-            "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d"
+            "url": "https://github.com/cocur/slugify.git",
+            "reference": "e8167e9a3236044afebd6e8ab13ebeb3ec9ca145"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/instantiator/zipball/8e884e78f9f0eb1329e445619e04456e64d8051d",
-            "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d",
+            "url": "https://api.github.com/repos/cocur/slugify/zipball/e8167e9a3236044afebd6e8ab13ebeb3ec9ca145",
+            "reference": "e8167e9a3236044afebd6e8ab13ebeb3ec9ca145",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3,<8.0-DEV"
+            "php": ">=5.5.9"
         },
         "require-dev": {
-            "athletic/athletic": "~0.1.8",
-            "ext-pdo": "*",
-            "ext-phar": "*",
-            "phpunit/phpunit": "~4.0",
-            "squizlabs/php_codesniffer": "~2.0"
+            "laravel/framework": "~5.1",
+            "latte/latte": "~2.2",
+            "league/container": "^2.2.0",
+            "mikey179/vfsstream": "~1.6",
+            "mockery/mockery": "~0.9",
+            "nette/di": "~2.2",
+            "phpunit/phpunit": "~4.8|~5.2",
+            "pimple/pimple": "~1.1",
+            "plumphp/plum": "~0.1",
+            "silex/silex": "~1.3",
+            "symfony/config": "~2.4|~3.0",
+            "symfony/dependency-injection": "~2.4|~3.0",
+            "symfony/http-kernel": "~2.4|~3.0",
+            "twig/twig": "~1.26|~2.0",
+            "zendframework/zend-modulemanager": "~2.2",
+            "zendframework/zend-servicemanager": "~2.2",
+            "zendframework/zend-view": "~2.2"
         },
-        "time": "2015-06-14T21:17:01+00:00",
+        "time": "2017-03-23T21:52:55+00:00",
         "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "Doctrine\\Instantiator\\": "src/Doctrine/Instantiator/"
+                "Cocur\\Slugify\\": "src"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -3804,16 +3867,73 @@
         ],
         "authors": [
             {
-                "name": "Marco Pivetta",
-                "email": "ocramius@gmail.com",
-                "homepage": "http://ocramius.github.com/"
+                "name": "Ivo Bathke",
+                "email": "ivo.bathke@gmail.com"
+            },
+            {
+                "name": "Florian Eckerstorfer",
+                "email": "florian@eckerstorfer.co",
+                "homepage": "https://florian.ec"
             }
         ],
-        "description": "A small, lightweight utility to instantiate objects in PHP without invoking their constructors",
-        "homepage": "https://github.com/doctrine/instantiator",
+        "description": "Converts a string into a slug.",
         "keywords": [
-            "constructor",
-            "instantiate"
+            "slug",
+            "slugify"
+        ]
+    },
+    {
+        "name": "cviebrock/eloquent-sluggable",
+        "version": "4.2.5",
+        "version_normalized": "4.2.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/cviebrock/eloquent-sluggable.git",
+            "reference": "814e6c91bfdac9744cc3fae2f752daee36aff2d1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/cviebrock/eloquent-sluggable/zipball/814e6c91bfdac9744cc3fae2f752daee36aff2d1",
+            "reference": "814e6c91bfdac9744cc3fae2f752daee36aff2d1",
+            "shasum": ""
+        },
+        "require": {
+            "cocur/slugify": "^2.3",
+            "illuminate/config": "~5.4.0",
+            "illuminate/database": "~5.4.0",
+            "illuminate/support": "~5.4.0",
+            "php": "^7.0"
+        },
+        "require-dev": {
+            "mockery/mockery": "^0.9.4",
+            "orchestra/database": "~3.4.0",
+            "orchestra/testbench": "~3.4.0",
+            "phpunit/phpunit": "~5.7"
+        },
+        "time": "2017-09-05T14:59:20+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Cviebrock\\EloquentSluggable\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Colin Viebrock",
+                "email": "colin@viebrock.ca"
+            }
+        ],
+        "description": "Easy creation of slugs for your Eloquent models in Laravel 5.",
+        "homepage": "https://github.com/cviebrock/eloquent-sluggable",
+        "keywords": [
+            "eloquent",
+            "laravel",
+            "slug"
         ]
     }
 ]

@@ -21,6 +21,7 @@
 .purplebtn {
     background-color: #552AD6 !important;
     color: white;
+    font-size: 17px !important;
 }
 
 /*BASIC CSS FOR CENTERING DIV IN PAGE (END)*/
@@ -32,4 +33,16 @@
 }
 .inside {
     display: inline-block;
+}
+
+div.layout
+{
+    text-align: center;
+}
+div.centre
+{
+    text-align: left;
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
 }

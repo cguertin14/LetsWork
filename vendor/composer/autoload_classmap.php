@@ -6,6 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+<<<<<<< HEAD
+    'AddColumnPhotoIdToUsers' => $baseDir . '/database/migrations/2017_09_18_163255_add_column_photo_id_to_users.php',
+=======
+>>>>>>> ludo
     'App\\Admin' => $baseDir . '/app/Admin.php',
     'App\\Availability' => $baseDir . '/app/Availability.php',
     'App\\AvailabilityElement' => $baseDir . '/app/AvailabilityElement.php',
@@ -38,6 +42,10 @@ return array(
     'App\\MessageFile' => $baseDir . '/app/MessageFile.php',
     'App\\Notification' => $baseDir . '/app/Notification.php',
     'App\\NotificationUser' => $baseDir . '/app/NotificationUser.php',
+<<<<<<< HEAD
+    'App\\Photo' => $baseDir . '/app/Photo.php',
+=======
+>>>>>>> ludo
     'App\\Post' => $baseDir . '/app/Post.php',
     'App\\PostFile' => $baseDir . '/app/PostFile.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
@@ -59,6 +67,30 @@ return array(
     'Carbon\\Carbon' => $vendorDir . '/nesbot/carbon/src/Carbon/Carbon.php',
     'Carbon\\CarbonInterval' => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
     'Carbon\\Exceptions\\InvalidDateException' => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php',
+<<<<<<< HEAD
+    'Cocur\\Slugify\\Bridge\\Laravel\\SlugifyFacade' => $vendorDir . '/cocur/slugify/src/Bridge/Laravel/SlugifyFacade.php',
+    'Cocur\\Slugify\\Bridge\\Laravel\\SlugifyServiceProvider' => $vendorDir . '/cocur/slugify/src/Bridge/Laravel/SlugifyServiceProvider.php',
+    'Cocur\\Slugify\\Bridge\\Latte\\SlugifyHelper' => $vendorDir . '/cocur/slugify/src/Bridge/Latte/SlugifyHelper.php',
+    'Cocur\\Slugify\\Bridge\\League\\SlugifyServiceProvider' => $vendorDir . '/cocur/slugify/src/Bridge/League/SlugifyServiceProvider.php',
+    'Cocur\\Slugify\\Bridge\\Nette\\SlugifyExtension' => $vendorDir . '/cocur/slugify/src/Bridge/Nette/SlugifyExtension.php',
+    'Cocur\\Slugify\\Bridge\\Plum\\SlugifyConverter' => $vendorDir . '/cocur/slugify/src/Bridge/Plum/SlugifyConverter.php',
+    'Cocur\\Slugify\\Bridge\\Silex2\\SlugifyServiceProvider' => $vendorDir . '/cocur/slugify/src/Bridge/Silex2/SlugifyServiceProvider.php',
+    'Cocur\\Slugify\\Bridge\\Silex\\SlugifyServiceProvider' => $vendorDir . '/cocur/slugify/src/Bridge/Silex/SlugifyServiceProvider.php',
+    'Cocur\\Slugify\\Bridge\\Symfony\\CocurSlugifyBundle' => $vendorDir . '/cocur/slugify/src/Bridge/Symfony/CocurSlugifyBundle.php',
+    'Cocur\\Slugify\\Bridge\\Symfony\\CocurSlugifyExtension' => $vendorDir . '/cocur/slugify/src/Bridge/Symfony/CocurSlugifyExtension.php',
+    'Cocur\\Slugify\\Bridge\\Symfony\\Configuration' => $vendorDir . '/cocur/slugify/src/Bridge/Symfony/Configuration.php',
+    'Cocur\\Slugify\\Bridge\\Twig\\SlugifyExtension' => $vendorDir . '/cocur/slugify/src/Bridge/Twig/SlugifyExtension.php',
+    'Cocur\\Slugify\\Bridge\\ZF2\\Module' => $vendorDir . '/cocur/slugify/src/Bridge/ZF2/Module.php',
+    'Cocur\\Slugify\\Bridge\\ZF2\\SlugifyService' => $vendorDir . '/cocur/slugify/src/Bridge/ZF2/SlugifyService.php',
+    'Cocur\\Slugify\\Bridge\\ZF2\\SlugifyViewHelper' => $vendorDir . '/cocur/slugify/src/Bridge/ZF2/SlugifyViewHelper.php',
+    'Cocur\\Slugify\\Bridge\\ZF2\\SlugifyViewHelperFactory' => $vendorDir . '/cocur/slugify/src/Bridge/ZF2/SlugifyViewHelperFactory.php',
+    'Cocur\\Slugify\\RuleProvider\\DefaultRuleProvider' => $vendorDir . '/cocur/slugify/src/RuleProvider/DefaultRuleProvider.php',
+    'Cocur\\Slugify\\RuleProvider\\FileRuleProvider' => $vendorDir . '/cocur/slugify/src/RuleProvider/FileRuleProvider.php',
+    'Cocur\\Slugify\\RuleProvider\\RuleProviderInterface' => $vendorDir . '/cocur/slugify/src/RuleProvider/RuleProviderInterface.php',
+    'Cocur\\Slugify\\Slugify' => $vendorDir . '/cocur/slugify/src/Slugify.php',
+    'Cocur\\Slugify\\SlugifyInterface' => $vendorDir . '/cocur/slugify/src/SlugifyInterface.php',
+=======
+>>>>>>> ludo
     'Collective\\Html\\Componentable' => $vendorDir . '/laravelcollective/html/src/Componentable.php',
     'Collective\\Html\\Eloquent\\FormAccessible' => $vendorDir . '/laravelcollective/html/src/Eloquent/FormAccessible.php',
     'Collective\\Html\\FormBuilder' => $vendorDir . '/laravelcollective/html/src/FormBuilder.php',
@@ -76,7 +108,7 @@ return array(
     'CreateCompanyTypesTable' => $baseDir . '/database/migrations/2017_08_29_143226_create_company_types_table.php',
     'CreateEmployeeSpecialRolesTable' => $baseDir . '/database/migrations/2017_09_06_171116_create_employee_special_roles_table.php',
     'CreateEmployeesTable' => $baseDir . '/database/migrations/2017_08_29_143251_create_employees_table.php',
-    'CreateFileTypesTable' => $baseDir . '/database/migrations/2017_08_29_142938_create_file_types_table.php',
+    'CreateFileTypesTable' => $baseDir . '/database/migrations/2012_10_29_142938_create_file_types_table.php',
     'CreateFilesTable' => $baseDir . '/database/migrations/2017_08_30_142644_create_files_table.php',
     'CreateJobOfferUsersTable' => $baseDir . '/database/migrations/2017_09_06_124032_create_job_offer_users_table.php',
     'CreateJobOffersTable' => $baseDir . '/database/migrations/2017_08_30_143238_create_job_offers_table.php',
@@ -85,6 +117,7 @@ return array(
     'CreateNotificationUsersTable' => $baseDir . '/database/migrations/2017_09_06_154620_create_notification_users_table.php',
     'CreateNotificationsTable' => $baseDir . '/database/migrations/2017_09_06_154430_create_notifications_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
+    'CreatePhotosTable' => $baseDir . '/database/migrations/2016_09_18_182259_create_photos_table.php',
     'CreatePostFilesTable' => $baseDir . '/database/migrations/2017_09_06_134120_create_post_files_table.php',
     'CreatePostsTable' => $baseDir . '/database/migrations/2017_09_06_133442_create_posts_table.php',
     'CreatePunchesTable' => $baseDir . '/database/migrations/2017_08_30_143437_create_punches_table.php',
@@ -108,6 +141,14 @@ return array(
     'Cron\\MinutesField' => $vendorDir . '/mtdowling/cron-expression/src/Cron/MinutesField.php',
     'Cron\\MonthField' => $vendorDir . '/mtdowling/cron-expression/src/Cron/MonthField.php',
     'Cron\\YearField' => $vendorDir . '/mtdowling/cron-expression/src/Cron/YearField.php',
+<<<<<<< HEAD
+    'Cviebrock\\EloquentSluggable\\ServiceProvider' => $vendorDir . '/cviebrock/eloquent-sluggable/src/ServiceProvider.php',
+    'Cviebrock\\EloquentSluggable\\Services\\SlugService' => $vendorDir . '/cviebrock/eloquent-sluggable/src/Services/SlugService.php',
+    'Cviebrock\\EloquentSluggable\\Sluggable' => $vendorDir . '/cviebrock/eloquent-sluggable/src/Sluggable.php',
+    'Cviebrock\\EloquentSluggable\\SluggableObserver' => $vendorDir . '/cviebrock/eloquent-sluggable/src/SluggableObserver.php',
+    'Cviebrock\\EloquentSluggable\\SluggableScopeHelpers' => $vendorDir . '/cviebrock/eloquent-sluggable/src/SluggableScopeHelpers.php',
+=======
+>>>>>>> ludo
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'DeepCopy\\DeepCopy' => $vendorDir . '/myclabs/deep-copy/src/DeepCopy/DeepCopy.php',
     'DeepCopy\\Exception\\CloneException' => $vendorDir . '/myclabs/deep-copy/src/DeepCopy/Exception/CloneException.php',

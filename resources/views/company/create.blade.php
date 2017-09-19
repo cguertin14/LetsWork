@@ -21,6 +21,9 @@
 @endsection
 
 @section('content')
+
+    @include('include.tinyeditor')
+
     <div class="col-md-12">
         <h1 class="h1" style="color: white">Création d'entreprise</h1>
         {{Form::open(array('action' => 'CompanyController@store'))}}
@@ -69,7 +72,7 @@
         <br>
         <div class="row">
             <div class="col-lg-12">
-            {{Form::textarea("description", "" ,array('class' => 'form-control',"placeholder"=>"Description","rows"=>3))}}
+            {{Form::textarea("description", "" ,array('class' => 'form-control',"placeholder"=>"Description","rows"=>12))}}
             </div>
         </div>
         <br>

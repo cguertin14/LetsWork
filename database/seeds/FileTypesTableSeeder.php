@@ -12,7 +12,7 @@ class FileTypesTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        $extensions = ['.jpg','.png','.pdf'];
+        $extensions = ['photo','.pdf'];
         foreach ($extensions as $extension) {
             \App\FileType::create([
                 'content' => $extension

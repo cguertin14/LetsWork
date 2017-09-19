@@ -26,9 +26,21 @@
                                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                                         {{ csrf_field() }}
 
+                                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                            <div class="col-md-12">
+                                                <input id="email" type="email" placeholder="Adresse courriel" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+
+                                                @if ($errors->has('email'))
+                                                    <span class="help-block">
+                                                        <strong>{{ $errors->first('email') }}</strong>
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
                                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                             <div class="col-md-12">
-                                                <input id="name" placeholder="Nom d'usager" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+                                                <input id="name" placeholder="Nom d'usager" type="text" class="form-control" name="name" value="{{ old('name') }}" required>
 
                                                 @if ($errors->has('name'))
                                                     <span class="help-block">
@@ -38,13 +50,37 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                                             <div class="col-md-12">
-                                                <input id="email" type="email" placeholder="Adresse courriel" class="form-control" name="email" value="{{ old('email') }}" required>
+                                                <input id="first_name" placeholder="Prénom" type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" required autofocus>
 
-                                                @if ($errors->has('email'))
+                                                @if ($errors->has('first_name'))
                                                     <span class="help-block">
-                                                        <strong>{{ $errors->first('email') }}</strong>
+                                                        <strong>{{ $errors->first('first_name') }}</strong>
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+                                            <div class="col-md-12">
+                                                <input id="last_name" placeholder="Nom de famille" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" required autofocus>
+
+                                                @if ($errors->has('last_name'))
+                                                    <span class="help-block">
+                                                        <strong>{{ $errors->first('last_name') }}</strong>
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group{{ $errors->has('phone_number') ? ' has-error' : '' }}">
+                                            <div id="phone_container" class="col-md-12">
+                                                <input id="phone_number" placeholder="Numéro de téléphone" type="text" class="form-control phone-number" name="phone_number" value="{{ old('phone_number') }}" required autofocus>
+
+                                                @if ($errors->has('phone_number'))
+                                                    <span class="help-block">
+                                                        <strong id="phone_errors">{{ $errors->first('phone_number') }}</strong>
                                                     </span>
                                                 @endif
                                             </div>
@@ -70,7 +106,7 @@
 
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <button type="submit" class="btn purplebtn">
+                                                <button id="submit" type="submit" class="btn purplebtn">
                                                     Soumettre
                                                 </button>
                                                 <a href="/login" class="btn btn-link pull-right">Je possède un compte</a>

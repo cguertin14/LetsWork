@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class File extends Model
 {
+    protected $fillable = [
+        'user_id','file_type_id','content'
+    ];
+
     public function filetype() {
         return $this->belongsTo('App\FileType');
     }
