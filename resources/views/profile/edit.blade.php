@@ -106,9 +106,6 @@
             queuecomplete: function () {
                 $.get({
                     url: '{{route('profile.photo')}}',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
                     success: function(result) {
                         $("#image").attr('src',"data:image/png;base64," + result.source);
                         $("#image").reload();
