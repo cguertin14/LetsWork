@@ -49,7 +49,8 @@
         </div>
         <div class="col-md-12" style="margin-top: 5%;">
             <div class="centre">
-                {!! Form::model($user,['method' => 'PATCH', 'action' => 'ProfileController@update', $user->id]) !!}
+                {{--['method' => 'PATCH', 'action' => 'ProfileController@update', $user->slug])--}}
+                {!! Form::model($user,['method' => 'PATCH', 'action' => ['ProfileController@update', $user->slug]])!!}
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -95,7 +96,7 @@
     <script>
         Dropzone.autoDiscover = false;
         $("#files").dropzone({
-            url: '/profile/uploadphoto',
+            url: '{{route('profile.uploadphoto')}}',
             acceptedFiles: "image/jpeg,image/png,image/gif",
             maxFiles: 1,
             maxfilesexceeded: function(file) {
@@ -104,7 +105,10 @@
             },
             queuecomplete: function () {
                 $.get({
-                    url: '/profile/getphoto',
+                    url: '{{route('profile.photo')}}',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     success: function(result) {
                         $("#image").attr('src',"data:image/png;base64," + result.source);
                         $("#image").reload();

@@ -113,10 +113,6 @@ div.centre
     color: #FFFFFF;
     font-size: 15px;
 }
-
-#image:hover {
-    cursor: pointer;
-}
 .title {
     color: white;
     font-size: 50px;
