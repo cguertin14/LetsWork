@@ -22,7 +22,7 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     Route::get('/profile/{slug}','ProfileController@view')->name('profile.view');
     Route::patch('/profile/{slug}/update','ProfileController@update')->name('profile.update');
     Route::patch('/profile/uploadphoto','ProfileController@uploadphoto')->name('profile.uploadphoto');
-    Route::get('/profile/photo','ProfileController@photo')->name('profile.photo');
+    Route::get('/profilephoto','ProfileController@photo')->name('profile.photo');
     Route::resource('company', 'CompanyController');
 
 });
