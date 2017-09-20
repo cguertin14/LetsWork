@@ -17,7 +17,7 @@
                             /company/{{ $compagny["name"] }}
                     @endslot
                     @slot('cardlinktext')
-                            Lien vers {{$compagny["name"]}}
+                            Lien vers {{substr($compagny["name"],0,25)."..."}}
                     @endslot
                     @slot('cardbody')
                             {{ substr($compagny["description"],0,155)."..." }}

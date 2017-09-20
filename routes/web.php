@@ -24,9 +24,10 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     Route::patch('/profile/uploadphoto','ProfileController@uploadphoto')->name('profile.uploadphoto');
     Route::get('/profilephoto','ProfileController@photo')->name('profile.photo');
 
-});
-Route::resource('company', 'CompanyController');
+    Route::post('/confirmation/ask','ConfirmationController@ask');
+    Route::get('/confirmation/dovalidate','ConfirmationController@dovalidate');
+    Route::get('/confirmation/docancel','ConfirmationController@docancel');
 
-Route::get('/confirmation/ask','ConfirmationController@askvalidate');
-Route::get('/confirmation/validate','ConfirmationController@dovalidate');
-Route::get('/confirmation/cancel','ConfirmationController@docancel');
+});
+//Route::get('/company/delete/{id}/{user_id}','CompanyController@delete');
+Route::resource('company', 'CompanyController');

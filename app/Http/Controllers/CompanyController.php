@@ -14,7 +14,6 @@ class CompanyController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['index','show']]);
-        $this->middleware('validate', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -113,14 +112,21 @@ class CompanyController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        $data = $request->all();
-        if ($data['user_id']!=Auth::id())
-            return redirect()->back();
+        if (Company::all()->get($id)->user_id !=Auth::id())
+            return "pas le bon user";
         Company::destroy($id);
         return $this->index();
     }
+
+//    public function delete($id,$user_id)
+//    {
+//        if ($user_id!=Auth::id())
+//            return "pas le bon user";
+//        Company::destroy($id);
+//        return $this->index();
+//    }
 
 //    public function uploadphoto(Request $request)
 //    {

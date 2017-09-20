@@ -2,28 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 
 class ConfirmationController extends Controller
 {
-    public function askvalidate($request)
+    public function ask(Request $request)
     {
-        Session::put('ConfirmationRequest',$request);
-        return view('confirmation.show');
+        $data=$request->all();
+        Session::put('todoaction',$data['todoaction']);
+        Session::put('parameters_id',$data['id']);
+        Session::put('lastaction',$data['lastaction']);
+        $text=$data['text'];
+        return view('confirmation.show',compact('text'));
     }
 
     public function dovalidate()
     {
-        $wait=Session::get('ConfirmationRequest');
-        Session::forget('ConfirmationRequest');
-        return $wait;
+        return redirect()->route(Session::get('todoaction'),
+            [Session::get('parameters_id'),'method'=>'DELETE']);
     }
 
     public function docancel()
     {
-        Session::forget('ConfirmationRequest');
-        return "canceled";
+        return redirect()->action(Session::get('lastaction'));
     }
 }
