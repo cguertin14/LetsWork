@@ -45,4 +45,7 @@
             </div>
         </div>
     </div>
+    @if(\Illuminate\Support\Facades\Auth::id()==$data['user_id'])
+        <a href="{{route('company.edit',$data['name'])}}" class="btn purplebtn">Editer</a>
+    @endif
 @endsection

@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index','show']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -47,7 +51,7 @@ class CompanyController extends Controller
         $data = $request->all();
         $data["user_id"] = Auth::user()->id;
         Company::create($data);
-        return "Bravo compagnie creer";
+        return $this->index();
     }
 
     /**
@@ -77,6 +81,8 @@ class CompanyController extends Controller
         $data=Company::all()->where('name','=',$name)->first();
         if($data==null)
             return redirect()->back();
+        if ($data['user_id']!=Auth::id())
+            return redirect()->back();
         $companyTypes = array();
         foreach (CompanyType::all() as $item) {
             $companyTypes[$item['id']] = $item['content'];
@@ -94,8 +100,10 @@ class CompanyController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
+        if ($data['user_id']!=Auth::id())
+            return redirect()->back();
         Company::find($id)->update($data);
-        return "Bravo compagnie modifier";
+        return $this->show($data['name']);
     }
 
     /**
@@ -104,8 +112,38 @@ class CompanyController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        if ($data['user_id']!=Auth::id())
+            return redirect()->back();
+        Company::destroy($id);
+        return $this->index();
     }
+
+//    public function uploadphoto(Request $request)
+//    {
+//        $data = $request->except(['file','_method','_token']);
+//        $file = $request->file('file');
+//
+//        // Encode image to base64
+//        $filedata = file_get_contents($file);
+//        $data['company_id'] = Auth::user()->id;
+//        $data['source'] = base64_encode($filedata);
+//
+//        // Create profile picture in database
+//        $user = Auth::user();
+//        if ($user->photo)
+//            $user->photo()->update($data);
+//        else {
+//            $photo = $user->photo()->create($data);
+//            $user->photo_id = $photo->id;
+//            $user->save();
+//        }
+//    }
+//
+//    public function photo() {
+//        // return image as base64
+//        return Auth::user()->photo;
+//    }
 }
