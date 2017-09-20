@@ -25,7 +25,7 @@
     @include('include.tinyeditor')
 
     <div class="col-md-12">
-        <h1 class="h1" style="color: white">Création d'entreprise</h1>
+        <h1 class="h1" style="color: white">Modification de l'entreprise</h1>
         {{Form::open(['action' => ['CompanyController@update', $data["id"]]])}}
         {{ method_field('PATCH') }}
         {{Form::hidden('user_id',$data['user_id'])}}

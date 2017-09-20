@@ -26,3 +26,7 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
 
 });
 Route::resource('company', 'CompanyController');
+
+Route::get('/confirmation/ask','ConfirmationController@askvalidate');
+Route::get('/confirmation/validate','ConfirmationController@dovalidate');
+Route::get('/confirmation/cancel','ConfirmationController@docancel');
