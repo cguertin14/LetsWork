@@ -44,7 +44,15 @@ class ProfileController extends Controller
         }
     }
 
-    public function photo() {
+    public function photo()
+    {
         return Auth::user()->photo;
+    }
+
+    public function deleteuser($slug)
+    {
+        $user = User::findBySlugOrFail($slug);
+        $user->delete();
+        return redirect('/');
     }
 }

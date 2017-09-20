@@ -24,7 +24,9 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     Route::patch('/profile/{slug}/update','ProfileController@update')->name('profile.update');
     Route::patch('/profile/uploadphoto','ProfileController@uploadphoto')->name('profile.uploadphoto');
     Route::get('/profilephoto','ProfileController@photo')->name('profile.photo');
+    Route::delete('/profile/{slug}/delete','ProfileController@deleteuser')->name('profile.delete');
+
+    /* Company Routes */
     Route::resource('company', 'CompanyController');
     Route::get('/company/{slug}/absence','CompanyController@absence')->name('company.absence');
-
 });

@@ -74,7 +74,9 @@
                                 <li><a href="">Test3</a></li>
                             </ul>
                         </li>
-                        <li><a href="{{route('company.absence')}}">Demande d'absence</a></li>
+                        @if (Auth::user()->employees && Session::has('CurrentCompany'))
+                            <li><a href="{{route('company.absence',session('CurrentCompany'))}}">Demande d'absence</a></li>
+                        @endif
                         <li><a href="#">Contact</a></li>
                     </ul>
                 </div>

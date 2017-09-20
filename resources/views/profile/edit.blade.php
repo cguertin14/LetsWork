@@ -24,12 +24,11 @@
             </div>
             <div class="employee">
                 <p>{{ $user->fullname }}</p>
-                {{--@if($user->employees)--}}
-                    {{--@foreach ($user->companies as $company)--}}
-                        {{--<p>{{ $company->employees->special_role }}</p>--}}
-                        {{--<p>{{ $company->name }}</p>--}}
-                    {{--@endforeach--}}
-                {{--@endif--}}
+                @if($user->employees)
+                    @foreach ($user->companies as $company)
+                        <p>{{ $company->name }} - {{$company->employees->special_role}}</p>
+                    @endforeach
+                @endif
             </div>
             <br>
             <div class="col-md-12">
@@ -49,42 +48,47 @@
         </div>
         <div class="col-md-12" style="margin-top: 5%;">
             <div class="centre">
-                {{--['method' => 'PATCH', 'action' => 'ProfileController@update', $user->slug])--}}
                 {!! Form::model($user,['method' => 'PATCH', 'action' => ['ProfileController@update', $user->slug]])!!}
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            {!! Form::label('first_name', 'Prénom', ['class' => 'section-title']) !!}
-                            {!! Form::text('first_name', null, ['class' => 'form-control']) !!}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {!! Form::label('first_name', 'Prénom', ['class' => 'section-title']) !!}
+                                {!! Form::text('first_name', null, ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {!! Form::label('last_name', 'Nom de famille', ['class' => 'section-title']) !!}
+                                {!! Form::text('last_name', null, ['class' => 'form-control']) !!}
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            {!! Form::label('last_name', 'Nom de famille', ['class' => 'section-title']) !!}
-                            {!! Form::text('last_name', null, ['class' => 'form-control']) !!}
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            {!! Form::label('email', 'Adresse Courriel', ['class' => 'section-title']) !!}
-                            {!! Form::text('email', null, ['class' => 'form-control']) !!}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {!! Form::label('email', 'Adresse Courriel', ['class' => 'section-title']) !!}
+                                {!! Form::text('email', null, ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {!! Form::label('phone_number', 'Téléphone', ['class' => 'section-title']) !!}
+                                {!! Form::text('phone_number', null, ['class' => 'form-control phone-number']) !!}
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            {!! Form::label('phone_number', 'Téléphone', ['class' => 'section-title']) !!}
-                            {!! Form::text('phone_number', null, ['class' => 'form-control phone-number']) !!}
-                        </div>
+
+                    <div>
+                        {!! Form::submit('Modifier le profil', ['class' => 'btn purplebtn pull-right']) !!}
                     </div>
-                </div>
 
-                <div class="form-group">
-                    {!! Form::submit('Modifier le profil', ['class' => 'btn purplebtn pull-right']) !!}
-                </div>
+                {!! Form::close() !!}
 
+                {!! Form::open(['method' => 'DELETE','action' => ['ProfileController@deleteuser',$user->slug]]) !!}
+                <div>
+                    {!! Form::submit('Supprimer le profil', ['class' => 'btn btn-danger pull-left', 'style' => 'font-size: 17px !important;']) !!}
+                </div>
                 {!! Form::close() !!}
             </div>
         </div>
