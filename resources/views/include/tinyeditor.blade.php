@@ -1,7 +1,8 @@
-<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=ozlr78bptkunr493c2wba3staiw7daosrundc2nnptuqf5hj"></script>
 <script>
   var editor_config = {
     path_absolute : "/",
+    forced_root_block : "",
     selector: "textarea",
     plugins: [
       "advlist autolink lists link image charmap print preview hr anchor pagebreak",

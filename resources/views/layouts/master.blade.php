@@ -59,25 +59,27 @@
             <div id="sidebar-wrapper">
                 <div id="mySidenav" class="sidenav">
                     <ul style="list-style-type: none">
-                        <li class="dropdown">
+                        <li id="dropdown1">
                             <a href="#">Compagnies</a>
                             <ul class="collapse" style="list-style-type: none">
                                 <li><a href="/company">Index</a></li>
                                 <li><a href="/company/create">Créer</a></li>
                             </ul>
                         </li>
-                        <li class="dropdown">
-                            <a href="#">Services</a>
+                        @if(Illuminate\Support\Facades\Auth::user()->employees)
+                        <li id="dropdown2">
+                            <a href="#">Mes emplois</a>
                             <ul class="collapse" style="list-style-type: none">
-                                <li><a href="">Test1</a></li>
-                                <li><a href="">Test2</a></li>
-                                <li><a href="">Test3</a></li>
+                                @foreach(\Illuminate\Support\Facades\Auth::user()->companies as $company)
+                                <li onclick="selectCompany('{{$company->slug}}')"><a href="#">{{$company->name}}</a></li>
+                                @endforeach
                             </ul>
                         </li>
-                        @if (Auth::user()->employees && Session::has('CurrentCompany'))
-                            <li><a href="{{route('company.absence',session('CurrentCompany'))}}">Demande d'absence</a></li>
                         @endif
-                        <li><a href="#">Contact</a></li>
+                        @if (Auth::user()->employees && Session::has('CurrentCompany'))
+                            <li><a href="{{route('absence.create')}}">Demande d'absence</a></li>
+                        @endif
+                        <li><a href="#">À Propos</a></li>
                     </ul>
                 </div>
             </div>

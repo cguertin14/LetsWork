@@ -20,6 +20,7 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
+    "@material/form-field": "^0.2.16",
     "inputmask": "^3.3.8",
     "node-sass": "^4.5.3",
     "npm": "^5.4.2"

@@ -12047,6 +12047,12 @@ return Tether;
 
 $(document).ready(function () {
     $(".phone-number").mask("(999) 999-9999");
+    function getNewToken() {
+        $.get('get-new-csrf').done(function(data){
+            $('meta[name="token"]').prop('content', data);
+        });
+    };
+    setInterval(getNewToken, 60000); // Each minute
 });
 $("#image").click(function(){
 

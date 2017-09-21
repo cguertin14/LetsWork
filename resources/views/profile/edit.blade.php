@@ -24,11 +24,11 @@
             </div>
             <div class="employee">
                 <p>{{ $user->fullname }}</p>
-                @if($user->employees)
-                    @foreach ($user->companies as $company)
-                        <p>{{ $company->name }} - {{$company->employees->special_role}}</p>
-                    @endforeach
-                @endif
+                {{--@if($user->employees)--}}
+                    {{--@foreach ($user->companies as $company)--}}
+                        {{--<p>{{ $company->name }} - {{$company->employees->special_role}}</p>--}}
+                    {{--@endforeach--}}
+                {{--@endif--}}
             </div>
             <br>
             <div class="col-md-12">
@@ -80,19 +80,21 @@
                     </div>
 
                     <div>
-                        {!! Form::submit('Modifier le profil', ['class' => 'btn purplebtn pull-right']) !!}
+                        {!! Form::submit('Modifier le profil', ['class' => 'btn purplebtn pull-left']) !!}
                     </div>
 
                 {!! Form::close() !!}
 
                 {!! Form::open(['method' => 'DELETE','action' => ['ProfileController@deleteuser',$user->slug]]) !!}
                 <div>
-                    {!! Form::submit('Supprimer le profil', ['class' => 'btn btn-danger pull-left', 'style' => 'font-size: 17px !important;']) !!}
+                    {!! Form::submit('Supprimer le profil', ['class' => 'btn btn-danger pull-right', 'style' => 'font-size: 17px !important;']) !!}
                 </div>
                 {!! Form::close() !!}
             </div>
         </div>
     </div>
+    <br>
+    <br>
 
 @endsection
 

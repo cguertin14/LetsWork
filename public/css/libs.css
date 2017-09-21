@@ -646,10 +646,6 @@ div.centre
 .navbar {
     border: 0px solid transparent !important;
 }
-body {
-    background-color: red;
-}
-
 .big-warning {
     color: #ffffff;
     font-size: 160px;

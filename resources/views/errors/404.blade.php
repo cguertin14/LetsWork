@@ -1,21 +1,12 @@
 @extends('layouts.top')
 
-@section('styles')
-    <style>
-        body {
-            background-color: red !important;
-        }
-    </style>
-@endsection
-
 @section('contenu')
 
-    <div class="outer">
+    <div class="outer" style="background-color: red">
         <div class="middle">
             <div class="inner">
                 <div class="row text-center">
-                    <p class="big-warning">Oups!</p>
-                    <p class="small-warning">On dirait bien qu'il y a eu une erreur!</p>
+                    <div class="big-warning">Oups! Erreur 404.</div>
                 </div>
             </div>
         </div>

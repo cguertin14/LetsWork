@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Company;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CompanyController extends Controller
 {
@@ -109,8 +110,10 @@ class CompanyController extends Controller
         //
     }
 
-    public function absence($slug) {
+    public function select($slug)
+    {
         $company = Company::findBySlugOrFail($slug);
-        return view('company.absence',compact('company'));
+        session(['CurrentCompany' => $company->slug]);
+        return redirect()->back();
     }
 }

@@ -28,5 +28,8 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
 
     /* Company Routes */
     Route::resource('company', 'CompanyController');
-    Route::get('/company/{slug}/absence','CompanyController@absence')->name('company.absence');
+    Route::post('/company/{slug}/select','CompanyController@select')->name('company.select');
+
+    /* Absence Routes */
+    Route::resource('absence','AbsenceController');
 });
