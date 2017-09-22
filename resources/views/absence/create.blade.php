@@ -76,6 +76,14 @@
             <div class="centre">
                 @include('include.errors')
             </div>
+
+            @if (\Illuminate\Support\Facades\Session::has('errorAbsence'))
+                <div class="row centre">
+                    <div class="alert alert-danger">
+                        {{session('errorAbsence')}}
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 

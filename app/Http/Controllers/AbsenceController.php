@@ -7,6 +7,7 @@ use App\Company;
 use App\Employee;
 use App\Http\Requests\CreateAbsenceRequest;
 use Carbon\Carbon;
+use Carbon\Exceptions\InvalidDateException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -60,6 +61,14 @@ class AbsenceController extends Controller
         // Convertir les dates si en formats 24h et
         // les insérer dans la bd (PM - AM)
         // --> résultat obtenu par la request.
+
+        $datebegin = Carbon::createFromFormat('Y-m-d H:i:s',$data['begin']);
+        $dateend = Carbon::createFromFormat('Y-m-d H:i:s',$data['end']);
+
+        if ($datebegin->gt($dateend)) {
+            session()->flash('errorAbsence','La date de début doit être inférieure à la date de fin!');
+            return redirect()->back();
+        }
 
         $data['begin'] = Carbon::createFromFormat('Y-m-d H:i:s',$data['begin'])->toDateTimeString();
         $data['end'] = Carbon::createFromFormat('Y-m-d H:i:s',$data['end'])->toDateTimeString();
