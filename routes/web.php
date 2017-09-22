@@ -11,6 +11,8 @@
 |
 */
 
+use App\User;
+
 Route::get('/', ['as' => 'homepage.content', function () {
     return view('homepage.content');
 }]);
@@ -32,4 +34,8 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
 
     /* Absence Routes */
     Route::resource('absence','AbsenceController');
+});
+
+Route::get('/test',function () {
+   return \Illuminate\Support\Facades\Auth::user()->companies->get(0)->employees;
 });

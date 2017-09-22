@@ -87,11 +87,11 @@
         $(function () {
             $('#datetimepicker1').datetimepicker({
                 defaultDate: new Date(),
-                format: 'DD/MM/YYYY hh:mm:ss A',
+                format: 'YYYY-DD-MM HH:mm:ss',
             });
             $('#datetimepicker2').datetimepicker({
                 defaultDate: new Date(),
-                format: 'DD/MM/YYYY hh:mm:ss A',
+                format: 'YYYY-DD-MM HH:mm:ss',
             });
         });
     </script>

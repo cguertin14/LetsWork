@@ -47,9 +47,22 @@ class AbsenceController extends Controller
     public function store(CreateAbsenceRequest $request)
     {
         $data = $request->except('_token');
+        $employees = [];
 
-        // Convertir les dates si en formats 24h et les insérer dans la bd (PM - AM) --> résultat obtenu par le form.
-        $data['employee_id'] = Employee::all()->where('user_id',Auth::user()->id)->first()->id;
+        foreach(Auth::user()->companies as $company) {
+            array_push($employees,$company->employees);
+        }
+        foreach($employees as $employee) {
+            if ($employee->get(0)->user_id == Auth::user()->id)
+                $data['employee_id'] = $employee->get(0)->id;
+        }
+
+        // Convertir les dates si en formats 24h et
+        // les insérer dans la bd (PM - AM)
+        // --> résultat obtenu par la request.
+
+        $data['begin'] = Carbon::createFromFormat('Y-m-d H:i:s',$data['begin'])->toDateTimeString();
+        $data['end'] = Carbon::createFromFormat('Y-m-d H:i:s',$data['end'])->toDateTimeString();
 
         Absence::create($data);
         return redirect('/');

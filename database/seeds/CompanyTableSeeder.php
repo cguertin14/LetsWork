@@ -13,7 +13,7 @@ class CompanyTableSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
         foreach (range(0,10) as $index) {
-            \App\Company::create([
+            $company = \App\Company::create([
                 'name' => $faker->company,
                 'description' => $faker->text(800),
                 'telephone' => $faker->phoneNumber,
@@ -24,8 +24,9 @@ class CompanyTableSeeder extends Seeder
                 'pays' => $faker->country,
                 'slug' => $faker->slug(),
                 'company_type_id' => \App\CompanyType::all()->random()->id,
-                'user_id' => \App\User::all()->random()->id,
+                'user_id' => \App\Employee::all()->random()->user_id,
             ]);
+            $company->employees()->attach(\App\Employee::all()->random());
         }
     }
 }

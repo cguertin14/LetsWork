@@ -11,7 +11,6 @@ class CompanyTypesTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = \Faker\Factory::create();
         $companyTypes = [
             'Informatique',
             'Électronique',

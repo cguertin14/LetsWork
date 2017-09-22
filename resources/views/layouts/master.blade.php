@@ -71,7 +71,7 @@
                             <a href="#">Mes emplois</a>
                             <ul class="collapse" style="list-style-type: none">
                                 @foreach(\Illuminate\Support\Facades\Auth::user()->companies as $company)
-                                <li onclick="selectCompany('{{$company->slug}}')"><a href="#">{{$company->name}}</a></li>
+                                    <li onclick="selectCompany('{{$company->slug}}')"><a href="#">{{$company->name}}</a></li>
                                 @endforeach
                             </ul>
                         </li>
