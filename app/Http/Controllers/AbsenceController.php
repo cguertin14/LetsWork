@@ -53,27 +53,24 @@ class AbsenceController extends Controller
         foreach(Auth::user()->companies as $company) {
             array_push($employees,$company->employees);
         }
+
         foreach($employees as $employee) {
             if ($employee->get(0)->user_id == Auth::user()->id)
                 $data['employee_id'] = $employee->get(0)->id;
         }
 
-        // Convertir les dates si en formats 24h et
-        // les insérer dans la bd (PM - AM)
-        // --> résultat obtenu par la request.
-
         $datebegin = Carbon::createFromFormat('Y-m-d H:i:s',$data['begin']);
         $dateend = Carbon::createFromFormat('Y-m-d H:i:s',$data['end']);
 
-        if ($datebegin->gt($dateend)) {
+        if ($datebegin->gt($dateend) || $datebegin->eq($dateend)) {
             session()->flash('errorAbsence','La date de début doit être inférieure à la date de fin!');
             return redirect()->back();
         }
 
-        $data['begin'] = Carbon::createFromFormat('Y-m-d H:i:s',$data['begin'])->toDateTimeString();
-        $data['end'] = Carbon::createFromFormat('Y-m-d H:i:s',$data['end'])->toDateTimeString();
-
+        $data['begin'] = $datebegin->toDateTimeString();
+        $data['end'] = $dateend->toDateTimeString();
         Absence::create($data);
+
         return redirect('/');
     }
 

@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         DB::table('message_files')->truncate();
         DB::table('companies')->truncate();
         DB::table('photos')->truncate();
+        DB::table('company_employee')->truncate();
 
         $this->call(UsersTableSeeder::class);
         $this->call(FileTypesTableSeeder::class);
