@@ -1,15 +1,9 @@
-@extends('layouts.top')
+@extends('layouts.master')
 
-@section('contenu')
+@section('content')
 
-    <div class="outer" style="background-color: red">
-        <div class="middle">
-            <div class="inner">
-                <div class="row text-center">
-                    <div class="big-warning">Oups! Erreur 404.</div>
-                </div>
-            </div>
-        </div>
+    <div class="text-center" style="margin-top: 23%">
+        <div class="big-warning">Oups! Erreur 404.</div>
     </div>
 
 @endsection

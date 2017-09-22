@@ -15,9 +15,8 @@ class EmployeesTableSeeder extends Seeder
         $faker = \Faker\Factory::create();
         $users = User::all();
         foreach ($users as $user) {
-            \App\Employee::create([
-                'user_id' => $user->id
-            ]);
+            $employee = \App\Employee::create(['user_id' => $user->id]);
+            $employee->companies()->attach(\App\Company::all()->random());
         }
     }
 }

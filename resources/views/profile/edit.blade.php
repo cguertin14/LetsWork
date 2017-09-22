@@ -24,11 +24,13 @@
             </div>
             <div class="employee">
                 <p>{{ $user->fullname }}</p>
-                {{--@if($user->employees)--}}
-                    {{--@foreach ($user->companies as $company)--}}
-                        {{--<p>{{ $company->name }} - {{$company->employees->special_role}}</p>--}}
-                    {{--@endforeach--}}
-                {{--@endif--}}
+                @if(count($user->employees) > 0)
+                    @foreach ($user->employees as $employee)
+                        @foreach($employee->companies as $company)
+                            <p>{{ $company->name }} @if ($employee->special_role) - {{ $employee->special_role}} @endif</p>
+                        @endforeach
+                    @endforeach
+                @endif
             </div>
             <br>
             <div class="col-md-12">

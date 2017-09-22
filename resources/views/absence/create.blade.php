@@ -9,6 +9,10 @@
         .title-absence {
             color: #ffffff;
         }
+
+        .input-group-addon:hover {
+            cursor: pointer;
+        }
     </style>
 @endsection
 
@@ -25,14 +29,24 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             {!! Form::label('begin', 'Date de début', ['class' => 'section-title']); !!}
-                            {!! Form::date('begin', null, ['class' => 'form-control']); !!}
+                            <div class='input-group date' id='datetimepicker1'>
+                                {!! Form::text('begin', null, ['class' => 'form-control']); !!}
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             {!! Form::label('end', 'Date de fin', ['class' => 'section-title']); !!}
-                            {!! Form::date('end', null, ['class' => 'form-control']); !!}
+                            <div class='input-group date' id='datetimepicker2'>
+                                {!! Form::text('end', null, ['class' => 'form-control']); !!}
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -57,7 +71,28 @@
             </div>
 
         {!! Form::close() !!}
+
+        <div class="row layout">
+            <div class="centre">
+                @include('include.errors')
+            </div>
+        </div>
     </div>
 
 
+@endsection
+
+@section('scripts')
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                defaultDate: new Date(),
+                format: 'DD/MM/YYYY hh:mm:ss A',
+            });
+            $('#datetimepicker2').datetimepicker({
+                defaultDate: new Date(),
+                format: 'DD/MM/YYYY hh:mm:ss A',
+            });
+        });
+    </script>
 @endsection

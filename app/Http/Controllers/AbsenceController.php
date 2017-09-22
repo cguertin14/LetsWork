@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Absence;
 use App\Company;
+use App\Employee;
+use App\Http\Requests\CreateAbsenceRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class AbsenceController extends Controller
@@ -39,9 +44,15 @@ class AbsenceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateAbsenceRequest $request)
     {
-        return $request->all();
+        $data = $request->except('_token');
+
+        // Convertir les dates si en formats 24h et les insérer dans la bd (PM - AM) --> résultat obtenu par le form.
+        $data['employee_id'] = Employee::all()->where('user_id',Auth::user()->id)->first()->id;
+
+        Absence::create($data);
+        return redirect('/');
     }
 
     /**

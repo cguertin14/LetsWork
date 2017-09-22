@@ -13,7 +13,7 @@ class CreateEmployeeSpecialRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('employee_special_roles', function (Blueprint $table) {
+        Schema::create('employee_special_role', function (Blueprint $table) {
             $table->integer('employee_id')->unsigned()->index();
             $table->integer('special_role_id')->unsigned()->index();
             $table->timestamps();

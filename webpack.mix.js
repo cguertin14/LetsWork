@@ -12,7 +12,9 @@ mix.styles([
     'resources/assets/css/libs/dropzone.css',
     'resources/assets/css/libs/basic.css',
     'resources/assets/css/libs/sidemenu.css',
-    'resources/assets/css/libs/404page.css'
+    'resources/assets/css/libs/404page.css',
+    'resources/assets/css/bootstrap-datetimepicker.css',
+    'resources/assets/css/bootstrap-datetimepicker-standalone.css',
 ],'public/css/libs.css');
 
 mix.scripts([
@@ -23,4 +25,6 @@ mix.scripts([
     'resources/assets/js/libs/dropzone.js',
     'resources/assets/js/libs/dropzone-amd-module.js',
     'node_modules/bootstrap-sass/assets/javascripts/bootstrap.js',
+    'node_modules/moment/moment.js',
+    'resources/assets/js/libs/bootstrap-datetimepicker.js',
 ],'public/js/libs.js');

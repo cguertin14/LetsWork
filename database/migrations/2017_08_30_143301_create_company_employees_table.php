@@ -13,7 +13,7 @@ class CreateCompanyEmployeesTable extends Migration
      */
     public function up()
     {
-        Schema::create('company_employees', function (Blueprint $table) {
+        Schema::create('company_employee', function (Blueprint $table) {
             $table->integer('company_id')->unsigned()->index();
             $table->integer('employee_id')->unsigned()->index();
             $table->timestamps();

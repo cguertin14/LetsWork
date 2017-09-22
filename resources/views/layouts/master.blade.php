@@ -66,7 +66,7 @@
                                 <li><a href="/company/create">Créer</a></li>
                             </ul>
                         </li>
-                        @if(Illuminate\Support\Facades\Auth::user()->employees)
+                        @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 0)
                         <li id="dropdown2">
                             <a href="#">Mes emplois</a>
                             <ul class="collapse" style="list-style-type: none">
@@ -76,7 +76,7 @@
                             </ul>
                         </li>
                         @endif
-                        @if (Auth::user()->employees && Session::has('CurrentCompany'))
+                        @if (count(Illuminate\Support\Facades\Auth::user()->companies) > 0 && Session::has('CurrentCompany'))
                             <li><a href="{{route('absence.create')}}">Demande d'absence</a></li>
                         @endif
                         <li><a href="#">À Propos</a></li>

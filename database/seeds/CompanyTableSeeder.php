@@ -12,8 +12,7 @@ class CompanyTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        //$previous =
-        foreach (range(10,20) as $index) {
+        foreach (range(0,10) as $index) {
             \App\Company::create([
                 'name' => $faker->company,
                 'description' => $faker->text(800),
