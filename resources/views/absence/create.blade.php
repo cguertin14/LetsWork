@@ -96,10 +96,12 @@
             $('#datetimepicker1').datetimepicker({
                 defaultDate: new Date(),
                 format: 'YYYY-DD-MM HH:mm:ss',
+                locale: 'fr-ca'
             });
             $('#datetimepicker2').datetimepicker({
                 defaultDate: new Date(),
                 format: 'YYYY-DD-MM HH:mm:ss',
+                locale: 'fr-ca'
             });
         });
     </script>

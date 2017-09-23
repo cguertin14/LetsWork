@@ -34,4 +34,7 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
 
     /* Absence Routes */
     Route::resource('absence','AbsenceController');
+
+    /* Special Roles Routes */
+    Route::resource('specialrole','SpecialRoleController');
 });

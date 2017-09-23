@@ -78,6 +78,13 @@
                         @endif
                         @if (count(Illuminate\Support\Facades\Auth::user()->companies) > 0 && Session::has('CurrentCompany'))
                             <li><a href="{{route('absence.create')}}">Demande d'absence</a></li>
+                            <li id="dropdown3">
+                                <a href="#">Postes</a>
+                                <ul class="collapse" style="list-style-type: none">
+                                    <li><a href="{{route('specialrole.index')}}">Tous les postes</a></li>
+                                    <li><a href="{{route('specialrole.create')}}">Créer un poste</a></li>
+                                </ul>
+                            </li>
                         @endif
                         <li><a href="#">À Propos</a></li>
                     </ul>

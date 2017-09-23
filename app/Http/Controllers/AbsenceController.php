@@ -50,14 +50,11 @@ class AbsenceController extends Controller
         $data = $request->except('_token');
         $employees = [];
 
-        foreach(Auth::user()->companies as $company) {
+        foreach(Auth::user()->companies as $company)
             array_push($employees,$company->employees);
-        }
-
-        foreach($employees as $employee) {
+        foreach($employees as $employee)
             if ($employee->get(0)->user_id == Auth::user()->id)
                 $data['employee_id'] = $employee->get(0)->id;
-        }
 
         $datebegin = Carbon::createFromFormat('Y-m-d H:i:s',$data['begin']);
         $dateend = Carbon::createFromFormat('Y-m-d H:i:s',$data['end']);
