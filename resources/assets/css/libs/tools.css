@@ -46,3 +46,7 @@ div.centre
     margin-left: auto;
     margin-right: auto;
 }
+
+.col-centered{
+text-align: center;
+}

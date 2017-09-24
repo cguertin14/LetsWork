@@ -16,3 +16,12 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/cpage', function (Request $request) {
+    $page = $request->input('page');
+    $name = $request->input('name');
+    return \App\Company::all(["name", "description"])
+//      ->where('description','like', '%'.$name.'%')
+        ->forPage($page, 15)
+        ->toJson();
+});
