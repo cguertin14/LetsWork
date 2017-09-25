@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Role;
+use App\Skill;
 use App\SpecialRole;
 use Illuminate\Http\Request;
 
@@ -25,7 +27,9 @@ class SpecialRoleController extends Controller
      */
     public function create()
     {
-        return view('specialrole.create');
+        $roles = Role::pluck('content','id')->all();
+        $skills = Skill::pluck('name','id')->all();
+        return view('specialrole.create',compact('roles','skills'));
     }
 
     /**
@@ -37,6 +41,7 @@ class SpecialRoleController extends Controller
     public function store(Request $request)
     {
         // Création de rôle spécial
+        return $request->except('_token');
     }
 
     /**

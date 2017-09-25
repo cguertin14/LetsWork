@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         DB::table('companies')->truncate();
         DB::table('photos')->truncate();
         DB::table('company_employee')->truncate();
+        DB::table('skills')->truncate();
 
         $this->call(UsersTableSeeder::class);
         $this->call(FileTypesTableSeeder::class);
@@ -36,5 +37,6 @@ class DatabaseSeeder extends Seeder
         //$this->call(MessageFilesTableSeeder::class);
         $this->call(SpecialRoleSeeder::class);
         $this->call(JobOfferSeeder::class);
+        $this->call(SkillTableSeeder::class);
     }
 }

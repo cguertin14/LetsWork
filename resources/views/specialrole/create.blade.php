@@ -38,6 +38,28 @@
                 <div class="centre">
                     <div class="col-md-12">
                         <div class="form-group">
+                            {!! Form::label('roles[]', 'Rôles',['class' => 'section-title']); !!}
+                            {!! Form::select('roles[]',$roles,null,['class' => 'form-control','multiple' => 'multiple']); !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row layout">
+                <div class="centre">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            {!! Form::label('skills[]', 'Compétences',['class' => 'section-title']); !!}
+                            {!! Form::select('skills[]',$skills,null,['class' => 'form-control','multiple' => 'multiple']); !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row layout">
+                <div class="centre">
+                    <div class="col-md-12">
+                        <div class="form-group">
                             {!! Form::submit('Créer le poste',['class' => 'btn purplebtn']) !!}
                         </div>
                     </div>
