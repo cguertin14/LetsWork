@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
+use App\Http\Requests\CreateSpecialRoleRequest;
 use App\Role;
 use App\Skill;
 use App\SpecialRole;
@@ -38,10 +40,19 @@ class SpecialRoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateSpecialRoleRequest $request)
     {
         // Création de rôle spécial
-        return $request->except('_token');
+        $data = $request->except('_token');
+        $data['company_id'] = Company::findBySlugOrFail(session('CurrentCompany'))->id;
+        $specialRole = SpecialRole::create($data);
+
+        foreach($request->skills as $skill)
+            $specialRole->skills()->attach($skill);
+        foreach($request->roles as $role)
+            $specialRole->roles()->attach($role);
+
+        return redirect('/specialrole');
     }
 
     /**

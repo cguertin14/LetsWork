@@ -39,7 +39,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             {!! Form::label('roles[]', 'Rôles',['class' => 'section-title']); !!}
-                            {!! Form::select('roles[]',$roles,null,['class' => 'form-control','multiple' => 'multiple']); !!}
+                            {!! Form::select('roles[]',$roles,null,['class' => 'form-control selectpicker','multiple' => 'multiple','data-actions-box' => 'true']); !!}
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             {!! Form::label('skills[]', 'Compétences',['class' => 'section-title']); !!}
-                            {!! Form::select('skills[]',$skills,null,['class' => 'form-control','multiple' => 'multiple']); !!}
+                            {!! Form::select('skills[]',$skills,null,['class' => 'form-control selectpicker','multiple' => 'multiple','data-actions-box' => 'true']); !!}
                         </div>
                     </div>
                 </div>
@@ -66,6 +66,16 @@
                 </div>
             </div>
         {!! Form::close() !!}
+
+        <div class="row layout">
+            <div class="centre">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @include('include.errors')
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 @endsection

@@ -15,6 +15,7 @@ mix.styles([
     'resources/assets/css/libs/404page.css',
     'resources/assets/css/bootstrap-datetimepicker.css',
     'resources/assets/css/bootstrap-datetimepicker-standalone.css',
+    'resources/assets/css/bootstrap-select.css',
 ],'public/css/libs.css');
 
 mix.scripts([
@@ -31,4 +32,5 @@ mix.scripts([
     'node_modules/moment/moment.js',
     'node_modules/moment/locale/fr-ca.js',
     'resources/assets/js/libs/bootstrap-datetimepicker.js',
+    'resources/assets/js/libs/bootstrap-select.js',
 ],'public/js/libs.js');

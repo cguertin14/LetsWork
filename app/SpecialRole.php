@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class SpecialRole extends Model
 {
+    protected $fillable = [
+        'name','description','company_id'
+    ];
+
     public function employees() {
         return $this->belongsToMany('App\Employee')->using('App\EmployeeSpecialRole')->withTimestamps();
     }

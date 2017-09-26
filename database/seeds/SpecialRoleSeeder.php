@@ -15,7 +15,8 @@ class SpecialRoleSeeder extends Seeder
         foreach (range(20,35) as $item) {
             \App\SpecialRole::create([
                 'company_id' => \App\Company::all()->random()->id,
-                'content'=>$faker->sentence()
+                'name' => $faker->name,
+                'description'=>$faker->sentence()
             ]);
         }
     }
