@@ -47,10 +47,10 @@ class SpecialRoleController extends Controller
         $data['company_id'] = Company::findBySlugOrFail(session('CurrentCompany'))->id;
         $specialRole = SpecialRole::create($data);
 
-        foreach($request->skills as $skill)
-            $specialRole->skills()->attach($skill);
         foreach($request->roles as $role)
             $specialRole->roles()->attach($role);
+        foreach($request->skills as $skill)
+            $specialRole->skills()->attach($skill);
 
         return redirect('/specialrole');
     }
