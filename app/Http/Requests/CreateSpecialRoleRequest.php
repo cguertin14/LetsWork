@@ -24,9 +24,9 @@ class CreateSpecialRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'skills' => 'required',
             'name' => 'required|min:3',
             'description' => 'required|min:10|max:255',
+            'skills' => 'required',
             'roles' => 'required',
         ];
     }

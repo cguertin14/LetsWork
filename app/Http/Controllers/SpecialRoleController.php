@@ -18,7 +18,7 @@ class SpecialRoleController extends Controller
      */
     public function index()
     {
-        $specialRoles = SpecialRole::all();
+        $specialRoles = SpecialRole::paginate(10);
         return view('specialrole.index',compact('specialRoles'));
     }
 

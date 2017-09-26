@@ -2,7 +2,6 @@
 
 @section('contenu')
     <nav class="navbar navbar-default navbar-theme navbar-fixed-top navbar-toggleable-md bg-faded" style="margin-bottom: 0">
-        <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarNavDropdown">
                     <span class="sr-only" style="border-color: white">Toggle navigation</span>
@@ -23,7 +22,7 @@
                             <li><a href="/register" style="color: white"><span class="glyphicon glyphicon-user" style="color: white"></span> S'inscrire</a></li>
                         </ul>
                     @else
-                        <ul class="nav navbar-nav">
+                        <ul class="nav navbar-nav" style="margin-right: 10px">
                             <li>
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: white">
                                     <span class="glyphicon glyphicon-user" style="color: white"></span>{{Auth::user()->name}}
@@ -50,8 +49,6 @@
                     @endif
                 </div>
             </div>
-
-        </div>
     </nav>
 
     @if(\Illuminate\Support\Facades\Auth::check())

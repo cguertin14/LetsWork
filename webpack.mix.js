@@ -16,6 +16,7 @@ mix.styles([
     'resources/assets/css/bootstrap-datetimepicker.css',
     'resources/assets/css/bootstrap-datetimepicker-standalone.css',
     'resources/assets/css/bootstrap-select.css',
+    'resources/assets/css/libs/pagination.css',
 ],'public/css/libs.css');
 
 mix.scripts([
