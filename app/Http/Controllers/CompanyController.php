@@ -114,10 +114,10 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        if (Company::all()->get($id)->user_id !=Auth::id())
-            return "pas le bon user";
+        if (Company::all()->find($id)->user_id !=Auth::id())
+            return redirect()->back();
         Company::destroy($id);
-        return $this->index();
+        return redirect()->action("CompanyController@index");
     }
 
 //    public function delete($id,$user_id)

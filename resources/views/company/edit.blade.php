@@ -80,15 +80,8 @@
         <br>
         {{Form::submit('Confirmer',array('class' => 'btn btn-primary purplebtn'))}}
         {{Form::close()}}
-    </div>
-    <div class="pull-right">
-        {{Form::open(['method'=>'post','action' => 'ConfirmationController@ask'])}}
-        {{Form::hidden('todoaction','company.destroy')}}
-        {{Form::hidden('id',$data['id'])}}
-        {{Form::hidden('lastaction','CompanyController@index')}}
-        {{Form::hidden('text','Voulez-vous vraiment supprimer cela?')}}
-        {{Form::submit('Supprimer',array('class' => 'btn btn-primary purplebtn'))}}
+        {{Form::open(["method"=>"DELETE",'action' => ['CompanyController@destroy', $data["id"]]])}}
+        {{Form::submit('Supprimer',array('class' => 'btn btn-primary purplebtn pull-right confirm_action',"c_m_text"=>"Voulez-vous vraiment supprimer cette compagnie?"))}}
         {{Form::close()}}
-    </div>
     </div>
 @endsection

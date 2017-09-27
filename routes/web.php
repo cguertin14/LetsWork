@@ -29,7 +29,6 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     Route::get('/confirmation/docancel','ConfirmationController@docancel');
 
 });
-//Route::get('/company/delete/{id}/{user_id}','CompanyController@delete');
 Route::resource('company', 'CompanyController');
 
 Route::get('/aboutus', ['as' => 'about.us', function () {
