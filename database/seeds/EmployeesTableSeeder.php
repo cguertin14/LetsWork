@@ -12,12 +12,9 @@ class EmployeesTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = \Faker\Factory::create();
         $users = User::all();
         foreach ($users as $user) {
-            \App\Employee::create([
-                'user_id' => $user->id
-            ]);
+            \App\Employee::create(['user_id' => $user->id]);
         }
     }
 }

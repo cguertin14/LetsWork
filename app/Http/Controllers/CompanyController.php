@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Company;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CompanyController extends Controller
 {
@@ -120,37 +121,10 @@ class CompanyController extends Controller
         return redirect()->action("CompanyController@index");
     }
 
-//    public function delete($id,$user_id)
-//    {
-//        if ($user_id!=Auth::id())
-//            return "pas le bon user";
-//        Company::destroy($id);
-//        return $this->index();
-//    }
-
-//    public function uploadphoto(Request $request)
-//    {
-//        $data = $request->except(['file','_method','_token']);
-//        $file = $request->file('file');
-//
-//        // Encode image to base64
-//        $filedata = file_get_contents($file);
-//        $data['company_id'] = Auth::user()->id;
-//        $data['source'] = base64_encode($filedata);
-//
-//        // Create profile picture in database
-//        $user = Auth::user();
-//        if ($user->photo)
-//            $user->photo()->update($data);
-//        else {
-//            $photo = $user->photo()->create($data);
-//            $user->photo_id = $photo->id;
-//            $user->save();
-//        }
-//    }
-//
-//    public function photo() {
-//        // return image as base64
-//        return Auth::user()->photo;
-//    }
+    public function select($slug)
+    {
+        $company = Company::findBySlugOrFail($slug);
+        session(['CurrentCompany' => $company->slug]);
+        return redirect()->back();
+    }
 }

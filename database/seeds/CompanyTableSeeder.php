@@ -12,9 +12,9 @@ class CompanyTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        //$previous =
-        foreach (range(10,20) as $index) {
-            \App\Company::create([
+        foreach (range(0,10) as $index) {
+            $employee = \App\Employee::all()->random();
+            $company = \App\Company::create([
                 'name' => $faker->company,
                 'description' => $faker->text(800),
                 'telephone' => $faker->phoneNumber,
@@ -23,9 +23,11 @@ class CompanyTableSeeder extends Seeder
                 'adresse' => $faker->address,
                 'zipcode' => $faker->postcode,
                 'pays' => $faker->country,
+                'slug' => $faker->slug(),
                 'company_type_id' => \App\CompanyType::all()->random()->id,
-                'user_id' => \App\User::all()->random()->id,
+                'user_id' => $employee->user_id,
             ]);
+            $company->employees()->attach($employee);
         }
     }
 }

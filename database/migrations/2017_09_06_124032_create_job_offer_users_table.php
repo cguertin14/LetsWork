@@ -13,7 +13,7 @@ class CreateJobOfferUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('job_offer_users', function (Blueprint $table) {
+        Schema::create('job_offer_user', function (Blueprint $table) {
             $table->integer('job_offer_id')->unsigned()->index();
             $table->integer('user_id')->unsigned()->index();
             $table->timestamps();

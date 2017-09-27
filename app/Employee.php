@@ -14,15 +14,19 @@ class Employee extends Model
         return $this->hasMany('App\Availability');
     }
 
+    public function absences() {
+        return $this->hasMany('App\Absence');
+    }
+
     public function companies() {
         return $this->belongsToMany('App\Company')->using('App\CompanyEmployee')->withTimestamps();
     }
 
-    public function schedulechange() {
+    public function schedulechangesender() {
         return $this->hasMany('App\ScheduleChange','employee_to_change_id');
     }
 
-    public function schedulechangereceived() {
+    public function schedulechangewith() {
         return $this->hasMany('App\ScheduleChange','employee_to_accept_id');
     }
 

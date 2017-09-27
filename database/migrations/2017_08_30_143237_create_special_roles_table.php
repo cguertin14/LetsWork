@@ -15,7 +15,9 @@ class CreateSpecialRolesTable extends Migration
     {
         Schema::create('special_roles', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('content');
+            $table->string('name');
+            $table->text('description');
+            $table->string('slug');
             $table->integer('company_id')->unsigned()->index();
             $table->timestamps();
 
@@ -30,6 +32,8 @@ class CreateSpecialRolesTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('special_roles');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
