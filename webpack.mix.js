@@ -22,4 +22,8 @@ mix.scripts([
     'resources/assets/js/libs/dropzone.js',
     'resources/assets/js/libs/dropzone-amd-module.js',
     'node_modules/bootstrap-sass/assets/javascripts/bootstrap.js',
+    "resources/assets/js/libs/masonry.pkgd.js",
+    "resources/assets/js/libs/infinite-scroll.pkgd.js",
+    "resources/assets/js/libs/isotope.pkgd.js",
+    "resources/assets/js/libs/vue.js"
 ],'public/js/libs.js');

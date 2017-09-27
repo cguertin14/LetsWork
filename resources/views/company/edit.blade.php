@@ -25,9 +25,10 @@
     @include('include.tinyeditor')
 
     <div class="col-md-12">
-        <h1 class="h1" style="color: white">Création d'entreprise</h1>
+        <h1 class="h1" style="color: white">Modification de l'entreprise</h1>
         {{Form::open(['action' => ['CompanyController@update', $data["id"]]])}}
         {{ method_field('PATCH') }}
+        {{Form::hidden('user_id',$data['user_id'])}}
         <div class="row">
             <div class="col-lg-6">
                 {{Form::text("name",$data["name"], array('class' => 'form-control',"placeholder"=>"Nom d'entreprise"))}}
@@ -77,8 +78,10 @@
             </div>
         </div>
         <br>
-        {{Form::submit('Editer',array('class' => 'btn btn-primary purplebtn'))}}
+        {{Form::submit('Confirmer',array('class' => 'btn btn-primary purplebtn'))}}
         {{Form::close()}}
-    </div>
+        {{Form::open(["method"=>"DELETE",'action' => ['CompanyController@destroy', $data["id"]]])}}
+        {{Form::submit('Supprimer',array('class' => 'btn btn-primary purplebtn pull-right confirm_action',"c_m_text"=>"Voulez-vous vraiment supprimer cette compagnie?"))}}
+        {{Form::close()}}
     </div>
 @endsection

@@ -31,10 +31,6 @@
             <div class="col-lg-6">
                 {{Form::text("name","", array('class' => 'form-control',"placeholder"=>"Nom d'entreprise"))}}
             </div>
-            <div class="col-lg-6">
-                {{Form::label('logofile', 'Le logo de votre entreprise')}}
-                {{Form::file('logo',array("id"=>"logofile"))}}
-            </div>
         </div>
         <br>
         <div class="row">

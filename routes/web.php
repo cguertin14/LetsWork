@@ -23,6 +23,14 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     Route::patch('/profile/{slug}/update','ProfileController@update')->name('profile.update');
     Route::patch('/profile/uploadphoto','ProfileController@uploadphoto')->name('profile.uploadphoto');
     Route::get('/profilephoto','ProfileController@photo')->name('profile.photo');
-    Route::resource('company', 'CompanyController');
+
+    Route::post('/confirmation/ask','ConfirmationController@ask');
+    Route::get('/confirmation/dovalidate','ConfirmationController@dovalidate');
+    Route::get('/confirmation/docancel','ConfirmationController@docancel');
 
 });
+Route::resource('company', 'CompanyController');
+
+Route::get('/aboutus', ['as' => 'about.us', function () {
+    return view('about.us');
+}]);
