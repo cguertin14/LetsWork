@@ -12,7 +12,7 @@
 
     @include('include.tinyeditor')
 
-    <h1 class="title-absence" style="color: #ffffff;">Modifier un poste</h1>
+    <h1 class="page-title">Modifier un poste</h1>
     <hr style="border-top: 1px solid #474747">
     <div class="col-md-12">
         {!! Form::model($specialRole,['method' => 'PATCH','action' => ['SpecialRoleController@update',$specialRole->slug]]) !!}
@@ -70,10 +70,12 @@
                     <div>
                         {!! Form::submit('Supprimer le poste',['class' => 'btn btn-danger pull-right','style' => 'font-size:17px !important']) !!}
                     </div>
+        {!! Form::close() !!}
                 </div>
             </div>
         </div>
-        {!! Form::close() !!}
+
+        <br>
 
         <div class="row layout">
             <div class="centre">

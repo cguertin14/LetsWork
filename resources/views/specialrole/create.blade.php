@@ -12,7 +12,7 @@
 
     @include('include.tinyeditor')
 
-    <h1 class="title-absence" style="color: #ffffff;">Création de poste</h1>
+    <h1 class="page-title">Création de poste</h1>
     <hr style="border-top: 1px solid #474747">
     <div class="col-md-12">
         {!! Form::open(['method' => 'POST','action' => 'SpecialRoleController@store']) !!}

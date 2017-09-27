@@ -90,7 +90,7 @@ class SpecialRoleController extends Controller
      */
     public function update(UpdateSpecialRoleRequest $request, $slug)
     {
-        $data = $request->except('_token','_method','skills','roles');
+        $data = $request->except(['_token','_method','skills','roles']);
         $specialRole = SpecialRole::findBySlugOrFail($slug);
 
         // Detach first

@@ -30,6 +30,6 @@ class CreateSkillSpecialRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('skill_special_roles');
+        Schema::dropIfExists('skill_special_role');
     }
 }

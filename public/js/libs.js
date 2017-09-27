@@ -12048,13 +12048,12 @@ return Tether;
 $(document).ready(function () {
     $(".phone-number").mask("(999) 999-9999");
 
-<<<<<<< HEAD
     $(".confirm_action").click(function () {
         return show_confirmation_modal($(".confirm_action"));
-=======
+    });
+
     $(".clickable-section").click(function() {
         window.location = $(this).data("href");
->>>>>>> charlesv2
     });
 });
 
@@ -32523,10 +32522,8 @@ return frCa;
       var $selectpicker = $(this);
       Plugin.call($selectpicker, $selectpicker.data());
     })
-<<<<<<< HEAD
-  })
-
-}(jQuery);
+  });
+})(jQuery);
 
 /*!
  * Masonry PACKAGED v4.2.0
@@ -50954,7 +50951,3 @@ Vue$3.compile = compileToFunctions;
 return Vue$3;
 
 })));
-=======
-  });
-})(jQuery);
->>>>>>> charlesv2
