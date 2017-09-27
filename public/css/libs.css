@@ -96,10 +96,10 @@ div.centre {
     margin-right: auto;
 }
 
-<<<<<<< HEAD
 .col-centered{
 text-align: center;
-=======
+}
+
 .section-title {
     color: #FFFFFF;
     font-size: 17px;
@@ -115,10 +115,21 @@ text-align: center;
 }
 
 .section tr:hover {
-    background-color: #dfdfdf;
+    background-color: #ffffff;
     color: #707070;
     cursor: pointer;
->>>>>>> charlesv2
+}
+
+.separator {
+    border-top: 1px solid #474747;
+}
+
+.page-title {
+    color: #ffffff;
+}
+
+.input-group-addon:hover {
+    cursor: pointer;
 }
 .employee {
     width: 100%;

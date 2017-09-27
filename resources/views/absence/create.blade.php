@@ -5,14 +5,6 @@
         body {
             background-color: #5d5d5d;
         }
-
-        .title-absence {
-            color: #ffffff;
-        }
-
-        .input-group-addon:hover {
-            cursor: pointer;
-        }
     </style>
 @endsection
 
@@ -20,7 +12,7 @@
 
     @include('include.tinyeditor')
 
-    <h1 class="title-absence">Demande d'absence</h1>
+    <h1 class="page-title">Demande d'absence</h1>
     <hr style="border-top: 1px solid #474747">
     <div class="col-md-12">
         {!! Form::open(['method' => 'POST','action' => 'AbsenceController@store']) !!}

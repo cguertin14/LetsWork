@@ -17,6 +17,10 @@ Route::get('/', ['as' => 'homepage.content', function () {
     return view('homepage.content');
 }]);
 
+Route::get('/aboutus', ['as' => 'about.us', function () {
+    return view('about.us');
+}]);
+
 Auth::routes();
 
 Route::group(['middleware' => 'ConnectedUserOnly'], function() {
@@ -32,16 +36,16 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     Route::resource('company', 'CompanyController');
     Route::post('/company/{slug}/select','CompanyController@select')->name('company.select');
 
-    Route::post('/confirmation/ask','ConfirmationController@ask');
+    /*Route::post('/confirmation/ask','ConfirmationController@ask');
     Route::get('/confirmation/dovalidate','ConfirmationController@dovalidate');
-    Route::get('/confirmation/docancel','ConfirmationController@docancel');
+    Route::get('/confirmation/docancel','ConfirmationController@docancel');*/
 
     /* Absence Routes */
     Route::resource('absence','AbsenceController');
 
     /* Special Roles Routes */
     Route::resource('specialrole','SpecialRoleController');
+
+    /* Skills Routes */
+    Route::resource('skill','SkillController');
 });
-Route::get('/aboutus', ['as' => 'about.us', function () {
-    return view('about.us');
-}]);
