@@ -46,6 +46,10 @@ div.centre {
     margin-right: auto;
 }
 
+.col-centered{
+text-align: center;
+}
+
 .section-title {
     color: #FFFFFF;
     font-size: 17px;

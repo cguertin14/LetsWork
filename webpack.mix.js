@@ -33,4 +33,8 @@ mix.scripts([
     'node_modules/moment/locale/fr-ca.js',
     'resources/assets/js/libs/bootstrap-datetimepicker.js',
     'resources/assets/js/libs/bootstrap-select.js',
+    "resources/assets/js/libs/masonry.pkgd.js",
+    "resources/assets/js/libs/infinite-scroll.pkgd.js",
+    "resources/assets/js/libs/isotope.pkgd.js",
+    "resources/assets/js/libs/vue.js"
 ],'public/js/libs.js');

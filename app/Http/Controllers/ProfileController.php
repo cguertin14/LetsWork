@@ -44,8 +44,8 @@ class ProfileController extends Controller
         }
     }
 
-    public function photo()
-    {
+    public function photo() {
+        // return image as base64
         return Auth::user()->photo;
     }
 
