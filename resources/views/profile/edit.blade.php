@@ -88,9 +88,9 @@
                 {!! Form::close() !!}
 
                 {!! Form::open(['method' => 'DELETE','action' => ['ProfileController@deleteuser',$user->slug]]) !!}
-                <div>
-                    {!! Form::submit('Supprimer le profil', ['class' => 'btn btn-danger pull-right', 'style' => 'font-size: 17px !important;']) !!}
-                </div>
+                    <div>
+                        {!! Form::submit('Supprimer le profil', ['class' => 'btn btn-danger pull-right', 'style' => 'font-size: 17px !important;']) !!}
+                    </div>
                 {!! Form::close() !!}
             </div>
         </div>

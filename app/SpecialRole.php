@@ -2,10 +2,26 @@
 
 namespace App;
 
+use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class SpecialRole extends Model
 {
+    use Notifiable;
+    use Sluggable;
+    use SluggableScopeHelpers;
+
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name',
+            ]
+        ];
+    }
+
     protected $fillable = [
         'name','description','company_id'
     ];

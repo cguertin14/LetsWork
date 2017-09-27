@@ -85,16 +85,35 @@
     display: inline-block;
 }
 
-div.layout
-{
+div.layout {
     text-align: center;
 }
-div.centre
-{
+
+div.centre {
     text-align: left;
     width: 65%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.section-title {
+    color: #FFFFFF;
+    font-size: 17px;
+}
+
+.custom-table {
+    background-color: #707070;
+}
+
+.section tr {
+    color: #ffffff;
+    font-size: 15px;
+}
+
+.section tr:hover {
+    background-color: #dfdfdf;
+    color: #707070;
+    cursor: pointer;
 }
 .employee {
     width: 100%;
@@ -107,11 +126,6 @@ div.centre
 .employee p {
     color: #ffffff;
     font-size: 50px;
-}
-
-.section-title {
-    color: #FFFFFF;
-    font-size: 15px;
 }
 .title {
     color: white;
