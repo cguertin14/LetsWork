@@ -9,13 +9,13 @@
 
         <link href="{{asset('css/libs.css')}}" rel="stylesheet">
         <link href="{{asset('css/app.css')}}" rel="stylesheet">
-
         @yield('styles')
         @yield("headerscript")
     </head>
     <body>
         @yield('contenu')
         <script src="{{asset('js/libs.js')}}"></script>
+        @include('include.selectcompany')
         @include('include.dropdown')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
         @yield('scripts')

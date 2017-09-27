@@ -11,7 +11,11 @@ mix.styles([
     'resources/assets/css/libs/forgetpassword.css',
     'resources/assets/css/libs/dropzone.css',
     'resources/assets/css/libs/basic.css',
-    'resources/assets/css/libs/sidemenu.css'
+    'resources/assets/css/libs/sidemenu.css',
+    'resources/assets/css/libs/404page.css',
+    'resources/assets/css/bootstrap-datetimepicker.css',
+    'resources/assets/css/bootstrap-datetimepicker-standalone.css',
+    'resources/assets/css/bootstrap-select.css',
 ],'public/css/libs.css');
 
 mix.scripts([
@@ -21,7 +25,14 @@ mix.scripts([
     'resources/assets/js/libs/profile.js',
     'resources/assets/js/libs/dropzone.js',
     'resources/assets/js/libs/dropzone-amd-module.js',
+    'resources/assets/js/typeahead/bloodhound.js',
+    'resources/assets/js/typeahead/typeahead.bundle.js',
+    'resources/assets/js/typeahead/typeahead.jquery.js',
     'node_modules/bootstrap-sass/assets/javascripts/bootstrap.js',
+    'node_modules/moment/moment.js',
+    'node_modules/moment/locale/fr-ca.js',
+    'resources/assets/js/libs/bootstrap-datetimepicker.js',
+    'resources/assets/js/libs/bootstrap-select.js',
     "resources/assets/js/libs/masonry.pkgd.js",
     "resources/assets/js/libs/infinite-scroll.pkgd.js",
     "resources/assets/js/libs/isotope.pkgd.js",

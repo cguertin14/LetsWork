@@ -4,6 +4,10 @@ $(document).ready(function () {
     $(".confirm_action").click(function () {
         return show_confirmation_modal($(".confirm_action"));
     });
+
+    $(".clickable-section").click(function() {
+        window.location = $(this).data("href");
+    });
 });
 
 

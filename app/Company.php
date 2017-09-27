@@ -2,10 +2,24 @@
 
 namespace App;
 
+use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
+    use Sluggable;
+    use SluggableScopeHelpers;
+
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name',
+            ]
+        ];
+    }
+
     public $fillable = ['name','description','telephone','email','ville','adresse','zipcode','pays','user_id','company_type_id'];
 
     public function owner() {

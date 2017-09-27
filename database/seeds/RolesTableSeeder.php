@@ -15,7 +15,8 @@ class RolesTableSeeder extends Seeder
         $roles = [
             'Administrator',
             'Owner',
-            'Manager'
+            'Manager',
+            'Employee'
         ];
         foreach ($roles as $role) {
             \App\Role::create([

@@ -25,8 +25,8 @@ class CreateScheduleChangesTable extends Migration
 
             $table->foreign('employee_to_change_id')->references('id')->on('employees')->onDelete('cascade');
             $table->foreign('employee_to_accept_id')->references('id')->on('employees')->onDelete('cascade');
-            $table->foreign('schedule_element_id')->references('schedule_element_id')->on('schedule_element_special_roles')->onDelete('cascade');
-            $table->foreign('special_role_id')->references('special_role_id')->on('schedule_element_special_roles')->onDelete('cascade');
+            $table->foreign('schedule_element_id')->references('schedule_element_id')->on('schedule_element_special_role')->onDelete('cascade');
+            $table->foreign('special_role_id')->references('special_role_id')->on('schedule_element_special_role')->onDelete('cascade');
         });
 
         //DB::statement('ALTER TABLE schedule_changes ADD CONSTRAINT check_confirmed CHECK (confirmed = 0 OR confirmed = 1);');

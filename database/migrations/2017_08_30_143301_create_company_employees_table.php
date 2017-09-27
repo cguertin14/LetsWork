@@ -13,7 +13,7 @@ class CreateCompanyEmployeesTable extends Migration
      */
     public function up()
     {
-        Schema::create('company_employees', function (Blueprint $table) {
+        Schema::create('company_employee', function (Blueprint $table) {
             $table->integer('company_id')->unsigned()->index();
             $table->integer('employee_id')->unsigned()->index();
             $table->timestamps();
@@ -30,6 +30,8 @@ class CreateCompanyEmployeesTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('company_employees');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

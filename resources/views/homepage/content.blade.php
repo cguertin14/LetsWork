@@ -2,12 +2,14 @@
 
 @section('styles')
     <style>
-        @if(!\Illuminate\Support\Facades\Auth::check())
-            body {
-                background-image: url({{asset('image/WelcomePage.jpg')}});
-                background-position: 0 40px;
-            }
-        @endif
+        body {
+            @if(!\Illuminate\Support\Facades\Auth::check())
+                 background-image: url({{asset('image/WelcomePage.jpg')}});
+                 background-position: 0 40px;
+            @else
+                 background-color: #5d5d5d;
+            @endif
+        }
     </style>
 @endsection
 

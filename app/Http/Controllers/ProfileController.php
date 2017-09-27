@@ -48,4 +48,11 @@ class ProfileController extends Controller
         // return image as base64
         return Auth::user()->photo;
     }
+
+    public function deleteuser($slug)
+    {
+        $user = User::findBySlugOrFail($slug);
+        $user->delete();
+        return redirect('/');
+    }
 }

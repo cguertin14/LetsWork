@@ -11,6 +11,8 @@
 |
 */
 
+use App\User;
+
 Route::get('/', ['as' => 'homepage.content', function () {
     return view('homepage.content');
 }]);
@@ -19,18 +21,27 @@ Auth::routes();
 
 Route::group(['middleware' => 'ConnectedUserOnly'], function() {
 
+    /* Profile Routes */
     Route::get('/profile/{slug}','ProfileController@view')->name('profile.view');
     Route::patch('/profile/{slug}/update','ProfileController@update')->name('profile.update');
     Route::patch('/profile/uploadphoto','ProfileController@uploadphoto')->name('profile.uploadphoto');
     Route::get('/profilephoto','ProfileController@photo')->name('profile.photo');
+    Route::delete('/profile/{slug}/delete','ProfileController@deleteuser')->name('profile.delete');
+
+    /* Company Routes */
+    Route::resource('company', 'CompanyController');
+    Route::post('/company/{slug}/select','CompanyController@select')->name('company.select');
 
     Route::post('/confirmation/ask','ConfirmationController@ask');
     Route::get('/confirmation/dovalidate','ConfirmationController@dovalidate');
     Route::get('/confirmation/docancel','ConfirmationController@docancel');
 
-});
-Route::resource('company', 'CompanyController');
+    /* Absence Routes */
+    Route::resource('absence','AbsenceController');
 
+    /* Special Roles Routes */
+    Route::resource('specialrole','SpecialRoleController');
+});
 Route::get('/aboutus', ['as' => 'about.us', function () {
     return view('about.us');
 }]);
