@@ -12048,13 +12048,12 @@ return Tether;
 $(document).ready(function () {
     $(".phone-number").mask("(999) 999-9999");
 
-<<<<<<< HEAD
     $(".confirm_action").click(function () {
         return show_confirmation_modal($(".confirm_action"));
-=======
+    });
+
     $(".clickable-section").click(function() {
         window.location = $(this).data("href");
->>>>>>> charlesv2
     });
 });
 
@@ -12062,7 +12061,7 @@ $(document).ready(function () {
 function show_confirmation_modal(e) {
     $("body").append($("<div id='modal_confirmation' class=\"modal fade\"><div class=\"\modal-dialog\" role=\"document\"><div class=\"modal-content\"></div></div></div>"));
     $("div.modal-content").append($("<div class=\"modal-header\"><h5 class=\"modal-title\">Confirmation de votre action</h5>" +
-        "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">" +
+        "<button id='exit_modal' type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">" +
         "<span aria-hidden=\"true\">&times;</span>" +
         "</button> </div>"));
     $("div.modal-content").append($("<div class=\"modal-body\">" +
@@ -12087,6 +12086,10 @@ function show_confirmation_modal(e) {
         }
     });
     $("#annulation_modal").mouseup(function () {
+        $("#modal_confirmation").remove();
+        $(".modal-backdrop").remove();
+    });
+    $("#exit_modal").click(function () {
         $("#modal_confirmation").remove();
         $(".modal-backdrop").remove();
     });
@@ -32523,10 +32526,8 @@ return frCa;
       var $selectpicker = $(this);
       Plugin.call($selectpicker, $selectpicker.data());
     })
-<<<<<<< HEAD
-  })
-
-}(jQuery);
+  });
+})(jQuery);
 
 /*!
  * Masonry PACKAGED v4.2.0
@@ -50954,7 +50955,3 @@ Vue$3.compile = compileToFunctions;
 return Vue$3;
 
 })));
-=======
-  });
-})(jQuery);
->>>>>>> charlesv2
