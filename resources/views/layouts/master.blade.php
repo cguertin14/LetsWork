@@ -90,7 +90,16 @@
                                 </ul>
                             </li>
                         @endif
-                        <li><a href="#">À Propos</a></li>
+                        <li id="dropdown5">
+                            <a href="#">Offres d'emplois</a>
+                            <ul class="collapse" style="list-style-type: none">
+                                <li><a href="{{route('joboffer.index')}}">Toutes les offres d'emplois</a></li>
+                                @if (count(Illuminate\Support\Facades\Auth::user()->companies) > 0 && Session::has('CurrentCompany'))
+                                <li><a href="{{route('joboffer.create')}}">Créer une offre d'emploi</a></li>
+                                @endif
+                            </ul>
+                        </li>
+                        <li><a href="{{route('aboutus')}}">À Propos</a></li>
                     </ul>
                 </div>
             </div>

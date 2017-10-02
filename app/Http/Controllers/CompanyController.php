@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\CompanyType;
+use App\Http\Requests\CreateCompanyRequest;
+use App\Http\Requests\ModifyCompanyRequest;
 use App\JobOffer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -47,18 +49,22 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateCompanyRequest $request)
     {
         $data = $request->all();
-        $data["user_id"] = Auth::user()->id;
+        $data['user_id'] = Auth::user()->id;
+        if (Session::has('CompanyPhoto'))
+            $data['photo'] = $request->session()->get('CompanyPhoto');
         Company::create($data);
+        $request->session()->forget('CompanyPhoto');
+        $request->session()->flush();
         return $this->index();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  string $name
      * @return \Illuminate\Http\Response
      */
     public function show($name)
@@ -74,7 +80,7 @@ class CompanyController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  string $name
      * @return \Illuminate\Http\Response
      */
     public function edit($name)
@@ -82,13 +88,21 @@ class CompanyController extends Controller
         $data=Company::all()->where('name','=',$name)->first();
         if($data==null)
             return redirect()->back();
-        if ($data['user_id']!=Auth::id())
+        if ($data['user_id']!=Auth::id()) /////// Auth::id() ??? --> Auth::user()->id
             return redirect()->back();
         $companyTypes = array();
         foreach (CompanyType::all() as $item) {
             $companyTypes[$item['id']] = $item['content'];
         }
         return view('company.edit',compact(['data','companyTypes']));
+    }
+
+    public function uploadphoto(Request $request)
+    {
+        $file = $request->file('file');
+        // Encode image to base64
+        $filedata = file_get_contents($file);
+        session(['CompanyPhoto' => base64_encode($filedata)]);
     }
 
     /**
@@ -98,7 +112,7 @@ class CompanyController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ModifyCompanyRequest $request, $id)
     {
         $data = $request->all();
         if ($data['user_id']!=Auth::id())

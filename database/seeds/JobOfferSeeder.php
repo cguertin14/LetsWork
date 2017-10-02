@@ -12,13 +12,14 @@ class JobOfferSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        foreach (range(20,35) as $item) {
+        foreach (range(0,20) as $item) {
             \App\JobOffer::create([
                 'name' => $faker->name(),
                 'description'=>$faker->text(250),
                 'job_count'=>$faker->randomNumber(2),
                 'company_id'=>\App\Company::all()->random()->id,
-                'special_role_id'=>\App\SpecialRole::all()->random()->id
+                'special_role_id'=>\App\SpecialRole::all()->random()->id,
+                'slug' => $faker->slug()
             ]);
         }
     }

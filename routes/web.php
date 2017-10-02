@@ -17,8 +17,12 @@ Route::get('/', ['as' => 'homepage.content', function () {
     return view('homepage.content');
 }]);
 
-Route::get('/aboutus', ['as' => 'about.us', function () {
-    return view('about.us');
+Route::get('/aboutus', ['as' => 'aboutus', function () {
+    return view('information.aboutus');
+}]);
+
+Route::get('/termsofservice', ['as' => 'aboutus', function () {
+    return view('information.termsofservice');
 }]);
 
 Auth::routes();
@@ -35,10 +39,7 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     /* Company Routes */
     Route::resource('company', 'CompanyController');
     Route::post('/company/{slug}/select','CompanyController@select')->name('company.select');
-
-    /*Route::post('/confirmation/ask','ConfirmationController@ask');
-    Route::get('/confirmation/dovalidate','ConfirmationController@dovalidate');
-    Route::get('/confirmation/docancel','ConfirmationController@docancel');*/
+    Route::post('/company/uploadphoto','CompanyController@uploadphoto')->name('company.uploadphoto');
 
     /* Absence Routes */
     Route::resource('absence','AbsenceController');
@@ -48,4 +49,12 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
 
     /* Skills Routes */
     Route::resource('skill','SkillController');
+});
+
+/* JobOffer Routes */
+Route::resource('/joboffer','JobOfferController');
+
+Route::get('/test',function() {
+   $jobOffers = \App\JobOffer::all();
+   return $jobOffers->first()->specialrole()->get();
 });

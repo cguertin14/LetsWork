@@ -30,6 +30,6 @@ class CreateJobOfferUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('job_offer_users');
+        Schema::dropIfExists('job_offer_user');
     }
 }

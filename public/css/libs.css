@@ -97,7 +97,7 @@ div.centre {
 }
 
 .col-centered{
-text-align: center;
+    text-align: center;
 }
 
 .section-title {
@@ -124,11 +124,26 @@ text-align: center;
     border-top: 1px solid #474747;
 }
 
+.hiddenRow {
+    padding: 0 !important;
+}
+
 .page-title {
     color: #ffffff;
 }
 
 .input-group-addon:hover {
+    cursor: pointer;
+}
+
+.section-index {
+    color: #ffffff;
+    font-size: 15px;
+}
+
+.section-index:hover {
+    background-color: #ffffff;
+    color: #707070;
     cursor: pointer;
 }
 .employee {

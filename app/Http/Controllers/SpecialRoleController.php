@@ -9,6 +9,7 @@ use App\Role;
 use App\Skill;
 use App\SpecialRole;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 
 class SpecialRoleController extends Controller
 {
@@ -19,7 +20,8 @@ class SpecialRoleController extends Controller
      */
     public function index()
     {
-        $specialRoles = SpecialRole::paginate(10);
+        $specialRoles = SpecialRole::where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id)->get();
+        $specialRoles = new Paginator($specialRoles,10,1);
         return view('specialrole.index',compact('specialRoles'));
     }
 
