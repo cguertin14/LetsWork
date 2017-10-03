@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Http\Requests\CreateJobOfferRequest;
+use App\Http\Requests\ModifyJobOfferRequest;
 use App\JobOffer;
 use App\SpecialRole;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Session;
 
 class JobOfferController extends Controller
@@ -71,7 +73,8 @@ class JobOfferController extends Controller
      */
     public function show($slug)
     {
-        //
+        $joboffer = JobOffer::findBySlugOrFail($slug);
+        return view('joboffer.show',compact('joboffer'));
     }
 
     /**
@@ -82,19 +85,24 @@ class JobOfferController extends Controller
      */
     public function edit($slug)
     {
-        //
+        $jobOffer = JobOffer::findBySlugOrFail($slug);
+        $specialRoles = SpecialRole::all()
+            ->where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id)
+            ->pluck('name','id');
+        return view('joboffer.edit',compact(['jobOffer','specialRoles']));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\ModifyJobOfferRequest  $request
      * @param  string  $slug
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $slug)
+    public function update(ModifyJobOfferRequest $request, $slug)
     {
-        //
+        JobOffer::findBySlugOrFail($slug)->update($request->all());
+        return redirect('/joboffer');
     }
 
     /**
@@ -105,6 +113,7 @@ class JobOfferController extends Controller
      */
     public function destroy($slug)
     {
-        //
+        JobOffer::findBySlugOrFail($slug)->delete();
+        return redirect('/joboffer');
     }
 }

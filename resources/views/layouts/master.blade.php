@@ -73,6 +73,7 @@
                             </ul>
                         </li>
                         @endif
+                        <li><a href="{{route('cv.create')}}">Dépôt du CV</a></li>
                         @if (count(Illuminate\Support\Facades\Auth::user()->companies) > 0 && Session::has('CurrentCompany'))
                             <li><a href="{{route('absence.create')}}">Demande d'absence</a></li>
                             <li id="dropdown3">

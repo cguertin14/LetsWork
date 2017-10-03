@@ -63,6 +63,22 @@
                                             <td class="list-group-item">
                                                 @component('components.section-index')
                                                     @slot('title')
+                                                        Compétences:
+                                                    @endslot
+                                                    @slot('content')
+                                                            @foreach($jobOffer->specialrole->skills as $skill)
+                                                                @if($skill !== $jobOffer->specialrole->skills->get(count($jobOffer->specialrole->skills->toArray()) - 1))
+                                                                    {{$skill->name . ","}}
+                                                                @else
+                                                                    {{$skill->name}}
+                                                                @endif
+                                                            @endforeach
+                                                    @endslot
+                                                @endcomponent
+                                            </td>
+                                            <td class="list-group-item">
+                                                @component('components.section-index')
+                                                    @slot('title')
                                                         Postes disponibles:
                                                     @endslot
                                                     @slot('content')
@@ -76,9 +92,24 @@
                                                         Description:
                                                     @endslot
                                                     @slot('content')
-                                                        <textarea style="resize: none;" class="form-control" disabled cols="20" rows="8">{{$jobOffer->description}}</textarea>
+                                                        <textarea style="resize: none;" class="form-control" disabled>{{$jobOffer->description}}</textarea>
                                                     @endslot
                                                 @endcomponent
+                                            </td>
+                                            <td class="list-group-item" style="text-align: right">
+                                                @if(\Illuminate\Support\Facades\Auth::user()->isOwner())
+                                                    <div>
+                                                        <a class="btn purplebtn" href="{{route('joboffer.edit',$jobOffer->slug)}}">
+                                                            Modifier l'offre
+                                                        </a>
+                                                    </div>
+                                                @else
+                                                    <div>
+                                                        <a class="btn purplebtn" href="{{route('joboffer.show',$jobOffer->slug)}}">
+                                                            Soumettre ma candidature
+                                                        </a>
+                                                    </div>
+                                                @endif
                                             </td>
                                         </tr>
                                     </table>
@@ -91,7 +122,7 @@
 
                 <div class="row">
                     <div class="col-sm-6 col-sm-offset-5">
-                        {{$jobOffers->render()}}
+                        {{$jobOffers->render('pagination.paginate')}}
                     </div>
                 </div>
 

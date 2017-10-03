@@ -33,7 +33,7 @@ class SpecialRoleController extends Controller
     public function create()
     {
         $roles = Role::pluck('content','id')->all();
-        $skills = Skill::pluck('name','id')->all();
+        $skills = Skill::where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id)->pluck('name','id')->all();
         return view('specialrole.create',compact('roles','skills'));
     }
 

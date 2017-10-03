@@ -18,12 +18,13 @@ class SkillController extends Controller
      */
     public function index()
     {
-        $skills = [];
-        $specialRoles = SpecialRole::where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id);
-        foreach ($specialRoles->get() as $specialRole)
-            foreach ($specialRole->skills as $skill)
-                array_push($skills,$skill);
-        $skills = new Paginator($skills,10,1);
+//        $skills = [];
+//        $specialRoles = SpecialRole::where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id);
+//        foreach ($specialRoles->get() as $specialRole)
+//            foreach ($specialRole->skills as $skill)
+//                array_push($skills,$skill);
+//        $skills = new Paginator($skills,10,1);
+        $skills = Skill::where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id)->simplePaginate(10);
         return view('skills.index',compact('skills'));
     }
 
@@ -45,8 +46,13 @@ class SkillController extends Controller
      */
     public function store(CreateSkillRequest $request)
     {
-        Skill::create($request->except(['_token','_method']));
-        return redirect('/');
+//        $specialRoles = SpecialRole::where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id);
+//        foreach ($specialRoles->get() as $specialRole)
+//            $specialRole->skills()->create($request->except(['_token','_method']));
+        $data = $request->except(['_token','_method']);
+        $data['company_id'] = Company::findBySlugOrFail(session('CurrentCompany'))->id;
+        Skill::create($data);
+        return redirect('/skill');
     }
 
     /**

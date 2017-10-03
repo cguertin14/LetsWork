@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         DB::table('special_roles')->truncate();
         DB::table('skill_special_role')->truncate();
         DB::table('role_special_role')->truncate();
+        DB::table('job_offers')->truncate();
 
         $this->call(UsersTableSeeder::class);
         $this->call(FileTypesTableSeeder::class);

@@ -49,12 +49,12 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
 
     /* Skills Routes */
     Route::resource('skill','SkillController');
+
+    /* Cv Routes */
+    Route::get('/cv/create','CvController@create')->name('cv.create');
+    Route::post('/cv/store','CvController@store')->name('cv.store');
+    Route::patch('/cv/update','CvController@update')->name('cv.update');
 });
 
 /* JobOffer Routes */
 Route::resource('/joboffer','JobOfferController');
-
-Route::get('/test',function() {
-   $jobOffers = \App\JobOffer::all();
-   return $jobOffers->first()->specialrole()->get();
-});
