@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-    <h1 class="title-absence">Liste des disponibilités</h1>
+    <h1 class="title-absence">Liste de mes disponibilités</h1>
     <hr class="separator">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
