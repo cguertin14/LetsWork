@@ -16,23 +16,23 @@
 @endsection
 
 @section('content')
-    <h1 class="title-absence">Donner ses disponibilités</h1>
-    <hr style="border-top: 1px solid #474747">
+    <h1 class="title-absence">Donner une nouvelle plage horaire</h1>
+    <hr class="separator">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-        {!! Form::open(['method' => 'POST','action' => 'AbsenceController@store']) !!}
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    {!! Form::label('begin', 'Date de début', ['class' => 'section-title']); !!}
-                    <div class='input-group date' id='datetimepicker1'>
-                        {!! Form::text('begin', null, ['class' => 'form-control']); !!}
-                        <span class="input-group-addon">
+        {!! Form::open(['method' => 'POST','action' => 'DispoController@store']) !!}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {!! Form::label('begin', 'Date de début', ['class' => 'section-title']); !!}
+                        <div class='input-group date' id='datetimepicker1'>
+                            {!! Form::text('begin', null, ['class' => 'form-control']); !!}
+                            <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
+                        </div>
                     </div>
                 </div>
-            </div>
             <div class="col-md-6">
                 <div class="form-group">
                     {!! Form::label('end', 'Date de fin', ['class' => 'section-title']); !!}
@@ -47,10 +47,25 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-            {!! Form::submit('Ajouter une plage horaire',['class' => 'btn purplebtn pull-left']) !!}
+            {!! Form::submit('Ajouter la plage horaire',['class' => 'btn purplebtn pull-left']) !!}
             </div>
         </div>
         {!! Form::close() !!}
+
+
+            <div class="row layout">
+                <div class="centre">
+                    @include('include.errors')
+                </div>
+
+                @if (\Illuminate\Support\Facades\Session::has('errorAbsence'))
+                    <div class=" centre">
+                        <div class="alert alert-danger">
+                            {{session('errorAbsence')}}
+                        </div>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 @endsection

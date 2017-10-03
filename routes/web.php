@@ -43,3 +43,9 @@ Route::resource('company', 'CompanyController');
 Route::get('/aboutus', ['as' => 'about.us', function () {
     return view('about.us');
 }]);
+use App\Company;
+Route::get('test',function (){
+
+    $dispos=\App\Tools\Helper::CAvailability()->get(0);
+    return $dispos;
+});
