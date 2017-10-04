@@ -14,9 +14,12 @@ class CreateJobOfferUsersTable extends Migration
     public function up()
     {
         Schema::create('job_offer_user', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('job_offer_id')->unsigned()->index();
             $table->integer('user_id')->unsigned()->index();
             $table->binary('letter')->nullable();
+            $table->boolean('accepted')->nullable();
+            $table->boolean('interview')->nullable();
             $table->timestamps();
 
             $table->foreign('job_offer_id')->references('id')->on('job_offers')->onDelete('cascade');

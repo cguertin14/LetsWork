@@ -41,7 +41,8 @@ Route::group(['middleware' => 'auth'], function () {
     /* Special Roles Routes */
     Route::resource('specialrole', 'SpecialRoleController');
 
-    Route::resource("dispo", "DispoController");
+    /* Dispo Routes */
+    Route::resource('dispo','DispoController');
 
     /* Skills Routes */
     Route::resource('skill', 'SkillController');
@@ -52,7 +53,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/cv/store', 'CvController@store')->name('cv.store');
 
     /* JobOffer Routes (suite...) */
-    Route::post('/joboffer/{slug}/apply', 'JobOfferController@apply');
+    Route::post('/joboffer/{slug}/apply','JobOfferController@apply');
+
+    /* JobOfferUser Routes */
+    Route::get('/jobofferuser','JobOfferUserController@index')->name('jobofferuser.index');
+    Route::get('/jobofferuser/{id}','JobOfferUserController@show')->name('jobofferuser.show');
+    Route::post('/jobofferuser/{id}/accept','JobOfferUserController@accept')->name('jobofferuser.accept');
+    Route::delete('/jobofferuser/{id}/refuse','JobOfferUserController@refuse')->name('jobofferuser.refuse');
 });
 Route::post('/joboffer/lettre', 'JobOfferController@lettre');
 Route::resource('company', 'CompanyController');
