@@ -32,14 +32,14 @@
                                     au {{\App\Tools\Helper::Day($dispo->end)." à ".$end->hour.":".$end->minute.":".$end->second}}</div></div>
                                 <div id="accordion{{$i}}" class="row accordion-body collapse">
                                     {{Form::open(['method' => 'DELETE','action' => ['DispoController@destroy',$dispo->id]])}}
-                                    {{Form::submit('Supprimer',['class' => 'btn purplebtn confirm_action',"c_m_text"=>"Voulez-vous vraiment supprimer cette disponibilité?"])}}
+                                    {{Form::submit('Supprimer',['class' => 'btn btn-danger confirm_action',"c_m_text"=>"Voulez-vous vraiment supprimer cette disponibilité?"])}}
                                     {{Form::close()}}
                                 </div>
                             </div>
-                            @php ($i++)
-                                @endforeach
-                                <br>
-                                <a class="btn purplebtn" href="{{route("dispo.create")}}">Ajouter une plage horaire</a>
+                        @php ($i++)
+                @endforeach
+                <br>
+                <a class="btn purplebtn" href="{{route("dispo.create")}}">Ajouter une plage horaire</a>
         </div>
     </div>
 @endsection
