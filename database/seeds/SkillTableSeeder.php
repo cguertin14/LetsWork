@@ -12,10 +12,11 @@ class SkillTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        foreach (range(0,10) as $index) {
+        foreach (\App\Company::all() as $company) {
             \App\Skill::create([
                'name' => $faker->name,
                'description' => $faker->paragraph(),
+                'company_id' => $company->id,
                 'slug' => $faker->slug()
             ]);
         }

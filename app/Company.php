@@ -20,7 +20,11 @@ class Company extends Model
         ];
     }
 
-    public $fillable = ['name','description','telephone','email','ville','adresse','zipcode','pays','user_id','company_type_id'];
+    public $fillable = [
+        'name','description','telephone','email',
+        'ville','adresse','zipcode','pays',
+        'user_id','company_type_id','photo'
+    ];
 
     public function owner() {
         return $this->belongsTo('App\User');

@@ -15,7 +15,7 @@
 
     <div class="layout">
         <div class="col-md-12">
-            <div class="centre">
+            <div class="centre custom-container">
                 <table class="table custom-table">
                     <thead>
                     <tr class="section-title">

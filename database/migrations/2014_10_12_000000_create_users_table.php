@@ -20,13 +20,16 @@ class CreateUsersTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->string('slug');
             $table->string('password');
+            $table->string('slug');
+            $table->binary('cv')->nullable();
             $table->rememberToken();
             $table->timestamps();
 
   //          $table->foreign('photo_id')->references('id')->on('files')->onDelete('cascade');
         });
+
+        DB::statement('alter table users MODIFY cv LONGBLOB');
 
 //        $table->string('phone_number');
 //        $table->string('first_name');

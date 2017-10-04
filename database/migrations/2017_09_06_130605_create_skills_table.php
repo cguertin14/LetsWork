@@ -16,9 +16,12 @@ class CreateSkillsTable extends Migration
         Schema::create('skills', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
+            $table->integer('company_id')->unsigned()->index();
             $table->text('description');
             $table->string('slug');
             $table->timestamps();
+
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
     }
 

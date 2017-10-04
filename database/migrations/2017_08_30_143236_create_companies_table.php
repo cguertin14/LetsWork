@@ -24,6 +24,7 @@ class CreateCompaniesTable extends Migration
             $table->string('zipcode');
             $table->string('pays');
             $table->string('slug');
+            $table->binary('photo')->nullable();
             $table->integer('user_id')->unsigned()->index();
             $table->integer('company_type_id')->unsigned()->index();
             $table->timestamps();
@@ -32,6 +33,8 @@ class CreateCompaniesTable extends Migration
             $table->foreign('company_type_id')->references('id')->on('company_types')->onDelete('cascade');
             $table->unique(["id","name"]);
         });
+
+        DB::statement('alter table companies MODIFY photo LONGBLOB');
     }
 
     /**

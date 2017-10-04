@@ -39,7 +39,7 @@ class SpecialRole extends Model
     }
 
     public function joboffers() {
-        return $this->belongsToMany('App\JobOffer')->withTimestamps();
+        return $this->hasMany('App\JobOffer');
     }
 
     public function roles() {
