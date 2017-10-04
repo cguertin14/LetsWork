@@ -36,6 +36,6 @@ class JobOffer extends Model
     }
 
     public function users() {
-        return $this->belongsToMany('App\User')->using('App\JobOfferUser')->withTimestamps();
+        return $this->belongsToMany('App\User')->using('App\JobOfferUser')->withTimestamps()->withPivot('letter','id','accepted','interview');
     }
 }

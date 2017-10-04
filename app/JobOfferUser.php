@@ -9,4 +9,12 @@ class JobOfferUser extends Pivot
     protected $fillable = [
         'letter','user_id','job_offer_id'
     ];
+
+    public function user() {
+        return $this->belongsTo('App\User','user_id');
+    }
+
+    public function joboffer() {
+        return $this->belongsTo('App\JobOffer','job_offer_id');
+    }
 }

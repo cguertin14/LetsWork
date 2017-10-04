@@ -26,6 +26,7 @@ class CvController extends Controller
         // Encode image to base64
         $filedata = file_get_contents($file);
         $data['cv'] = base64_encode($filedata);
+
         Auth::user()->update($data);
         return Auth::user()->cv;
     }

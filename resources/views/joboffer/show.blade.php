@@ -19,6 +19,7 @@
                     </div>
                 </td>
                 <td>
+                    @if (\Illuminate\Support\Facades\Auth::user()->cv)
                     <div class="pull-right" style="margin-top: 10px">
                     {!! Form::open(['method' => 'POST','action' => ['JobOfferController@apply',$joboffer->slug]]) !!}
                         <div class="col-md-12">
@@ -31,6 +32,7 @@
                         </div>
                     {!! Form::close() !!}
                     </div>
+                    @endif
                 </td>
             </tr>
         </tbody>
@@ -114,6 +116,9 @@
 @section('scripts')
     <script>
         $(document).ready(function () {
+            @if(!\Illuminate\Support\Facades\Auth::user()->cv)
+                    alert('Vous devez déposez votre cv en ligne pour pouvoir postuler sur un emploi!');
+            @endif
             sendLetter();
             $("#uploadbtn").click(function () {
                 $("#uploader").trigger("click");
