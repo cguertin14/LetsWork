@@ -21,7 +21,7 @@ class DispoController extends Controller
      */
     public function index()
     {
-        $dispos=Helper::CAvailability()->get(0)->availabilityelements;
+        $dispos = Helper::CAvailability()->get(0)->availabilityelements;
         return view("dispo.index",compact('dispos'));
     }
 

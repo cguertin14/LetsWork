@@ -52,20 +52,22 @@
         </div>
         {!! Form::close() !!}
 
+            <br>
 
-            <div class="row layout">
-                <div class="centre">
+            <div class="row">
+                <div class="col-md-12">
                     @include('include.errors')
-                </div>
 
                 @if (\Illuminate\Support\Facades\Session::has('errorDispo'))
-                    <div class=" centre">
-                        <div class="alert alert-danger">
-                            {{session('errorDispo')}}
-                        </div>
+                    <div class="alert alert-danger">
+                        <ul>
+                        <li>{{session('errorDispo')}}</li>
+                        </ul>
                     </div>
                 @endif
+                </div>
             </div>
+
         </div>
     </div>
 @endsection
@@ -75,12 +77,12 @@
         $(function () {
             $('#datetimepicker1').datetimepicker({
                 defaultDate: new Date(),
-                format: 'YYYY-DD-MM HH:mm:ss',
+                format: 'YYYY-MM-DD HH:mm:ss',
                 locale: 'fr-ca'
             });
             $('#datetimepicker2').datetimepicker({
                 defaultDate: new Date(),
-                format: 'YYYY-DD-MM HH:mm:ss',
+                format: 'YYYY-MM-DD HH:mm:ss',
                 locale: 'fr-ca'
             });
         });
