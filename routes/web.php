@@ -13,55 +13,52 @@
 
 use App\User;
 
-Route::get('/','OtherController@homepage')->name('homepage.content');
-Route::get('/aboutus','OtherController@aboutus')->name('information.aboutus');
-Route::get('/termsofservice','OtherController@termsofservice')->name('information.termsofservice');
+Route::get('/', 'OtherController@homepage')->name('homepage.content');
+Route::get('/aboutus', 'OtherController@aboutus')->name('information.aboutus');
+Route::get('/termsofservice', 'OtherController@termsofservice')->name('information.termsofservice');
 
 /* JobOffer Routes */
-Route::resource('/joboffer','JobOfferController');
+Route::resource('/joboffer', 'JobOfferController');
 
 /* Auth Routes */
 Auth::routes();
 
-Route::group(['middleware' => 'ConnectedUserOnly'], function() {
+Route::group(['middleware' => 'ConnectedUserOnly'], function () {
     /* Profile Routes */
-    Route::get('/profile/{slug}','ProfileController@view')->name('profile.view');
-    Route::patch('/profile/{slug}/update','ProfileController@update')->name('profile.update');
-    Route::patch('/profile/uploadphoto','ProfileController@uploadphoto')->name('profile.uploadphoto');
-    Route::get('/profilephoto','ProfileController@photo')->name('profile.photo');
-    Route::delete('/profile/{slug}/delete','ProfileController@deleteuser')->name('profile.delete');
+    Route::get('/profile/{slug}', 'ProfileController@view')->name('profile.view');
+    Route::patch('/profile/{slug}/update', 'ProfileController@update')->name('profile.update');
+    Route::patch('/profile/uploadphoto', 'ProfileController@uploadphoto')->name('profile.uploadphoto');
+    Route::get('/profilephoto', 'ProfileController@photo')->name('profile.photo');
+    Route::delete('/profile/{slug}/delete', 'ProfileController@deleteuser')->name('profile.delete');
 
     /* Company Routes */
-    Route::post('/company/{slug}/select','CompanyController@select')->name('company.select');
-    Route::post('/company/uploadphoto','CompanyController@uploadphoto')->name('company.uploadphoto');
+    Route::post('/company/{slug}/select', 'CompanyController@select')->name('company.select');
+    Route::post('/company/uploadphoto', 'CompanyController@uploadphoto')->name('company.uploadphoto');
 
     /* Absence Routes */
-    Route::resource('absence','AbsenceController');
+    Route::resource('absence', 'AbsenceController');
 
     /* Special Roles Routes */
-    Route::resource('specialrole','SpecialRoleController');
+    Route::resource('specialrole', 'SpecialRoleController');
 
-    Route::resource("dispo","DispoController");
+    Route::resource("dispo", "DispoController");
 
     /* Skills Routes */
-    Route::resource('skill','SkillController');
+    Route::resource('skill', 'SkillController');
 
     /* Cv Routes */
-    Route::get('/cv/create','CvController@create')->name('cv.create');
-    Route::get('/cv','CvController@getAuthCv')->name('cv.get');
-    Route::post('/cv/store','CvController@store')->name('cv.store');
+    Route::get('/cv/create', 'CvController@create')->name('cv.create');
+    Route::get('/cv', 'CvController@getAuthCv')->name('cv.get');
+    Route::post('/cv/store', 'CvController@store')->name('cv.store');
 
     /* JobOffer Routes (suite...) */
-    Route::post('/joboffer/lettre','JobOfferController@lettre');
-    Route::post('/joboffer/{slug}/apply','JobOfferController@apply');
+    Route::post('/joboffer/lettre', 'JobOfferController@lettre');
+    Route::post('/joboffer/{slug}/apply', 'JobOfferController@apply');
 });
 
 /*Route::get('/users',function(){
    return \App\Company::all();
 });*/ // Test pour avoir les users qui sont gestionnaires d'une compagnie
-use App\Company;
-Route::get('test',function (){
-
-    $dispos=\App\Tools\Helper::CAvailability()->get(0);
-    return $dispos;
+Route::get('test', function () {
+    return "". \App\Tools\Helper::IsAdmin();
 });

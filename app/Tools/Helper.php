@@ -9,6 +9,7 @@
 namespace App\Tools;
 
 
+use App\Admin;
 use App\Availability;
 use App\Company;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +39,7 @@ class Helper
 
     public static function Day($carbon)
     {
-        $daysofweek_fr=[
+        $daysofweek_fr = [
             "Lundi",
             "Mardi",
             "Mercredi",
@@ -47,6 +48,43 @@ class Helper
             "Samedi",
             "Dimanche",
         ];
-        return $daysofweek_fr[\Carbon\Carbon::parse($carbon)->dayOfWeek-1];
+        return $daysofweek_fr[\Carbon\Carbon::parse($carbon)->dayOfWeek - 1];
+    }
+
+    public static function CRoles()
+    {
+        $rolea = [];
+        foreach (Helper::CEmployee()->specialroles as $specialrole)
+            foreach ($specialrole->roles as $role)
+                array_push($rolea, $role->content);
+        return $rolea;
+    }
+
+    public static function CIsCEO()
+    {
+        if (in_array("Owner", Helper::CRoles()))
+            return true;
+        return false;
+    }
+
+    public static function CIsManager()
+    {
+        if (in_array("Manager", Helper::CRoles()))
+            return true;
+        return false;
+    }
+
+    public static function CIsEmployee()
+    {
+        if (in_array("Employee", Helper::CRoles()))
+            return true;
+        return false;
+    }
+
+    public static function IsAdmin()
+    {
+        if (in_array("Administrator", Helper::CRoles()))
+            return true;
+        return false;
     }
 }

@@ -2,6 +2,10 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckAdmin;
+use App\Http\Middleware\CheckCEO;
+use App\Http\Middleware\CheckEmployee;
+use App\Http\Middleware\CheckManager;
 use App\Http\Middleware\Confirmation;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -57,6 +61,10 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'ConnectedUserOnly' => \App\Http\Middleware\ConnectedUserOnly::class
+        'ConnectedUserOnly' => \App\Http\Middleware\ConnectedUserOnly::class,
+        'admin'=>CheckAdmin::class,
+        'ceo'=>CheckCEO::class,
+        'employee'=>CheckEmployee::class,
+        'manager'=>CheckManager::class
     ];
 }
