@@ -21,10 +21,12 @@ class DispoController extends Controller
      */
     public function index()
     {
-        if(Helper::CAvailability()->count() <= 0)
-            redirect()->back();
-        $dispos=Helper::CAvailability()->get(0)->availabilityelements;
-        return view("dispo.index",compact('dispos'));
+        if (Helper::CAvailability()->count() <= 0) {
+            $dispos = [];
+        } else {
+            $dispos = Helper::CAvailability()->get(0)->availabilityelements;
+        }
+        return view("dispo.index", compact('dispos'));
     }
 
     /**

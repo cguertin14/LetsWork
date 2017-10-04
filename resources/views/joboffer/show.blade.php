@@ -26,7 +26,7 @@
                             {!! Form::submit('Appliquer',['class' => 'btn purplebtn','style' => 'width:200px']); !!}
                             </div>
                             <div class="col-md-6">
-                            <a id="cancel" href="{{route('joboffer.index')}}" class="btn btn-warning" style="font-size: 17px;width:200px">Annuler</a>
+                            <a id="cancel" href="{{URL::previous()}}" class="btn btn-warning" style="font-size: 17px;width:200px">Annuler</a>
                             </div>
                         </div>
                     {!! Form::close() !!}
@@ -69,6 +69,12 @@
                                         </div>
                                         <div id="section2">
                                             <div class="row">{{$joboffer->specialrole->name}}</div>
+                                            <div class="row">
+                                                <hr class="separator">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="row">{{$joboffer->specialrole->description}}</div>
                                             <div class="row">
                                                 <hr class="separator">
                                             </div>

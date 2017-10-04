@@ -13,6 +13,7 @@ use App\Admin;
 use App\Availability;
 use App\Company;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class Helper
 {
@@ -28,6 +29,8 @@ class Helper
 
     public static function CAvailability()
     {
+        if(!Session::has('CurrentCompany'))
+            return [];
         $company = Helper::CCompany();
         $employee = Helper::CEmployee();
         $availabilitys = Availability::where([
