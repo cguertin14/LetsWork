@@ -53,7 +53,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/cv/store', 'CvController@store')->name('cv.store');
 
     /* JobOffer Routes (suite...) */
-    Route::post('/joboffer/lettre','JobOfferController@lettre');
     Route::post('/joboffer/{slug}/apply','JobOfferController@apply');
 
     /* JobOfferUser Routes */
