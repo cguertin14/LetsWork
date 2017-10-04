@@ -101,4 +101,33 @@ class JobOfferUserController extends Controller
 
         return redirect('/jobofferuser');
     }
+
+    /**
+     * Give interview to user (send email to say he/she is refused)
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
+    public function interview($id)
+    {
+        $jobofferuser = Helper::getJobOfferUserById($id);
+        session(['jobofferuser' => $jobofferuser]);
+        $data = [
+            'jobofferuser' => $jobofferuser
+        ];
+        // Send email then update entry in database
+        Mail::send('jobofferuser.interview', $data,function ($message){
+            $message->from(session('jobofferuser')->joboffer->company->email,session('jobofferuser')->joboffer->company->name);
+            $message->to(session('jobofferuser')->user->email,session('jobofferuser')->user->name)
+                    ->subject(session('jobofferuser')->joboffer->specialrole->name);
+        });
+
+        $jobofferuser->update(['interview' => 1]);
+
+        session()->forget('jobofferuser');
+        session()->flush();
+
+        return redirect('/jobofferuser');
+    }
 }

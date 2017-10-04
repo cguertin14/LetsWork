@@ -17,13 +17,13 @@
 @endsection
 
 @section('contenu')
-    <h1 class="title">Bonjour {{$user->name}},</h1>
+    <h1 class="title">Bonjour {{$jobofferuser->user->fullname}},</h1>
     <div class="col-md-6">
         <p class="message">
-            Nous avons pris le temps d'analyser votre demande d'emploi et nous avons finalement décidé que vous aurez chance de faire parti de notre équipe.
+            Nous avons pris le temps d'analyser votre demande d'emploi et nous avons finalement décidé que vous aurez la chance de faire partie de notre équipe.
         </p>
         <p class="message">Merci et à bientôt!</p>
-        <p class="message">L'équipe de <b>{{ config('app.name') }}</b></p>
+        <p class="message">L'équipe de <b>{{$jobofferuser->joboffer->company->name}}</b></p>
     </div>
 
 @endsection

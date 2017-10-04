@@ -17,7 +17,7 @@
 @endsection
 
 @section('contenu')
-    <h1 class="title">Bonjour {{$jobofferuser->user->name}},</h1>
+    <h1 class="title">Bonjour {{$jobofferuser->user->fullname}},</h1>
     <div class="col-md-6">
         <p class="message">
             Nous avons pris le temps d'analyser votre demande d'emploi et nous avons finalement décidé que vous n'aurez pas la chance de faire parti de notre équipe.

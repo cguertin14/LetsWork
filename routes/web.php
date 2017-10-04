@@ -59,6 +59,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/jobofferuser','JobOfferUserController@index')->name('jobofferuser.index');
     Route::get('/jobofferuser/{id}','JobOfferUserController@show')->name('jobofferuser.show');
     Route::post('/jobofferuser/{id}/accept','JobOfferUserController@accept')->name('jobofferuser.accept');
+    Route::post('/jobofferuser/{id}/interview','JobOfferUserController@interview')->name('jobofferuser.interview');
     Route::delete('/jobofferuser/{id}/refuse','JobOfferUserController@refuse')->name('jobofferuser.refuse');
 });
 Route::post('/joboffer/lettre', 'JobOfferController@lettre');

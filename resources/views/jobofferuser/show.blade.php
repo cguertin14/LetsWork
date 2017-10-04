@@ -19,13 +19,23 @@
                 </div>
             </td>
             <td>
+                {{--////////////////// FAIRE UN IF POUR CHEKER SI LE USER EST EN ENTREVUE OU PAS ET SI IL LEST CHANGER LES FORM POUR DAUTRES--}}
+
                 <div class="pull-right" style="margin-top: 10px">
                     <div class="col-md-12">
-                        <div class="col-md-6">
-                            {!! Form::open(['method' => 'POST','action' => ['JobOfferUserController@accept',$jobofferuser->id]]) !!}
-                            {!! Form::submit('Accepter',['class' => 'btn btn-success','style' => 'width:200px']); !!}
-                            {!! Form::close() !!}
-                        </div>
+                        @if($jobofferuser->interview)
+                            <div class="col-md-6">
+                                {!! Form::open(['method' => 'POST','action' => ['JobOfferUserController@accept',$jobofferuser->id]]) !!}
+                                {!! Form::submit('Accepter',['class' => 'btn btn-success','style' => 'width:200px']); !!}
+                                {!! Form::close() !!}
+                            </div>
+                        @else
+                            <div class="col-md-6">
+                                {!! Form::open(['method' => 'POST','action' => ['JobOfferUserController@interview',$jobofferuser->id]]) !!}
+                                {!! Form::submit('Donner une entrevue',['class' => 'btn btn-info','style' => 'width:200px']); !!}
+                                {!! Form::close() !!}
+                            </div>
+                        @endif
                         <div class="col-md-6">
                             {!! Form::open(['method' => 'DELETE','action' => ['JobOfferUserController@refuse',$jobofferuser->id]]) !!}
                             {!! Form::submit('Refuser',['class' => 'btn btn-danger','style' => 'width:200px']); !!}
