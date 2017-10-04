@@ -100,7 +100,7 @@
                                 @endif
                             </ul>
                         </li>
-                        <li><a href="{{route('aboutus')}}">À Propos</a></li>
+                        <li><a href="{{route('information.aboutus')}}">À Propos</a></li>
                     </ul>
                 </div>
             </div>

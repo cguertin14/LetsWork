@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Queue\Jobs\Job;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class JobOfferController extends Controller
@@ -115,5 +116,33 @@ class JobOfferController extends Controller
     {
         JobOffer::findBySlugOrFail($slug)->delete();
         return redirect('/joboffer');
+    }
+
+    public function apply(Request $request, $slug)
+    {
+        $joboffer = JobOffer::findBySlugOrFail($slug);
+        $data = $request->except(['_token','_method']);
+        $data['user_id'] = Auth::user()->id;
+
+        if (Session::has('letter'))
+            $joboffer->users()->attach($data,['letter' => session('letter')]);
+        else
+            $joboffer->users()->attach($data);
+        return redirect('/joboffer');
+    }
+
+    public function lettre(Request $request)
+    {
+        //$data = $request->except(['_token']);
+        $file = $request->file('file');
+
+        // Encode image to base64
+        $filedata = file_get_contents($file);
+        $data = base64_encode($filedata);
+
+        // Put data in session for further insertion into database
+        session(['letter' => $data]);
+
+        return $data;
     }
 }

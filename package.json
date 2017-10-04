@@ -17,6 +17,7 @@
     "laravel-mix": "^1.4.5",
     "lodash": "^4.17.4",
     "node-sass": "^4.5.3",
+    "pdfjs-dist": "^1.9.620",
     "vue": "^2.4.4"
   },
   "dependencies": {

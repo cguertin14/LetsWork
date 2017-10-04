@@ -16,11 +16,14 @@ class CreateJobOfferUsersTable extends Migration
         Schema::create('job_offer_user', function (Blueprint $table) {
             $table->integer('job_offer_id')->unsigned()->index();
             $table->integer('user_id')->unsigned()->index();
+            $table->binary('letter')->nullable();
             $table->timestamps();
 
             $table->foreign('job_offer_id')->references('id')->on('job_offers')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
+
+        DB::statement('alter table job_offer_user MODIFY letter LONGBLOB');
     }
 
     /**

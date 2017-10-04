@@ -109,6 +109,11 @@ div.centre {
     background-color: #707070;
 }
 
+.custom-container {
+    border: 2px solid #ffffff;
+    border-radius: 8px;
+}
+
 .section tr {
     color: #ffffff;
     font-size: 15px;
@@ -129,7 +134,7 @@ div.centre {
 }
 
 .page-title {
-    color: #ffffff;
+    color: #ffffff !important;
 }
 
 .input-group-addon:hover {
@@ -145,6 +150,16 @@ div.centre {
     background-color: #ffffff;
     color: #707070;
     cursor: pointer;
+}
+
+.pdf-container {
+    width: 100%;
+    height: 1000px;
+}
+
+.information {
+    color: #ffffff;
+    font-size: 20px;
 }
 .employee {
     width: 100%;

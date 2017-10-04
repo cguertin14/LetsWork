@@ -13,22 +13,17 @@
 
 use App\User;
 
-Route::get('/', ['as' => 'homepage.content', function () {
-    return view('homepage.content');
-}]);
+Route::get('/','OtherController@homepage')->name('homepage.content');
+Route::get('/aboutus','OtherController@aboutus')->name('information.aboutus');
+Route::get('/termsofservice','OtherController@termsofservice')->name('information.termsofservice');
 
-Route::get('/aboutus', ['as' => 'aboutus', function () {
-    return view('information.aboutus');
-}]);
+/* JobOffer Routes */
+Route::resource('/joboffer','JobOfferController');
 
-Route::get('/termsofservice', ['as' => 'aboutus', function () {
-    return view('information.termsofservice');
-}]);
-
+/* Auth Routes */
 Auth::routes();
 
 Route::group(['middleware' => 'ConnectedUserOnly'], function() {
-
     /* Profile Routes */
     Route::get('/profile/{slug}','ProfileController@view')->name('profile.view');
     Route::patch('/profile/{slug}/update','ProfileController@update')->name('profile.update');
@@ -52,9 +47,14 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
 
     /* Cv Routes */
     Route::get('/cv/create','CvController@create')->name('cv.create');
+    Route::get('/cv','CvController@getAuthCv')->name('cv.get');
     Route::post('/cv/store','CvController@store')->name('cv.store');
-    Route::patch('/cv/update','CvController@update')->name('cv.update');
+
+    /* JobOffer Routes (suite...) */
+    Route::post('/joboffer/lettre','JobOfferController@lettre');
+    Route::post('/joboffer/{slug}/apply','JobOfferController@apply');
 });
 
-/* JobOffer Routes */
-Route::resource('/joboffer','JobOfferController');
+/*Route::get('/users',function(){
+   return \App\Company::all();
+});*/ // Test pour avoir les users qui sont gestionnaires d'une compagnie

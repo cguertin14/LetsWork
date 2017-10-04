@@ -12,15 +12,21 @@ class CvController extends Controller
         return view('cv.create');
     }
 
-    public function store(Request $request)
+    public function getAuthCv()
     {
-        $data = Auth::user();
-        $data['cv'] = $request->all();
-        // Encrypter le fichier en base 64 et le stocker dans la bd
+        return Auth::user()->cv;
     }
 
-    public function update(Request $request)
+    public function store(Request $request)
     {
+        // Encrypter le fichier en base 64 et le stocker dans la bd
+        $data = $request->except(['_token']);
+        $file = $request->file('file');
 
+        // Encode image to base64
+        $filedata = file_get_contents($file);
+        $data['cv'] = base64_encode($filedata);
+        Auth::user()->update($data);
+        return Auth::user()->cv;
     }
 }
