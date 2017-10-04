@@ -80,6 +80,7 @@
                                 <ul class="collapse" style="list-style-type: none">
                                     <li><a href="{{route('specialrole.index')}}">Tous les postes</a></li>
                                     <li><a href="{{route('specialrole.create')}}">Créer un poste</a></li>
+                                    <li><a href="{{route('dispo.index')}}">Liste de vos disponibilités</a></li>
                                     <li><a href="{{route('dispo.create')}}">Donner une disponibilité</a></li>
                                 </ul>
                             </li>

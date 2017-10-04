@@ -58,10 +58,10 @@
                     @include('include.errors')
                 </div>
 
-                @if (\Illuminate\Support\Facades\Session::has('errorAbsence'))
+                @if (\Illuminate\Support\Facades\Session::has('errorDispo'))
                     <div class=" centre">
                         <div class="alert alert-danger">
-                            {{session('errorAbsence')}}
+                            {{session('errorDispo')}}
                         </div>
                     </div>
                 @endif

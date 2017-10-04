@@ -57,7 +57,7 @@ class DispoController extends Controller
         $employee = Helper::CEmployee();
         $availabilitys = Helper::CAvailability();
         if ($availabilitys->count() <= 0) {
-            $availability = $employee->availabilitie()->create([
+            $availability = $employee->availabilities()->create([
                 'company_id' => $company->id
             ]);
         } else {
@@ -109,6 +109,7 @@ class DispoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        AvailabilityElement::destroy($id);
+        return $this->index();
     }
 }
