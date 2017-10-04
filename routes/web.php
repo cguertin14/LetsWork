@@ -63,5 +63,5 @@ use App\Company;
 Route::get('test',function (){
 
     $dispos=\App\Tools\Helper::CAvailability()->get(0);
-});
     return $dispos;
+});
