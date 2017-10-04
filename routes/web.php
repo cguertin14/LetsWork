@@ -23,10 +23,7 @@ Route::resource('/joboffer', 'JobOfferController');
 /* Auth Routes */
 Auth::routes();
 
-/* Company Routes */
-Route::resource('company', 'CompanyController');
-
-Route::group(['middleware' => 'ConnectedUserOnly'], function() {
+Route::group(['middleware' => 'auth'], function () {
     /* Profile Routes */
     Route::get('/profile/{slug}', 'ProfileController@view')->name('profile.view');
     Route::patch('/profile/{slug}/update', 'ProfileController@update')->name('profile.update');
@@ -65,10 +62,11 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     Route::post('/jobofferuser/{id}/accept','JobOfferUserController@accept')->name('jobofferuser.accept');
     Route::delete('/jobofferuser/{id}/refuse','JobOfferUserController@refuse')->name('jobofferuser.refuse');
 });
-
+Route::post('/joboffer/lettre', 'JobOfferController@lettre');
+Route::resource('company', 'CompanyController');
 /*Route::get('/users',function(){
    return \App\Company::all();
 });*/ // Test pour avoir les users qui sont gestionnaires d'une compagnie
 Route::get('test', function () {
-    return "". \App\Tools\Helper::IsAdmin();
+    return \App\Company::all()->find(2)->joboffers()->first()->specialrole;
 });
