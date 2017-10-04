@@ -81,7 +81,7 @@
         {{Form::submit('Confirmer',array('class' => 'btn btn-primary purplebtn'))}}
         {{Form::close()}}
         {{Form::open(["method"=>"DELETE",'action' => ['CompanyController@destroy', $data["id"]]])}}
-        {{Form::submit('Supprimer',array('class' => 'btn btn-primary purplebtn pull-right confirm_action',"c_m_text"=>"Voulez-vous vraiment supprimer cette compagnie?"))}}
+        {{Form::submit('Supprimer',['class' => 'btn btn-primary purplebtn pull-right confirm_action',"c_m_text"=>"Voulez-vous vraiment supprimer cette compagnie?"])}}
         {{Form::close()}}
     </div>
 @endsection

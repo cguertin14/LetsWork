@@ -32,7 +32,6 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     Route::delete('/profile/{slug}/delete','ProfileController@deleteuser')->name('profile.delete');
 
     /* Company Routes */
-    Route::resource('company', 'CompanyController');
     Route::post('/company/{slug}/select','CompanyController@select')->name('company.select');
     Route::post('/company/uploadphoto','CompanyController@uploadphoto')->name('company.uploadphoto');
 
@@ -41,6 +40,8 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
 
     /* Special Roles Routes */
     Route::resource('specialrole','SpecialRoleController');
+
+    Route::resource("dispo","DispoController");
 
     /* Skills Routes */
     Route::resource('skill','SkillController');
@@ -58,3 +59,9 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
 /*Route::get('/users',function(){
    return \App\Company::all();
 });*/ // Test pour avoir les users qui sont gestionnaires d'une compagnie
+use App\Company;
+Route::get('test',function (){
+
+    $dispos=\App\Tools\Helper::CAvailability()->get(0);
+    return $dispos;
+});
