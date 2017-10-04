@@ -20,6 +20,7 @@ class CreateJobOffersTable extends Migration
             $table->integer('job_count')->unsigned();
             $table->integer('company_id')->unsigned()->index();
             $table->integer('special_role_id')->unsigned()->index();
+            $table->string('slug');
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');

@@ -36,5 +36,6 @@ mix.scripts([
     "resources/assets/js/libs/masonry.pkgd.js",
     "resources/assets/js/libs/infinite-scroll.pkgd.js",
     "resources/assets/js/libs/isotope.pkgd.js",
-    "resources/assets/js/libs/vue.js"
+    "resources/assets/js/libs/vue.js",
+    "resources/assets/js/libs/pdfobject.js"
 ],'public/js/libs.js');

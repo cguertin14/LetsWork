@@ -15,7 +15,7 @@
 
     <div class="layout">
         <div class="col-md-12">
-            <div class="centre">
+            <div class="centre custom-container">
                 <table class="table custom-table">
                     <thead>
                         <tr class="section-title">
@@ -57,7 +57,7 @@
 
                 <div class="row">
                     <div class="col-sm-6 col-sm-offset-5">
-                        {{$specialRoles->render('pagination.paginate')}}
+                        {{$specialRoles->links()}}
                     </div>
                 </div>
             </div>

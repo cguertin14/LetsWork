@@ -10,6 +10,60 @@ $(document).ready(function () {
     });
 });
 
+function getUserCV() {
+    $.ajax({
+        type: 'GET',
+        url: '/cv'
+    }).done(function (data) {
+        if (data !== null)
+            PDFObject.embed("data:application/pdf;base64," + data, "#cv_file");
+    });
+}
+
+function sendCV() {
+    $("#create_cv").submit(function(e) {
+        $.ajax({
+            type: 'POST',
+            url: '/cv/store',
+            data: new FormData($("#create_cv")[0]),
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if (data !== null)
+                    PDFObject.embed("data:application/pdf;base64," + data, "#cv_file");
+            }
+        });
+        e.preventDefault();
+    });
+}
+
+function sendLetter() {
+    $("#create_letter").submit(function(e) {
+        $.ajax({
+            type: 'POST',
+            url: '/joboffer/lettre',
+            data: new FormData($("#create_letter")[0]),
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if (data !== null)
+                    PDFObject.embed("data:application/pdf;base64," + data, "#letter_file");
+            }
+        });
+        e.preventDefault();
+    });
+}
+
+function CheckFile() {
+    var file = document.getElementById("uploader");
+    var len = file.value.length;
+    var ext = file.value;
+    if (ext.substr(len - 3, len).toLowerCase() != "pdf") {
+        alert("Ce n'est pas un fichier de format PDF! Sélectionnez un autre fichier...");
+        return false;
+    }
+    return true;
+}
 
 function show_confirmation_modal(e) {
     $("body").append($("<div id='modal_confirmation' class=\"modal fade\"><div class=\"\modal-dialog\" role=\"document\"><div class=\"modal-content\"></div></div></div>"));

@@ -12,7 +12,7 @@ class SpecialRoleSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        foreach (range(20,35) as $item) {
+        foreach (\App\Skill::all() as $skill) {
             $specialRole = \App\SpecialRole::create([
                 'company_id' => \App\Company::all()->random()->id,
                 'name' => $faker->name,
@@ -20,8 +20,7 @@ class SpecialRoleSeeder extends Seeder
                 'slug' => $faker->slug()
             ]);
             $specialRole->roles()->attach(\App\Role::all()->random());
-            $specialRole->roles()->attach(\App\Role::all()->random());
-            $specialRole->skills()->attach(\App\Skill::all()->random());
+            $specialRole->skills()->attach($skill);
         }
     }
 }

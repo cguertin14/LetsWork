@@ -23,7 +23,7 @@ class Skill extends Model
     }
 
     protected $fillable = [
-        'name','description'
+        'name','description','company_id'
     ];
 
     public function specialroles() {

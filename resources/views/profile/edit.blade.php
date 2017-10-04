@@ -24,26 +24,26 @@
             </div>
             <div class="employee">
                 <p>{{ $user->fullname }}</p>
-                @if(count($user->employees) > 0)
-                    @foreach ($user->employees as $employee)
-                        @foreach($employee->companies as $company)
-                            <p>{{ $company->name }} @if ($employee->special_role) - {{ $employee->special_role}} @endif</p>
-                        @endforeach
-                    @endforeach
-                @endif
+                {{--@if(count($user->employees) > 0)--}}
+                    {{--@foreach ($user->employees as $employee)--}}
+                        {{--@foreach($employee->companies as $company)--}}
+                            {{--<p style="font-size: 15px;">- {{ $company->name }}@endif</p>--}}
+                        {{--@endforeach--}}
+                    {{--@endforeach--}}
+                {{--@endif--}}
             </div>
             <br>
             <div class="col-md-12">
                 <div class="centre">
                     {!! Form::open(['method' => 'PATCH', 'action' => 'ProfileController@uploadphoto', 'class' => 'dropzone','id' => 'files']) !!}
-                        <div class="text-center">
-                            <div class="row dz-default dz-message">
-                                <img src="{{asset('image/purple_plus.png')}}" width="10%" height="10%" alt="">
-                            </div>
-                            <div class="row dz-default dz-message">
-                                <strong>Changer la photo de profil</strong>
-                            </div>
+                    <div class="text-center">
+                        <div class="row dz-default dz-message">
+                            <img src="{{asset('image/purple_plus.png')}}" width="10%" height="10%" alt="">
                         </div>
+                        <div class="row dz-default dz-message">
+                            <strong>Changer la photo de profil</strong>
+                        </div>
+                    </div>
                     {!! Form::close() !!}
                 </div>
             </div>

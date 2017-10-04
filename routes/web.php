@@ -13,18 +13,17 @@
 
 use App\User;
 
-Route::get('/', ['as' => 'homepage.content', function () {
-    return view('homepage.content');
-}]);
+Route::get('/','OtherController@homepage')->name('homepage.content');
+Route::get('/aboutus','OtherController@aboutus')->name('information.aboutus');
+Route::get('/termsofservice','OtherController@termsofservice')->name('information.termsofservice');
 
-Route::get('/aboutus', ['as' => 'about.us', function () {
-    return view('about.us');
-}]);
+/* JobOffer Routes */
+Route::resource('/joboffer','JobOfferController');
 
+/* Auth Routes */
 Auth::routes();
 
 Route::group(['middleware' => 'ConnectedUserOnly'], function() {
-
     /* Profile Routes */
     Route::get('/profile/{slug}','ProfileController@view')->name('profile.view');
     Route::patch('/profile/{slug}/update','ProfileController@update')->name('profile.update');
@@ -34,10 +33,7 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
 
     /* Company Routes */
     Route::post('/company/{slug}/select','CompanyController@select')->name('company.select');
-
-    /*Route::post('/confirmation/ask','ConfirmationController@ask');
-    Route::get('/confirmation/dovalidate','ConfirmationController@dovalidate');
-    Route::get('/confirmation/docancel','ConfirmationController@docancel');*/
+    Route::post('/company/uploadphoto','CompanyController@uploadphoto')->name('company.uploadphoto');
 
     /* Absence Routes */
     Route::resource('absence','AbsenceController');
@@ -49,11 +45,20 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
 
     /* Skills Routes */
     Route::resource('skill','SkillController');
+
+    /* Cv Routes */
+    Route::get('/cv/create','CvController@create')->name('cv.create');
+    Route::get('/cv','CvController@getAuthCv')->name('cv.get');
+    Route::post('/cv/store','CvController@store')->name('cv.store');
+
+    /* JobOffer Routes (suite...) */
+    Route::post('/joboffer/lettre','JobOfferController@lettre');
+    Route::post('/joboffer/{slug}/apply','JobOfferController@apply');
 });
-Route::resource('company', 'CompanyController');
-Route::get('/aboutus', ['as' => 'about.us', function () {
-    return view('about.us');
-}]);
+
+/*Route::get('/users',function(){
+   return \App\Company::all();
+});*/ // Test pour avoir les users qui sont gestionnaires d'une compagnie
 use App\Company;
 Route::get('test',function (){
 
