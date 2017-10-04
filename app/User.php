@@ -59,7 +59,7 @@ class User extends Authenticatable
     }
 
     public function joboffers() {
-        return $this->belongsToMany('App\JobOffer')->using('App\JobOfferUser')->withTimestamps();
+        return $this->belongsToMany('App\JobOffer')->using('App\JobOfferUser')->withTimestamps()->withPivot('letter','id','accepted','interview');
     }
 
     public function employees() {

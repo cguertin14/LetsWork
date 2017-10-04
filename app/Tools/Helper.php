@@ -11,6 +11,7 @@ namespace App\Tools;
 
 use App\Availability;
 use App\Company;
+use App\JobOffer;
 use Illuminate\Support\Facades\Auth;
 
 class Helper
@@ -48,5 +49,19 @@ class Helper
             "Dimanche",
         ];
         return $daysofweek_fr[\Carbon\Carbon::parse($carbon)->dayOfWeek-1];
+    }
+
+    public static function getJobOfferUserById($id)
+    {
+        $jobofferuser = null;
+        $jobOffers = JobOffer::where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id)->get();
+        foreach ($jobOffers as $joboffer) {
+            if ($joboffer->users) {
+                foreach ($joboffer->users as $user)
+                    if ($user->pivot->id == $id)
+                        $jobofferuser = $user->pivot;
+            }
+        }
+        return $jobofferuser;
     }
 }

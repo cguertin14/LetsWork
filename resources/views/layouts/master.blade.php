@@ -15,7 +15,7 @@
         </div>
 
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <div class="navbar-right">
+            <div class="navbar-right" style="margin-right: 20px">
                 @if (!Auth::check())
                     <ul class="nav navbar-nav">
                         <li><a href="/login" style="color: white"><span class="glyphicon glyphicon-log-in" style="color: white"></span> Se Connecter</a></li>
@@ -74,8 +74,9 @@
                         </li>
                         @endif
                         <li><a href="{{route('cv.create')}}">Dépôt du CV</a></li>
-                        @if (count(Illuminate\Support\Facades\Auth::user()->companies) > 0 && Session::has('CurrentCompany'))
+                        @if (Session::has('CurrentCompany'))
                             <li><a href="{{route('absence.create')}}">Demande d'absence</a></li>
+                            @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 0)
                             <li id="dropdown3">
                                 <a href="#">Postes</a>
                                 <ul class="collapse" style="list-style-type: none">
@@ -85,13 +86,19 @@
                                     <li><a href="{{route('dispo.create')}}">Donner une disponibilité</a></li>
                                 </ul>
                             </li>
+                            @endif
                             <li id="dropdown4">
                                 <a href="#">Compétences</a>
                                 <ul class="collapse" style="list-style-type: none">
                                     <li><a href="{{route('skill.index')}}">Toutes les compétences</a></li>
+                                    @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 0)
                                     <li><a href="{{route('skill.create')}}">Créer une compétence</a></li>
+                                    @endif
                                 </ul>
                             </li>
+                            @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 0)
+                            <li><a href="{{route('jobofferuser.index')}}">Demandes d'emploi</a></li>
+                            @endif
                         @endif
                         <li id="dropdown5">
                             <a href="#">Offres d'emplois</a>

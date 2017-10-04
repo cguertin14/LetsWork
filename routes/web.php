@@ -23,6 +23,9 @@ Route::resource('/joboffer','JobOfferController');
 /* Auth Routes */
 Auth::routes();
 
+/* Company Routes */
+Route::resource('company', 'CompanyController');
+
 Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     /* Profile Routes */
     Route::get('/profile/{slug}','ProfileController@view')->name('profile.view');
@@ -41,7 +44,8 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     /* Special Roles Routes */
     Route::resource('specialrole','SpecialRoleController');
 
-    Route::resource("dispo","DispoController");
+    /* Dispo Routes */
+    Route::resource('dispo','DispoController');
 
     /* Skills Routes */
     Route::resource('skill','SkillController');
@@ -54,6 +58,12 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     /* JobOffer Routes (suite...) */
     Route::post('/joboffer/lettre','JobOfferController@lettre');
     Route::post('/joboffer/{slug}/apply','JobOfferController@apply');
+
+    /* JobOfferUser Routes */
+    Route::get('/jobofferuser','JobOfferUserController@index')->name('jobofferuser.index');
+    Route::get('/jobofferuser/{id}','JobOfferUserController@show')->name('jobofferuser.show');
+    Route::post('/jobofferuser/{id}/accept','JobOfferUserController@accept')->name('jobofferuser.accept');
+    Route::delete('/jobofferuser/{id}/refuse','JobOfferUserController@refuse')->name('jobofferuser.refuse');
 });
 
 /*Route::get('/users',function(){
