@@ -13,5 +13,6 @@
     dropdown("#dropdown1");
     dropdown("#dropdown2");
     dropdown("#dropdown3");
+    dropdown("#dropdown4");
 
 </script>

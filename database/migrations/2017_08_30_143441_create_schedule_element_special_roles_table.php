@@ -32,6 +32,8 @@ class CreateScheduleElementSpecialRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schedule_element_special_roles');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        Schema::dropIfExists('schedule_element_special_role');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

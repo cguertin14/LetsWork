@@ -84,6 +84,13 @@
                                     <li><a href="{{route('dispo.create')}}">Donner une disponibilité</a></li>
                                 </ul>
                             </li>
+                            <li id="dropdown4">
+                                <a href="#">Compétences</a>
+                                <ul class="collapse" style="list-style-type: none">
+                                    <li><a href="{{route('skill.index')}}">Toutes les compétences</a></li>
+                                    <li><a href="{{route('skill.create')}}">Créer une compétence</a></li>
+                                </ul>
+                            </li>
                         @endif
                         <li><a href="#">À Propos</a></li>
                     </ul>

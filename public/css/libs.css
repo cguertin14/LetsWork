@@ -115,8 +115,20 @@ text-align: center;
 }
 
 .section tr:hover {
-    background-color: #dfdfdf;
+    background-color: #ffffff;
     color: #707070;
+    cursor: pointer;
+}
+
+.separator {
+    border-top: 1px solid #474747;
+}
+
+.page-title {
+    color: #ffffff;
+}
+
+.input-group-addon:hover {
     cursor: pointer;
 }
 .employee {

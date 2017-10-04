@@ -10,7 +10,7 @@
 
 @section('content')
 
-    <h1 class="title-absence" style="color: #ffffff;">Tous les postes</h1>
+    <h1 class="page-title">Tous les postes</h1>
     <hr style="border-top: 1px solid #474747">
 
     <div class="layout">

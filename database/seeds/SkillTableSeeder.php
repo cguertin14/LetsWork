@@ -15,7 +15,8 @@ class SkillTableSeeder extends Seeder
         foreach (range(0,10) as $index) {
             \App\Skill::create([
                'name' => $faker->name,
-               'description' => $faker->paragraph()
+               'description' => $faker->paragraph(),
+                'slug' => $faker->slug()
             ]);
         }
     }
