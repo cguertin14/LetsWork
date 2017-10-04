@@ -28,7 +28,7 @@
                     @foreach($joboffers as $joboffer)
                         <div class="col-sm-8 col-md-12">
                             <div>{{$joboffer->job_count.' ~ '.$joboffer->name}}</div>
-                            <p>{{$joboffer->description}}</p>
+                            <p>{{$joboffer->description}} <a href="{{route('joboffer.show',$joboffer->slug)}}" class="btn purplebtn pull-right">Voir l'offre d'emploi pour le poste de {{$joboffer->specialrole->name}}</a></p>
                         </div>
                     @endforeach
                 </div>
