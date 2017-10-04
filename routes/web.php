@@ -33,7 +33,6 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     Route::delete('/profile/{slug}/delete','ProfileController@deleteuser')->name('profile.delete');
 
     /* Company Routes */
-    Route::resource('company', 'CompanyController');
     Route::post('/company/{slug}/select','CompanyController@select')->name('company.select');
 
     /*Route::post('/confirmation/ask','ConfirmationController@ask');
@@ -46,6 +45,18 @@ Route::group(['middleware' => 'ConnectedUserOnly'], function() {
     /* Special Roles Routes */
     Route::resource('specialrole','SpecialRoleController');
 
+    Route::resource("dispo","DispoController");
+
     /* Skills Routes */
     Route::resource('skill','SkillController');
+});
+Route::resource('company', 'CompanyController');
+Route::get('/aboutus', ['as' => 'about.us', function () {
+    return view('about.us');
+}]);
+use App\Company;
+Route::get('test',function (){
+
+    $dispos=\App\Tools\Helper::CAvailability()->get(0);
+    return $dispos;
 });
