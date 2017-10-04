@@ -28,4 +28,12 @@ class CreateDispoRequest extends FormRequest
             'end' => 'required',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'begin.required' => 'La date de début est nécessaire',
+            'end.required' => 'La date de fin est nécessaire',
+        ];
+    }
 }
