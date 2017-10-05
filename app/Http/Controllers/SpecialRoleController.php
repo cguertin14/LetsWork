@@ -20,7 +20,7 @@ class SpecialRoleController extends Controller
      */
     public function index()
     {
-        $specialRoles = SpecialRole::where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id)->get();
+        $specialRoles = SpecialRole::where('company_id',session('CurrentCompany')->id)->get();
         $specialRoles = new Paginator($specialRoles,10,1);
         return view('specialrole.index',compact('specialRoles'));
     }
@@ -33,7 +33,7 @@ class SpecialRoleController extends Controller
     public function create()
     {
         $roles = Role::pluck('content','id')->all();
-        $skills = Skill::where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id)->pluck('name','id')->all();
+        $skills = Skill::where('company_id',session('CurrentCompany')->id)->pluck('name','id')->all();
         return view('specialrole.create',compact('roles','skills'));
     }
 
@@ -47,7 +47,7 @@ class SpecialRoleController extends Controller
     {
         // Création de rôle spécial
         $data = $request->except('_token');
-        $data['company_id'] = Company::findBySlugOrFail(session('CurrentCompany'))->id;
+        $data['company_id'] = session('CurrentCompany')->id;
         $specialRole = SpecialRole::create($data);
 
         foreach($request->roles as $role)

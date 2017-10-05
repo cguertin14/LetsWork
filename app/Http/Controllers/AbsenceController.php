@@ -32,7 +32,7 @@ class AbsenceController extends Controller
     public function create()
     {
         if (Session::has('CurrentCompany')) {
-            $company = Company::findBySlugOrFail(session('CurrentCompany'));
+            $company = session('CurrentCompany');
             return view('absence.create', compact('company'));
         } else {
             return redirect()->back();
