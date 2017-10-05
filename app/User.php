@@ -84,7 +84,7 @@ class User extends Authenticatable
 
     public function isOwner() {
         if (Session::has('CurrentCompany')) {
-            return Company::findBySlugOrFail(session('CurrentCompany'))->user_id === $this->id;
+            return session('CurrentCompany')->user_id === $this->id;
         } else {
             return false;
         }

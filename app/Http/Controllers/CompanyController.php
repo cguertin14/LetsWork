@@ -136,7 +136,8 @@ class CompanyController extends Controller
 
     public function select($slug)
     {
-        session(['CurrentCompany' => Company::findBySlugOrFail($slug)]);
+        $company = Company::findBySlugOrFail($slug);
+        session(['CurrentCompany' => $company]);
         return redirect()->back();
     }
 }

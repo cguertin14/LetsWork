@@ -44,7 +44,7 @@ class JobOfferUserController extends Controller
      */
     public function show($id)
     {
-        $jobofferuser = Helper::getJobOfferUserById($id);
+        $jobofferuser = JobOfferUser::findOrFail($id);//Helper::getJobOfferUserById($id);
         return view('jobofferuser.show',compact('jobofferuser'));
     }
 
