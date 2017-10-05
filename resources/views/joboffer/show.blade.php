@@ -71,12 +71,8 @@
                                         </div>
                                         <div id="section2">
                                             <div class="row">{{$joboffer->specialrole->name}}</div>
-                                            <div class="row">
-                                                <hr class="separator">
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">{{$joboffer->specialrole->description}}</div>
+                                            <br>
+                                            <div class="row information">{{$joboffer->description}}</div>
                                             <div class="row">
                                                 <hr class="separator">
                                             </div>

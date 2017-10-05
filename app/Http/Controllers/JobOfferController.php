@@ -30,11 +30,13 @@ class JobOfferController extends Controller
     {
         Carbon::setLocale('fr');
         if (Session::has('CurrentCompany')) {
-            $jobOffers = JobOffer::where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id)->get();
+            //return session('CurrentCompany')->id;
+            $jobOffers = JobOffer::where('company_id',session('CurrentCompany')->id)->get();
             $jobOffers = new Paginator($jobOffers,10,1);
         } else {
             $jobOffers = JobOffer::paginate(10);
         }
+        //return $jobOffers;
         return view('joboffer.index',compact('jobOffers'));
     }
 
@@ -46,7 +48,7 @@ class JobOfferController extends Controller
     public function create()
     {
         $specialRoles = SpecialRole::all()
-            ->where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id)
+            ->where('company_id',session('CurrentCompany')->id)
             ->pluck('name','id');
 
         return view('joboffer.create',compact('specialRoles'));
@@ -61,7 +63,7 @@ class JobOfferController extends Controller
     public function store(CreateJobOfferRequest $request)
     {
         $data = $request->except(['_token','_method']);
-        $data['company_id'] = Company::findBySlugOrFail(session('CurrentCompany'))->id;
+        $data['company_id'] = session('CurrentCompany')->id;
         JobOffer::create($data);
         return redirect('/joboffer');
     }
@@ -88,7 +90,7 @@ class JobOfferController extends Controller
     {
         $jobOffer = JobOffer::findBySlugOrFail($slug);
         $specialRoles = SpecialRole::all()
-            ->where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id)
+            ->where('company_id',session('CurrentCompany')->id)
             ->pluck('name','id');
         return view('joboffer.edit',compact(['jobOffer','specialRoles']));
     }

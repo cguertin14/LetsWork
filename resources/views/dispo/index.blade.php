@@ -40,9 +40,9 @@
                                             {{Form::close()}}
                                         </div>
                                         <div class="">
-                                            <button class="btn purplebtn" href="{{route("dispo.edit",$dispo->id)}}">
+                                            <a class="btn purplebtn" href="{{route("dispo.edit",$dispo->id)}}">
                                                 Modifier
-                                            </button>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
