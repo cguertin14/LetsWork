@@ -7,10 +7,12 @@ use App\JobOffer;
 use App\JobOfferUser;
 use App\Tools\Helper;
 use Carbon\Carbon;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class JobOfferUserController extends Controller
 {
@@ -23,7 +25,7 @@ class JobOfferUserController extends Controller
     {
         Carbon::setLocale('fr');
         $jobofferusers = [];
-        $jobOffers = JobOffer::where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id)->get();
+        $jobOffers = JobOffer::where('company_id',session('CurrentCompany')->id)->get();
         foreach ($jobOffers as $joboffer) {
             if ($joboffer->users) {
                 foreach ($joboffer->users as $user)
@@ -42,7 +44,7 @@ class JobOfferUserController extends Controller
      */
     public function show($id)
     {
-        $jobofferuser = Helper::getJobOfferUserById($id);
+        $jobofferuser = JobOfferUser::findOrFail($id);//Helper::getJobOfferUserById($id);
         return view('jobofferuser.show',compact('jobofferuser'));
     }
 
@@ -57,20 +59,21 @@ class JobOfferUserController extends Controller
     {
         $jobofferuser = Helper::getJobOfferUserById($id);
         session(['jobofferuser' => $jobofferuser]);
-        $data = [
-            'jobofferuser' => $jobofferuser
-        ];
-        // Send email then update entry in database
+        $data = ['jobofferuser' => $jobofferuser];
 
-        Mail::send('jobofferuser.accept', $data,function ($message){
-            $message->from(session('jobofferuser')->joboffer->company->email,session('jobofferuser')->joboffer->company->name);
-            $message->to(session('jobofferuser')->user->email,session('jobofferuser')->user->name)
-                    ->subject(session('jobofferuser')->joboffer->specialrole->name);
-        });
+        $employee = $jobofferuser->user->employees()->create(['user_id' => $jobofferuser->user->id]);
+        $employee->companies()->attach($jobofferuser->joboffer->company);
+
+        // Send email then update entry in database
+        try {
+            Mail::send('jobofferuser.accept', $data,function ($message){
+                $message->from('support@letswork.dev',session('jobofferuser')->joboffer->company->name);
+                $message->to(session('jobofferuser')->user->email,session('jobofferuser')->user->name)
+                        ->subject(session('jobofferuser')->joboffer->specialrole->name);
+            });
+        } catch (ClientException $e) {}
 
         session()->forget('jobofferuser');
-        session()->flush();
-
         return redirect('/jobofferuser');
     }
 
@@ -85,20 +88,20 @@ class JobOfferUserController extends Controller
     {
         $jobofferuser = Helper::getJobOfferUserById($id);
         session(['jobofferuser' => $jobofferuser]);
-        $data = [
-            'jobofferuser' => $jobofferuser
-        ];
-        // Send email then update entry in database
+        $data = ['jobofferuser' => $jobofferuser];
 
-        Mail::send('jobofferuser.refuse', $data,function ($message){
-            $message->from(session('jobofferuser')->joboffer->company->email,session('jobofferuser')->joboffer->company->name);
-            $message->to(session('jobofferuser')->user->email,session('jobofferuser')->user->name)
-                    ->subject(session('jobofferuser')->joboffer->specialrole->name);
-        });
+        // Send email then delete entry in database
+        try {
+            Mail::send('jobofferuser.refuse', $data,function ($message){
+                $message->from('support@letswork.dev',session('jobofferuser')->joboffer->company->name);
+                $message->to(session('jobofferuser')->user->email,session('jobofferuser')->user->name)
+                        ->subject(session('jobofferuser')->joboffer->specialrole->name);
+            });
+        } catch (ClientException $e) {}
+
+        $jobofferuser->delete();
 
         session()->forget('jobofferuser');
-        session()->flush();
-
         return redirect('/jobofferuser');
     }
 
@@ -113,21 +116,21 @@ class JobOfferUserController extends Controller
     {
         $jobofferuser = Helper::getJobOfferUserById($id);
         session(['jobofferuser' => $jobofferuser]);
-        $data = [
-            'jobofferuser' => $jobofferuser
-        ];
-        // Send email then update entry in database
-        Mail::send('jobofferuser.interview', $data,function ($message){
-            $message->from(session('jobofferuser')->joboffer->company->email,session('jobofferuser')->joboffer->company->name);
-            $message->to(session('jobofferuser')->user->email,session('jobofferuser')->user->name)
-                    ->subject(session('jobofferuser')->joboffer->specialrole->name);
-        });
+        $data = ['jobofferuser' => $jobofferuser];
 
-        $jobofferuser->update(['interview' => 1]);
+        $jobofferuser->interview = 1;
+        $jobofferuser->save();
+
+        // Send email then update entry in database
+        try {
+            Mail::send('jobofferuser.interview', $data,function ($message){
+                $message->from('support@letswork.dev',session('jobofferuser')->joboffer->company->name);
+                $message->to(session('jobofferuser')->user->email,session('jobofferuser')->user->name)
+                        ->subject(session('jobofferuser')->joboffer->specialrole->name);
+            });
+        } catch (ClientException $e) {}
 
         session()->forget('jobofferuser');
-        session()->flush();
-
         return redirect('/jobofferuser');
     }
 }

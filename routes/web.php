@@ -11,14 +11,18 @@
 |
 */
 
-use App\User;
-
 Route::get('/', 'OtherController@homepage')->name('homepage.content');
 Route::get('/aboutus', 'OtherController@aboutus')->name('information.aboutus');
 Route::get('/termsofservice', 'OtherController@termsofservice')->name('information.termsofservice');
 
 /* JobOffer Routes */
 Route::resource('/joboffer', 'JobOfferController');
+
+/* JobOffer Letter Route */
+Route::post('/joboffer/lettre', 'JobOfferController@lettre')->name('joboffer.lettre');
+
+/* Company Routes */
+Route::resource('company', 'CompanyController');
 
 /* Auth Routes */
 Auth::routes();
@@ -53,7 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/cv/store', 'CvController@store')->name('cv.store');
 
     /* JobOffer Routes (suite...) */
-    Route::post('/joboffer/{slug}/apply','JobOfferController@apply');
+    Route::post('/joboffer/{slug}/apply','JobOfferController@apply')->name('joboffer.apply');
 
     /* JobOfferUser Routes */
     Route::get('/jobofferuser','JobOfferUserController@index')->name('jobofferuser.index');
@@ -61,12 +65,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/jobofferuser/{id}/accept','JobOfferUserController@accept')->name('jobofferuser.accept');
     Route::post('/jobofferuser/{id}/interview','JobOfferUserController@interview')->name('jobofferuser.interview');
     Route::delete('/jobofferuser/{id}/refuse','JobOfferUserController@refuse')->name('jobofferuser.refuse');
-});
-Route::post('/joboffer/lettre', 'JobOfferController@lettre');
-Route::resource('company', 'CompanyController');
-/*Route::get('/users',function(){
-   return \App\Company::all();
-});*/ // Test pour avoir les users qui sont gestionnaires d'une compagnie
-Route::get('test', function () {
-    return \App\Company::all()->find(2)->joboffers()->first()->specialrole;
 });

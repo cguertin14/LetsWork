@@ -25,7 +25,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $compagnies=Company::all();
+        $compagnies = Company::all();
         return view("company.index", compact('compagnies'));
     }
 
@@ -57,7 +57,6 @@ class CompanyController extends Controller
             $data['photo'] = $request->session()->get('CompanyPhoto');
         Company::create($data);
         $request->session()->forget('CompanyPhoto');
-        $request->session()->flush();
         return $this->index();
     }
 
@@ -138,7 +137,7 @@ class CompanyController extends Controller
     public function select($slug)
     {
         $company = Company::findBySlugOrFail($slug);
-        session(['CurrentCompany' => $company->slug]);
+        session(['CurrentCompany' => $company]);
         return redirect()->back();
     }
 }

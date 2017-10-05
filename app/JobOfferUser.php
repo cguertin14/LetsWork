@@ -2,9 +2,10 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class JobOfferUser extends Pivot
+class JobOfferUser extends Model
 {
     protected $fillable = [
         'letter','user_id','job_offer_id'

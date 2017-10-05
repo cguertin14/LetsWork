@@ -20,7 +20,7 @@ class Helper
 {
     public static function CCompany()
     {
-        return Company::findBySlugOrFail(session('CurrentCompany'));
+        return session('CurrentCompany');
     }
 
     public static function CEmployee()
@@ -95,7 +95,7 @@ class Helper
     public static function getJobOfferUserById($id)
     {
         $jobofferuser = null;
-        $jobOffers = JobOffer::where('company_id',Company::findBySlugOrFail(session('CurrentCompany'))->id)->get();
+        $jobOffers = JobOffer::where('company_id',session('CurrentCompany')->id)->get();
         foreach ($jobOffers as $joboffer) {
             if ($joboffer->users) {
                 foreach ($joboffer->users as $user)

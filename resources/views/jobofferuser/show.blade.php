@@ -83,12 +83,14 @@
                                                     <div class="col-md-6 pull-right">Curriculum vitae</div>
                                                 </div>
                                             </div>
+                                            <br>
                                         @else
                                             <div class="row">Curriculum vitae</div>
+                                            <div class="row">
+                                                <hr class="separator">
+                                            </div>
                                         @endif
                                     </div>
-                                    <br>
-                                    <br>
                                     @if ($jobofferuser->letter)
                                         <div class="col-md-12">
                                             <div class="row">
