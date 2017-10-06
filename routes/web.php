@@ -66,3 +66,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/jobofferuser/{id}/interview','JobOfferUserController@interview')->name('jobofferuser.interview');
     Route::delete('/jobofferuser/{id}/refuse','JobOfferUserController@refuse')->name('jobofferuser.refuse');
 });
+
+Route::get("/test",function (){
+    return view("schedule.index");
+});
