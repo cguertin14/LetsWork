@@ -2,7 +2,7 @@
 
 @section('styles')
     <style>
-        div {
+        div>p {
             font-family: Tahoma;
             color: black;
         }

@@ -23,7 +23,7 @@
     <div id="list" class="row">
         <div class="ele col-md-4" v-for="c in company" style="background-color: #e6e6e6">
                 <a v-bind:href="'company/'+c.name" class="btn btn-primary purplebtn" role="button" style="width: 100%">@{{ c.name }}</a>
-                <p>@{{ c.description }}</p>
+                <description :desc="c.description"></description>
         </div>
     </div>
 @endsection
@@ -41,6 +41,11 @@
             if ($(window).scrollTop() + $(window).height() == $(document).height()) {
                 load();
             }
+        });
+
+        Vue.component("description", {
+            props:["desc"],
+            template:"<p v-html='desc'></p>"
         });
 
         var app = new Vue({
