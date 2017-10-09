@@ -20,29 +20,25 @@
 @section('content')
     <div id="schedule">
         <div>
-            <div class="col-md-1 pull-right"><h1>@{{ ctime.toLocaleTimeString() }}</h1></div>
+            <div class="col-md-1 pull-left"><h1>@{{ ctime.toLocaleTimeString() }}</h1></div>
         </div>
         <table>
-            <div>
-                <thead>
+            <thead>
                 <tr>
                     <td class="spacing"><h1 class="center">Heures</h1></td>
                     <td class="spacing" v-for="d in days"><h1 class="center">@{{d}}</h1></td>
                 </tr>
-                </thead>
-                <tbody id="tbody">
-                <div>
-                    <div id="line" style="border-top:medium red solid; position:absolute;top: -50px; width:100%;"></div>
-                    <tr v-for="h in 25">
-                        <td class="spacing">
-                            <h3 class="center pull-right" style="position: relative;top: -1.4em">@{{ h-1 +":00" }}</h3>
-                        </td>
-                        <td class="spacing" v-for="d in days" :data-day="d" :data-hour="h" :data-date="new Date()"><h3
-                                    class="center"></h3></td>
-                    </tr>
-                </div>
-                </tbody>
-            </div>
+            </thead>
+            <tbody id="tbody">
+                <tr id="line" style="border-top:medium red solid; position:absolute;top: -50px; width:100%;"></tr>
+                <tr v-for="h in 25">
+                    <td class="spacing">
+                        <h3 class="center pull-right" style="position: relative;top: -1.4em">@{{ h-1 +":00" }}</h3>
+                    </td>
+                    <td class="spacing" v-for="d in days" :data-day="d" :data-hour="h" :data-date="new Date()"><h3
+                                class="center"></h3></td>
+                </tr>
+            </tbody>
         </table>
     </div>
 @endsection
