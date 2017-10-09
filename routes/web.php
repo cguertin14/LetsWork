@@ -11,6 +11,7 @@
 |
 */
 
+/* Other Routes */
 Route::get('/', 'OtherController@homepage')->name('homepage.content');
 Route::get('/aboutus', 'OtherController@aboutus')->name('information.aboutus');
 Route::get('/termsofservice', 'OtherController@termsofservice')->name('information.termsofservice');
@@ -65,8 +66,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/jobofferuser/{id}/accept','JobOfferUserController@accept')->name('jobofferuser.accept');
     Route::post('/jobofferuser/{id}/interview','JobOfferUserController@interview')->name('jobofferuser.interview');
     Route::delete('/jobofferuser/{id}/refuse','JobOfferUserController@refuse')->name('jobofferuser.refuse');
+
+    /* Schedule Routes */
+    Route::resource('/schedule','ScheduleController');
 });
 
-Route::get("/test",function (){
+Route::get("/test",function () {
     return view("schedule.index");
 });

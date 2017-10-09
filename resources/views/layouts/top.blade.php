@@ -7,6 +7,7 @@
 
         <title>LetsWork @yield('title')</title>
 
+        @yield('fonts')
         <link href="{{asset('css/libs.css')}}" rel="stylesheet">
         <link href="{{asset('css/app.css')}}" rel="stylesheet">
         @yield('styles')
