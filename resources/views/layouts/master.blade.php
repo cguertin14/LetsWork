@@ -99,6 +99,15 @@
                             @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 0)
                             <li><a href="{{route('jobofferuser.index')}}">Demandes d'emploi</a></li>
                             @endif
+                            <li id="dropdown6">
+                                <a href="#">Calendrier</a>
+                                <ul class="collapse" style="list-style-type: none">
+                                    <li><a href="{{route('schedule.index')}}">Voir</a></li>
+                                    @if (count(Illuminate\Support\Facades\Auth::user()->isOwner()) > 0)
+                                        <li><a href="{{route('schedule.create')}}"></a></li>
+                                    @endif
+                                </ul>
+                            </li>
                         @endif
                         <li id="dropdown5">
                             <a href="#">Offres d'emplois</a>
