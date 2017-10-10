@@ -68,6 +68,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/jobofferuser/{id}/refuse','JobOfferUserController@refuse')->name('jobofferuser.refuse');
 
     /* Schedule Routes */
+    Route::get('/schedule/editing','ScheduleController@editing')->name('schedule.editing');
     Route::resource('/schedule','ScheduleController');
 });
 

@@ -25,7 +25,7 @@
                     <ul class="nav navbar-nav" style="margin-right: 10px">
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: white">
-                                <span class="glyphicon glyphicon-user" style="color: white"></span>{{Auth::user()->name}}
+                                <span class="glyphicon glyphicon-user" style="color: white"></span>{{Auth::user()->fullname}}
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li>
@@ -76,35 +76,35 @@
                         <li><a href="{{route('cv.create')}}">Dépôt du CV</a></li>
                         @if (Session::has('CurrentCompany'))
                             <li><a href="{{route('absence.create')}}">Demande d'absence</a></li>
-                            @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 0)
-                            <li id="dropdown3">
-                                <a href="#">Postes</a>
-                                <ul class="collapse" style="list-style-type: none">
-                                    <li><a href="{{route('specialrole.index')}}">Tous les postes</a></li>
-                                    <li><a href="{{route('specialrole.create')}}">Créer un poste</a></li>
-                                    <li><a href="{{route('dispo.index')}}">Liste de vos disponibilités</a></li>
-                                    <li><a href="{{route('dispo.create')}}">Donner une disponibilité</a></li>
-                                </ul>
-                            </li>
+                            @if (Illuminate\Support\Facades\Auth::user()->isOwner())
+                                <li id="dropdown3">
+                                    <a href="#">Postes</a>
+                                    <ul class="collapse" style="list-style-type: none">
+                                        <li><a href="{{route('specialrole.index')}}">Voir tout</a></li>
+                                        <li><a href="{{route('specialrole.create')}}">Créer</a></li>
+                                        <li><a href="{{route('dispo.index')}}">Vos disponibilités</a></li>
+                                        <li><a href="{{route('dispo.create')}}">Donner une disponibilité</a></li>
+                                    </ul>
+                                </li>
                             @endif
                             <li id="dropdown4">
                                 <a href="#">Compétences</a>
                                 <ul class="collapse" style="list-style-type: none">
-                                    <li><a href="{{route('skill.index')}}">Toutes les compétences</a></li>
-                                    @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 0)
-                                    <li><a href="{{route('skill.create')}}">Créer une compétence</a></li>
+                                    <li><a href="{{route('skill.index')}}">Voir tout</a></li>
+                                    @if (Illuminate\Support\Facades\Auth::user()->isOwner())
+                                    <li><a href="{{route('skill.create')}}">Créer</a></li>
                                     @endif
                                 </ul>
                             </li>
-                            @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 0)
-                            <li><a href="{{route('jobofferuser.index')}}">Demandes d'emploi</a></li>
+                            @if (Illuminate\Support\Facades\Auth::user()->isOwner())
+                                <li><a href="{{route('jobofferuser.index')}}">Demandes d'emploi</a></li>
                             @endif
                             <li id="dropdown6">
                                 <a href="#">Calendrier</a>
                                 <ul class="collapse" style="list-style-type: none">
                                     <li><a href="{{route('schedule.index')}}">Voir</a></li>
-                                    @if (count(Illuminate\Support\Facades\Auth::user()->isOwner()) > 0)
-                                        <li><a href="{{route('schedule.create')}}"></a></li>
+                                    @if (Illuminate\Support\Facades\Auth::user()->isOwner())
+                                        <li><a href="{{route('schedule.editing')}}">Modifier</a></li>
                                     @endif
                                 </ul>
                             </li>
@@ -112,9 +112,11 @@
                         <li id="dropdown5">
                             <a href="#">Offres d'emplois</a>
                             <ul class="collapse" style="list-style-type: none">
-                                <li><a href="{{route('joboffer.index')}}">Toutes les offres d'emplois</a></li>
+                                <li><a href="{{route('joboffer.index')}}">Voir tout</a></li>
                                 @if (count(Illuminate\Support\Facades\Auth::user()->companies) > 0 && Session::has('CurrentCompany'))
-                                <li><a href="{{route('joboffer.create')}}">Créer une offre d'emploi</a></li>
+                                    @if (Illuminate\Support\Facades\Auth::user()->isOwner())
+                                        <li><a href="{{route('joboffer.create')}}">Créer</a></li>
+                                    @endif
                                 @endif
                             </ul>
                         </li>

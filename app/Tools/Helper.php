@@ -105,4 +105,9 @@ class Helper
         }
         return $jobofferuser;
     }
+
+    public function getEmployeeFromCompany()
+    {
+        return session('CurrentCompany')->employees->where('user_id',Auth::user()->id)->get();
+    }
 }

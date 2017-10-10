@@ -21,6 +21,7 @@ mix.styles([
 
 mix.scripts([
     'node_modules/jquery/dist/jquery.js',
+    'resources/assets/js/schedule/hour-container.js',
     'resources/assets/js/tether.js',
     'resources/assets/js/libs/tools.js',
     'resources/assets/js/libs/profile.js',
