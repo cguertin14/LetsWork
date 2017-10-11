@@ -15,5 +15,6 @@
     dropdown("#dropdown3");
     dropdown("#dropdown4");
     dropdown("#dropdown5");
+    dropdown("#dropdown6");
 
 </script>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnPhotoIdToUsers extends Migration
+class AddColumnSlugToSchedules extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddColumnPhotoIdToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('photo_id')->unsigned()->index()->nullable();
-            $table->foreign('photo_id')->references('id')->on('photos')->onDelete('cascade');
+        Schema::table('schedules', function (Blueprint $table) {
+            $table->string('slug');
         });
     }
 
@@ -26,8 +25,8 @@ class AddColumnPhotoIdToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('photo_id');
+        Schema::table('schedules', function (Blueprint $table) {
+            $table->dropColumn('slug');
         });
     }
 }
