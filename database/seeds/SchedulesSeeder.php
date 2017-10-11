@@ -17,7 +17,7 @@ class SchedulesSeeder extends Seeder
             $schedule = $company->schedules()->create([
                 "name" => $faker->name()
             ]);
-            foreach (range(365, 365) as $day) {
+            foreach (range(1, 365) as $day) {
                 foreach (range(0, 2) as $chiffre) {
                     $begin = \Carbon\Carbon::create(2017, 1, $day, random_int(0, 12), 0, 0)->format("H:i:s");
                     $end = \Carbon\Carbon::create(2017, 1, $day, random_int(13, 23), 0, 0)->format("H:i:s");

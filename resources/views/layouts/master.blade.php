@@ -16,6 +16,15 @@
 
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <div class="navbar-right" style="margin-right: 20px">
+                @if(Session::has('CurrentCompany'))
+                <ul class="nav navbar-nav" style="margin-right: 10px">
+                    <li>
+                        <a id="punch" class="dropdown-toggle" role="button" style="color: white">
+                            {{\App\Tools\Helper::punchMessage(\App\Tools\Helper::hasLastPunch())}}
+                        </a>
+                    </li>
+                </ul>
+                @endif
                 @if (!Auth::check())
                     <ul class="nav navbar-nav">
                         <li><a href="/login" style="color: white"><span class="glyphicon glyphicon-log-in" style="color: white"></span> Se Connecter</a></li>
@@ -63,9 +72,19 @@
                                 <li><a href="/company/create">Créer</a></li>
                             </ul>
                         </li>
-                        @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 0)
+                        @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 1)
                         <li id="dropdown2">
                             <a href="#">Mes emplois</a>
+                            <ul class="collapse" style="list-style-type: none">
+                                @foreach(\Illuminate\Support\Facades\Auth::user()->companies as $company)
+                                    <li onclick="selectCompany('{{$company->slug}}')"><a href="#">{{$company->name}}</a></li>
+                                @endforeach
+                            </ul>
+                        </li>
+                        @endif
+                        @if(count(Illuminate\Support\Facades\Auth::user()->companies) == 1)
+                        <li id="dropdown2">
+                            <a href="#">Mon emplois</a>
                             <ul class="collapse" style="list-style-type: none">
                                 @foreach(\Illuminate\Support\Facades\Auth::user()->companies as $company)
                                     <li onclick="selectCompany('{{$company->slug}}')"><a href="#">{{$company->name}}</a></li>
@@ -142,6 +161,24 @@
     @endif
 @endsection
 
-@section("scripts")
+@section("scriptsm")
+    <script>
+        $("#punch").click(function () {
+            var ele=this;
+            $.ajax({
+                url: '/punch'
+            })
+            .done(function(data) {
+                if(data==true)
+                {
+                    $(ele).text("{{\App\Tools\Helper::punchMessage(true)}}");
+                }
+                else
+                {
+                    $(ele).text("{{\App\Tools\Helper::punchMessage(false)}}");
+                }
+            });
+        })
+    </script>
     @yield("scripts")
 @endsection

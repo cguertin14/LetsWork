@@ -106,8 +106,27 @@ class Helper
         return $jobofferuser;
     }
 
-    public function getEmployeeFromCompany()
+    public static function getEmployeeFromCompany()
     {
         return session('CurrentCompany')->employees->where('user_id',Auth::user()->id)->get();
+    }
+
+    public static function hasLastPunch()
+    {
+        if(\App\Tools\Helper::CEmployee()->punches()->where('dateend',null)->get()->count()>0)
+            return true;
+        return false;
+    }
+
+    public static function punchMessage($bool)
+    {
+        if(!$bool)
+        {
+            return "Commencer a travailler";
+        }
+        else
+        {
+            return "Terminer de travailler";
+        }
     }
 }

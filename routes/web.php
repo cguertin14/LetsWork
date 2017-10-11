@@ -70,8 +70,11 @@ Route::group(['middleware' => 'auth'], function () {
     /* Schedule Routes */
     Route::get('/schedule/editing','ScheduleController@editing')->name('schedule.editing');
     Route::resource('/schedule','ScheduleController');
-});
 
+    /* Punch Route */
+    Route::get('/punch', 'PunchController@add');
+    Route::get('/punches', 'PunchController@index');
+});
 Route::get("/test",function () {
-    return \Carbon\Carbon::create(2017, 1, 234, 3, 25, 0,0);
+    return \Illuminate\Support\Facades\Auth::user()->companies->first();
 });

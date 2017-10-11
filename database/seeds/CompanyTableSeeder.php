@@ -12,7 +12,7 @@ class CompanyTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        foreach (range(20,20) as $index) {
+        foreach (range(1,20) as $index) {
             $employee = \App\Employee::all()->random();
             $company = \App\Company::create([
                 'name' => $faker->company,
@@ -28,6 +28,9 @@ class CompanyTableSeeder extends Seeder
                 'user_id' => $employee->user_id,
             ]);
             $company->employees()->attach($employee);
+        }
+        foreach (\App\Employee::all() as $employe) {
+            $employe->companies()->attach(\App\Company::all()->random());
         }
     }
 }

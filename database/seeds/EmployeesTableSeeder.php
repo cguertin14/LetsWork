@@ -14,7 +14,7 @@ class EmployeesTableSeeder extends Seeder
     {
         $users = User::all();
         foreach ($users as $user) {
-            \App\Employee::create(['user_id' => $user->id]);
+            $employe=\App\Employee::create(['user_id' => $user->id]);
         }
     }
 }
