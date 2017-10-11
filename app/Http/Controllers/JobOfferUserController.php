@@ -57,7 +57,7 @@ class JobOfferUserController extends Controller
 
     public function accept($id)
     {
-        $jobofferuser = Helper::getJobOfferUserById($id);
+        $jobofferuser = JobOfferUser::findOrFail($id);
         session(['jobofferuser' => $jobofferuser]);
         $data = ['jobofferuser' => $jobofferuser];
 
@@ -86,7 +86,7 @@ class JobOfferUserController extends Controller
 
     public function refuse($id)
     {
-        $jobofferuser = Helper::getJobOfferUserById($id);
+        $jobofferuser = JobOfferUser::findOrFail($id);
         session(['jobofferuser' => $jobofferuser]);
         $data = ['jobofferuser' => $jobofferuser];
 
@@ -114,7 +114,7 @@ class JobOfferUserController extends Controller
 
     public function interview($id)
     {
-        $jobofferuser = Helper::getJobOfferUserById($id);
+        $jobofferuser = JobOfferUser::findOrFail($id);
         session(['jobofferuser' => $jobofferuser]);
         $data = ['jobofferuser' => $jobofferuser];
 

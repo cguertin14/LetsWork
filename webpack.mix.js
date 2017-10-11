@@ -11,15 +11,17 @@ mix.styles([
     'resources/assets/css/libs/forgetpassword.css',
     'resources/assets/css/libs/dropzone.css',
     'resources/assets/css/libs/basic.css',
-    'resources/assets/css/libs/sidemenu.css',
     'resources/assets/css/libs/404page.css',
     'resources/assets/css/bootstrap-datetimepicker.css',
     'resources/assets/css/bootstrap-datetimepicker-standalone.css',
     'resources/assets/css/bootstrap-select.css',
+    'resources/assets/css/schedule/style.css',
+    'resources/assets/css/libs/sidemenu.css',
 ],'public/css/libs.css');
 
 mix.scripts([
     'node_modules/jquery/dist/jquery.js',
+    'resources/assets/js/schedule/hour-container.js',
     'resources/assets/js/tether.js',
     'resources/assets/js/libs/tools.js',
     'resources/assets/js/libs/profile.js',
@@ -37,5 +39,7 @@ mix.scripts([
     "resources/assets/js/libs/infinite-scroll.pkgd.js",
     "resources/assets/js/libs/isotope.pkgd.js",
     "resources/assets/js/libs/vue.js",
-    "resources/assets/js/libs/pdfobject.js"
+    "resources/assets/js/libs/pdfobject.js",
+    'resources/assets/js/schedule/modernizr.js',
+    'resources/assets/js/schedule/main.js',
 ],'public/js/libs.js');

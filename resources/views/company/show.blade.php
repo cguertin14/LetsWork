@@ -21,7 +21,7 @@
         </div>
         <div class="container">
             <div class="col-sm-8 col-md-12">
-                <p class="h3">{{$data['description']}}</p>
+                <p class="h3">{!!$data['description']!!}</p>
             </div>
             @if(count($joboffers)>0)
                 <div class="col-sm-8 col-md-12">
