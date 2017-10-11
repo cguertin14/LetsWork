@@ -73,5 +73,5 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::get("/test",function () {
-    return view("schedule.index");
+    return \Carbon\Carbon::create(2017, 1, 234, 3, 25, 0,0);
 });
