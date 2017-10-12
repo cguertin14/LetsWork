@@ -116,7 +116,6 @@
                     url: '{{route('profile.photo')}}',
                     success: function(result) {
                         $("#image").attr('src',"data:image/png;base64," + result.source);
-                        $("#image").reload();
                     }
                 });
             }

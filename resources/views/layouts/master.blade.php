@@ -55,18 +55,18 @@
         <div id="wrapper">
             <div id="sidebar-wrapper">
                 <div id="mySidenav" class="sidenav">
-                    <ul style="list-style-type: none">
-                        <li id="dropdown1">
-                            <a href="#">Compagnies</a>
-                            <ul class="collapse" style="list-style-type: none">
+                    <ul style="list-style-type: none;padding-left: 0px;margin-right: 10px">
+                        <li>
+                            <a id="dropdown1Title" href="#">Compagnies <span id="img1" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
+                            <ul id="dropdown1" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
                                 <li><a href="/company">Index</a></li>
                                 <li><a href="/company/create">Créer</a></li>
                             </ul>
                         </li>
                         @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 0)
-                        <li id="dropdown2">
-                            <a href="#">Mes emplois</a>
-                            <ul class="collapse" style="list-style-type: none">
+                        <li>
+                            <a  id="dropdown2Title" href="#">Mes emplois <span id="img2" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
+                            <ul id="dropdown2" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
                                 @foreach(\Illuminate\Support\Facades\Auth::user()->companies as $company)
                                     <li onclick="selectCompany('{{$company->slug}}')"><a href="#">{{$company->name}}</a></li>
                                 @endforeach
@@ -77,9 +77,9 @@
                         @if (Session::has('CurrentCompany'))
                             <li><a href="{{route('absence.create')}}">Demande d'absence</a></li>
                             @if (Illuminate\Support\Facades\Auth::user()->isOwner())
-                                <li id="dropdown3">
-                                    <a href="#">Postes</a>
-                                    <ul class="collapse" style="list-style-type: none">
+                                <li>
+                                    <a href="#" id="dropdown3Title">Postes <span id="img3" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
+                                    <ul id="dropdown3" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
                                         <li><a href="{{route('specialrole.index')}}">Voir tout</a></li>
                                         <li><a href="{{route('specialrole.create')}}">Créer</a></li>
                                         <li><a href="{{route('dispo.index')}}">Vos disponibilités</a></li>
@@ -87,9 +87,9 @@
                                     </ul>
                                 </li>
                             @endif
-                            <li id="dropdown4">
-                                <a href="#">Compétences</a>
-                                <ul class="collapse" style="list-style-type: none">
+                            <li>
+                                <a id="dropdown4Title" href="#">Compétences <span id="img4" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
+                                <ul id="dropdown4" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
                                     <li><a href="{{route('skill.index')}}">Voir tout</a></li>
                                     @if (Illuminate\Support\Facades\Auth::user()->isOwner())
                                     <li><a href="{{route('skill.create')}}">Créer</a></li>
@@ -99,9 +99,9 @@
                             @if (Illuminate\Support\Facades\Auth::user()->isOwner())
                                 <li><a href="{{route('jobofferuser.index')}}">Demandes d'emploi</a></li>
                             @endif
-                            <li id="dropdown6">
-                                <a href="#">Calendrier</a>
-                                <ul class="collapse" style="list-style-type: none">
+                            <li>
+                                <a id="dropdown5Title" href="#">Calendrier <span id="img5" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
+                                <ul id="dropdown5" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
                                     <li><a href="{{route('schedule.index')}}">Voir</a></li>
                                     @if (Illuminate\Support\Facades\Auth::user()->isOwner())
                                         <li><a href="{{route('schedule.editing')}}">Modifier</a></li>
@@ -109,9 +109,9 @@
                                 </ul>
                             </li>
                         @endif
-                        <li id="dropdown5">
-                            <a href="#">Offres d'emplois</a>
-                            <ul class="collapse" style="list-style-type: none">
+                        <li>
+                            <a id="dropdown6Title" href="#">Offres d'emplois <span id="img6" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
+                            <ul id="dropdown6"  style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
                                 <li><a href="{{route('joboffer.index')}}">Voir tout</a></li>
                                 @if (count(Illuminate\Support\Facades\Auth::user()->companies) > 0 && Session::has('CurrentCompany'))
                                     @if (Illuminate\Support\Facades\Auth::user()->isOwner())

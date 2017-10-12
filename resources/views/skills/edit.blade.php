@@ -44,9 +44,7 @@
                     {!! Form::close() !!}
 
                     {!! Form::open(['method' => 'DELETE','action' => ['SkillController@destroy',$skill->slug]]) !!}
-                    <div>
-                        {!! Form::submit('Supprimer la compétence',['class' => 'btn btn-danger pull-right','style' => 'font-size:17px !important']) !!}
-                    </div>
+                        {!! Form::submit('Supprimer la compétence',['class' => 'btn btn-danger pull-right confirm_action','c_m_text' => 'Voulez-vouz vraiment supprimer cette compétence?','style' => 'font-size:17px !important']) !!}
                     {!! Form::close() !!}
                 </div>
             </div>

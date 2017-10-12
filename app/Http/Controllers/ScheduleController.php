@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateEventRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,21 +28,24 @@ class ScheduleController extends Controller
     public function create()
     {
         // Retourne la view à mettre ensuite dans le modal
-        // (Donc l'appeler en javascript => ajax, et la mettre dedans le modal ensuite)
-
-        $schedules = session('CurrentCompany')->schedules;
-        return view('schedule.create',compact('schedules'));
+        // Donc l'appeler en javascript => ajax,
+        // et la mettre dedans le modal ensuite
+        $employees = [];
+        foreach(session('CurrentCompany')->employees as $employee)
+            array_push($employees,$employee->user);
+        $employees = collect($employees)->pluck('name','id');
+        return view('schedule.create',compact('employees'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\CreateEventRequest
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateEventRequest $request)
     {
-        //
+        return response()->json($request->all());
     }
 
     /**

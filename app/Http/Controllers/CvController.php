@@ -28,6 +28,6 @@ class CvController extends Controller
         $data['cv'] = base64_encode($filedata);
 
         Auth::user()->update($data);
-        return Auth::user()->cv;
+        return response()->json(['cv' => Auth::user()->cv]);
     }
 }

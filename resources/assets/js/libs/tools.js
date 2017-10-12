@@ -30,7 +30,7 @@ function sendCV() {
             contentType: false,
             success: function(data) {
                 if (data !== null)
-                    PDFObject.embed("data:application/pdf;base64," + data, "#cv_file");
+                    PDFObject.embed("data:application/pdf;base64," + data.cv, "#cv_file");
             }
         });
         e.preventDefault();
@@ -66,8 +66,10 @@ function CheckFile() {
 }
 
 function show_confirmation_modal(e) {
+    if ($('#modal_confirmation'))
+        $('#modal_confirmation').remove();
     $("body").append($("<div id='modal_confirmation' class=\"modal fade\"><div class=\"\modal-dialog\" role=\"document\"><div class=\"modal-content\"></div></div></div>"));
-    $("div.modal-content").append($("<div class=\"modal-header\"><h5 class=\"modal-title\">Confirmation de votre action</h5>" +
+    $("div.modal-content").append($("<div class=\"modal-header\"><h5 class=\"modal-title\" style='display: inline-block'>Confirmation de votre action</h5>" +
         "<button id='exit_modal' type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">" +
         "<span aria-hidden=\"true\">&times;</span>" +
         "</button> </div>"));
@@ -76,19 +78,16 @@ function show_confirmation_modal(e) {
         "</div>"));
     $("div.modal-content").append($(
         "<div class=\"modal-footer\">\n" +
-        "<button id='validation_modal' type=\"button\" class=\"btn btn-primary\">Valider</button>" +
-        "<button id='annulation_modal' type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Annuler</button>" +
+        "<button id='validation_modal' type=\"button\" class=\"btn btn-success\">Oui</button>" +
+        "<button id='annulation_modal' type=\"button\" class=\"btn btn-danger\" data-dismiss=\"modal\">Non</button>" +
         "</div>"));
 
     $("#validation_modal").click(function () {
         $("#modal_confirmation").remove();
         $(".modal-backdrop").remove();
-        if(e.parent("form"))
-        {
+        if(e.parent("form")) {
             e.parent("form")[0].submit();
-        }
-        else
-        {
+        } else {
             location.href=e.attr("href");
         }
     });
