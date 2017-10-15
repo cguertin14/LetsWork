@@ -58,12 +58,7 @@ jQuery(document).ready(function ($) {
                                 setNewEvent();
                             },
                             error: function (errors) {
-                                errors = JSON.parse(errors.responseText.replace(/\\'/g, "'"));
-                                let errorsContainer = $('<div class="alert alert-danger"><ul id="errors" style="list-style: inherit !important;"></ul></div>');
-                                $.each(errors.name,function (key,error) {
-                                    errorsContainer.find('#errors').append('<li>'+error+'</li>')
-                                });
-                                createScheduleModal.find('#errors').append(errorsContainer).parent().show('slow');
+                                formErrors(errors,createScheduleModal);
                             }
                         });
                         event.preventDefault();
