@@ -120,5 +120,65 @@
 @endsection
 
 @section('scripts')
-<script></script>
+    <script>
+        var calendar = new Vue({
+            el: "#calendar",
+            data: {
+                days: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"],//, "Samedi", "Dimanche"
+                weekevents:
+                    {
+                        "Lundi": [
+                        {
+                            "start": "12:00",
+                            "end": "15:00",
+                            "name": "Wawooo!!!",
+                            "content": "Le premier evenement"
+                        }, 
+                        {"start": "1:00", "end": "8:32", "name": "Wawooo2!!!", "content": "Le deuxieme evenement"}
+                        ],
+                        "Mardi": [{
+                            "start": "12:00",
+                            "end": "15:00",
+                            "name": "Wawooo!!!",
+                            "content": "Le premier evenement"
+                        }],
+                        "Mercredi": [],
+                        "Jeudi": [],
+                        "Vendredi": []
+                    }
+            },
+            computed: {},
+            methods: {
+                thisdayhaveanevent: function (day) {
+                    if (this.weekevents[day] != undefined)
+                        return true;
+                    return false;
+                },
+                getevent: function (day) {
+                    return this.weekevents[day];
+                },
+                loadThisWeek: function () {
+                    $.getJSON("", {}, function (data) {
+                        weekevents = data;
+                    });
+                },
+                loadNextWeek: function () {
+                    $.getJSON("", {}, function (data) {
+                        weekevents = data;
+                    });
+                },
+                loadLastWeek: function () {
+                    $.getJSON("", {}, function (data) {
+                        weekevents = data;
+                    });
+                }
+            },
+            watch: {},
+            updated: function () {
+            },
+            created: function () {
+                this.loadThisWeek();
+            }
+        });
+    </script>
 @endsection
