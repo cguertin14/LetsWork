@@ -76,32 +76,49 @@
             transform: translate(-50%, -50%);
         }
 </style>
+<style>
+    tr>td {
+        padding-bottom: 1em;
+    }
+</style>
 @endsection
 
 @section('content')
 
-<div class="parent">
-    @if (\Illuminate\Support\Facades\Auth::user()->isOwner())
-        <div class="element" style="display: inline-block">
-            <h1 class="page-title text-center">Modifier le calendrier</h1>
-        </div>
-        <div class="element" style="cursor: pointer;display: inline-block;margin-left: 16em" id="new-event">
-            <img src="{{asset('image/purple_plus.png')}}" alt="" height="70px" width="70px">
-        </div>
-    @else
-        <h1 class="page-title text-center">Modifier le calendrier</h1>
-    @endif
-
-</div>
+<h1 class="page-title text-center">Modifier le calendrier</h1>
 <hr class="separator">
 
+<div class="modal fade" id="createScheduleModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div class="modal fade" id="createEventModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
+
+<div class="custom-container custom-table" style="margin: 2em auto;max-width: 1400px;width: 90%">
+    <table style="margin: 2em">
+        <tbody id="tbody">
+            <tr>
+                <td class="col-xs-2">
+                    <img style="cursor: pointer;display: inline-block" id="new-schedule" src="{{asset('image/purple_plus.png')}}" alt="" height="70px" width="70px">
+                </td>
+                <td class="col-xs-10">
+                    <h1 class="page-title" style="font-size: 2em">Ajouter un horaire</h1>
+                </td>
+            </tr>
+            @if(count(session('CurrentCompany')->schedules()->get()) > 0)
+            <tr id="add-event-section" style="margin-top: 2em;background-color: transparent">
+                <td class="col-xs-2">
+                    <img style="cursor: pointer;display: inline-block" id="new-event" src="{{asset('image/purple_plus.png')}}" alt="" height="70px" width="70px">
+                </td>
+                <td class="col-xs-10">
+                    <h1 class="page-title" style="font-size: 2em">Ajouter un événement</h1>
+                </td>
+            </tr>
+            @endif
+        </tbody>
+    </table>
+</div>
 
 @include('include.calendar-template')
 @endsection
 
 @section('scripts')
-<script>
-
-</script>
+<script></script>
 @endsection

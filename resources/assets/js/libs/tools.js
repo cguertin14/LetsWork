@@ -10,13 +10,27 @@ $(document).ready(function () {
     });
 });
 
+function setUserProfilePic(route) {
+    $.get({
+        url: route,
+        success: function(result) {
+            $("#image").attr('src',"data:image/png;base64," + result.photo.source);
+        }
+    });
+}
+
+function errorsContainer() {
+    var errors = $('<div class="alert alert-danger"><ul id="errors"></ul></div>');
+    return errors;
+}
+
 function getUserCV() {
     $.ajax({
         type: 'GET',
         url: '/cv'
     }).done(function (data) {
         if (data !== null)
-            PDFObject.embed("data:application/pdf;base64," + data, "#cv_file");
+            PDFObject.embed("data:application/pdf;base64," + data.cv, "#cv_file");
     });
 }
 

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateEventRequest extends FormRequest
+class CreateScheduleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class CreateEventRequest extends FormRequest
         return [
             'begin' => 'required',
             'end' => 'required',
-            'special_role_id' => 'required'
+            'name' => 'required'
         ];
     }
 
@@ -35,7 +35,7 @@ class CreateEventRequest extends FormRequest
         return [
             'begin.required' => 'La date de début est nécessaire',
             'end.required' => 'La date de fin est nécessaire',
-            'special_role_id.required' => 'Le poste auquel assigner la tâche est nécessaire',
+            'name.required' => 'Le nom de l\'horaire est nécessaire',
         ];
     }
 }

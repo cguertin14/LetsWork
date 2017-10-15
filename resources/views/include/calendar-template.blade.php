@@ -97,10 +97,6 @@
         <a href="#0" class="close">Close</a>
     </div>
 
-    <!-- Modal for creating and editing an event. -->
-    <div class="edit-event-modal"></div>
-    <!---------------------------------------------->
-
     <div class="cover-layer"></div>
 </div> <!-- .cd-schedule -->
 <div id="carbonads-container">

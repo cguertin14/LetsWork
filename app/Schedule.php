@@ -22,6 +22,10 @@ class Schedule extends Model
         ];
     }
 
+    protected $fillable = [
+        'name','company_id','begin','end','slug'
+    ];
+
     public function company() {
         return $this->belongsTo('App\Company');
     }

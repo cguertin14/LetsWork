@@ -14,7 +14,7 @@ class CvController extends Controller
 
     public function getAuthCv()
     {
-        return Auth::user()->cv;
+        return response()->json(['cv' => Auth::user()->cv]);
     }
 
     public function store(Request $request)
