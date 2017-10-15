@@ -18,7 +18,6 @@
         <script src="{{asset('js/libs.js')}}"></script>
         @include('include.selectcompany')
         @include('include.dropdown')
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
         @yield('scripts')
     </body>
 </html>
