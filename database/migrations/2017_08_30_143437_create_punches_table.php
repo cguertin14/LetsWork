@@ -16,7 +16,7 @@ class CreatePunchesTable extends Migration
         Schema::create('punches', function (Blueprint $table) {
             $table->increments('id');
             $table->dateTime('datebegin');
-            $table->dateTime('dateend');
+            $table->dateTime('dateend')->nullable();
             $table->integer('employee_id')->unsigned()->index();
             $table->integer('company_id')->unsigned()->index();
             $table->timestamps();

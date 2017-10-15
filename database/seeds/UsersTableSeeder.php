@@ -12,7 +12,7 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        foreach (range(1,10) as $index) {
+        foreach (range(1,150) as $index) {
             $firstname = $faker->firstName;
             $lastname = $faker->lastName;
             $fullname = $firstname . " " . $lastname;

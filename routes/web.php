@@ -73,6 +73,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/schedule/editing','ScheduleController@editing')->name('schedule.editing');
     Route::get('/schedule/employees/{specialrole}','ScheduleController@getEmployees')->name('schedule.employees');
     Route::resource('/schedule','ScheduleController');
+
+    /* Punch Route */
+    Route::get('/punch', 'PunchController@add');
+    Route::get('/punches', 'PunchController@index');
 });
 
 Route::get('test',function () {
