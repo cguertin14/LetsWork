@@ -68,13 +68,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/jobofferuser/{id}/refuse','JobOfferUserController@refuse')->name('jobofferuser.refuse');
 
     /* Schedule Routes */
+    Route::get('/schedule/scheduleelement','ScheduleController@createelement')->name('schedule.createelement');
+    Route::post('/schedule/scheduleelement','ScheduleController@storeelement')->name('schedule.storeelement');
     Route::get('/schedule/editing','ScheduleController@editing')->name('schedule.editing');
+    Route::get('/schedule/employees/{specialrole}','ScheduleController@getEmployees')->name('schedule.employees');
     Route::resource('/schedule','ScheduleController');
 
     /* Punch Route */
     Route::get('/punch', 'PunchController@add');
     Route::get('/punches', 'PunchController@index');
 });
-Route::get("/test",function () {
-    return \Illuminate\Support\Facades\Auth::user()->companies->first();
+
+Route::get('test',function () {
+   return count(session('CurrentCompany')->schedules()->get()) > 0 ? 'true' : 'false';
 });

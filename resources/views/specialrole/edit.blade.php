@@ -67,9 +67,7 @@
         {!! Form::close() !!}
 
         {!! Form::open(['method' => 'DELETE','action' => ['SpecialRoleController@destroy',$specialRole->slug]]) !!}
-                    <div>
-                        {!! Form::submit('Supprimer le poste',['class' => 'btn btn-danger pull-right','style' => 'font-size:17px !important']) !!}
-                    </div>
+                    {!! Form::submit('Supprimer le poste',['class' => 'btn btn-danger pull-right confirm_action','style' => 'font-size:17px !important','c_m_text' => 'Voulez-vous vraiment supprimer ce poste?']) !!}
         {!! Form::close() !!}
                 </div>
             </div>

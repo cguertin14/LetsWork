@@ -42,4 +42,6 @@ mix.scripts([
     "resources/assets/js/libs/pdfobject.js",
     'resources/assets/js/schedule/modernizr.js',
     'resources/assets/js/schedule/main.js',
+    'resources/assets/js/schedule/tools.js',
+    "resources/assets/js/libs/jquery.mask.js",
 ],'public/js/libs.js');

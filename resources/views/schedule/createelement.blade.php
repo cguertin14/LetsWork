@@ -1,18 +1,12 @@
 @component('components.modal')
     @slot('title')
-        Créer un horaire
+        Créer un événement
     @endslot
     @slot('body')
         <!-- Formulaire de création d'événement -->
-        {!! Form::open(['method' => 'POST','action' => 'ScheduleController@store','class' => 'form-horizontal','id' => 'createForm']) !!}
+        {!! Form::open(['method' => 'POST','action' => 'ScheduleController@storeelement','class' => 'form-horizontal','id' => 'createForm']) !!}
         <div class="row">
             <div class="col-md-12" id="container">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        {!! Form::label('name', 'Nom de l\'horaire', ['class' => 'section-title']); !!}
-                        {!! Form::text('name',null,['class' => 'form-control','placeholder' => 'Nom de l\'horaire','required']); !!}
-                    </div>
-                </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         {!! Form::label('begin', 'Date de début', ['class' => 'section-title']); !!}
@@ -31,8 +25,23 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6" id="errorsParent" style="display: none;">
-                    <div class="form-group" id="errors">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {!! Form::label('special_role_id', 'Type d\'employé voulu', ['class' => 'section-title']); !!}
+                        {!! Form::select('special_role_id',$specialRoles,null,['class' => 'form-control','required','id' => 'special_role']); !!}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <section style="display: inline-flex">
+                            <!-- .slideTwo -->
+                            <div class="slideTwo">
+                                <input type="checkbox" value="None" id="specific_user_checkbox" name="check"/>
+                                <label for="specific_user_checkbox"></label>
+                            </div>
+                            <!-- end .slideTwo -->
+                        </section>
+                        <label class="text-center section-title" style="margin-left: 0.5em">Employé spécifique</label>
                     </div>
                 </div>
             </div>
@@ -57,18 +66,17 @@
                     format: 'YYYY-DD-MM HH:mm:ss',
                     locale: 'fr-ca'
                 });
+                $('#specific_user_checkbox').change(function () {
+                    getEmployeesByRole($('#special_role').find(":selected").val());
+                });
+                $('#special_role').change(function () {
+                    if ($('#specific_user')) {
+                        getEmployeesByRole($('#special_role').find(":selected").val());
+                    } else {
+                        // DO NOTHING.
+                    }
+                })
             });
-            function setNewEvent() {
-                let content = $.parseHTML('<tr id="add-event-section" style="margin-top: 2em;background-color: transparent;display: none;">\n' +
-                    '                <td class="col-xs-2">\n' +
-                    '                    <img style="cursor: pointer;display: inline-block" id="new-event" src="{{asset('image/purple_plus.png')}}" alt="" height="70px" width="70px">\n' +
-                    '                </td>\n' +
-                    '                <td class="col-xs-10">\n' +
-                    '                    <h1 class="page-title" style="font-size: 2em">Ajouter un événement</h1>\n' +
-                    '                </td>\n' +
-                    '          </tr>');
-                $(content).appendTo('#tbody').show('slow');
-            }
         </script>
     @endslot
 @endcomponent

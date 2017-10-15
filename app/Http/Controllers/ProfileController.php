@@ -46,7 +46,7 @@ class ProfileController extends Controller
 
     public function photo() {
         // return image as base64
-        return Auth::user()->photo;
+        return response()->json(['photo' => Auth::user()->photo]);
     }
 
     public function deleteuser($slug)

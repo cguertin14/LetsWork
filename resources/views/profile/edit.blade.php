@@ -16,21 +16,10 @@
         <div class="col-md-12 text-center">
             <br>
             <div style="width:100%; height:70%">
-                @if ($user->photo)
-                    <img id="image" width="200px" height="auto" src="data:image/png;base64,{{$user->photo->source}}" style="border-radius: 50%">
-                @else
-                    <img id="image" width="200px" height="200px" src="{{asset('image/default-profile.png')}}" style="border-radius: 50%">
-                @endif
+                <img id="image" width="200px" height="200px" src="{{asset('image/default-profile.png')}}" style="border-radius: 50%">
             </div>
             <div class="employee">
                 <p>{{ $user->fullname }}</p>
-                {{--@if(count($user->employees) > 0)--}}
-                    {{--@foreach ($user->employees as $employee)--}}
-                        {{--@foreach($employee->companies as $company)--}}
-                            {{--<p style="font-size: 15px;">- {{ $company->name }}@endif</p>--}}
-                        {{--@endforeach--}}
-                    {{--@endforeach--}}
-                {{--@endif--}}
             </div>
             <br>
             <div class="col-md-12">
@@ -102,6 +91,11 @@
 
 @section('scripts')
     <script>
+        @if(\Illuminate\Support\Facades\Auth::user()->photo)
+            setUserProfilePic('{{route('profile.photo')}}');
+        @else
+            $('#image').attr('src',{{asset('image/default-profile.png')}});
+        @endif
         Dropzone.autoDiscover = false;
         $("#files").dropzone({
             url: '{{route('profile.uploadphoto')}}',
@@ -112,13 +106,7 @@
                 this.addFile(file);
             },
             queuecomplete: function () {
-                $.get({
-                    url: '{{route('profile.photo')}}',
-                    success: function(result) {
-                        $("#image").attr('src',"data:image/png;base64," + result.source);
-                        $("#image").reload();
-                    }
-                });
+                setUserProfilePic('{{route('profile.photo')}}');
             }
         });
     </script>

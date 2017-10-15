@@ -26,10 +26,10 @@ class AddColumnPhotoIdToUsers extends Migration
      */
     public function down()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        Schema::disableForeignKeyConstraints();
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('photo_id');
         });
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        Schema::enableForeignKeyConstraints();
     }
 }

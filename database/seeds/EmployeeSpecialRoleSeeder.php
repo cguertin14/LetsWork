@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class EmployeeSpecialRoleSeeder extends Seeder
 {
@@ -12,9 +13,12 @@ class EmployeeSpecialRoleSeeder extends Seeder
     public function run()
     {
         $employees = \App\Employee::all();
-        $specialroles=\App\SpecialRole::all();
         foreach ($employees as $employee) {
-            $employee->specialroles()->attach($specialroles->random()->id);
+            foreach ($employee->companies as $company) {
+                $specialroles = \App\SpecialRole::where('company_id',$company->id)->get();
+                if (!$specialroles->isEmpty())
+                    $employee->specialroles()->attach($specialroles->random());
+            }
         }
     }
 }
