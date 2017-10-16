@@ -15,20 +15,22 @@ class SchedulesSeeder extends Seeder
 
         foreach (\App\Company::all() as $company) {
             $schedule = $company->schedules()->create([
-                "name" => $faker->name()
+                'name' => $faker->name(),
+                'begin' => $faker->dateTimeThisMonth('now'),
+                'end' => $faker->dateTimeThisDecade($max = '+10 years'),
             ]);
             foreach (range(1, 365) as $day) {
                 foreach (range(0, 2) as $chiffre) {
-                    $begin = \Carbon\Carbon::create(2017, 1, $day, random_int(0, 12), 0, 0)->format("H:i:s");
-                    $end = \Carbon\Carbon::create(2017, 1, $day, random_int(13, 23), 0, 0)->format("H:i:s");
-                    $element = $schedule->scheduleelements()->create([
-                        "begin" => $begin,
-                        "end" => $end
+                    $begin = \Carbon\Carbon::create(2017, 1, $day, random_int(0, 12),0, 0);
+                    $end = \Carbon\Carbon::create(2017, 1, $day, random_int(13, 23) ,0, 0);
+                    $scheduleElement = $schedule->scheduleelements()->create([
+                        'begin' => $begin,
+                        'end' => $end
                     ]);
                     $specialrole = \App\SpecialRole::all()->random();
-                    $element->specialrole()->attach($specialrole);
-                    $employe = $specialrole->employees()->whereIn("id", $company->employees)->get()->random();
-                    $element->employees()->attach($employe);
+                    //$employee = $specialrole->employees()->whereIn('id', $company->employees)->get()->random();
+                    $scheduleElement->specialroles()->attach($specialrole);
+                    $scheduleElement->employees()->attach($company->employees()->get()->random()->id);
                 }
             }
         }

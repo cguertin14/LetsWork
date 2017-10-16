@@ -37,14 +37,15 @@ class DatabaseSeeder extends Seeder
         $this->call(EmployeesTableSeeder::class);
         $this->call(CompanyTypesTableSeeder::class);
         $this->call(CompanyTableSeeder::class);
-        $this->call(MessagesTableSeeder::class);
+        //$this->call(MessagesTableSeeder::class);
         $this->call(FilesTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(SkillTableSeeder::class);
         $this->call(SpecialRoleSeeder::class);
         $this->call(JobOfferSeeder::class);
         $this->call(EmployeeSpecialRoleSeeder::class);
-        // $this->call(SchedulesSeeder::class);
+        $this->call(SchedulesSeeder::class);
+
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 }

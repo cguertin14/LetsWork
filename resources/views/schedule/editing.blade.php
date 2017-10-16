@@ -133,7 +133,7 @@
                             "end": "15:00",
                             "name": "Wawooo!!!",
                             "content": "Le premier evenement"
-                        }, 
+                        },
                         {"start": "1:00", "end": "8:32", "name": "Wawooo2!!!", "content": "Le deuxieme evenement"}
                         ],
                         "Mardi": [{

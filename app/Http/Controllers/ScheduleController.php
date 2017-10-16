@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateEventRequest;
 use App\Http\Requests\CreateScheduleRequest;
+use App\Schedule;
 use App\SpecialRole;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -47,7 +48,8 @@ class ScheduleController extends Controller
         $specialRoles = SpecialRole::where('company_id',session('CurrentCompany')->id)
             ->get()
             ->pluck('name','id');
-        return view('schedule.createelement',compact('specialRoles'));
+        $schedules = session('CurrentCompany')->schedules->pluck('name','slug');
+        return view('schedule.createelement',compact('specialRoles','schedules'));
     }
 
     public function getEmployees($specialrole)
@@ -92,6 +94,7 @@ class ScheduleController extends Controller
     {
         if ($request->has('user_id')) {
             // Create schedule element with user_id
+            ////////////////////////////////////////////////// RENDU ICI
         } else {
             // Create schedule element without user_id
         }
@@ -124,7 +127,7 @@ class ScheduleController extends Controller
 
     public function editing()
     {
-        $schedules = session('CurrentCompany')->schedules;
+        $schedules = session('CurrentCompany')->schedules->pluck('name','slug');
         return view('schedule.editing',compact('schedules'));
     }
 

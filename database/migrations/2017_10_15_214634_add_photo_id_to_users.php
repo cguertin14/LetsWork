@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnPhotoIdToUsers extends Migration
+class AddPhotoIdToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -26,10 +26,8 @@ class AddColumnPhotoIdToUsers extends Migration
      */
     public function down()
     {
-        Schema::disableForeignKeyConstraints();
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('photo_id');
+            //
         });
-        Schema::enableForeignKeyConstraints();
     }
 }
