@@ -42,11 +42,7 @@ class Employee extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function scheduleelementspecialroles() {
-        return $this->belongsToMany('App\SpecialRole')->using('App\ScheduleElementSpecialRole')->withTimestamps();
-    }
-
     public function scheduleelements() {
-        return $this->belongsToMany('App\ScheduleElement')->using('App\ScheduleElementSpecialRole')->withTimestamps();
+        return $this->belongsToMany('App\ScheduleElement')->using('App\EmployeeScheduleElement')->withTimestamps();
     }
 }

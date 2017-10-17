@@ -74,11 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/schedule/employees/{specialrole}','ScheduleController@getEmployees')->name('schedule.employees');
     Route::resource('/schedule','ScheduleController');
 
-    /* Punch Route */
-    Route::get('/punch', 'PunchController@add');
+    /* Punch Routes */
+    Route::post('/punch', 'PunchController@add');
     Route::get('/punches', 'PunchController@index');
-});
-
-Route::get('test',function () {
-   return count(session('CurrentCompany')->schedules()->get()) > 0 ? 'true' : 'false';
 });
