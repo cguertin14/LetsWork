@@ -12066,7 +12066,7 @@ return Tether;
 }));
 
 $(document).ready(function () {
-    $(".phone-number").mask("(999) 999-9999");
+    $(".phone-number").mask("(999)-999-9999");
 
     $(".confirm_action").click(function () {
         return show_confirmation_modal($(".confirm_action"));
@@ -12086,9 +12086,13 @@ function setUserProfilePic(route) {
     });
 }
 
-function errorsContainer() {
-    var errors = $('<div class="alert alert-danger"><ul id="errors"></ul></div>');
-    return errors;
+function formErrors(errors,modal) {
+    let formErrors = JSON.parse(errors.responseText.replace(/\\'/g, "'"));
+    let errorsContainer = $('<div class="alert alert-danger"><ul id="errors" style="list-style: inherit !important;"></ul></div>');
+    $.each(formErrors,function (key,error) {
+        errorsContainer.find('#errors').append('<li>'+error+'</li>')
+    });
+    modal.find('#errors').append(errorsContainer).parent().show('slow');
 }
 
 function getUserCV() {
@@ -51695,9 +51699,7 @@ jQuery(document).ready(function ($) {
                 createEventModal.empty();
                 createEventModal.html(view);
                 createEventModal.modal();
-                createEventModal.on('hidden.bs.modal', function () {
-                    $(this).empty();
-                });
+                createEventModal.on('hidden.bs.modal', function () { $(this).empty(); });
                 createEventModal.find('.createSubmit').click(function (event) {
                     event.preventDefault();
                     createEventModal.find('#createForm').submit(function (event) {
@@ -51708,7 +51710,8 @@ jQuery(document).ready(function ($) {
                             success: function(data) {
                                 ///////////// PLACE DATA IN CALENDAR WITH VUE.JS.
                                 createEventModal.modal('hide');
-                            }});
+                            }
+                        });
                         event.preventDefault();
                         return false;
                     });
@@ -51743,12 +51746,7 @@ jQuery(document).ready(function ($) {
                                 setNewEvent();
                             },
                             error: function (errors) {
-                                errors = JSON.parse(errors.responseText.replace(/\\'/g, "'"));
-                                let errorsContainer = $('<div class="alert alert-danger"><ul id="errors" style="list-style: inherit !important;"></ul></div>');
-                                $.each(errors.name,function (key,error) {
-                                    errorsContainer.find('#errors').append('<li>'+error+'</li>')
-                                });
-                                createScheduleModal.find('#errors').append(errorsContainer).parent().show('slow');
+                                formErrors(errors,createScheduleModal);
                             }
                         });
                         event.preventDefault();

@@ -25,15 +25,9 @@ class CreateUsersTable extends Migration
             $table->binary('cv')->nullable();
             $table->rememberToken();
             $table->timestamps();
-
-  //          $table->foreign('photo_id')->references('id')->on('files')->onDelete('cascade');
         });
 
         DB::statement('alter table users MODIFY cv LONGBLOB');
-
-//        $table->string('phone_number');
-//        $table->string('first_name');
-//        $table->string('last_name');
     }
 
     /**

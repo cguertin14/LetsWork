@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-    <h1 class="title-absence white">Liste de mes periodes de travaille</h1>
+    <h1 class="title-absence white">Mes périodes de travail</h1>
     <hr class="separator">
     <div class="col-md-12">
         <div class="row layout">
@@ -38,10 +38,5 @@
             <br>
             <a class="btn purplebtn" href="{{route("dispo.create")}}">Ajouter une plage horaire</a>
         </div>
-@endsection
-
-@section('scripts')
-    <script>
-
-    </script>
+    </div>
 @endsection

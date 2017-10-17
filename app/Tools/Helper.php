@@ -16,7 +16,7 @@ use App\JobOffer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-class Helper
+trait Helper
 {
     public static function CCompany()
     {
@@ -120,13 +120,6 @@ class Helper
 
     public static function punchMessage($bool)
     {
-        if(!$bool)
-        {
-            return "Commencer a travailler";
-        }
-        else
-        {
-            return "Terminer de travailler";
-        }
+        return !$bool ? "Commencer à travailler" : "Terminer de travailler";
     }
 }

@@ -10,9 +10,7 @@ jQuery(document).ready(function ($) {
                 createEventModal.empty();
                 createEventModal.html(view);
                 createEventModal.modal();
-                createEventModal.on('hidden.bs.modal', function () {
-                    $(this).empty();
-                });
+                createEventModal.on('hidden.bs.modal', function () { $(this).empty(); });
                 createEventModal.find('.createSubmit').click(function (event) {
                     event.preventDefault();
                     createEventModal.find('#createForm').submit(function (event) {
@@ -23,7 +21,8 @@ jQuery(document).ready(function ($) {
                             success: function(data) {
                                 ///////////// PLACE DATA IN CALENDAR WITH VUE.JS.
                                 createEventModal.modal('hide');
-                            }});
+                            }
+                        });
                         event.preventDefault();
                         return false;
                     });
@@ -50,7 +49,7 @@ jQuery(document).ready(function ($) {
                     event.preventDefault();
                     createScheduleModal.find('#createForm').submit(function (event) {
                         $.ajax({
-                            type: createScheduleModal.find('#createForm').attr('method'),
+                            method: createScheduleModal.find('#createForm').attr('method'),
                             url: createScheduleModal.find('#createForm').attr('action'),
                             data: createScheduleModal.find('#createForm').serialize(),
                             success: function(data) {
@@ -58,12 +57,7 @@ jQuery(document).ready(function ($) {
                                 setNewEvent();
                             },
                             error: function (errors) {
-                                errors = JSON.parse(errors.responseText.replace(/\\'/g, "'"));
-                                let errorsContainer = $('<div class="alert alert-danger"><ul id="errors" style="list-style: inherit !important;"></ul></div>');
-                                $.each(errors.name,function (key,error) {
-                                    errorsContainer.find('#errors').append('<li>'+error+'</li>')
-                                });
-                                createScheduleModal.find('#errors').append(errorsContainer).parent().show('slow');
+                                formErrors(errors,createScheduleModal);
                             }
                         });
                         event.preventDefault();

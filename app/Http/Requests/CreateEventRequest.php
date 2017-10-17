@@ -26,7 +26,8 @@ class CreateEventRequest extends FormRequest
         return [
             'begin' => 'required',
             'end' => 'required',
-            'special_role_id' => 'required'
+            'special_role_id' => 'required',
+            'schedule_id' => 'required'
         ];
     }
 
@@ -36,6 +37,7 @@ class CreateEventRequest extends FormRequest
             'begin.required' => 'La date de début est nécessaire',
             'end.required' => 'La date de fin est nécessaire',
             'special_role_id.required' => 'Le poste auquel assigner la tâche est nécessaire',
+            'schedule_id.required' => 'L\'horaire auquel assigner la tâche est nécessaire',
         ];
     }
 }

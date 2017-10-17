@@ -14,7 +14,7 @@ class PunchController extends Controller
      */
     public function add()
     {
-        $lastpunch=\App\Tools\Helper::CEmployee()->punches()->where('dateend',null)->get();
+        $lastpunch = \App\Tools\Helper::CEmployee()->punches()->where('dateend',null)->get();
         if($lastpunch->count()>0)
         {
             $lastpunch->first()->dateend=\Carbon\Carbon::now();
@@ -23,7 +23,7 @@ class PunchController extends Controller
         }
         else
         {
-            $punch =  \App\Punch::create([
+            \App\Punch::create([
                 "datebegin"=> \Carbon\Carbon::now(),
                 "employee_id"=>\App\Tools\Helper::CEmployee()->id,
                 "company_id"=> \App\Tools\Helper::CCompany()->id,

@@ -72,22 +72,12 @@
                                 <li><a href="/company/create">Créer</a></li>
                             </ul>
                         </li>
-                        @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 0)
+                        @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 1)
                         <li>
                             <a  id="dropdown2Title" href="#">Mes emplois <span id="img2" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
                             <ul id="dropdown2" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
                                 @foreach(\Illuminate\Support\Facades\Auth::user()->companies as $company)
-                                    <li onclick="selectCompany('{{$company->slug}}')"><a href="#">{{$company->name}}</a></li>
-                                @endforeach
-                            </ul>
-                        </li>
-                        @endif
-                        @if(count(Illuminate\Support\Facades\Auth::user()->companies) == 1)
-                        <li id="dropdown2">
-                            <a href="#">Mon emplois</a>
-                            <ul class="collapse" style="list-style-type: none">
-                                @foreach(\Illuminate\Support\Facades\Auth::user()->companies as $company)
-                                    <li onclick="selectCompany('{{$company->slug}}')"><a href="#">{{$company->name}}</a></li>
+                                    <li onclick="selectCompany('{{$company->slug}}')"><a href="#">@if(strlen($company->name) > 17){{ substr($company->name,0,17) . '..'}} @else{{$company->name}} @endif</a></li>
                                 @endforeach
                             </ul>
                         </li>
@@ -132,7 +122,7 @@
                             <a id="dropdown6Title" href="#">Offres d'emplois <span id="img6" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
                             <ul id="dropdown6"  style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
                                 <li><a href="{{route('joboffer.index')}}">Voir tout</a></li>
-                                @if (count(Illuminate\Support\Facades\Auth::user()->companies) > 0 && Session::has('CurrentCompany'))
+                                @if (Session::has('CurrentCompany'))
                                     @if (Illuminate\Support\Facades\Auth::user()->isOwner())
                                         <li><a href="{{route('joboffer.create')}}">Créer</a></li>
                                     @endif
@@ -164,18 +154,16 @@
 @section("scriptsm")
     <script>
         $("#punch").click(function () {
-            var ele=this;
+            let self = this;
             $.ajax({
-                url: '/punch'
-            })
-            .done(function(data) {
-                if(data==true)
-                {
-                    $(ele).text("{{\App\Tools\Helper::punchMessage(true)}}");
-                }
-                else
-                {
-                    $(ele).text("{{\App\Tools\Helper::punchMessage(false)}}");
+                url: '/punch',
+                method: 'POST',
+                data: { _token: "{{ csrf_token() }}" },
+                success: function (data) {
+                    if(data == true)
+                        $(self).text("{{\App\Tools\Helper::punchMessage(true)}}");
+                    else
+                        $(self).text("{{\App\Tools\Helper::punchMessage(false)}}");
                 }
             });
         })

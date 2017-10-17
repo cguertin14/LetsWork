@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $(".phone-number").mask("(999) 999-9999");
+    $(".phone-number").mask("(999)-999-9999");
 
     $(".confirm_action").click(function () {
         return show_confirmation_modal($(".confirm_action"));
@@ -19,9 +19,13 @@ function setUserProfilePic(route) {
     });
 }
 
-function errorsContainer() {
-    var errors = $('<div class="alert alert-danger"><ul id="errors"></ul></div>');
-    return errors;
+function formErrors(errors,modal) {
+    let formErrors = JSON.parse(errors.responseText.replace(/\\'/g, "'"));
+    let errorsContainer = $('<div class="alert alert-danger"><ul id="errors" style="list-style: inherit !important;"></ul></div>');
+    $.each(formErrors,function (key,error) {
+        errorsContainer.find('#errors').append('<li>'+error+'</li>')
+    });
+    modal.find('#errors').append(errorsContainer).parent().show('slow');
 }
 
 function getUserCV() {
