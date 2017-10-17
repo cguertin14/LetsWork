@@ -48,7 +48,7 @@ class ScheduleController extends Controller
         $specialRoles = SpecialRole::where('company_id',session('CurrentCompany')->id)
             ->get()
             ->pluck('name','id');
-        $schedules = session('CurrentCompany')->schedules->pluck('name','slug');
+        $schedules = session('CurrentCompany')->schedules->pluck('name','id');
         return view('schedule.createelement',compact('specialRoles','schedules'));
     }
 
@@ -92,14 +92,22 @@ class ScheduleController extends Controller
      */
     public function storeelement(CreateEventRequest $request)
     {
+        // Format dates to be inserted in database
+        $data = $request->all();
+        $data['begin'] = Carbon::createFromFormat('Y-d-m H:i:s',$data['begin']);
+        $data['end'] = Carbon::createFromFormat('Y-d-m H:i:s',$data['end']);
+
+        // Create schedule element in database, link with selected schedule
+        $scheduleElement = Schedule::findOrFail($data['schedule_id'])->scheduleelements()->create($data);
+        // Attach schedule element with special role
+        $scheduleElement->specialroles()->attach($data['special_role_id']);
+
         if ($request->has('user_id')) {
-            // Create schedule element with user_id
-            ////////////////////////////////////////////////// RENDU ICI
-        } else {
-            // Create schedule element without user_id
+            // Attach schedule element with user_id
+            $scheduleElement->employees()->attach(session('CurrentCompany')->employees->where('user_id',$data['user_id'])->first()->id);
         }
-        // Change return statement
-        return response()->json($request->all());
+        // Return the scheduleElement
+        return response()->json($scheduleElement);
     }
 
     /**
@@ -151,8 +159,7 @@ class ScheduleController extends Controller
      */
     public function destroy($slug)
     {
-        $schedule = session('CurrentCompany')->schedules->where('slug',$slug)->first();
-        $schedule->delete();
+        session('CurrentCompany')->schedules->where('slug',$slug)->first()->delete();
         return redirect()->action('ScheduleController@index');
     }
 }

@@ -72,20 +72,10 @@
                                 <li><a href="/company/create">Créer</a></li>
                             </ul>
                         </li>
-                        @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 0)
+                        @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 1)
                         <li>
                             <a  id="dropdown2Title" href="#">Mes emplois <span id="img2" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
                             <ul id="dropdown2" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
-                                @foreach(\Illuminate\Support\Facades\Auth::user()->companies as $company)
-                                    <li onclick="selectCompany('{{$company->slug}}')"><a href="#">{{$company->name}}</a></li>
-                                @endforeach
-                            </ul>
-                        </li>
-                        @endif
-                        @if(count(Illuminate\Support\Facades\Auth::user()->companies) == 1)
-                        <li id="dropdown2">
-                            <a href="#">Mon emplois</a>
-                            <ul class="collapse" style="list-style-type: none">
                                 @foreach(\Illuminate\Support\Facades\Auth::user()->companies as $company)
                                     <li onclick="selectCompany('{{$company->slug}}')"><a href="#">{{$company->name}}</a></li>
                                 @endforeach

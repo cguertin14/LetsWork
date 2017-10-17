@@ -51699,9 +51699,7 @@ jQuery(document).ready(function ($) {
                 createEventModal.empty();
                 createEventModal.html(view);
                 createEventModal.modal();
-                createEventModal.on('hidden.bs.modal', function () {
-                    $(this).empty();
-                });
+                createEventModal.on('hidden.bs.modal', function () { $(this).empty(); });
                 createEventModal.find('.createSubmit').click(function (event) {
                     event.preventDefault();
                     createEventModal.find('#createForm').submit(function (event) {
@@ -51712,7 +51710,8 @@ jQuery(document).ready(function ($) {
                             success: function(data) {
                                 ///////////// PLACE DATA IN CALENDAR WITH VUE.JS.
                                 createEventModal.modal('hide');
-                            }});
+                            }
+                        });
                         event.preventDefault();
                         return false;
                     });

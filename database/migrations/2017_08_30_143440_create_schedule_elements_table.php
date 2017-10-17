@@ -15,8 +15,8 @@ class CreateScheduleElementsTable extends Migration
     {
         Schema::create('schedule_elements', function (Blueprint $table) {
             $table->increments('id');
-            $table->dateTime('begin');
-            $table->dateTime('end');
+            $table->dateTime('begin')->nullable();
+            $table->dateTime('end')->nullable();
             $table->integer('schedule_id')->unsigned()->index();
             $table->timestamps();
 

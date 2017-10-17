@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 
 class SchedulesSeeder extends Seeder
@@ -11,27 +13,34 @@ class SchedulesSeeder extends Seeder
      */
     public function run()
     {
-        $faker = \Faker\Factory::create();
-
+        $faker = Factory::create();
+        $scheduleNames = [
+            'Été',
+            'Hiver',
+            'Noel',
+            'Printemps',
+            'Paques',
+            'Saint-Jean',
+            'Vacances'
+        ];
         foreach (\App\Company::all() as $company) {
             $schedule = $company->schedules()->create([
-                'name' => $faker->name(),
-                'begin' => $faker->dateTimeThisMonth('now'),
-                'end' => $faker->dateTimeThisDecade($max = '+10 years'),
+                'name' => $scheduleNames[array_rand($scheduleNames)],
+                'begin' => Carbon::today(),
+                'end' => $faker->dateTimeBetween($startDate = 'now', $endDate = '+1 month'),
             ]);
-            foreach (range(1, 365) as $day) {
-                foreach (range(0, 2) as $chiffre) {
-                    $begin = \Carbon\Carbon::create(2017, 1, $day, random_int(0, 12),0, 0);
-                    $end = \Carbon\Carbon::create(2017, 1, $day, random_int(13, 23) ,0, 0);
-                    $scheduleElement = $schedule->scheduleelements()->create([
-                        'begin' => $begin,
-                        'end' => $end
-                    ]);
-                    $specialrole = \App\SpecialRole::all()->random();
-                    //$employee = $specialrole->employees()->whereIn('id', $company->employees)->get()->random();
-                    $scheduleElement->specialroles()->attach($specialrole);
-                    $scheduleElement->employees()->attach($company->employees()->get()->random()->id);
-                }
+            foreach (range(1, 30) as $month) {
+                $begin = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = 'now', $endDate = '+2 months')->getTimeStamp());
+                $end = Carbon::createFromFormat('Y-m-d H:i:s', $begin)->addHours($faker->numberBetween(1, 8));
+
+                $scheduleElement = $schedule->scheduleelements()->create([
+                    'begin' => $begin,
+                    'end' => $end
+                ]);
+                $specialrole = \App\SpecialRole::all()->random();
+                //$employee = $specialrole->employees()->whereIn('id', $company->employees)->get()->random();
+                $scheduleElement->specialroles()->attach($specialrole);
+                $scheduleElement->employees()->attach($company->employees()->get()->random());
             }
         }
     }
