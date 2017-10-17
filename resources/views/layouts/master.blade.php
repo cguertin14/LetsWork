@@ -77,7 +77,7 @@
                             <a  id="dropdown2Title" href="#">Mes emplois <span id="img2" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
                             <ul id="dropdown2" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
                                 @foreach(\Illuminate\Support\Facades\Auth::user()->companies as $company)
-                                    <li onclick="selectCompany('{{$company->slug}}')"><a href="#">{{$company->name}}</a></li>
+                                    <li onclick="selectCompany('{{$company->slug}}')"><a href="#">@if(strlen($company->name) > 17){{ substr($company->name,0,17) . '..'}} @else{{$company->name}} @endif</a></li>
                                 @endforeach
                             </ul>
                         </li>
