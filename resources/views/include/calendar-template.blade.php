@@ -1,4 +1,4 @@
-<div id="calendar" class="cd-schedule loading">
+<div id="calendar" class="cd-schedule loading" v-cloak>
     <div class="timeline">
         <ul id="hour-container"></ul>
     </div> <!-- .timeline -->

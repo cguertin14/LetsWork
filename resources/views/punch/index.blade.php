@@ -77,7 +77,7 @@
                                     ticks: {
                                         // Include a h sign in the ticks
                                         callback: function (value, index, values) {
-                                            return value + 'h';
+                                            return value.toFixed(2) + 'h';
                                         }
                                     }
                                 }]
