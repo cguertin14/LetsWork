@@ -178,9 +178,11 @@ class ScheduleController extends Controller
         $schedule = Helper::getCurrentSchedule();
 
         // Get schedule elements
-        $scheduleElements = $schedule->scheduleelements;
+        $scheduleElements = $schedule->scheduleelements()->get();
         // Get elements before today.
-        $thisWeekElements = $scheduleElements->where('begin','<=',Carbon::today())->where('end','>=',Carbon::today())->groupBy('begin');
+        $thisWeekElements = $scheduleElements->where('begin','<=',Carbon::today())
+                                             ->where('end','>=',Carbon::today())
+                                             ->groupBy('begin');
         if (count($thisWeekElements) > 0) {
             //$thisWeekElements->orderBy('begin');
             // Put data in array.

@@ -17,6 +17,7 @@
     <hr class="separator">
     <div class="col-md-12">
         <div class="row layout">
+            @if (count($dispos) > 0)
             <div class="centre custom-container">
                 <table class="table custom-table">
                     <thead>
@@ -50,7 +51,16 @@
                     </tbody>
                 </table>
             </div>
+            @else
+                @component('components.nothing')
+                    @slot('message')
+                        Il n'y a pas de disponibilités
+                    @endslot
+                @endcomponent
+            @endif
+            @if(\Illuminate\Support\Facades\Auth::user()->isOwner())
             <br>
-            <a class="btn purplebtn" href="{{route("dispo.create")}}">Ajouter une plage horaire</a>
+            <a class="btn purplebtn" href="{{route("dispo.create")}}">Ajouter une disponibilité</a>
+            @endif
         </div>
 @endsection
