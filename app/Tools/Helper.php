@@ -235,4 +235,41 @@ trait Helper
         }
         return $sum;
     }
+
+    public static function getWeekDays()
+    {
+        return [
+            'Dimanche',
+            'Lundi',
+            'Mardi',
+            'Mercredi',
+            'Jeudi',
+            'Vendredi',
+            'Samedi'
+        ];
+    }
+
+    public static function getWeekDaysJson()
+    {
+        return collect([
+            'weekevents' => [
+                'monday' => [],
+                'tuesday' => [],
+                'wednesday' => [],
+                'thursday' => [],
+                'friday' => [],
+            ]
+        ]);
+    }
+
+    /**
+     * @return \App\Schedule
+     */
+    public static function getCurrentSchedule()
+    {
+        return session('CurrentCompany')->schedules
+                                            ->where('begin', '<=', Carbon::now())
+                                            ->where('end'  , '>=', Carbon::now())
+                                            ->first();
+    }
 }

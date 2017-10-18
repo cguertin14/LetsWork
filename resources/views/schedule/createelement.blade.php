@@ -15,6 +15,18 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        {!! Form::label('name', 'Nom', ['class' => 'section-title']); !!}
+                        {!! Form::text('name',null,['class' => 'form-control','placeholder' => 'Nom','required']); !!}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {!! Form::label('description', 'Description', ['class' => 'section-title']); !!}
+                        {!! Form::textarea('description',null,['class' => 'form-control','placeholder' => 'Description','required','rows' => 3]); !!}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
                         {!! Form::label('begin', 'Date de début', ['class' => 'section-title']); !!}
                         <div class='input-group date' id='begin'>
                             {!! Form::text('begin', null, ['class' => 'form-control','required']); !!}
