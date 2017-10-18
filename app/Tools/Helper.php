@@ -15,7 +15,6 @@ use App\Company;
 use App\JobOffer;
 use App\Punch;
 use Carbon\Carbon;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
