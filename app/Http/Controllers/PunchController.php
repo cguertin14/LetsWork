@@ -82,7 +82,7 @@ class PunchController extends Controller
     {
         $today=Helper::getLastYearsDates(Carbon::today());
         $data = [
-            "labels" => ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+            "labels" => Helper::getlastyearmonth(Carbon::today()),
             "datasets" =>
                 [[
                     "label" => "La somme des heures travaillées",
