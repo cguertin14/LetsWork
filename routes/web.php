@@ -76,5 +76,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     /* Punch Routes */
     Route::post('/punch', 'PunchController@add');
-    Route::get('/punches', 'PunchController@index');
+    Route::get('/punches', 'PunchController@index')->name('punch');
+    Route::get('/punches/lastweek', 'PunchController@lastweek');
+    Route::get('/punches/lastmouth', 'PunchController@lastmouth');
+    Route::get('/punches/lastyear', 'PunchController@lastyear');
+});
+
+Route::get('/test', function (){
+    $today=\Carbon\Carbon::today();
+    return  \App\Tools\Helper::getlastweekdates($today);
 });
