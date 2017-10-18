@@ -48,7 +48,7 @@ class PunchController extends Controller
                     "label" => "Le nombre d'heure travaillé en moyenne",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
-                    "data" => Helper::getLastWeekAverage(Carbon::today()),
+                    "data" => Helper::getLastWeekSum(Carbon::today()),
                 ]]
         ];
         return json_encode($data);
@@ -56,6 +56,7 @@ class PunchController extends Controller
 
     public function lastmouth()
     {
+        $today=Helper::getLast4WeekDates(Carbon::today());
         $data = [
             "labels" => ["Première semaine", "Deuxième semaine", "Troisième semaine", "Quatrième semaine"],
             "datasets" =>
@@ -63,7 +64,11 @@ class PunchController extends Controller
                     "label" => "Le nombre d'heure travaillé en moyenne",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
-                    "data" => [0, 10, 5, 2],
+                    "data" => [
+                    Helper::makeSum($today,5,0),
+                    Helper::makeSum($today,5,1),
+                    Helper::makeSum($today,5,2),
+                    Helper::makeSum($today,5,3)],
                 ]]
         ];
         return json_encode($data);
@@ -71,6 +76,7 @@ class PunchController extends Controller
 
     public function lastyear()
     {
+        $today=Helper::getLastYearsDates(Carbon::today());
         $data = [
             "labels" => ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
             "datasets" =>
@@ -78,7 +84,19 @@ class PunchController extends Controller
                     "label" => "Le nombre d'heure travaillé en moyenne",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
-                    "data" => [0, 10, 5, 2, 20, 25, 45, 23, 45, 67, 34, 67],
+                    "data" => [
+                        Helper::makeSum($today,20,0),
+                        Helper::makeSum($today,20,1),
+                        Helper::makeSum($today,20,2),
+                        Helper::makeSum($today,20,3),
+                        Helper::makeSum($today,20,4),
+                        Helper::makeSum($today,20,5),
+                        Helper::makeSum($today,20,6),
+                        Helper::makeSum($today,20,7),
+                        Helper::makeSum($today,20,8),
+                        Helper::makeSum($today,20,9),
+                        Helper::makeSum($today,20,10),
+                        Helper::makeSum($today,20,11)],
                 ]]
         ];
         return json_encode($data);

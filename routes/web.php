@@ -84,5 +84,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::get('/test', function (){
     $today=\Carbon\Carbon::today();
-    return  \App\Tools\Helper::getlastweekdates($today);
+    $as=\App\Tools\Helper::getLastYearsDates($today);
+    return   \App\Tools\Helper::makeSum($as,20,11);
 });
