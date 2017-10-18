@@ -59,7 +59,19 @@ trait Helper
 
     public static function Month($carbon)
     {
-        
+        $month_fr=["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+        return $month_fr[$carbon->month-1];
+    }
+
+    public static function getlastyearmonth($today)
+    {
+        $months=[];
+        for ($i=0; $i < 12; $i++) { 
+            array_push($months,self::Month($today));
+            $today=$today->subDays(30);
+        }
+        $months=array_reverse($months);
+        return $months;
     }
 
     public static function CRoles()

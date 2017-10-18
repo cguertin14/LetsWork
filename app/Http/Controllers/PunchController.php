@@ -43,15 +43,16 @@ class PunchController extends Controller
 
         $data = [
             "labels" => Helper::getlastweek(Carbon::today()),
-            "datasets" =>
-                [[
+            "datasets" => [
+                [
                     "label" => "Le nombre d'heure travaillé en moyenne",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => Helper::getLastWeekSum(Carbon::today()),
-                ]]
+                ]
+            ]
         ];
-        return json_encode($data);
+        return response()->json($data);
     }
 
     public function lastmouth()
@@ -59,8 +60,8 @@ class PunchController extends Controller
         $today=Helper::getLast4WeekDates(Carbon::today());
         $data = [
             "labels" => ["Première semaine", "Deuxième semaine", "Troisième semaine", "Quatrième semaine"],
-            "datasets" =>
-                [[
+            "datasets" => [
+                [
                     "label" => "Le nombre d'heure travaillé en moyenne",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
@@ -69,18 +70,19 @@ class PunchController extends Controller
                     Helper::makeSum($today,5,1),
                     Helper::makeSum($today,5,2),
                     Helper::makeSum($today,5,3)],
-                ]]
+                ]
+            ]
         ];
-        return json_encode($data);
+        return response()->json($data);
     }
 
     public function lastyear()
     {
         $today=Helper::getLastYearsDates(Carbon::today());
         $data = [
-            "labels" => ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
-            "datasets" =>
-                [[
+            "labels" => Helper::getlastyearmonth(Carbon::today()),
+            "datasets" => [
+                [
                     "label" => "Le nombre d'heure travaillé en moyenne",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
@@ -97,8 +99,9 @@ class PunchController extends Controller
                         Helper::makeSum($today,20,9),
                         Helper::makeSum($today,20,10),
                         Helper::makeSum($today,20,11)],
-                ]]
+                ]
+            ]
         ];
-        return json_encode($data);
+        return response()->json($data);
     }
 }
