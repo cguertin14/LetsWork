@@ -127,20 +127,20 @@ trait Helper
     public static function getWeekDays()
     {
         return [
-            'sunday',
-            'monday',
-            'tuesday',
-            'wednesday',
-            'thursday',
-            'friday',
-            'saturday'
+            'Dimanche',
+            'Lundi',
+            'Mardi',
+            'Mercredi',
+            'Jeudi',
+            'Vendredi',
+            'Samedi'
         ];
     }
 
     public static function getWeekDaysJson()
     {
         return collect([
-            'weekdays' => [
+            'weekevents' => [
                 'monday' => [],
                 'tuesday' => [],
                 'wednesday' => [],
