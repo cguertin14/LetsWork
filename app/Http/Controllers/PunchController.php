@@ -51,7 +51,8 @@ class PunchController extends Controller
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => Helper::getLastWeekSum(Carbon::today()),
-                ]]
+                ]
+            ]
         ];
         return response()->json($data);
     }
@@ -71,7 +72,8 @@ class PunchController extends Controller
                     Helper::makeSum($today,5,1),
                     Helper::makeSum($today,5,2),
                     Helper::makeSum($today,5,3)],
-                ]]
+                ]
+            ]
         ];
         return response()->json($data);
     }
@@ -99,7 +101,8 @@ class PunchController extends Controller
                         Helper::makeSum($today,20,9),
                         Helper::makeSum($today,20,10),
                         Helper::makeSum($today,20,11)],
-                ]]
+                ]
+            ]
         ];
         return response()->json($data);
     }

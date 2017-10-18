@@ -75,6 +75,9 @@
             top: 50%;
             transform: translate(-50%, -50%);
         }
+        [v-cloak] {
+            display: none;
+        }
 </style>
 <style>
     tr>td {
@@ -158,18 +161,18 @@
                     return this.weekevents[day];
                 },
                 loadThisWeek: function () {
-                    $.getJSON("", {}, function (data) {
-                        weekevents = data;
+                    $.getJSON("{{route('schedule.thisweek')}}", function (data) {
+                        this.weekevents = data;
                     });
                 },
                 loadNextWeek: function () {
                     $.getJSON("", {}, function (data) {
-                        weekevents = data;
+                        this.weekevents = data.weekevents;
                     });
                 },
                 loadLastWeek: function () {
                     $.getJSON("", {}, function (data) {
-                        weekevents = data;
+                        this.weekevents = data;
                     });
                 }
             },
@@ -178,6 +181,10 @@
             },
             created: function () {
                 this.loadThisWeek();
+            },
+            mounted:function()
+            {
+
             }
         });
     </script>
