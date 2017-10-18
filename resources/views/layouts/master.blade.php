@@ -23,6 +23,9 @@
                             {{\App\Tools\Helper::punchMessage(\App\Tools\Helper::hasLastPunch())}}
                         </a>
                     </li>
+                    <li>
+                        <a href="{{route('punch')}}" style="color: white">Total des heures de travail</a>
+                    </li>
                 </ul>
                 @endif
                 @if (!Auth::check())
