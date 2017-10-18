@@ -174,7 +174,7 @@ trait Helper
             $average+= Carbon::parse($punch->dateend)->diffInSeconds(Carbon::parse($punch->datebegin));
         }
         $average=$average;
-        return $average/60/60;
+        return round($average/60/60,2);
     }
 
     public static function getLastWeekSum($today)
@@ -233,7 +233,7 @@ trait Helper
         for ($i=0+$nn; $i < $first_n+$nn ; $i++) {
             $sum+=self::getDaySum($array[$i]);
         }
-        return $sum;
+        return round($sum,2);
     }
 
     public static function getWeekDays()
@@ -253,11 +253,11 @@ trait Helper
     {
         return collect([
             'weekevents' => [
-                'monday' => [],
-                'tuesday' => [],
-                'wednesday' => [],
-                'thursday' => [],
-                'friday' => [],
+                'Lundi' => [],
+                'Mardi' => [],
+                'Mercredi' => [],
+                'Jeudi' => [],
+                'Vendredi' => [],
             ]
         ]);
     }
