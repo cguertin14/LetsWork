@@ -6,9 +6,11 @@ use App\Http\Requests\CreateEventRequest;
 use App\Http\Requests\CreateScheduleRequest;
 use App\Schedule;
 use App\SpecialRole;
+use App\Tools\Helper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use function MongoDB\BSON\toJSON;
 
 class ScheduleController extends Controller
 {
@@ -129,6 +131,7 @@ class ScheduleController extends Controller
      */
     public function edit($slug)
     {
+        // Modify this request ...
         $schedule = session('CurrentCompany')->schedules->where('slug',$slug)->first();
         return view('schedule.edit',compact('schedule'));
     }
@@ -161,5 +164,42 @@ class ScheduleController extends Controller
     {
         session('CurrentCompany')->schedules->where('slug',$slug)->first()->delete();
         return redirect()->action('ScheduleController@index');
+    }
+
+    /**
+     *  Get schedule elements from this week's schedule
+     *  and return them as JSON to the client.
+     *  @return \Illuminate\Http\Response
+     */
+    public function thisweek()
+    {
+        $days     = Helper::getWeekDays();
+        $data     = Helper::getWeekDaysJson();
+        $schedule = Helper::getCurrentSchedule();
+
+        // Get schedule elements
+        $scheduleElements = $schedule->scheduleelements;
+        // Get elements before today.
+        $thisWeekElements = $scheduleElements->where('begin','<=',Carbon::today())->where('end','>=',Carbon::today())->groupBy('begin');
+        if (count($thisWeekElements) > 0) {
+            //$thisWeekElements->orderBy('begin');
+            // Put data in array.
+            $weekEvents = $data->first();
+            foreach ($data->first() as $day => $events) {
+                // Get le data pour chaque jour et ensuite le mettre dans $weekEvents
+                foreach ($thisWeekElements as $element) {
+                    if ($days[$element->begin->dayOfWeek] == $day)
+                        array_push($weekEvents[$day], $element /*[
+                    'begin' => '12:00',
+                    'end' => '13:00',
+                    'name' => 'nom d\'événement',
+                    'description' => 'description d\'événement',
+                ]*/);
+                }
+            }
+            $data->put('weekdays',$weekEvents);
+        }
+        // Return data as JSON.
+        return response()->json($data);
     }
 }

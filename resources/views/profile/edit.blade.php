@@ -92,9 +92,9 @@
 @section('scripts')
     <script>
         @if(\Illuminate\Support\Facades\Auth::user()->photo)
-            setUserProfilePic('{{route('profile.photo')}}');
+        setUserProfilePic('{{route('profile.photo')}}');
         @else
-            $('#image').attr('src','{{asset('image/default-profile.png')}}');
+        $('#image').attr('src','{{asset('image/default-profile.png')}}');
         @endif
         Dropzone.autoDiscover = false;
         $("#files").dropzone({

@@ -51738,7 +51738,7 @@ jQuery(document).ready(function ($) {
                     event.preventDefault();
                     createScheduleModal.find('#createForm').submit(function (event) {
                         $.ajax({
-                            type: createScheduleModal.find('#createForm').attr('method'),
+                            method: createScheduleModal.find('#createForm').attr('method'),
                             url: createScheduleModal.find('#createForm').attr('action'),
                             data: createScheduleModal.find('#createForm').serialize(),
                             success: function(data) {
