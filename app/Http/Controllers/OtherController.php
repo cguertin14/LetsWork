@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class OtherController extends Controller
 {
     public function homepage()
     {
-        if(Auth::check())
+        if(Auth::check() && Session::has('CurrentCompany'))
         {            
             $companies=\Illuminate\Support\Facades\Auth::user()->companies;
             if($companies->count() == 1)
