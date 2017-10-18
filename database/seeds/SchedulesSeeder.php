@@ -13,7 +13,7 @@ class SchedulesSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Factory::create();
+        $faker = \Faker\Factory::create();
         $scheduleNames = [
             'Été',
             'Hiver',
@@ -24,18 +24,26 @@ class SchedulesSeeder extends Seeder
             'Vacances'
         ];
         foreach (\App\Company::all() as $company) {
+            $dateBegin = \Carbon\Carbon::today();
+            $dateEnd = Carbon::createFromFormat('Y-m-d H:i:s',$dateBegin)->addWeeks(5);
             $schedule = $company->schedules()->create([
                 'name' => $scheduleNames[array_rand($scheduleNames)],
-                'begin' => Carbon::today(),
-                'end' => $faker->dateTimeBetween($startDate = 'now', $endDate = '+1 month'),
+                'begin' => $dateBegin,
+                'end' => $dateEnd
             ]);
-            foreach (range(1, 30) as $month) {
-                $begin = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = 'now', $endDate = '+2 months')->getTimeStamp());
-                $end = Carbon::createFromFormat('Y-m-d H:i:s', $begin)->addHours($faker->numberBetween(1, 8));
+            foreach (range(1, $dateEnd->daysInMonth) as $month) {
+                $min_epoch = strtotime($schedule->begin);
+                $max_epoch = strtotime($schedule->end);
+                $rand_epoch = rand($min_epoch, $max_epoch);
+                $begin = date('Y-m-d H:i:s', $rand_epoch);
+                $end = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $begin)->addHours($faker->numberBetween(1, 8));
 
                 $scheduleElement = $schedule->scheduleelements()->create([
                     'begin' => $begin,
-                    'end' => $end
+                    'end' => $end,
+                    'name' => $faker->unique()->name,
+                    'description' => $faker->unique()->paragraph(),
+                    'slug' => $faker->slug()
                 ]);
                 $specialrole = \App\SpecialRole::all()->random();
                 //$employee = $specialrole->employees()->whereIn('id', $company->employees)->get()->random();

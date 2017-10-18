@@ -129,18 +129,18 @@
                     {
                         "Lundi": [
                         {
-                            "start": "12:00",
+                            "begin": "12:00",
                             "end": "15:00",
                             "name": "Wawooo!!!",
-                            "content": "Le premier evenement"
+                            "description": "Le premier evenement"
                         },
-                        {"start": "1:00", "end": "8:32", "name": "Wawooo2!!!", "content": "Le deuxieme evenement"}
+                        {"begin": "1:00", "end": "8:32", "name": "Wawooo2!!!", "description": "Le deuxieme evenement"}
                         ],
                         "Mardi": [{
-                            "start": "12:00",
+                            "begin": "12:00",
                             "end": "15:00",
                             "name": "Wawooo!!!",
-                            "content": "Le premier evenement"
+                            "description": "Le premier evenement"
                         }],
                         "Mercredi": [],
                         "Jeudi": [],

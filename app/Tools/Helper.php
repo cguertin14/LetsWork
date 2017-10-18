@@ -13,6 +13,7 @@ use App\Admin;
 use App\Availability;
 use App\Company;
 use App\JobOffer;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -121,5 +122,42 @@ trait Helper
     public static function punchMessage($bool)
     {
         return !$bool ? "Commencer à travailler" : "Terminer de travailler";
+    }
+
+    public static function getWeekDays()
+    {
+        return [
+            'Dimanche',
+            'Lundi',
+            'Mardi',
+            'Mercredi',
+            'Jeudi',
+            'Vendredi',
+            'Samedi'
+        ];
+    }
+
+    public static function getWeekDaysJson()
+    {
+        return collect([
+            'weekevents' => [
+                'monday' => [],
+                'tuesday' => [],
+                'wednesday' => [],
+                'thursday' => [],
+                'friday' => [],
+            ]
+        ]);
+    }
+
+    /**
+     * @return \App\Schedule
+     */
+    public static function getCurrentSchedule()
+    {
+        return session('CurrentCompany')->schedules
+                                            ->where('begin', '<=', Carbon::now())
+                                            ->where('end'  , '>=', Carbon::now())
+                                            ->first();
     }
 }

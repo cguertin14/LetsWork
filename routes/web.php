@@ -68,6 +68,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/jobofferuser/{id}/refuse','JobOfferUserController@refuse')->name('jobofferuser.refuse');
 
     /* Schedule Routes */
+    Route::get('/schedule/thisweek','ScheduleController@thisweek')->name('schedule.thisweek');
     Route::get('/schedule/scheduleelement','ScheduleController@createelement')->name('schedule.createelement');
     Route::post('/schedule/scheduleelement','ScheduleController@storeelement')->name('schedule.storeelement');
     Route::get('/schedule/editing','ScheduleController@editing')->name('schedule.editing');
