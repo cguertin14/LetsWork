@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Tools\Helper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class PunchController extends Controller
 {
@@ -33,7 +35,7 @@ class PunchController extends Controller
 
     public function index()
     {
-        $punches = \App\Tools\Helper::CEmployee()->punches->where("company_id", \App\Tools\Helper::CCompany()->id);
+        $punches = \App\Tools\Helper::CEmployee()->punches()->where("company_id", \App\Tools\Helper::CCompany()->id)->paginate(10);
         return view("punch.index", compact('punches'));
     }
 
@@ -45,23 +47,23 @@ class PunchController extends Controller
             "labels" => Helper::getlastweek(Carbon::today()),
             "datasets" =>
                 [[
-                    "label" => "Le nombre d'heure travaillé en moyenne",
+                    "label" => "La somme des heures travaillées",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => Helper::getLastWeekSum(Carbon::today()),
                 ]]
         ];
-        return json_encode($data);
+        return response()->json($data);
     }
 
     public function lastmouth()
     {
         $today=Helper::getLast4WeekDates(Carbon::today());
         $data = [
-            "labels" => ["Première semaine", "Deuxième semaine", "Troisième semaine", "Quatrième semaine"],
+            "labels" => ["1ère semaine", "2ième semaine", "3ième semaine", "4ième semaine"],
             "datasets" =>
                 [[
-                    "label" => "Le nombre d'heure travaillé en moyenne",
+                    "label" => "La somme des heures travaillées",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => [
@@ -71,7 +73,7 @@ class PunchController extends Controller
                     Helper::makeSum($today,5,3)],
                 ]]
         ];
-        return json_encode($data);
+        return response()->json($data);
     }
 
     public function lastyear()
@@ -81,7 +83,7 @@ class PunchController extends Controller
             "labels" => ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
             "datasets" =>
                 [[
-                    "label" => "Le nombre d'heure travaillé en moyenne",
+                    "label" => "La somme des heures travaillées",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => [
@@ -99,6 +101,6 @@ class PunchController extends Controller
                         Helper::makeSum($today,20,11)],
                 ]]
         ];
-        return json_encode($data);
+        return response()->json($data);
     }
 }

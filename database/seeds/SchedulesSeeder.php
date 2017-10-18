@@ -25,7 +25,7 @@ class SchedulesSeeder extends Seeder
         ];
         foreach (\App\Company::all() as $company) {
             $dateBegin = \Carbon\Carbon::today();
-            $dateEnd = Carbon::createFromFormat('Y-m-d H:i:s',$dateBegin)->addWeeks(5);
+            $dateEnd = Carbon::createFromFormat('Y-m-d H:i:s',$dateBegin)->addWeeks(1);
             $schedule = $company->schedules()->create([
                 'name' => $scheduleNames[array_rand($scheduleNames)],
                 'begin' => $dateBegin,

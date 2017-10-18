@@ -15,7 +15,8 @@
 
     <div class="layout">
         <div class="col-md-12">
-            <div class="centre custom-container">
+            @if (count($skills) > 0)
+                <div class="centre custom-container">
                 <table class="table custom-table">
                     <thead>
                     <tr class="section-title">
@@ -36,11 +37,18 @@
                 </table>
 
                 <div class="row">
-                    <div class="col-sm-6 col-sm-offset-5">
+                    <div class="text-center">
                         {{$skills->render('pagination.paginate')}}
                     </div>
                 </div>
             </div>
+            @else
+                @component('components.nothing')
+                    @slot('message')
+                        Il n'y a pas de compétences
+                    @endslot
+                @endcomponent
+            @endif
         </div>
     </div>
 

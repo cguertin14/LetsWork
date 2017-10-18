@@ -15,8 +15,9 @@
 
     <div class="layout">
         <div class="col-md-12">
+            @if(count($specialRoles) > 0)
             <div class="centre custom-container">
-                <table class="table custom-table">
+                <table class="table custom-table" style="margin: 0px !important;">
                     <thead>
                         <tr class="section-title">
                            <th>Nom</th>
@@ -56,11 +57,18 @@
                 </table>
 
                 <div class="row">
-                    <div class="col-sm-6 col-sm-offset-5">
-                        {{$specialRoles->links()}}
+                    <div class="text-center">
+                        {{$specialRoles->render('pagination.paginate')}}
                     </div>
                 </div>
             </div>
+            @else
+                @component('components.nothing')
+                    @slot('message')
+                        Il n'y a pas de postes
+                    @endslot
+                @endcomponent
+            @endif
         </div>
     </div>
 

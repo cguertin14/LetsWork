@@ -16,7 +16,7 @@
 @endsection
 
 @section('content')
-    <h1 class="title-absence">Donner une nouvelle plage horaire</h1>
+    <h1 class="title-absence">Donner une nouvelle disponibilité</h1>
     <hr class="separator">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
