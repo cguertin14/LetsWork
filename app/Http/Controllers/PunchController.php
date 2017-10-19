@@ -35,7 +35,7 @@ class PunchController extends Controller
 
     public function index()
     {
-        $punches = \App\Tools\Helper::CEmployee()->punches()->where("company_id", \App\Tools\Helper::CCompany()->id)->paginate(10);
+        $punches = \App\Tools\Helper::CEmployee()->punches()->where("company_id", \App\Tools\Helper::CCompany()->id)->paginate(5);
         return view("punch.index", compact('punches'));
     }
 
@@ -82,7 +82,7 @@ class PunchController extends Controller
     {
         $today=Helper::getLastYearsDates(Carbon::today());
         $data = [
-            "labels" => ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+            "labels" => Helper::getlastyearmonth(Carbon::today()),
             "datasets" =>
                 [[
                     "label" => "La somme des heures travaillées",

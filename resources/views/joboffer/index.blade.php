@@ -37,7 +37,7 @@
                         <tr>
                             <td colspan="4" class="hiddenRow">
                                 <div class="accordion-body collapse"  id="accordion{{$jobOffer->id}}">
-                                    <table class="table">
+                                    <table class="table" style="margin: 0px !important;">
                                         <tr>
                                             <td class="list-group-item">
                                                 @component('components.section-index')
@@ -106,9 +106,15 @@
                                                     </div>
                                                 @else
                                                     <div>
-                                                        <a class="btn purplebtn" href="{{route('joboffer.show',$jobOffer->slug)}}">
-                                                            Soumettre ma candidature
-                                                        </a>
+                                                        @if($jobOffer->users->where('id',\Illuminate\Support\Facades\Auth::user()->id)->first() == null)
+                                                            <a class="btn purplebtn" href="{{route('joboffer.show',$jobOffer->slug)}}">
+                                                                Soumettre ma candidature
+                                                            </a>
+                                                        @else
+                                                            <button class="btn btn-warning" disabled>
+                                                                En Attente
+                                                            </button>
+                                                        @endif
                                                     </div>
                                                 @endif
                                             </td>

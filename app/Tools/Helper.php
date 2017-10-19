@@ -66,7 +66,7 @@ trait Helper
     public static function getlastyearmonth($today)
     {
         $months=[];
-        for ($i=0; $i < 12; $i++) { 
+        for ($i=0; $i < 12; $i++) {
             array_push($months,self::Month($today));
             $today=$today->subDays(30);
         }
@@ -186,7 +186,7 @@ trait Helper
             $average+= Carbon::parse($punch->dateend)->diffInSeconds(Carbon::parse($punch->datebegin));
         }
         $average=$average;
-        return round($average/60/60,2);
+        return $average/60/60;
     }
 
     public static function getLastWeekSum($today)
@@ -195,7 +195,7 @@ trait Helper
         $averages=[];
         foreach ($week as $day)
         {
-            array_push($averages,self::getDaySum($day));
+            array_push($averages,round(self::getDaySum($day),2));
         }
         return $averages;
     }
