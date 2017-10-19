@@ -30,7 +30,6 @@ class JobOfferController extends Controller
     {
         Carbon::setLocale('fr');
         if (Session::has('CurrentCompany')) {
-            //return session('CurrentCompany')->id;
             $jobOffers = JobOffer::where('company_id',session('CurrentCompany')->id)->paginate(10);
         } else {
             $jobOffers = JobOffer::paginate(10);

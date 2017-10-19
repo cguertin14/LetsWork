@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -32,7 +33,7 @@ class JobOfferUserController extends Controller
                     array_push($jobofferusers,$user->pivot);
             }
         }
-        $jobofferusers = new Paginator($jobofferusers,10,1);
+        $jobofferusers = new LengthAwarePaginator($jobofferusers,count($jobofferusers),10,1);
         return view('jobofferuser.index',compact('jobofferusers'));
     }
 
@@ -44,7 +45,7 @@ class JobOfferUserController extends Controller
      */
     public function show($id)
     {
-        $jobofferuser = JobOfferUser::findOrFail($id);//Helper::getJobOfferUserById($id);
+        $jobofferuser = Helper::getJobOfferUserById($id);
         return view('jobofferuser.show',compact('jobofferuser'));
     }
 
@@ -57,7 +58,7 @@ class JobOfferUserController extends Controller
 
     public function accept($id)
     {
-        $jobofferuser = JobOfferUser::findOrFail($id);
+        $jobofferuser = Helper::getJobOfferUserById($id);
         session(['jobofferuser' => $jobofferuser]);
         $data = ['jobofferuser' => $jobofferuser];
 
@@ -86,7 +87,7 @@ class JobOfferUserController extends Controller
 
     public function refuse($id)
     {
-        $jobofferuser = JobOfferUser::findOrFail($id);
+        $jobofferuser = Helper::getJobOfferUserById($id);
         session(['jobofferuser' => $jobofferuser]);
         $data = ['jobofferuser' => $jobofferuser];
 
@@ -114,7 +115,7 @@ class JobOfferUserController extends Controller
 
     public function interview($id)
     {
-        $jobofferuser = JobOfferUser::findOrFail($id);
+        $jobofferuser = Helper::getJobOfferUserById($id);
         session(['jobofferuser' => $jobofferuser]);
         $data = ['jobofferuser' => $jobofferuser];
 
