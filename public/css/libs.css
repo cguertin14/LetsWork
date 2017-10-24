@@ -121,7 +121,7 @@ div.centre {
 
 .custom-container {
     border: 2px solid #ffffff;
-    /*width: 85% !important;*/
+    width: 85% !important;
     border-radius: 8px;
 }
 

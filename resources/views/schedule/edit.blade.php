@@ -1,9 +1,5 @@
 @extends('layouts.master')
 
-@section('fonts')
-<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet">
-@endsection
-
 @section('styles')
 <style>
     h1.center {
@@ -68,85 +64,72 @@
 
 @section('content')
 
-<h1 class="page-title text-center">Modifier le calendrier</h1>
-<hr class="separator">
+    <!-- Formulaire de création d'événement -->
+    {!! Form::model($scheduleelement,['method' => 'PATCH','action' => ['ScheduleController@update',$scheduleelement->slug],'class' => 'form-horizontal','id' => 'updateForm']) !!}
+    <div class="row">
+        <div class="col-md-12" id="container">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {!! Form::label('schedule_id', 'Horaire', ['class' => 'section-title']); !!}
+                    {!! Form::select('schedule_id',$schedules,null,['class' => 'form-control','required']); !!}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {!! Form::label('name', 'Nom', ['class' => 'section-title']); !!}
+                    {!! Form::text('name',null,['class' => 'form-control','placeholder' => 'Nom','required']); !!}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {!! Form::label('description', 'Description', ['class' => 'section-title']); !!}
+                    {!! Form::textarea('description',null,['class' => 'form-control','placeholder' => 'Description','required','rows' => 3,'style' => 'resize:none']); !!}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {!! Form::label('begin', 'Date de début', ['class' => 'section-title']); !!}
+                    <div class='input-group date' id='begin'>
+                        {!! Form::text('begin', null, ['class' => 'form-control','required']); !!}
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {!! Form::label('end', 'Date de fin', ['class' => 'section-title']); !!}
+                    <div class='input-group date' id='end'>
+                        {!! Form::text('end', null, ['class' => 'form-control','required']); !!}
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {!! Form::label('special_role_id', 'Type d\'employé voulu', ['class' => 'section-title']); !!}
+                    {!! Form::select('special_role_id',$specialRoles,null,['class' => 'form-control','required','id' => 'special_role']); !!}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <section style="display: inline-flex">
+                        <!-- .slideTwo -->
+                        <div class="slideTwo">
+                            <input type="checkbox" value="None" id="specific_user_checkbox" name="check"/>
+                            <label for="specific_user_checkbox"></label>
+                        </div>
+                        <!-- end .slideTwo -->
+                    </section>
+                    <label class="text-center section-title" style="margin-left: 0.5em">Employé spécifique</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group pull-right">
+                    {!! Form::submit('Modifier',['class' => 'btn purblebtn','style' => 'display:none','id' => 'submit']) !!}
+                </div>
+            </div>
+        </div>
+    </div>
+    {!! Form::close() !!}
 
-<!--
-
-    MODIFIER L'INTERFACE POUR LA FAITE FIT DANS UN MODAL AFIN DE MODIFIER UN ÉVÉNEMENT
-
--->
-
-
-@include('include.calendar-template')
-
-<!--<div id="schedule">
-<div>
-<div class="col-md-1 pull-left"><h1>@{{ ctime.toLocaleTimeString() }}</h1></div>
-</div>
-<table>
-<thead>
-    <tr>
-        <td class="spacing"><h1 class="center">Heures</h1></td>
-        <td class="spacing" v-for="d in days"><h1 class="center">@{{d}}</h1></td>
-    </tr>
-</thead>
-<tbody id="tbody">
-    <tr id="line" style="border-top:medium red solid; position:absolute;top: -50px; width:100%;"></tr>
-    <tr v-for="h in 25">
-        <td class="spacing">
-            <h3 class="center pull-right" style="position: relative;top: -1.4em">@{{ h-1 +":00" }}</h3>
-        </td>
-        <td class="spacing" v-for="d in days" :data-day="d" :data-hour="h" :data-date="new Date()"><h3
-                    class="center"></h3></td>
-    </tr>
-</tbody>
-</table>
-</div>
--->
-@endsection
-
-@section('scripts')
-<script>
-    //        var schedule = new Vue({
-    //            el: "#schedule",
-    //            data: {
-    //                days: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"],
-    //                ctime: new Date()
-    //            },
-    //            computed: {},
-    //            methods: {
-    //                getCurrentDay: function () {
-    //                    return this.days[new Date().getDay() - 1];
-    //                }
-    //            },
-    //            watch: {},
-    //            updated: function () {
-    //            },
-    //            created: function () {
-    //            }
-    //        });
-    //
-    //        function ratio(height, sec) {
-    //            return Number(height) / Number(24 * 60 * 60) * sec;
-    //        }
-    //
-    //        function sec(time) {
-    //            return time.getHours() * 60 * 60 + time.getMinutes() * 60 + time.getSeconds();
-    //        }
-    //
-    //        var setime = setInterval(function () {
-    //            schedule.ctime = new Date();
-    //            var tbody = document.querySelector("thead>tr>td.spacing");
-    //            var style = window.getComputedStyle ? getComputedStyle(tbody, null) : tbody.currentStyle;
-    //            var pos = style.height;
-    //            pos = Number(pos.replace("px", "")) + 60;
-    //            var td = document.querySelector("tbody>tr>td.spacing");
-    //            style = window.getComputedStyle ? getComputedStyle(td, null) : td.currentStyle;
-    //            var tdheight = style.height;
-    //            tdheight = Number(tdheight.replace("px", ""));
-    //
-    //            $("#line").css("top", pos + ratio(tdheight * 24, sec(schedule.ctime)) + "px");
-    //        }, 500);
-</script>
 @endsection
