@@ -98,6 +98,6 @@
             } else {
                 // DO NOTHING.
             }
-        })
+        });
     });
 </script>

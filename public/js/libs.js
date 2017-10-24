@@ -51304,15 +51304,14 @@ return Vue$3;
 /*! modernizr 3.3.1 (Custom Build) | MIT *
  * https://modernizr.com/download/?-csstransitions-setclasses !*/
 !function(e,n,t){function r(e,n){return typeof e===n}function s(){var e,n,t,s,o,i,a;for(var l in C)if(C.hasOwnProperty(l)){if(e=[],n=C[l],n.name&&(e.push(n.name.toLowerCase()),n.options&&n.options.aliases&&n.options.aliases.length))for(t=0;t<n.options.aliases.length;t++)e.push(n.options.aliases[t].toLowerCase());for(s=r(n.fn,"function")?n.fn():n.fn,o=0;o<e.length;o++)i=e[o],a=i.split("."),1===a.length?Modernizr[a[0]]=s:(!Modernizr[a[0]]||Modernizr[a[0]]instanceof Boolean||(Modernizr[a[0]]=new Boolean(Modernizr[a[0]])),Modernizr[a[0]][a[1]]=s),g.push((s?"":"no-")+a.join("-"))}}function o(e){var n=_.className,t=Modernizr._config.classPrefix||"";if(S&&(n=n.baseVal),Modernizr._config.enableJSClass){var r=new RegExp("(^|\\s)"+t+"no-js(\\s|$)");n=n.replace(r,"$1"+t+"js$2")}Modernizr._config.enableClasses&&(n+=" "+t+e.join(" "+t),S?_.className.baseVal=n:_.className=n)}function i(e,n){return function(){return e.apply(n,arguments)}}function a(e,n,t){var s;for(var o in e)if(e[o]in n)return t===!1?e[o]:(s=n[e[o]],r(s,"function")?i(s,t||n):s);return!1}function l(){return"function"!=typeof n.createElement?n.createElement(arguments[0]):S?n.createElementNS.call(n,"http://www.w3.org/2000/svg",arguments[0]):n.createElement.apply(n,arguments)}function f(e,n){return!!~(""+e).indexOf(n)}function u(e){return e.replace(/([a-z])-([a-z])/g,function(e,n,t){return n+t.toUpperCase()}).replace(/^-/,"")}function d(e){return e.replace(/([A-Z])/g,function(e,n){return"-"+n.toLowerCase()}).replace(/^ms-/,"-ms-")}function p(){var e=n.body;return e||(e=l(S?"svg":"body"),e.fake=!0),e}function c(e,t,r,s){var o,i,a,f,u="modernizr",d=l("div"),c=p();if(parseInt(r,10))for(;r--;)a=l("div"),a.id=s?s[r]:u+(r+1),d.appendChild(a);return o=l("style"),o.type="text/css",o.id="s"+u,(c.fake?c:d).appendChild(o),c.appendChild(d),o.styleSheet?o.styleSheet.cssText=e:o.appendChild(n.createTextNode(e)),d.id=u,c.fake&&(c.style.background="",c.style.overflow="hidden",f=_.style.overflow,_.style.overflow="hidden",_.appendChild(c)),i=t(d,e),c.fake?(c.parentNode.removeChild(c),_.style.overflow=f,_.offsetHeight):d.parentNode.removeChild(d),!!i}function m(n,r){var s=n.length;if("CSS"in e&&"supports"in e.CSS){for(;s--;)if(e.CSS.supports(d(n[s]),r))return!0;return!1}if("CSSSupportsRule"in e){for(var o=[];s--;)o.push("("+d(n[s])+":"+r+")");return o=o.join(" or "),c("@supports ("+o+") { #modernizr { position: absolute; } }",function(e){return"absolute"==getComputedStyle(e,null).position})}return t}function h(e,n,s,o){function i(){d&&(delete z.style,delete z.modElem)}if(o=r(o,"undefined")?!1:o,!r(s,"undefined")){var a=m(e,s);if(!r(a,"undefined"))return a}for(var d,p,c,h,v,y=["modernizr","tspan","samp"];!z.style&&y.length;)d=!0,z.modElem=l(y.shift()),z.style=z.modElem.style;for(c=e.length,p=0;c>p;p++)if(h=e[p],v=z.style[h],f(h,"-")&&(h=u(h)),z.style[h]!==t){if(o||r(s,"undefined"))return i(),"pfx"==n?h:!0;try{z.style[h]=s}catch(g){}if(z.style[h]!=v)return i(),"pfx"==n?h:!0}return i(),!1}function v(e,n,t,s,o){var i=e.charAt(0).toUpperCase()+e.slice(1),l=(e+" "+b.join(i+" ")+i).split(" ");return r(n,"string")||r(n,"undefined")?h(l,n,s,o):(l=(e+" "+E.join(i+" ")+i).split(" "),a(l,n,t))}function y(e,n,r){return v(e,t,t,n,r)}var g=[],C=[],w={_version:"3.3.1",_config:{classPrefix:"",enableClasses:!0,enableJSClass:!0,usePrefixes:!0},_q:[],on:function(e,n){var t=this;setTimeout(function(){n(t[e])},0)},addTest:function(e,n,t){C.push({name:e,fn:n,options:t})},addAsyncTest:function(e){C.push({name:null,fn:e})}},Modernizr=function(){};Modernizr.prototype=w,Modernizr=new Modernizr;var _=n.documentElement,S="svg"===_.nodeName.toLowerCase(),x="Moz O ms Webkit",b=w._config.usePrefixes?x.split(" "):[];w._cssomPrefixes=b;var E=w._config.usePrefixes?x.toLowerCase().split(" "):[];w._domPrefixes=E;var P={elem:l("modernizr")};Modernizr._q.push(function(){delete P.elem});var z={style:P.elem.style};Modernizr._q.unshift(function(){delete z.style}),w.testAllProps=v,w.testAllProps=y,Modernizr.addTest("csstransitions",y("transition","all",!0)),s(),o(g),delete w.addTest,delete w.addAsyncTest;for(var N=0;N<Modernizr._q.length;N++)Modernizr._q[N]();e.Modernizr=Modernizr}(window,document);
-//jQuery(document).ready(function($){
-function initCalendar() {
+jQuery(document).ready(function($){
 
 	var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
 	var transitionsSupported = ( $('.csstransitions').length > 0 );
 	//if browser does not support transitions - use a different event to trigger them
 	if( !transitionsSupported ) transitionEnd = 'noTransition';
-	
-	//should add a loding while the events are organized 
+
+	//should add a loding while the events are organized
 
 	function SchedulePlan( element ) {
 		this.element = element;
@@ -51331,8 +51330,8 @@ function initCalendar() {
 		this.modal = this.element.find('.event-modal');
 		this.modalHeader = this.modal.find('.header');
 		this.modalHeaderBg = this.modal.find('.header-bg');
-		this.modalBody = this.modal.find('.body'); 
-		this.modalBodyBg = this.modal.find('.body-bg'); 
+		this.modalBody = this.modal.find('.body');
+		this.modalBodyBg = this.modal.find('.body-bg');
 		this.modalMaxWidth = 800;
 		this.modalMaxHeight = 480;
 
@@ -51344,6 +51343,7 @@ function initCalendar() {
 	SchedulePlan.prototype.initSchedule = function() {
 		this.scheduleReset();
 		this.initEvents();
+		this.placeEvents();
 	};
 
 	SchedulePlan.prototype.scheduleReset = function() {
@@ -51389,6 +51389,37 @@ function initCalendar() {
 			event.preventDefault();
 			if( !self.animating ) self.closeModal(self.eventsGroup.find('.selected-event'));
 		});
+        // Update schedule element form prevention. (AJAX)
+        this.modal.find('.event-info').on('submit','#updateForm',function(event) {
+            $.ajax({
+                method: $(this).attr('method'),
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function (data) {
+                    /////// RENDU ICI.
+                    self.closeModal(self.eventsGroup.find('.selected-event'));
+                },
+                error: function (errors) {
+                    formErrors(errors,$(this));
+                }
+            });
+            event.preventDefault();
+        });
+        // Delete schedule element form prevention. (AJAX)
+        this.modal.find('.event-info').on('submit','#deleteForm',function(event) {
+            $.ajax({
+                method: $(this).attr('method'),
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function (data) {
+                    self.closeModal(self.eventsGroup.find('.selected-event'));
+                },
+                error: function (errors) {
+                    formErrors(errors,$(this));
+                }
+            });
+            event.preventDefault();
+        });
 		this.element.on('click', '.cover-layer', function(event){
 			if( !self.animating && self.element.hasClass('modal-is-open') ) self.closeModal(self.eventsGroup.find('.selected-event'));
 		});
@@ -51403,7 +51434,7 @@ function initCalendar() {
 
 			var eventTop = self.eventSlotHeight*(start - self.timelineStart)/self.timelineUnitDuration,
 				eventHeight = self.eventSlotHeight*duration/self.timelineUnitDuration;
-			
+
 			$(this).css({
 				top: (eventTop -1) +'px',
 				height: (eventHeight+1)+'px'
@@ -51428,46 +51459,16 @@ function initCalendar() {
 			//once the event content has been loaded
 			self.element.addClass('content-loaded');
 		});*/
+
 		$.ajax({
             method: 'GET',
 			url: '/isauthmanager',
 			success: function (data) {
 				if (data) {
-					console.log(event.parent().attr('data-slug'));
 					$.ajax({
 						method: 'GET',
 						url: '/schedule/' + event.parent().attr('data-slug') + '/edit',
 						success: function (view) {
-                            // Update schedule element form prevention. (AJAX)
-                            $('#updateForm').submit(function (eventForm) {
-                                $.ajax({
-                                    method: $(this).attr('method'),
-                                    url: $(this).attr('action'),
-                                    data: $(this).serialize(),
-                                    success: function (data) {
-										/////// RENDU ICI.
-                                        self.closeModal(event);
-                                    }
-                                });
-                                eventForm.preventDefault();
-                                return false;
-                            });
-                            // Delete schedule element form prevention. (AJAX)
-                            $('#deleteForm').submit(function (eventForm) {
-                                $.ajax({
-                                    method: $(this).attr('method'),
-                                    url: $(this).attr('action'),
-                                    data: $(this).serialize(),
-                                    success: function (data) {
-                                        self.closeModal(event);
-                                    },
-                                    error: function (errors) {
-                                        formErrors(errors,$(this));
-                                    }
-                                });
-                                eventForm.preventDefault();
-                                return false;
-                            });
                             self.modalBody.find('.event-info').html(view);
                         }
 					});
@@ -51508,7 +51509,7 @@ function initCalendar() {
 
 			var modalTranslateX = parseInt((windowWidth - modalWidth)/2 - eventLeft),
 				modalTranslateY = parseInt((windowHeight - modalHeight)/2 - eventTop);
-			
+
 			var HeaderBgScaleY = modalHeight/eventHeight,
 				BodyBgScaleX = (modalWidth - eventWidth);
 
@@ -51543,7 +51544,7 @@ function initCalendar() {
 				width: eventWidth+'px',
 			});
 			transformElement(self.modalHeaderBg, 'scaleY('+HeaderBgScaleY+')');
-			
+
 			self.modalHeaderBg.one(transitionEnd, function(){
 				//wait for the  end of the modalHeaderBg transformation and show the modal content
 				self.modalHeaderBg.off(transitionEnd);
@@ -51590,7 +51591,7 @@ function initCalendar() {
 				height: eventHeight+'px'
 			});
 			transformElement(self.modal, 'translateX('+modalTranslateX+'px) translateY('+modalTranslateY+'px)');
-			
+
 			//scale down modalBodyBg element
 			transformElement(self.modalBodyBg, 'scaleX(0) scaleY(1)');
 			//scale down modalHeaderBg element
@@ -51615,10 +51616,10 @@ function initCalendar() {
 
 		//browser do not support transitions -> no need to wait for the end of it
 		if( !transitionsSupported ) self.modal.add(self.modalHeaderBg).trigger(transitionEnd);
-	}
+	};
 
 	SchedulePlan.prototype.mq = function(){
-		//get MQ value ('desktop' or 'mobile') 
+		//get MQ value ('desktop' or 'mobile')
 		var self = this;
 		return window.getComputedStyle(this.element.get(0), '::before').getPropertyValue('content').replace(/["']/g, '');
 	};
@@ -51631,8 +51632,8 @@ function initCalendar() {
 		if( mq == 'mobile' ) {
 			//reset modal style on mobile
 			self.modal.add(self.modalHeader).add(self.modalHeaderBg).add(self.modalBody).add(self.modalBodyBg).attr('style', '');
-			self.modal.removeClass('no-transition');	
-			self.animating = false;	
+			self.modal.removeClass('no-transition');
+			self.animating = false;
 		} else if( mq == 'desktop' && self.element.hasClass('modal-is-open') ) {
 			self.modal.addClass('no-transition');
 			self.element.addClass('animation-completed');
@@ -51684,7 +51685,7 @@ function initCalendar() {
 
 			setTimeout(function(){
 				self.modal.removeClass('no-transition');
-				self.animating = false;	
+				self.animating = false;
 			}, 20);
 		}
 	};
@@ -51692,7 +51693,7 @@ function initCalendar() {
 	var schedules = $('.cd-schedule');
 	var objSchedulesPlan = [],
 		windowResize = false;
-	
+
 	if( schedules.length > 0 ) {
 		schedules.each(function(){
 			//create SchedulePlan objects
@@ -51739,8 +51740,7 @@ function initCalendar() {
 			'transform': value
 		});
 	}
-}
-//});
+});
 jQuery(document).ready(function ($) {
     // Modal de création d'événement
     $('.custom-table').on('click','#new-event',function (event) {

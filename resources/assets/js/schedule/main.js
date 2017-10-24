@@ -1,12 +1,11 @@
-//jQuery(document).ready(function($){
-function initCalendar() {
+jQuery(document).ready(function($){
 
 	var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
 	var transitionsSupported = ( $('.csstransitions').length > 0 );
 	//if browser does not support transitions - use a different event to trigger them
 	if( !transitionsSupported ) transitionEnd = 'noTransition';
-	
-	//should add a loding while the events are organized 
+
+	//should add a loding while the events are organized
 
 	function SchedulePlan( element ) {
 		this.element = element;
@@ -25,8 +24,8 @@ function initCalendar() {
 		this.modal = this.element.find('.event-modal');
 		this.modalHeader = this.modal.find('.header');
 		this.modalHeaderBg = this.modal.find('.header-bg');
-		this.modalBody = this.modal.find('.body'); 
-		this.modalBodyBg = this.modal.find('.body-bg'); 
+		this.modalBody = this.modal.find('.body');
+		this.modalBodyBg = this.modal.find('.body-bg');
 		this.modalMaxWidth = 800;
 		this.modalMaxHeight = 480;
 
@@ -38,6 +37,7 @@ function initCalendar() {
 	SchedulePlan.prototype.initSchedule = function() {
 		this.scheduleReset();
 		this.initEvents();
+		this.placeEvents();
 	};
 
 	SchedulePlan.prototype.scheduleReset = function() {
@@ -83,6 +83,37 @@ function initCalendar() {
 			event.preventDefault();
 			if( !self.animating ) self.closeModal(self.eventsGroup.find('.selected-event'));
 		});
+        // Update schedule element form prevention. (AJAX)
+        this.modal.find('.event-info').on('submit','#updateForm',function(event) {
+            $.ajax({
+                method: $(this).attr('method'),
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function (data) {
+                    /////// RENDU ICI.
+                    self.closeModal(self.eventsGroup.find('.selected-event'));
+                },
+                error: function (errors) {
+                    formErrors(errors,$(this));
+                }
+            });
+            event.preventDefault();
+        });
+        // Delete schedule element form prevention. (AJAX)
+        this.modal.find('.event-info').on('submit','#deleteForm',function(event) {
+            $.ajax({
+                method: $(this).attr('method'),
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function (data) {
+                    self.closeModal(self.eventsGroup.find('.selected-event'));
+                },
+                error: function (errors) {
+                    formErrors(errors,$(this));
+                }
+            });
+            event.preventDefault();
+        });
 		this.element.on('click', '.cover-layer', function(event){
 			if( !self.animating && self.element.hasClass('modal-is-open') ) self.closeModal(self.eventsGroup.find('.selected-event'));
 		});
@@ -97,7 +128,7 @@ function initCalendar() {
 
 			var eventTop = self.eventSlotHeight*(start - self.timelineStart)/self.timelineUnitDuration,
 				eventHeight = self.eventSlotHeight*duration/self.timelineUnitDuration;
-			
+
 			$(this).css({
 				top: (eventTop -1) +'px',
 				height: (eventHeight+1)+'px'
@@ -122,46 +153,16 @@ function initCalendar() {
 			//once the event content has been loaded
 			self.element.addClass('content-loaded');
 		});*/
+
 		$.ajax({
             method: 'GET',
 			url: '/isauthmanager',
 			success: function (data) {
 				if (data) {
-					console.log(event.parent().attr('data-slug'));
 					$.ajax({
 						method: 'GET',
 						url: '/schedule/' + event.parent().attr('data-slug') + '/edit',
 						success: function (view) {
-                            // Update schedule element form prevention. (AJAX)
-                            $('#updateForm').submit(function (eventForm) {
-                                $.ajax({
-                                    method: $(this).attr('method'),
-                                    url: $(this).attr('action'),
-                                    data: $(this).serialize(),
-                                    success: function (data) {
-										/////// RENDU ICI.
-                                        self.closeModal(event);
-                                    }
-                                });
-                                eventForm.preventDefault();
-                                return false;
-                            });
-                            // Delete schedule element form prevention. (AJAX)
-                            $('#deleteForm').submit(function (eventForm) {
-                                $.ajax({
-                                    method: $(this).attr('method'),
-                                    url: $(this).attr('action'),
-                                    data: $(this).serialize(),
-                                    success: function (data) {
-                                        self.closeModal(event);
-                                    },
-                                    error: function (errors) {
-                                        formErrors(errors,$(this));
-                                    }
-                                });
-                                eventForm.preventDefault();
-                                return false;
-                            });
                             self.modalBody.find('.event-info').html(view);
                         }
 					});
@@ -202,7 +203,7 @@ function initCalendar() {
 
 			var modalTranslateX = parseInt((windowWidth - modalWidth)/2 - eventLeft),
 				modalTranslateY = parseInt((windowHeight - modalHeight)/2 - eventTop);
-			
+
 			var HeaderBgScaleY = modalHeight/eventHeight,
 				BodyBgScaleX = (modalWidth - eventWidth);
 
@@ -237,7 +238,7 @@ function initCalendar() {
 				width: eventWidth+'px',
 			});
 			transformElement(self.modalHeaderBg, 'scaleY('+HeaderBgScaleY+')');
-			
+
 			self.modalHeaderBg.one(transitionEnd, function(){
 				//wait for the  end of the modalHeaderBg transformation and show the modal content
 				self.modalHeaderBg.off(transitionEnd);
@@ -284,7 +285,7 @@ function initCalendar() {
 				height: eventHeight+'px'
 			});
 			transformElement(self.modal, 'translateX('+modalTranslateX+'px) translateY('+modalTranslateY+'px)');
-			
+
 			//scale down modalBodyBg element
 			transformElement(self.modalBodyBg, 'scaleX(0) scaleY(1)');
 			//scale down modalHeaderBg element
@@ -309,10 +310,10 @@ function initCalendar() {
 
 		//browser do not support transitions -> no need to wait for the end of it
 		if( !transitionsSupported ) self.modal.add(self.modalHeaderBg).trigger(transitionEnd);
-	}
+	};
 
 	SchedulePlan.prototype.mq = function(){
-		//get MQ value ('desktop' or 'mobile') 
+		//get MQ value ('desktop' or 'mobile')
 		var self = this;
 		return window.getComputedStyle(this.element.get(0), '::before').getPropertyValue('content').replace(/["']/g, '');
 	};
@@ -325,8 +326,8 @@ function initCalendar() {
 		if( mq == 'mobile' ) {
 			//reset modal style on mobile
 			self.modal.add(self.modalHeader).add(self.modalHeaderBg).add(self.modalBody).add(self.modalBodyBg).attr('style', '');
-			self.modal.removeClass('no-transition');	
-			self.animating = false;	
+			self.modal.removeClass('no-transition');
+			self.animating = false;
 		} else if( mq == 'desktop' && self.element.hasClass('modal-is-open') ) {
 			self.modal.addClass('no-transition');
 			self.element.addClass('animation-completed');
@@ -378,7 +379,7 @@ function initCalendar() {
 
 			setTimeout(function(){
 				self.modal.removeClass('no-transition');
-				self.animating = false;	
+				self.animating = false;
 			}, 20);
 		}
 	};
@@ -386,7 +387,7 @@ function initCalendar() {
 	var schedules = $('.cd-schedule');
 	var objSchedulesPlan = [],
 		windowResize = false;
-	
+
 	if( schedules.length > 0 ) {
 		schedules.each(function(){
 			//create SchedulePlan objects
@@ -433,5 +434,4 @@ function initCalendar() {
 			'transform': value
 		});
 	}
-}
-//});
+});

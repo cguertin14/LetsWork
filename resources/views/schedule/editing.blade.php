@@ -127,16 +127,6 @@
 
 @section('scripts')
     <script>
-        Array.prototype.move = function (old_index, new_index) {
-            if (new_index >= this.length) {
-                var k = new_index - this.length;
-                while ((k--) + 1) {
-                    this.push(undefined);
-                }
-            }
-            this.splice(new_index, 0, this.splice(old_index, 1)[0]);
-            //return this; // for testing purposes
-        };
         new Vue({
             el: "#calendar",
             data: {
@@ -146,7 +136,7 @@
             computed: {},
             methods: {
                 thisdayhaveanevent: function (day) {
-                    if (this.weekevents[day] != undefined)
+                    if (this.weekevents[day] !== 'undefined')
                         return true;
                     return false;
                 },
@@ -157,7 +147,7 @@
                     let self = this;
                     $.ajax({
                         method: 'GET',
-                        url: '{{route('schedule.thisweek')}}',
+                        url: '/schedule/thisweek',
                         success: function (data) {
                             self.weekevents = data.weekevents;
                         }
@@ -174,14 +164,12 @@
                     });
                 }
             },
-            created: function () {},
-            updated: function () {},
-            mounted: function() {
-                initCalendar();
-            },
-            beforeMount: function() {
+            created: function () {
                 this.loadThisWeek();
             },
+            updated: function () {},
+            mounted: function() {},
+            beforeMount: function() {},
         });
     </script>
 @endsection
