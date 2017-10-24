@@ -6,6 +6,9 @@
 
 @section('styles')
 <style>
+        .event-info {
+            width: 102%;
+        }
         h1.center {
             text-align: center;
         }
@@ -156,7 +159,7 @@
                         method: 'GET',
                         url: '{{route('schedule.thisweek')}}',
                         success: function (data) {
-                            self.weekevents = data;
+                            self.weekevents = data.weekevents;
                         }
                     });
                 },
@@ -171,11 +174,11 @@
                     });
                 }
             },
-            created: function () {
-                this.loadThisWeek();
-            },
+            created: function () {},
             updated: function () {},
-            mounted: function() {},
+            mounted: function() {
+                initCalendar();
+            },
             beforeMount: function() {
                 this.loadThisWeek();
             },

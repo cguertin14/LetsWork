@@ -1,4 +1,6 @@
-jQuery(document).ready(function($){
+//jQuery(document).ready(function($){
+function initCalendar() {
+
 	var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
 	var transitionsSupported = ( $('.csstransitions').length > 0 );
 	//if browser does not support transitions - use a different event to trigger them
@@ -130,17 +132,51 @@ jQuery(document).ready(function($){
 						method: 'GET',
 						url: '/schedule/' + event.parent().attr('data-slug') + '/edit',
 						success: function (view) {
+                            // Update schedule element form prevention. (AJAX)
+                            $('#updateForm').submit(function (eventForm) {
+                                $.ajax({
+                                    method: $(this).attr('method'),
+                                    url: $(this).attr('action'),
+                                    data: $(this).serialize(),
+                                    success: function (data) {
+										/////// RENDU ICI.
+                                        self.closeModal(event);
+                                    }
+                                });
+                                eventForm.preventDefault();
+                                return false;
+                            });
+                            // Delete schedule element form prevention. (AJAX)
+                            $('#deleteForm').submit(function (eventForm) {
+                                $.ajax({
+                                    method: $(this).attr('method'),
+                                    url: $(this).attr('action'),
+                                    data: $(this).serialize(),
+                                    success: function (data) {
+                                        self.closeModal(event);
+                                    },
+                                    error: function (errors) {
+                                        formErrors(errors,$(this));
+                                    }
+                                });
+                                eventForm.preventDefault();
+                                return false;
+                            });
                             self.modalBody.find('.event-info').html(view);
-                            self.element.addClass('content-loaded');
                         }
 					});
 				} else {
                     self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
-                    self.element.addClass('content-loaded');
                 }
-                self.element.addClass('modal-is-open');
             }
-		});
+		}).done(function (data) {
+            self.element.addClass('content-loaded');
+            self.element.addClass('modal-is-open');
+        });
+
+        /*self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
+        self.element.addClass('content-loaded');
+    	self.element.addClass('modal-is-open');*/
 
 		setTimeout(function(){
 			//fixes a flash when an event is selected - desktop version only
@@ -397,4 +433,5 @@ jQuery(document).ready(function($){
 			'transform': value
 		});
 	}
-});
+}
+//});

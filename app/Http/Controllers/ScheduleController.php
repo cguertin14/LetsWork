@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateEventRequest;
 use App\Http\Requests\CreateScheduleRequest;
 use App\Schedule;
+use App\ScheduleElement;
 use App\SpecialRole;
 use App\Tools\Helper;
 use Carbon\Carbon;
@@ -133,7 +134,7 @@ class ScheduleController extends Controller
     public function edit($slug)
     {
         // Modify this request ...
-        $scheduleelement = Helper::getCurrentSchedule()->scheduleelements()->get()->where('slug',$slug)->first();
+        $scheduleelement = ScheduleElement::findBySlugOrFail($slug);//Helper::getCurrentSchedule()->scheduleelements()->get()->where('slug',$slug)->first();
         $specialRoles = SpecialRole::where('company_id',session('CurrentCompany')->id)
                                     ->get()
                                     ->pluck('name','id');
