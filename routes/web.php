@@ -12,6 +12,7 @@
 */
 
 /* Other Routes */
+
 Route::get('/', 'OtherController@homepage')->name('homepage.content');
 Route::get('/aboutus', 'OtherController@aboutus')->name('information.aboutus');
 Route::get('/termsofservice', 'OtherController@termsofservice')->name('information.termsofservice');
@@ -69,6 +70,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     /* Schedule Routes */
     Route::get('/schedule/thisweek','ScheduleController@thisweek')->name('schedule.thisweek');
+    Route::get('/schedule/week/{datebegin}','ScheduleController@week')->name('schedule.week');
     Route::get('/schedule/scheduleelement','ScheduleController@createelement')->name('schedule.createelement');
     Route::post('/schedule/scheduleelement','ScheduleController@storeelement')->name('schedule.storeelement');
     Route::get('/schedule/editing','ScheduleController@editing')->name('schedule.editing');
@@ -81,6 +83,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/punches/lastweek', 'PunchController@lastweek');
     Route::get('/punches/lastmouth', 'PunchController@lastmouth');
     Route::get('/punches/lastyear', 'PunchController@lastyear');
+
+    /* Other Routes */
+    Route::get('/isauthmanager','OtherController@userIsManager');
 });
 
 Route::get('/test', function (){

@@ -22,7 +22,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         {!! Form::label('description', 'Description', ['class' => 'section-title']); !!}
-                        {!! Form::textarea('description',null,['class' => 'form-control','placeholder' => 'Description','required','rows' => 3]); !!}
+                        {!! Form::textarea('description',null,['class' => 'form-control','placeholder' => 'Description','required','rows' => 3,'style' => 'resize:none']); !!}
                     </div>
                 </div>
                 <div class="col-md-6">

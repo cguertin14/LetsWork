@@ -120,10 +120,27 @@ jQuery(document).ready(function($){
 			//once the event content has been loaded
 			self.element.addClass('content-loaded');
 		});*/
-
-        this.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
-        this.element.addClass('content-loaded');
-		this.element.addClass('modal-is-open');
+		$.ajax({
+            method: 'GET',
+			url: '/isauthmanager',
+			success: function (data) {
+				if (data) {
+					console.log(event.parent().attr('data-slug'));
+					$.ajax({
+						method: 'GET',
+						url: '/schedule/' + event.parent().attr('data-slug') + '/edit',
+						success: function (view) {
+                            self.modalBody.find('.event-info').html(view);
+                            self.element.addClass('content-loaded');
+                        }
+					});
+				} else {
+                    self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
+                    self.element.addClass('content-loaded');
+                }
+                self.element.addClass('modal-is-open');
+            }
+		});
 
 		setTimeout(function(){
 			//fixes a flash when an event is selected - desktop version only

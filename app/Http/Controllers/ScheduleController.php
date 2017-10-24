@@ -9,6 +9,7 @@ use App\SpecialRole;
 use App\Tools\Helper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use function MongoDB\BSON\toJSON;
 
@@ -132,8 +133,12 @@ class ScheduleController extends Controller
     public function edit($slug)
     {
         // Modify this request ...
-        $schedule = session('CurrentCompany')->schedules->where('slug',$slug)->first();
-        return view('schedule.edit',compact('schedule'));
+        $scheduleelement = Helper::getCurrentSchedule()->scheduleelements()->get()->where('slug',$slug)->first();
+        $specialRoles = SpecialRole::where('company_id',session('CurrentCompany')->id)
+                                    ->get()
+                                    ->pluck('name','id');
+        $schedules = session('CurrentCompany')->schedules->pluck('name','id');
+        return view('schedule.edit',compact('scheduleelement','specialRoles','schedules'));
     }
 
     public function editing()
@@ -173,6 +178,9 @@ class ScheduleController extends Controller
      */
     public function thisweek()
     {
+        Carbon::setWeekStartsAt(Carbon::SUNDAY);
+        Carbon::setWeekEndsAt(Carbon::SATURDAY);
+
         $days     = Helper::getWeekDays();
         $data     = Helper::getWeekDaysJson();
         $schedule = Helper::getCurrentSchedule();
@@ -180,26 +188,64 @@ class ScheduleController extends Controller
         // Get schedule elements
         $scheduleElements = $schedule->scheduleelements()->get();
         // Get elements before today.
-        $thisWeekElements = $scheduleElements->where('begin','<=',Carbon::today())
-                                             ->where('end','>=',Carbon::today())
-                                             ->groupBy('begin');
+        $thisWeekElements = $scheduleElements->where('begin','>=',Carbon::now()->startOfWeek())
+                                             ->where('end','<=',Carbon::now()->endOfWeek());
         if (count($thisWeekElements) > 0) {
-            //$thisWeekElements->orderBy('begin');
             // Put data in array.
             $weekEvents = $data->first();
             foreach ($data->first() as $day => $events) {
                 // Get le data pour chaque jour et ensuite le mettre dans $weekEvents
                 foreach ($thisWeekElements as $element) {
-                    if ($days[$element->begin->dayOfWeek] == $day)
-                        array_push($weekEvents[$day], $element /*[
-                    'begin' => '12:00',
-                    'end' => '13:00',
-                    'name' => 'nom d\'événement',
-                    'description' => 'description d\'événement',
-                ]*/);
+                    if ($element->begin >= Carbon::now()->startOfWeek() && $element->end <= Carbon::now()->endOfWeek()) {
+                        if ($days[Carbon::createFromFormat('Y-m-d H:i:s',$element->begin)->dayOfWeek] == $day)
+                        {
+                            $test = $element->first();
+                            $test['begin'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['begin'])->toTimeString())->toTimeString(),0,5);
+                            $test['end'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['end'])->toTimeString())->toTimeString(),0,5);
+                            array_push($weekEvents[$day], $test);
+                        }
+                    }
                 }
             }
-            $data->put('weekdays',$weekEvents);
+            $data->put('weekevents',$weekEvents);
+        }
+        // Return data as JSON.
+        return response()->json($data);
+    }
+
+    /**
+     * Get week events of whatever week and return them to the client.
+     * @param string $datebegin -> as 'Y-m-d'
+     * @return Response
+     */
+    public function week($datebegin)
+    {
+        Carbon::setWeekStartsAt(Carbon::SUNDAY);
+        Carbon::setWeekEndsAt(Carbon::SATURDAY);
+
+        $dateCarbon = Carbon::createFromFormat('Y-m-d',$datebegin);
+        $days       = Helper::getWeekDays();
+        $data       = Helper::getWeekDaysJson();
+        $schedule   = Helper::getCurrentSchedule();
+
+        // Get schedule elements
+        $scheduleElements = $schedule->scheduleelements()->get();
+        // Get elements before today.
+        $weekElements = $scheduleElements->where('begin','>=',$dateCarbon->startOfWeek())
+                                         ->where('end'  ,'<=',$dateCarbon->endOfWeek());
+        if (count($weekElements) > 0) {
+            // Put data in array.
+            $weekEvents = $data->first();
+            foreach ($data->first() as $day => $events) {
+                // Get le data pour chaque jour et ensuite le mettre dans $weekEvents
+                foreach ($weekElements as $element) {
+                    if ($element->begin >= $dateCarbon->startOfWeek() && $element->end <= $dateCarbon->endOfWeek()) {
+                        if ($days[Carbon::createFromFormat('Y-m-d H:i:s',$element->begin)->dayOfWeek] == $day)
+                            array_push($weekEvents[$day], $element);
+                    }
+                }
+            }
+            $data->put('weekevents',$weekEvents);
         }
         // Return data as JSON.
         return response()->json($data);
