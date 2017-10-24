@@ -85,7 +85,7 @@
                     locale: 'fr-ca'
                 });
                 $('#specific_user_checkbox').change(function () {
-                    getEmployeesByRole($('#special_role').find(":selected").val());
+                    getEmployeesByRole($('#special_role').find(":selected").val(),6);
                 });
                 $('#special_role').change(function () {
                     if ($('#specific_user')) {
