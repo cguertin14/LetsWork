@@ -142,6 +142,10 @@ class ScheduleController extends Controller
         return view('schedule.edit',compact('scheduleelement','specialRoles','schedules'));
     }
 
+    /**
+     * Return the editing view to allow the manager to change its schedule.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function editing()
     {
         $schedules = session('CurrentCompany')->schedules->pluck('name','slug');
@@ -157,7 +161,9 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, $slug)
     {
-        //
+        // Add code to update the specified schedule element
+
+        return response()->json(['status' => 'Updated!']);
     }
 
     /**
@@ -169,7 +175,7 @@ class ScheduleController extends Controller
     public function destroy($slug)
     {
         session('CurrentCompany')->schedules->where('slug',$slug)->first()->delete();
-        return redirect()->action('ScheduleController@index');
+        return response()->json(['status' => 'Deleted!']);
     }
 
     /**
