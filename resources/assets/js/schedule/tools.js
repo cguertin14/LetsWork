@@ -70,18 +70,20 @@ jQuery(document).ready(function ($) {
     });
 });
 
-function getEmployeesByRole(role) {
+function getEmployeesByRole(role,size) {
     const self = document.getElementById("specific_user_checkbox");
     if (self.checked) {
         // Get employés selon leur role
         let specificuser = null;
         if ($('#container').find('#specific_user').length === 0) {
-            specificuser = $.parseHTML("<div id=\"specific_user\" style='display: none;' class=\"col-md-6\">" +
+            specificuser = $.parseHTML("<div id=\"specific_user\" style='display: none;' class=\"col-md-"+size+"\">" +
                         "                    <div class=\"form-group\">" +
-                        "                        <label for=\"user_id\" class=\"section-title\">Employé spécifique voulu</label>" +
+                        "                        <label id='user_id_label' for=\"user_id\" class=\"section-title\">Employé spécifique voulu</label>" +
                         "                        <select class=\"form-control\" required id=\"users\" name=\"user_id\"></select>" +
                         "                    </div>" +
                         "               </div>");
+            if (size === 12)
+                $(specificuser).find('#user_id_label').attr('style','color:black!important');
         } else {
             specificuser = $('#specific_user');
         }
