@@ -9,7 +9,7 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 /* Other Routes */
 
@@ -30,43 +30,43 @@ Route::resource('company', 'CompanyController');
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
-    /* Profile Routes */
-    Route::get('/profile/{slug}', 'ProfileController@view')->name('profile.view');
-    Route::patch('/profile/{slug}/update', 'ProfileController@update')->name('profile.update');
-    Route::patch('/profile/uploadphoto', 'ProfileController@uploadphoto')->name('profile.uploadphoto');
-    Route::get('/profilephoto', 'ProfileController@photo')->name('profile.photo');
-    Route::delete('/profile/{slug}/delete', 'ProfileController@deleteuser')->name('profile.delete');
+	/* Profile Routes */
+	Route::get('/profile/{slug}', 'ProfileController@view')->name('profile.view');
+	Route::patch('/profile/{slug}/update', 'ProfileController@update')->name('profile.update');
+	Route::patch('/profile/uploadphoto', 'ProfileController@uploadphoto')->name('profile.uploadphoto');
+	Route::get('/profilephoto', 'ProfileController@photo')->name('profile.photo');
+	Route::delete('/profile/{slug}/delete', 'ProfileController@deleteuser')->name('profile.delete');
 
-    /* Company Routes */
-    Route::post('/company/{slug}/select', 'CompanyController@select')->name('company.select');
-    Route::post('/company/uploadphoto', 'CompanyController@uploadphoto')->name('company.uploadphoto');
+	/* Company Routes */
+	Route::post('/company/{slug}/select', 'CompanyController@select')->name('company.select');
+	Route::post('/company/uploadphoto', 'CompanyController@uploadphoto')->name('company.uploadphoto');
 
-    /* Absence Routes */
-    Route::resource('absence', 'AbsenceController');
+	/* Absence Routes */
+	Route::resource('absence', 'AbsenceController');
 
-    /* Special Roles Routes */
-    Route::resource('specialrole', 'SpecialRoleController');
+	/* Special Roles Routes */
+	Route::resource('specialrole', 'SpecialRoleController');
 
-    /* Dispo Routes */
-    Route::resource('dispo','DispoController');
+	/* Dispo Routes */
+	Route::resource('dispo', 'DispoController');
 
-    /* Skills Routes */
-    Route::resource('skill', 'SkillController');
+	/* Skills Routes */
+	Route::resource('skill', 'SkillController');
 
-    /* Cv Routes */
-    Route::get('/cv/create', 'CvController@create')->name('cv.create');
-    Route::get('/cv', 'CvController@getAuthCv')->name('cv.get');
-    Route::post('/cv/store', 'CvController@store')->name('cv.store');
+	/* Cv Routes */
+	Route::get('/cv/create', 'CvController@create')->name('cv.create');
+	Route::get('/cv', 'CvController@getAuthCv')->name('cv.get');
+	Route::post('/cv/store', 'CvController@store')->name('cv.store');
 
-    /* JobOffer Routes (suite...) */
-    Route::post('/joboffer/{slug}/apply','JobOfferController@apply')->name('joboffer.apply');
+	/* JobOffer Routes (suite...) */
+	Route::post('/joboffer/{slug}/apply', 'JobOfferController@apply')->name('joboffer.apply');
 
-    /* JobOfferUser Routes */
-    Route::get('/jobofferuser','JobOfferUserController@index')->name('jobofferuser.index');
-    Route::get('/jobofferuser/{id}','JobOfferUserController@show')->name('jobofferuser.show');
-    Route::post('/jobofferuser/{id}/accept','JobOfferUserController@accept')->name('jobofferuser.accept');
-    Route::post('/jobofferuser/{id}/interview','JobOfferUserController@interview')->name('jobofferuser.interview');
-    Route::delete('/jobofferuser/{id}/refuse','JobOfferUserController@refuse')->name('jobofferuser.refuse');
+	/* JobOfferUser Routes */
+	Route::get('/jobofferuser', 'JobOfferUserController@index')->name('jobofferuser.index');
+	Route::get('/jobofferuser/{id}', 'JobOfferUserController@show')->name('jobofferuser.show');
+	Route::post('/jobofferuser/{id}/accept', 'JobOfferUserController@accept')->name('jobofferuser.accept');
+	Route::post('/jobofferuser/{id}/interview', 'JobOfferUserController@interview')->name('jobofferuser.interview');
+	Route::delete('/jobofferuser/{id}/refuse', 'JobOfferUserController@refuse')->name('jobofferuser.refuse');
 
     /* Schedule Routes */
     Route::get('/schedule/thisweek','ScheduleController@thisweek')->name('schedule.thisweek');
@@ -88,7 +88,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/isauthmanager','OtherController@userIsManager');
 });
 
-Route::get('/test', function (){
-    $today=\Carbon\Carbon::today();
-    return   \App\Tools\Helper::getlastyearmonth($today);
+Route::get('/test', function () {
+	\App\Tools\Mailing::send();
 });
