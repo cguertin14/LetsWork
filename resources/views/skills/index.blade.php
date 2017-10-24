@@ -17,7 +17,7 @@
         <div class="col-md-12">
             @if (count($skills) > 0)
                 <div class="centre custom-container">
-                <table class="table custom-table">
+                <table class="table custom-table" style="margin: 0px !important;">
                     <thead>
                     <tr class="section-title">
                         <th>Nom</th>

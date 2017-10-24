@@ -32,14 +32,17 @@
                         <thead>
                         <tr class="section-title">
                             <th>Date de début</th>
-                            <th>Date de fin</th>
+                            <th>Quand</th>
+                            <th>Durée</th>
                         </tr>
                         </thead>
                         <tbody class="section">
                         @foreach($punches as $punch)
                             <tr style="cursor:default;">
-                                <td>{{$punch->datebegin}}</td>
-                                <td>{{$punch->dateend}}</td>
+                                @php(\Carbon\Carbon::setLocale('fr'))
+                                <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin)->toDateString()}}</td>
+                                <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin)->diffForHumans()}}</td>
+                                <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->dateend)->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)}}</td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -66,6 +69,7 @@
                 <div class="centre custom-container custom-table" style="padding: 1em;margin-bottom: 2em">
                     <div class="text-center">
                         <h2 class="row page-title">Trier par</h2>
+                        <br>
                         <button class="btn purplebtn" v-on:click="loadweek" style="margin-right: 1em">Semaine</button>
                         <button class="btn purplebtn" v-on:click="loadmonth">Mois</button>
                         <button class="btn purplebtn" v-on:click="loadyear" style="margin-left: 1em">Année</button>

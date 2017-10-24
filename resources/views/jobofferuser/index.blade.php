@@ -15,8 +15,9 @@
 
     <div class="col-md-12">
         <div class="row layout">
-            <div class="centre custom-container">
-                <table class="table custom-table">
+            @if (count($jobofferusers) > 0)
+            <div class="centre custom-container" style="margin-bottom: 2em !important;">
+                <table class="table custom-table" style="margin: 0px !important">
                     <thead>
                     <tr class="section-title">
                         <th>Nom de l'appliquant</th>
@@ -49,12 +50,19 @@
                 </table>
 
                 <div class="row">
-                    <div class="col-sm-6 col-sm-offset-5">
+                    <div class="text-center">
                         {{$jobofferusers->render('pagination.paginate')}}
                     </div>
                 </div>
 
             </div>
+            @else
+                @component('components.nothing')
+                    @slot('message')
+                        Il n'y a pas de demandes d'emploi
+                    @endslot
+                @endcomponent
+            @endif
         </div>
     </div>
 

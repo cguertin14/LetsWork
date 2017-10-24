@@ -76,7 +76,7 @@
                         <li>
                             <a id="dropdown1Title" href="#">Compagnies <span id="img1" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
                             <ul id="dropdown1" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
-                                <li><a href="/company">Index</a></li>
+                                <li><a href="/company">Voir tout</a></li>
                                 <li><a href="/company/create">Créer</a></li>
                             </ul>
                         </li>
@@ -93,7 +93,7 @@
                         </li>
                         @if(count(Illuminate\Support\Facades\Auth::user()->companies) > 1)
                         <li>
-                            <a  id="dropdown2Title" href="#">Mes emplois <span id="img2" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
+                            <a  id="dropdown2Title" href="#">@if (!Session::has('CurrentCompany')) Sélectionner un emploi @else Sélectionner un autre emploi @endif<span id="img2" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
                             <ul id="dropdown2" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
                                 @foreach(\Illuminate\Support\Facades\Auth::user()->companies as $company)
                                     <li onclick="selectCompany('{{$company->slug}}')"><a href="#">@if(strlen($company->name) > 17){{ substr($company->name,0,17) . '..'}} @else{{$company->name}} @endif</a></li>

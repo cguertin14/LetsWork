@@ -35,7 +35,7 @@ class PunchController extends Controller
 
     public function index()
     {
-        $punches = \App\Tools\Helper::CEmployee()->punches()->where("company_id", \App\Tools\Helper::CCompany()->id)->paginate(10);
+        $punches = \App\Tools\Helper::CEmployee()->punches()->where("company_id", \App\Tools\Helper::CCompany()->id)->paginate(5);
         return view("punch.index", compact('punches'));
     }
 
