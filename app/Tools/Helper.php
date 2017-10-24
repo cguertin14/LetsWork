@@ -18,7 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-trait Helper
+abstract class Helper
 {
     public static function CCompany()
     {

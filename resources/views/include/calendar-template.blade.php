@@ -8,7 +8,7 @@
             <li class="events-group" v-for="day in days">
                 <div class="top-info"><span>@{{day}}</span></div>
                 <ul>
-                    <li class="single-event" :data-start="event.begin" :data-end="event.end" :data-content="event.description" data-event="event-2" v-if="thisdayhaveanevent(day)" v-for="event in getevent(day)">
+                    <li class="single-event" :data-slug="event.slug" :data-start="event.begin" :data-end="event.end" :data-content="event.description" data-event="event-2" v-if="thisdayhaveanevent(day)" v-for="event in getevent(day)">
                         <a href="#0">
                             <em class="event-name">@{{ event.name }}</em>
                         </a>

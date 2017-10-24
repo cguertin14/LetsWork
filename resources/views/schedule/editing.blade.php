@@ -94,7 +94,7 @@
 <div class="modal fade" id="createScheduleModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div class="modal fade" id="createEventModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
 
-<div class="custom-container custom-table" style="margin: 2em auto;max-width: 1400px;width: 90%">
+<div class="custom-container custom-table" style="margin: 2em auto;max-width: 1400px!important;width: 90%!important;">
     <table style="margin: 2em">
         <tbody id="tbody">
             <tr>
@@ -124,31 +124,21 @@
 
 @section('scripts')
     <script>
-        var calendar = new Vue({
+        Array.prototype.move = function (old_index, new_index) {
+            if (new_index >= this.length) {
+                var k = new_index - this.length;
+                while ((k--) + 1) {
+                    this.push(undefined);
+                }
+            }
+            this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+            //return this; // for testing purposes
+        };
+        new Vue({
             el: "#calendar",
             data: {
-                days: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"],//, "Samedi", "Dimanche"
-                weekevents:
-                    {
-                        "Lundi": [
-                        {
-                            "begin": "12:00",
-                            "end": "15:00",
-                            "name": "Wawooo!!!",
-                            "description": "Le premier evenement"
-                        },
-                        {"begin": "1:00", "end": "8:32", "name": "Wawooo2!!!", "description": "Le deuxieme evenement"}
-                        ],
-                        "Mardi": [{
-                            "begin": "12:00",
-                            "end": "15:00",
-                            "name": "Wawooo!!!",
-                            "description": "Le premier evenement"
-                        }],
-                        "Mercredi": [],
-                        "Jeudi": [],
-                        "Vendredi": []
-                    }
+                days: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"],
+                weekevents: []
             },
             computed: {},
             methods: {
@@ -161,31 +151,34 @@
                     return this.weekevents[day];
                 },
                 loadThisWeek: function () {
-                    $.getJSON("{{route('schedule.thisweek')}}", function (data) {
-                        this.weekevents = data;
+                    let self = this;
+                    $.ajax({
+                        method: 'GET',
+                        url: '{{route('schedule.thisweek')}}',
+                        success: function (data) {
+                            self.weekevents = data;
+                        }
                     });
                 },
                 loadNextWeek: function () {
                     $.getJSON("", {}, function (data) {
-                        this.weekevents = data.weekevents;
+
                     });
                 },
                 loadLastWeek: function () {
                     $.getJSON("", {}, function (data) {
-                        this.weekevents = data;
+
                     });
                 }
-            },
-            watch: {},
-            updated: function () {
             },
             created: function () {
                 this.loadThisWeek();
             },
-            mounted:function()
-            {
-
-            }
+            updated: function () {},
+            mounted: function() {},
+            beforeMount: function() {
+                this.loadThisWeek();
+            },
         });
     </script>
 @endsection
