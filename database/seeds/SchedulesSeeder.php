@@ -1,5 +1,6 @@
 <?php
 
+use App\SpecialRole;
 use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
@@ -26,6 +27,7 @@ class SchedulesSeeder extends Seeder
         foreach (\App\Company::all() as $company) {
             $dateBegin = \Carbon\Carbon::now();
             $dateEnd = Carbon::createFromFormat('Y-m-d H:i:s',$dateBegin)->addWeeks(1);
+
             $schedule = $company->schedules()->create([
                 'name' => $scheduleNames[array_rand($scheduleNames)],
                 'begin' => $dateBegin,
@@ -36,7 +38,7 @@ class SchedulesSeeder extends Seeder
             $max_epoch = strtotime(Carbon::createFromFormat('Y-m-d H:i:s',$schedule->begin)->addDays(2));
             $rand_epoch = rand($min_epoch, $max_epoch);
             $begin = date('Y-m-d H:i:s', $rand_epoch);
-            $end = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $begin)->addHours($faker->numberBetween(1, 15));
+            $end = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $begin)->addHours($faker->numberBetween(1, 8));
 
             $scheduleElement = $schedule->scheduleelements()->create([
                 'begin' => $begin,
@@ -45,10 +47,9 @@ class SchedulesSeeder extends Seeder
                 'description' => $faker->unique()->paragraph(),
                 'slug' => $faker->slug()
             ]);
-            $specialrole = \App\SpecialRole::all()->random();
-            $scheduleElement->specialroles()->attach($specialrole);
-            $scheduleElement->employees()->attach($company->employees()->get()->random());
 
+            $scheduleElement->specialroles()->attach(SpecialRole::where('company_id',$company->id)->get()->random());
+            $scheduleElement->employees()->attach($company->employees()->get()->random());
 
             /*foreach (range(1, $dateEnd->daysInMonth) as $month) {
                 $min_epoch = strtotime($schedule->begin);

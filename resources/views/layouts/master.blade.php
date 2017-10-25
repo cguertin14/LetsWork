@@ -42,7 +42,7 @@
                     <ul class="nav navbar-nav" style="margin-right: 10px">
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: white">
-                                <span class="glyphicon glyphicon-user" style="color: white"></span>{{Auth::user()->fullname}}
+                                <span class="glyphicon glyphicon-user" style="color: white"></span>&nbsp;{{Auth::user()->fullname}}
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li>

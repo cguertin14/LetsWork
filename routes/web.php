@@ -89,6 +89,6 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::get('/test', function (){
-    $today=\Carbon\Carbon::today();
-    return   \App\Tools\Helper::getlastyearmonth($today);
+    $specialrole = \App\SpecialRole::where('company_id',\App\Company::all()->random()->id)->get()->random();
+    return $specialrole;
 });

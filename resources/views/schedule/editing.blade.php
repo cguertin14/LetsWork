@@ -164,12 +164,12 @@
                     });
                 }
             },
-            created: function () {
-                this.loadThisWeek();
-            },
+            created: function () {},
             updated: function () {},
             mounted: function() {},
-            beforeMount: function() {},
+            beforeMount: function() {
+                this.loadThisWeek();
+            },
         });
     </script>
 @endsection

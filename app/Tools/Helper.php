@@ -248,7 +248,7 @@ abstract class Helper
         return round($sum,2);
     }
 
-    public static function getWeekDays()
+    public static function getDays()
     {
         return [
             'Dimanche',
@@ -258,6 +258,17 @@ abstract class Helper
             'Jeudi',
             'Vendredi',
             'Samedi'
+        ];
+    }
+
+    public static function getWeekDays()
+    {
+        return [
+            'Lundi',
+            'Mardi',
+            'Mercredi',
+            'Jeudi',
+            'Vendredi'
         ];
     }
 
