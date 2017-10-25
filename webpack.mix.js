@@ -41,7 +41,6 @@ mix.scripts([
     'resources/assets/js/libs/vue.js',
     'resources/assets/js/libs/pdfobject.js',
     'resources/assets/js/schedule/modernizr.js',
-    'resources/assets/js/schedule/main.js',
     'resources/assets/js/schedule/tools.js',
     'resources/assets/js/libs/jquery.mask.js',
     'resources/assets/js/libs/Chart.js',
