@@ -35,14 +35,15 @@ mix.scripts([
     'node_modules/moment/locale/fr-ca.js',
     'resources/assets/js/libs/bootstrap-datetimepicker.js',
     'resources/assets/js/libs/bootstrap-select.js',
-    "resources/assets/js/libs/masonry.pkgd.js",
-    "resources/assets/js/libs/infinite-scroll.pkgd.js",
-    "resources/assets/js/libs/isotope.pkgd.js",
-    "resources/assets/js/libs/vue.js",
-    "resources/assets/js/libs/pdfobject.js",
+    'resources/assets/js/libs/masonry.pkgd.js',
+    'resources/assets/js/libs/infinite-scroll.pkgd.js',
+    'resources/assets/js/libs/isotope.pkgd.js',
+    'resources/assets/js/libs/vue.js',
+    'resources/assets/js/libs/pdfobject.js',
     'resources/assets/js/schedule/modernizr.js',
     'resources/assets/js/schedule/main.js',
     'resources/assets/js/schedule/tools.js',
     'resources/assets/js/libs/jquery.mask.js',
-    'resources/assets/js/libs/Chart.js'
+    'resources/assets/js/libs/Chart.js',
+    'resources/assets/js/libs/socket.io.js'
 ],'public/js/libs.js');
