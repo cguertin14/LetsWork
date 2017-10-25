@@ -68,26 +68,33 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/jobofferuser/{id}/interview', 'JobOfferUserController@interview')->name('jobofferuser.interview');
 	Route::delete('/jobofferuser/{id}/refuse', 'JobOfferUserController@refuse')->name('jobofferuser.refuse');
 
-    /* Schedule Routes */
-    Route::get('/schedule/thisweek','ScheduleController@thisweek')->name('schedule.thisweek');
-    Route::get('/schedule/week/{datebegin}','ScheduleController@week')->name('schedule.week');
-    Route::get('/schedule/scheduleelement','ScheduleController@createelement')->name('schedule.createelement');
-    Route::post('/schedule/scheduleelement','ScheduleController@storeelement')->name('schedule.storeelement');
-    Route::get('/schedule/editing','ScheduleController@editing')->name('schedule.editing');
-    Route::get('/schedule/employees/{specialrole}','ScheduleController@getEmployees')->name('schedule.employees');
-    Route::resource('/schedule','ScheduleController');
+	/* Schedule Routes */
+	Route::get('/schedule/thisweek', 'ScheduleController@thisweek')->name('schedule.thisweek');
+	Route::get('/schedule/week/{datebegin}', 'ScheduleController@week')->name('schedule.week');
+	Route::get('/schedule/scheduleelement', 'ScheduleController@createelement')->name('schedule.createelement');
+	Route::post('/schedule/scheduleelement', 'ScheduleController@storeelement')->name('schedule.storeelement');
+	Route::get('/schedule/editing', 'ScheduleController@editing')->name('schedule.editing');
+	Route::get('/schedule/employees/{specialrole}', 'ScheduleController@getEmployees')->name('schedule.employees');
+	Route::resource('/schedule', 'ScheduleController');
 
-    /* Punch Routes */
-    Route::post('/punch', 'PunchController@add');
-    Route::get('/punches', 'PunchController@index')->name('punch');
-    Route::get('/punches/lastweek', 'PunchController@lastweek');
-    Route::get('/punches/lastmouth', 'PunchController@lastmouth');
-    Route::get('/punches/lastyear', 'PunchController@lastyear');
+	/* Punch Routes */
+	Route::post('/punch', 'PunchController@add');
+	Route::get('/punches', 'PunchController@index')->name('punch');
+	Route::get('/punches/lastweek', 'PunchController@lastweek');
+	Route::get('/punches/lastmouth', 'PunchController@lastmouth');
+	Route::get('/punches/lastyear', 'PunchController@lastyear');
 
-    /* Other Routes */
-    Route::get('/isauthmanager','OtherController@userIsManager');
+	/* Other Routes */
+	Route::get('/isauthmanager', 'OtherController@userIsManager');
+});
+
+Route::get('/fire', function () {
+	// this fires the event
+	event(new App\Events\ChatEvent());
+	return "event fired";
 });
 
 Route::get('/test', function () {
-	\App\Tools\Mailing::send();
+	// this checks for the event
+	return view('chat.index');
 });
