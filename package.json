@@ -12,19 +12,22 @@
   "devDependencies": {
     "axios": "^0.16.2",
     "bootstrap-sass": "^3.3.7",
-    "cross-env": "^5.0.5",
+    "cross-env": "^5.1.0",
     "jquery": "^3.2.1",
-    "laravel-mix": "^1.4.5",
+    "laravel-mix": "^1.5.1",
     "lodash": "^4.17.4",
     "node-sass": "^4.5.3",
     "pdfjs-dist": "^1.9.620",
-    "vue": "^2.4.4"
+    "vue": "^2.5.2"
   },
   "dependencies": {
     "@material/form-field": "^0.2.17",
-    "inputmask": "^3.3.8",
-    "moment": "^2.18.1",
+    "express": "^4.16.2",
+    "inputmask": "^3.3.10",
+    "ioredis": "^3.2.1",
+    "moment": "^2.19.1",
     "node-sass": "^4.5.3",
-    "npm": "^5.5.1"
+    "npm": "^5.5.1",
+    "socket.io": "^2.0.4"
   }
 }
