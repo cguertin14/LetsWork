@@ -40,9 +40,9 @@ function duochatconnect(data) {
     }
     else {
         var roomname = 'user.chatroom.duo.' + data.user + '.' + data.requesteduser;
-        var token=returnHash();
+        var token = returnHash();
         io.emit('user.request.duochat.' + data.user, {result: true, chatroom: room, token: token});
-        io.emit(data.requesteduser+'.askedroomjoin',roomname);
+        io.emit(data.requesteduser + '.askedroomjoin', roomname);
         socket.on(roomname, function (data) {
             io.emit(roomname, data);
         });

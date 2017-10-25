@@ -47,7 +47,7 @@
                     this.messages.push(data.user+"> "+data.message);
                     $("#chatbox").scrollTop(100000000);
                 }.bind(this));
-                socket.on(this.currentuser+'.askedroomjoin',function (data) {
+                socket.on(this.currentuser + '.askedroomjoin',function (data) {
                     alert(data.room);
                 }.bind(this));
             }
