@@ -38,9 +38,9 @@
 
     <div class="cover-layer"></div>
 </div> <!-- .cd-schedule -->
-<div id="carbonads-container">
+<!-- <div id="carbonads-container">
     <div class="carbonad">
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=codyhouseco" id="_carbonads_js"></script>
     </div>
     <a href="#0" class="close-carbon-adv">Close</a>
-</div> <!-- #carbonads-container -->
+</div> <!-- #carbonads-container --> -->

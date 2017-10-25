@@ -126,7 +126,9 @@
 @endsection
 
 @section('scripts')
+<script type="text/javascript" src="{{asset('js/main.js')}}"></script>
     <script>
+        var place=new placerhoraire();
         new Vue({
             el: "#calendar",
             data: {
@@ -165,11 +167,17 @@
                 }
             },
             created: function () {
+            },
+            updated: function () {
+                place.load();
+            },
+            mounted: function() {
                 this.loadThisWeek();
             },
-            updated: function () {},
-            mounted: function() {},
-            beforeMount: function() {},
+            beforeMount: function() {
+            },
+            ready:function(){
+            }
         });
     </script>
 @endsection
