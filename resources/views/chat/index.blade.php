@@ -8,7 +8,7 @@
 
 @section('content')
     <div id="chat">
-        <div id="chatbox" style="overflow: scroll;height: 20em;">
+        <div id="chatbox" style="overflow: scroll;overflow-x: hidden;height: 20em;">
         <ul class="list-group">
             <li class="" v-for="mess in messages">@{{mess}}</li>
         </ul>
@@ -20,7 +20,7 @@
 
 @section('scripts')
     <script>
-        var socket = io('http://localhost:3000');
+        var socket = io(location.protocol + '//' + location.hostname+':3000');
         new Vue({
             el:"#chat",
             methods:{
@@ -32,15 +32,22 @@
                     e.preventDefault();
                 },
                 connection:function () {
+                    socket.on(this.currentuser,function (data) {
+                       this.connected=data.result;
+                    }.bind(this));
+
                     socket.emit("user.connection",{
                         user:this.currentuser
                     });
                 }
             },
             data:{
-                currentuser:'@if(!\Illuminate\Support\Facades\Auth::guest()){{\Illuminate\Support\Facades\Auth::user()->email}}@else Anon @endif',
+                currentuser:@if(!\Illuminate\Support\Facades\Auth::guest())'{{\Illuminate\Support\Facades\Auth::user()->email}}'@else 'Anon' @endif,
                 message:'',
-                messages:[]
+                messages:[],
+                connected:false,
+                allusersonline:[],
+                auth: @if(!\Illuminate\Support\Facades\Auth::guest()) {{'true'}} @else {{'false'}} @endif
             },
             mounted:function () {
                 socket.on('chat.message',function (data) {
@@ -50,6 +57,13 @@
                 socket.on(this.currentuser + '.askedroomjoin',function (data) {
                     alert(data.room);
                 }.bind(this));
+                socket.on('user.all.online',function (data) {
+                    this.allusersonline=data;
+                }.bind(this));
+                if(this.auth)
+                {
+                    this.connection();
+                }
             }
         });
     </script>

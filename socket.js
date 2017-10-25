@@ -1,8 +1,8 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var Redis = require('ioredis');
-var redis = new Redis();
+//var Redis = require('ioredis');
+//var redis = new Redis();
 
 function returnHash() {
     var abc = "abcdefghijklmnopqrstuvwxyz1234567890".split("");
@@ -25,7 +25,7 @@ function echoback(data) {
 }
 
 function connection(data) {
-    if (users.contains(data.user)) {
+    if (users.indexOf(data.user)>=0) {
         io.emit(data.user, {result: false});
     }
     else {
@@ -55,6 +55,11 @@ function duochatunconnect(data) {
         socket.removeAllListeners(data.roomname);
     }
 }
+
+function allonlineusers() {
+	io.emit('user.all.online', users);
+}
+setInterval(allonlineusers,3000);
 
 io.on('connection', function (socket) {
     socket.on('chat.message', echoback);
