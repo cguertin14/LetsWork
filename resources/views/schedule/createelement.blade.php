@@ -45,8 +45,8 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        {!! Form::label('special_role_id', 'Type d\'employé voulu', ['class' => 'section-title']); !!}
-                        {!! Form::select('special_role_id',$specialRoles,null,['class' => 'form-control','required','id' => 'special_role']); !!}
+                        {!! Form::label('specialroles[]', 'Types d\'employés voulus', ['class' => 'section-title']); !!}
+                        {!! Form::select('specialroles[]',$specialRoles,null,['class' => 'form-control selectpicker','required','multiple' => 'multiple','data-actions-box' => 'true','id' => 'special_role']); !!}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -59,7 +59,7 @@
                             </div>
                             <!-- end .slideTwo -->
                         </section>
-                        <label class="text-center section-title" style="margin-left: 0.5em">Employé spécifique</label>
+                        <label class="text-center section-title" style="margin-left: 0.5em">Employés spécifiques</label>
                     </div>
                 </div>
             </div>
@@ -85,15 +85,22 @@
                     locale: 'fr-ca'
                 });
                 $('#specific_user_checkbox').change(function () {
-                    getEmployeesByRole($('#special_role').find(":selected").val(),6);
+                    var data = $('#special_role option:selected').map(function() {
+                        return this.value
+                    }).get();
+                    getEmployeesByRole(data,6);
                 });
+                $('.selectpicker').selectpicker({});
                 $('#special_role').change(function () {
                     if ($('#specific_user')) {
-                        getEmployeesByRole($('#special_role').find(":selected").val());
+                        var data = $('#special_role option:selected').map(function() {
+                            return this.value
+                        }).get();
+                        getEmployeesByRole(data,6);
                     } else {
                         // DO NOTHING.
                     }
-                })
+                });
             });
         </script>
     @endslot

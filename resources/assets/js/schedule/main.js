@@ -1,4 +1,4 @@
-jQuery(document).ready(function($){
+jQuery(document).ready(function ($) {
 
 	var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
 	var transitionsSupported = ( $('.csstransitions').length > 0 );
@@ -37,7 +37,6 @@ jQuery(document).ready(function($){
 	SchedulePlan.prototype.initSchedule = function() {
 		this.scheduleReset();
 		this.initEvents();
-		this.placeEvents();
 	};
 
 	SchedulePlan.prototype.scheduleReset = function() {
@@ -65,8 +64,7 @@ jQuery(document).ready(function($){
 
 	SchedulePlan.prototype.initEvents = function() {
 		var self = this;
-
-		this.singleEvents.each(function() {
+        this.singleEvents.each(function() {
 			//create the .event-date element for each event
 			var durationLabel = '<span class="event-date">'+$(this).data('start')+' - '+$(this).data('end')+'</span>';
 			$(this).children('a').prepend($(durationLabel));
@@ -134,7 +132,6 @@ jQuery(document).ready(function($){
 				height: (eventHeight+1)+'px'
 			});
 		});
-
 		this.element.removeClass('loading');
 	};
 
@@ -434,4 +431,5 @@ jQuery(document).ready(function($){
 			'transform': value
 		});
 	}
+
 });

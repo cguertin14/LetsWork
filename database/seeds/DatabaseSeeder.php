@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        /*DB::table('users')->truncate();
+        DB::table('users')->truncate();
         DB::table('file_types')->truncate();
         DB::table('employees')->truncate();
         DB::table('messages')->truncate();
@@ -29,10 +29,12 @@ class DatabaseSeeder extends Seeder
         DB::table('skill_special_role')->truncate();
         DB::table('role_special_role')->truncate();
         DB::table('job_offers')->truncate();
-        DB::table('employee_special_role')->truncate();*/
+        DB::table('employee_special_role')->truncate();
         DB::table('schedules')->truncate();
         DB::table('schedule_elements')->truncate();
-        /*
+        DB::table('employee_schedule_element')->truncate();
+        DB::table('schedule_element_special_role')->truncate();
+
         $this->call(UsersTableSeeder::class);
         $this->call(FileTypesTableSeeder::class);
         $this->call(EmployeesTableSeeder::class);
@@ -44,7 +46,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SkillTableSeeder::class);
         $this->call(SpecialRoleSeeder::class);
         $this->call(JobOfferSeeder::class);
-        $this->call(EmployeeSpecialRoleSeeder::class);*/
+        $this->call(EmployeeSpecialRoleSeeder::class);
         $this->call(SchedulesSeeder::class);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');

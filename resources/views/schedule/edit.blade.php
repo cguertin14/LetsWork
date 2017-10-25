@@ -41,8 +41,8 @@
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    {!! Form::label('special_role_id', 'Type d\'employé voulu', ['class' => 'section-title','style' => 'color:black']); !!}
-                    {!! Form::select('special_role_id',$specialRoles,null,['class' => 'form-control','required','id' => 'special_role']); !!}
+                    {!! Form::label('specialroles[]', 'Types d\'employés voulus', ['class' => 'section-title','style' => 'color:black']); !!}
+                    {!! Form::select('specialroles[]',$specialRoles,$scheduleelement->specialroles->pluck('id'),['class' => 'form-control selectpicker','multiple' => 'multiple','data-actions-box' => 'true','required','id' => 'special_role']); !!}
                 </div>
             </div>
             <div class="col-md-12">
@@ -50,7 +50,7 @@
                     <section style="display: inline-flex">
                         <!-- .slideTwo -->
                         <div class="slideTwo">
-                            <input type="checkbox" value="None" id="specific_user_checkbox" name="check"/>
+                            <input checked="@if(count($scheduleelement->employees) > 0) true @else false @endif" type="checkbox" value="None" id="specific_user_checkbox" name="check"/>
                             <label for="specific_user_checkbox"></label>
                         </div>
                         <!-- end .slideTwo -->
@@ -58,6 +58,15 @@
                     <label class="text-center section-title" style="margin-left: 0.5em;color: black;">Employé spécifique</label>
                 </div>
             </div>
+            @if(count($scheduleelement->employees) > 0)
+                {{-- Add multi select here --}}
+                <div class="col-md-12">
+                    <div class="form-group">
+                        {{--{!! Form::label('employees[]', 'Employés spécifiques voulus', ['class' => 'section-title','style' => 'color:black']); !!}--}}
+                        {{--{!! Form::select('employees[]',,['class' => 'form-control']); !!}--}}
+                    </div>
+                </div>
+            @endif
         </div>
         <div class="col-md-12">
             <div class="col-md-12">
@@ -90,11 +99,19 @@
             locale: 'fr-ca'
         });
         $('#specific_user_checkbox').change(function () {
-            getEmployeesByRole($('#special_role').find(":selected").val(),12);
+            var data = $('#special_role option:selected').map(function() {
+                return this.value
+            }).get();
+            getEmployeesByRole(data,12);
         });
+        $('.selectpicker').selectpicker({});
         $('#special_role').change(function () {
             if ($('#specific_user')) {
-                getEmployeesByRole($('#special_role').find(":selected").val(),);
+                var data = $('#special_role option:selected').map(function() {
+                    return this.value
+                }).get();
+                getEmployeesByRole(data,12);
+                //getEmployeesByRole($('#special_role').find(":selected").val(),12);
             } else {
                 // DO NOTHING.
             }

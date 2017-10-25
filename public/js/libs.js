@@ -12065,7 +12065,7 @@ return Tether;
 
 }));
 
-$(document).ready(function () {
+$(document).ready(function ($) {
     $(".phone-number").mask("(999)-999-9999");
 
     $(".confirm_action").click(function () {
@@ -51355,7 +51355,7 @@ return Vue$3;
 /*! modernizr 3.3.1 (Custom Build) | MIT *
  * https://modernizr.com/download/?-csstransitions-setclasses !*/
 !function(e,n,t){function r(e,n){return typeof e===n}function s(){var e,n,t,s,o,i,a;for(var l in C)if(C.hasOwnProperty(l)){if(e=[],n=C[l],n.name&&(e.push(n.name.toLowerCase()),n.options&&n.options.aliases&&n.options.aliases.length))for(t=0;t<n.options.aliases.length;t++)e.push(n.options.aliases[t].toLowerCase());for(s=r(n.fn,"function")?n.fn():n.fn,o=0;o<e.length;o++)i=e[o],a=i.split("."),1===a.length?Modernizr[a[0]]=s:(!Modernizr[a[0]]||Modernizr[a[0]]instanceof Boolean||(Modernizr[a[0]]=new Boolean(Modernizr[a[0]])),Modernizr[a[0]][a[1]]=s),g.push((s?"":"no-")+a.join("-"))}}function o(e){var n=_.className,t=Modernizr._config.classPrefix||"";if(S&&(n=n.baseVal),Modernizr._config.enableJSClass){var r=new RegExp("(^|\\s)"+t+"no-js(\\s|$)");n=n.replace(r,"$1"+t+"js$2")}Modernizr._config.enableClasses&&(n+=" "+t+e.join(" "+t),S?_.className.baseVal=n:_.className=n)}function i(e,n){return function(){return e.apply(n,arguments)}}function a(e,n,t){var s;for(var o in e)if(e[o]in n)return t===!1?e[o]:(s=n[e[o]],r(s,"function")?i(s,t||n):s);return!1}function l(){return"function"!=typeof n.createElement?n.createElement(arguments[0]):S?n.createElementNS.call(n,"http://www.w3.org/2000/svg",arguments[0]):n.createElement.apply(n,arguments)}function f(e,n){return!!~(""+e).indexOf(n)}function u(e){return e.replace(/([a-z])-([a-z])/g,function(e,n,t){return n+t.toUpperCase()}).replace(/^-/,"")}function d(e){return e.replace(/([A-Z])/g,function(e,n){return"-"+n.toLowerCase()}).replace(/^ms-/,"-ms-")}function p(){var e=n.body;return e||(e=l(S?"svg":"body"),e.fake=!0),e}function c(e,t,r,s){var o,i,a,f,u="modernizr",d=l("div"),c=p();if(parseInt(r,10))for(;r--;)a=l("div"),a.id=s?s[r]:u+(r+1),d.appendChild(a);return o=l("style"),o.type="text/css",o.id="s"+u,(c.fake?c:d).appendChild(o),c.appendChild(d),o.styleSheet?o.styleSheet.cssText=e:o.appendChild(n.createTextNode(e)),d.id=u,c.fake&&(c.style.background="",c.style.overflow="hidden",f=_.style.overflow,_.style.overflow="hidden",_.appendChild(c)),i=t(d,e),c.fake?(c.parentNode.removeChild(c),_.style.overflow=f,_.offsetHeight):d.parentNode.removeChild(d),!!i}function m(n,r){var s=n.length;if("CSS"in e&&"supports"in e.CSS){for(;s--;)if(e.CSS.supports(d(n[s]),r))return!0;return!1}if("CSSSupportsRule"in e){for(var o=[];s--;)o.push("("+d(n[s])+":"+r+")");return o=o.join(" or "),c("@supports ("+o+") { #modernizr { position: absolute; } }",function(e){return"absolute"==getComputedStyle(e,null).position})}return t}function h(e,n,s,o){function i(){d&&(delete z.style,delete z.modElem)}if(o=r(o,"undefined")?!1:o,!r(s,"undefined")){var a=m(e,s);if(!r(a,"undefined"))return a}for(var d,p,c,h,v,y=["modernizr","tspan","samp"];!z.style&&y.length;)d=!0,z.modElem=l(y.shift()),z.style=z.modElem.style;for(c=e.length,p=0;c>p;p++)if(h=e[p],v=z.style[h],f(h,"-")&&(h=u(h)),z.style[h]!==t){if(o||r(s,"undefined"))return i(),"pfx"==n?h:!0;try{z.style[h]=s}catch(g){}if(z.style[h]!=v)return i(),"pfx"==n?h:!0}return i(),!1}function v(e,n,t,s,o){var i=e.charAt(0).toUpperCase()+e.slice(1),l=(e+" "+b.join(i+" ")+i).split(" ");return r(n,"string")||r(n,"undefined")?h(l,n,s,o):(l=(e+" "+E.join(i+" ")+i).split(" "),a(l,n,t))}function y(e,n,r){return v(e,t,t,n,r)}var g=[],C=[],w={_version:"3.3.1",_config:{classPrefix:"",enableClasses:!0,enableJSClass:!0,usePrefixes:!0},_q:[],on:function(e,n){var t=this;setTimeout(function(){n(t[e])},0)},addTest:function(e,n,t){C.push({name:e,fn:n,options:t})},addAsyncTest:function(e){C.push({name:null,fn:e})}},Modernizr=function(){};Modernizr.prototype=w,Modernizr=new Modernizr;var _=n.documentElement,S="svg"===_.nodeName.toLowerCase(),x="Moz O ms Webkit",b=w._config.usePrefixes?x.split(" "):[];w._cssomPrefixes=b;var E=w._config.usePrefixes?x.toLowerCase().split(" "):[];w._domPrefixes=E;var P={elem:l("modernizr")};Modernizr._q.push(function(){delete P.elem});var z={style:P.elem.style};Modernizr._q.unshift(function(){delete z.style}),w.testAllProps=v,w.testAllProps=y,Modernizr.addTest("csstransitions",y("transition","all",!0)),s(),o(g),delete w.addTest,delete w.addAsyncTest;for(var N=0;N<Modernizr._q.length;N++)Modernizr._q[N]();e.Modernizr=Modernizr}(window,document);
-jQuery(document).ready(function($){
+jQuery(document).ready(function ($) {
 
 	var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
 	var transitionsSupported = ( $('.csstransitions').length > 0 );
@@ -51394,7 +51394,6 @@ jQuery(document).ready(function($){
 	SchedulePlan.prototype.initSchedule = function() {
 		this.scheduleReset();
 		this.initEvents();
-		this.placeEvents();
 	};
 
 	SchedulePlan.prototype.scheduleReset = function() {
@@ -51422,8 +51421,7 @@ jQuery(document).ready(function($){
 
 	SchedulePlan.prototype.initEvents = function() {
 		var self = this;
-
-		this.singleEvents.each(function() {
+        this.singleEvents.each(function() {
 			//create the .event-date element for each event
 			var durationLabel = '<span class="event-date">'+$(this).data('start')+' - '+$(this).data('end')+'</span>';
 			$(this).children('a').prepend($(durationLabel));
@@ -51491,7 +51489,6 @@ jQuery(document).ready(function($){
 				height: (eventHeight+1)+'px'
 			});
 		});
-
 		this.element.removeClass('loading');
 	};
 
@@ -51791,6 +51788,7 @@ jQuery(document).ready(function($){
 			'transform': value
 		});
 	}
+
 });
 jQuery(document).ready(function ($) {
     // Modal de création d'événement
@@ -51864,26 +51862,27 @@ jQuery(document).ready(function ($) {
     });
 });
 
-function getEmployeesByRole(role,size) {
-    const self = document.getElementById("specific_user_checkbox");
+function getEmployeesByRole(roles,size) {
+    const self = document.getElementById('specific_user_checkbox');
     if (self.checked) {
         // Get employés selon leur role
         let specificuser = null;
         if ($('#container').find('#specific_user').length === 0) {
             specificuser = $.parseHTML("<div id=\"specific_user\" style='display: none;' class=\"col-md-"+size+"\">" +
                         "                    <div class=\"form-group\">" +
-                        "                        <label id='user_id_label' for=\"user_id\" class=\"section-title\">Employé spécifique voulu</label>" +
-                        "                        <select class=\"form-control\" required id=\"users\" name=\"user_id\"></select>" +
+                        "                        <label id='user_id_label' for=\"users[]\" class=\"section-title\">Employés spécifiques voulus</label>" +
+                        "                        <select class='form-control selectpicker' multiple='multiple' data-actions-box='true' required id=\"users\" name='users[]'></select>" +
                         "                    </div>" +
                         "               </div>");
+
             if (size === 12)
                 $(specificuser).find('#user_id_label').attr('style','color:black!important');
-        } else {
+
+        } else
             specificuser = $('#specific_user');
-        }
         $.ajax({
             method: 'GET',
-            url: '/schedule/employees/' + role,
+            url: '/schedule/employees/' + roles,
             success: function (data) {
                 if (data.employees.length > 0) {
                     $.each(data, function() {
@@ -51891,6 +51890,7 @@ function getEmployeesByRole(role,size) {
                             $(specificuser).find('#users').append('<option value="'+user.id+'">'+user.name+'</option>');
                         });
                     });
+                    $(specificuser).find('#users').selectpicker({});
                     $(specificuser).appendTo('#container').show('slow');
                 } else {
                     alert('Il n\'y a pas d\'employé qui ont ce poste, veuillez réessayer');
