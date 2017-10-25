@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Employee;
 use App\Http\Requests\CreateEventRequest;
 use App\Http\Requests\CreateScheduleRequest;
 use App\Schedule;
@@ -44,6 +45,9 @@ class ScheduleController extends Controller
         return view('schedule.create',compact('specialRoles'));
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function createelement()
     {
         // Retourne la view à mettre ensuite dans le modal
@@ -56,16 +60,21 @@ class ScheduleController extends Controller
         return view('schedule.createelement',compact('specialRoles','schedules'));
     }
 
-    public function getEmployees($specialrole)
+    /**
+     * @param $specialroles
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getEmployees($specialroles)
     {
         $employees = session('CurrentCompany')->employees;
         $selectedEmployees = [];
         // Go through all special roles
         // of the employees of the company
-        // to check if they have the $specialrole
+        // to check if they have the $specialroles
         foreach ($employees as $employee)
-            if (count($employee->specialroles->where('id',$specialrole)) > 0)
-                array_push($selectedEmployees,$employee->user);
+            foreach (explode(',',$specialroles) as $specialrole)
+                if (count($employee->specialroles->where('id',$specialrole)) > 0)
+                    array_push($selectedEmployees,$employee->user);
 
         return response()->json(['employees' => $selectedEmployees]);
     }
@@ -104,11 +113,13 @@ class ScheduleController extends Controller
         // Create schedule element in database, link with selected schedule
         $scheduleElement = Schedule::findOrFail($data['schedule_id'])->scheduleelements()->create($data);
         // Attach schedule element with special role
-        $scheduleElement->specialroles()->attach($data['special_role_id']);
+        foreach ($request->specialroles as $specialrole)
+            $scheduleElement->specialroles()->attach($specialrole);
 
-        if ($request->has('user_id')) {
+        if ($request->has('users')) {
             // Attach schedule element with user_id
-            $scheduleElement->employees()->attach(session('CurrentCompany')->employees->where('user_id',$data['user_id'])->first()->id);
+            foreach ($request->users as $user)
+                $scheduleElement->employees()->attach(session('CurrentCompany')->employees->where('user_id',$user)->first()->id);
         }
         // Return the scheduleElement
         return response()->json($scheduleElement);
@@ -133,11 +144,11 @@ class ScheduleController extends Controller
      */
     public function edit($slug)
     {
-        // Modify this request ...
         $scheduleelement = ScheduleElement::findBySlugOrFail($slug);//Helper::getCurrentSchedule()->scheduleelements()->get()->where('slug',$slug)->first();
+        //return $scheduleelement->specialroles->pluck('name','id');
         $specialRoles = SpecialRole::where('company_id',session('CurrentCompany')->id)
                                     ->get()
-                                    ->pluck('name','id');
+                                    ->pluck('name','id');//$scheduleelement->specialroles->pluck('name','id');
         $schedules = session('CurrentCompany')->schedules->pluck('name','id');
         return view('schedule.edit',compact('scheduleelement','specialRoles','schedules'));
     }
@@ -152,6 +163,8 @@ class ScheduleController extends Controller
         return view('schedule.editing',compact('schedules'));
     }
 
+    /////////////////////////////////UPDATE SCHEDULE ELEMENT BEGIN///////////////////////////////////////////////////////////
+
     /**
      * Update the specified resource in storage.
      *
@@ -162,9 +175,107 @@ class ScheduleController extends Controller
     public function update(Request $request, $slug)
     {
         // Add code to update the specified schedule element
+        $data = $request->except(['_token','_method','skills','roles']);
+        $scheduleElement = ScheduleElement::findBySlugOrFail($slug);
+
+        // Detach first
+        $this->detachSpecialRoles($request,$scheduleElement);
+        if ($request->has('users'))
+            $this->detachEmployees($request,$scheduleElement);
+
+        // Attach after
+        $this->attachSpecialRoles($request,$scheduleElement);
+        if ($request->has('users'))
+            $this->attachEmployees($request,$scheduleElement);
+
+        $scheduleElement->update($data);
 
         return response()->json(['status' => 'Updated!']);
     }
+
+    /**
+     * @param Request $request
+     * @param ScheduleElement $scheduleelement
+     */
+    public function attachSpecialRoles(Request $request,ScheduleElement $scheduleelement)
+    {
+        $specialroles = [];
+        $realspecialroles = [];
+
+        foreach ($request->specialroles as $skillID)
+            array_push($specialroles,SpecialRole::findOrFail($skillID));
+        foreach ($scheduleelement->specialroles as $specialrole)
+            array_push($realspecialroles,SpecialRole::findOrFail($specialrole->id));
+
+        $specialrolestoattach = array_diff($specialroles,$realspecialroles);
+
+        foreach ($specialrolestoattach as $specialroletoattach)
+            $scheduleelement->specialroles()->attach($specialroletoattach);
+    }
+
+    /**
+     * @param Request $request
+     * @param ScheduleElement $scheduleelement
+     */
+    public function attachEmployees(Request $request,ScheduleElement $scheduleelement)
+    {
+        $employees = [];
+        $realEmployees = [];
+
+        foreach ($request->users as $userID)
+            array_push($employees,Employee::where('user_id',$userID)->first());
+        foreach ($scheduleelement->employees as $employee)
+            array_push($realEmployees,Employee::findOrFail($employee->id));
+
+        $employeesToAttach = array_diff($employees,$realEmployees);
+
+        foreach ($employeesToAttach as $specialroletoattach)
+            $scheduleelement->employees()->attach($specialroletoattach);
+    }
+
+    /**
+     * @param Request $request
+     * @param ScheduleElement $scheduleelement
+     */
+    public function detachSpecialRoles(Request $request,ScheduleElement $scheduleelement)
+    {
+        $specialroles = [];
+        $realSpecialRoles = [];
+
+        foreach ($request->specialroles as $specialrole)
+            array_push($specialroles,SpecialRole::findOrFail($specialrole));
+        foreach ($scheduleelement->specialroles as $specialrole)
+            array_push($realSpecialRoles,SpecialRole::findOrFail($specialrole->id));
+
+        $specialRolesToDetach = array_diff($realSpecialRoles,$specialroles);
+
+        if (!empty($specialRolesToDetach))
+            foreach ($specialRolesToDetach as $skillToDetach)
+                $scheduleelement->specialroles()->detach($skillToDetach);
+    }
+
+    /**
+     * @param Request $request
+     * @param ScheduleElement $scheduleelement
+     */
+    public function detachEmployees(Request $request,ScheduleElement $scheduleelement)
+    {
+        $employees = [];
+        $realEmployees = [];
+
+        foreach ($request->users as $userID)
+            array_push($employees,Employee::where('user_id',$userID)->first());
+        foreach ($scheduleelement->employees as $employee)
+            array_push($realEmployees,Employee::findOrFail($employee->id));
+
+        $employeesToAttach = array_diff($employees,$realEmployees);
+
+        if (!empty($employeesToAttach))
+            foreach ($employeesToAttach as $employeeToAttach)
+                $scheduleelement->employees()->detach($employeeToAttach);
+    }
+
+    /////////////////////////////////UPDATE SCHEDULE ELEMENT END/////////////////////////////////////////////////////////////
 
     /**
      * Remove the specified resource from storage.
@@ -174,7 +285,8 @@ class ScheduleController extends Controller
      */
     public function destroy($slug)
     {
-        session('CurrentCompany')->schedules->where('slug',$slug)->first()->delete();
+        //session('CurrentCompany')->schedules->where('slug',$slug)->first()->delete();
+        ScheduleElement::findBySlugOrFail($slug)->delete();
         return response()->json(['status' => 'Deleted!']);
     }
 
@@ -188,7 +300,7 @@ class ScheduleController extends Controller
         Carbon::setWeekStartsAt(Carbon::SUNDAY);
         Carbon::setWeekEndsAt(Carbon::SATURDAY);
 
-        $days     = Helper::getWeekDays();
+        $days     = Helper::getDays();
         $data     = Helper::getWeekDaysJson();
         $schedule = Helper::getCurrentSchedule();
 
@@ -231,7 +343,7 @@ class ScheduleController extends Controller
         Carbon::setWeekEndsAt(Carbon::SATURDAY);
 
         $dateCarbon = Carbon::createFromFormat('Y-m-d',$datebegin);
-        $days       = Helper::getWeekDays();
+        $days       = Helper::getDays();
         $data       = Helper::getWeekDaysJson();
         $schedule   = Helper::getCurrentSchedule();
 

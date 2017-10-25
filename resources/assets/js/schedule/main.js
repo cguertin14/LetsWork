@@ -37,7 +37,6 @@ function placerhoraire($){
 	SchedulePlan.prototype.initSchedule = function() {
 		this.scheduleReset();
 		this.initEvents();
-		this.placeEvents();
 	};
 
 	SchedulePlan.prototype.scheduleReset = function() {
@@ -65,8 +64,7 @@ function placerhoraire($){
 
 	SchedulePlan.prototype.initEvents = function() {
 		var self = this;
-
-		this.singleEvents.each(function() {
+        this.singleEvents.each(function() {
 			//create the .event-date element for each event
 			var durationLabel = '<span class="event-date">'+$(this).data('start')+' - '+$(this).data('end')+'</span>';
 			$(this).children('a').prepend($(durationLabel));
@@ -134,7 +132,6 @@ function placerhoraire($){
 				height: (eventHeight+1)+'px'
 			});
 		});
-
 		this.element.removeClass('loading');
 	};
 

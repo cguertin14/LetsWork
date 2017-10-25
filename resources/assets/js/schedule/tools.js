@@ -70,26 +70,27 @@ jQuery(document).ready(function ($) {
     });
 });
 
-function getEmployeesByRole(role,size) {
-    const self = document.getElementById("specific_user_checkbox");
+function getEmployeesByRole(roles,size) {
+    const self = document.getElementById('specific_user_checkbox');
     if (self.checked) {
         // Get employés selon leur role
         let specificuser = null;
         if ($('#container').find('#specific_user').length === 0) {
             specificuser = $.parseHTML("<div id=\"specific_user\" style='display: none;' class=\"col-md-"+size+"\">" +
                         "                    <div class=\"form-group\">" +
-                        "                        <label id='user_id_label' for=\"user_id\" class=\"section-title\">Employé spécifique voulu</label>" +
-                        "                        <select class=\"form-control\" required id=\"users\" name=\"user_id\"></select>" +
+                        "                        <label id='user_id_label' for=\"users[]\" class=\"section-title\">Employés spécifiques voulus</label>" +
+                        "                        <select class='form-control selectpicker' multiple='multiple' data-actions-box='true' required id=\"users\" name='users[]'></select>" +
                         "                    </div>" +
                         "               </div>");
+
             if (size === 12)
                 $(specificuser).find('#user_id_label').attr('style','color:black!important');
-        } else {
+
+        } else
             specificuser = $('#specific_user');
-        }
         $.ajax({
             method: 'GET',
-            url: '/schedule/employees/' + role,
+            url: '/schedule/employees/' + roles,
             success: function (data) {
                 if (data.employees.length > 0) {
                     $.each(data, function() {
@@ -97,6 +98,7 @@ function getEmployeesByRole(role,size) {
                             $(specificuser).find('#users').append('<option value="'+user.id+'">'+user.name+'</option>');
                         });
                     });
+                    $(specificuser).find('#users').selectpicker({});
                     $(specificuser).appendTo('#container').show('slow');
                 } else {
                     alert('Il n\'y a pas d\'employé qui ont ce poste, veuillez réessayer');

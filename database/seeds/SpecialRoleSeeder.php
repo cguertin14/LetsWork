@@ -12,15 +12,17 @@ class SpecialRoleSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        foreach (\App\Skill::all() as $skill) {
-            $specialRole = \App\SpecialRole::create([
-                'company_id' => \App\Company::all()->random()->id,
-                'name' => $faker->name,
-                'description'=>$faker->sentence(),
-                'slug' => $faker->slug()
-            ]);
-            $specialRole->roles()->attach(\App\Role::all()->random());
-            $specialRole->skills()->attach($skill);
+        foreach (\App\Company::all() as $company) {
+            foreach (\App\Skill::all() as $skill) {
+                $specialRole = \App\SpecialRole::create([
+                    'company_id' => $company->id,
+                    'name' => $faker->unique()->name,
+                    'description'=>$faker->unique()->sentence(),
+                    'slug' => $faker->slug()
+                ]);
+                $specialRole->roles()->attach(\App\Role::all()->random());
+                $specialRole->skills()->attach($skill);
+            }
         }
     }
 }

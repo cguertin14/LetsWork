@@ -6,7 +6,7 @@
     <div class="events">
         <ul class="schedule-ul">
             <li class="events-group" v-for="day in days">
-                <div class="top-info"><span>@{{day}}</span></div>
+                <div class="top-info"><span>@{{ day }}</span></div>
                 <ul>
                     <li class="single-event" :data-slug="event.slug" :data-start="event.begin" :data-end="event.end" :data-content="event.description" data-event="event-2" v-if="thisdayhaveanevent(day)" v-for="event in getevent(day)">
                         <a href="#0">
@@ -38,9 +38,3 @@
 
     <div class="cover-layer"></div>
 </div> <!-- .cd-schedule -->
-<!-- <div id="carbonads-container">
-    <div class="carbonad">
-        <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=codyhouseco" id="_carbonads_js"></script>
-    </div>
-    <a href="#0" class="close-carbon-adv">Close</a>
-</div> <!-- #carbonads-container --> -->
