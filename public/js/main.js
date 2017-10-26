@@ -1,4 +1,4 @@
-function placerhoraire($){
+function placerhoraire(){
 
 	var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
 	var transitionsSupported = ( $('.csstransitions').length > 0 );
@@ -37,6 +37,7 @@ function placerhoraire($){
 	SchedulePlan.prototype.initSchedule = function() {
 		this.scheduleReset();
 		this.initEvents();
+		this.placeEvents();
 	};
 
 	SchedulePlan.prototype.scheduleReset = function() {
@@ -64,7 +65,8 @@ function placerhoraire($){
 
 	SchedulePlan.prototype.initEvents = function() {
 		var self = this;
-        this.singleEvents.each(function() {
+
+		this.singleEvents.each(function() {
 			//create the .event-date element for each event
 			var durationLabel = '<span class="event-date">'+$(this).data('start')+' - '+$(this).data('end')+'</span>';
 			$(this).children('a').prepend($(durationLabel));
@@ -119,7 +121,7 @@ function placerhoraire($){
 
 	SchedulePlan.prototype.placeEvents = function() {
 		var self = this;
-		this.singleEvents.each(function(){
+		this.singleEvents.each(function eachSingleEvent(){
 			//place each event in the grid -> need to set top position and height
 			var start = getScheduleTimestamp($(this).attr('data-start')),
 				duration = getScheduleTimestamp($(this).attr('data-end')) - start;
@@ -132,6 +134,7 @@ function placerhoraire($){
 				height: (eventHeight+1)+'px'
 			});
 		});
+
 		this.element.removeClass('loading');
 	};
 
@@ -389,7 +392,7 @@ function placerhoraire($){
 		windowResize = false;
 
 	if( schedules.length > 0 ) {
-		schedules.each(function(){
+		schedules.each(function(e){
 			//create SchedulePlan objects
 			objSchedulesPlan.push(new SchedulePlan($(this)));
 		});
@@ -416,7 +419,7 @@ function placerhoraire($){
 		});
 		windowResize = false;
 	}
-
+}
 	function getScheduleTimestamp(time) {
 		//accepts hh:mm format - convert hh:mm to timestamp
 		time = time.replace(/ /g,'');
@@ -434,6 +437,6 @@ function placerhoraire($){
 			'transform': value
 		});
 	}
+
+	return {load:load};
 }
-return {load:load};
-};

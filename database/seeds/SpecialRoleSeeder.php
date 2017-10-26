@@ -22,6 +22,7 @@ class SpecialRoleSeeder extends Seeder
                 ]);
                 $specialRole->roles()->attach(\App\Role::all()->random());
                 $specialRole->skills()->attach($skill);
+                $specialRole->employees()->attach($company->employees()->get()->random());
             }
         }
     }

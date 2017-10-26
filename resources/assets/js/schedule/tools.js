@@ -92,16 +92,27 @@ function getEmployeesByRole(roles,size) {
             method: 'GET',
             url: '/schedule/employees/' + roles,
             success: function (data) {
-                if (data.employees.length > 0) {
-                    $.each(data, function() {
-                        $.each(this, function(key, user) {
-                            $(specificuser).find('#users').append('<option value="'+user.id+'">'+user.name+'</option>');
+                if (data !== '') {
+                    if (data.employees.length > 0) {
+                        $.each(data, function() {
+                            $.each(this, function(key, user) {
+                                $(specificuser).find('#users').append('<option value="'+user.id+'">'+user.name+'</option>');
+                            });
                         });
-                    });
-                    $(specificuser).find('#users').selectpicker({});
-                    $(specificuser).appendTo('#container').show('slow');
+                        $(specificuser).find('#users').selectpicker({});
+                        $(specificuser).appendTo('#container').show('slow');
+                    } else {
+                        alert('Il n\'y a pas d\'employé qui ont ce poste, veuillez réessayer');
+                        self.checked = false;
+                        // Remove view from container
+                        if ($('#specific_user')) {
+                            $('#specific_user').hide(500,function () {
+                                $(this).remove()
+                            });
+                        }
+                    }
                 } else {
-                    alert('Il n\'y a pas d\'employé qui ont ce poste, veuillez réessayer');
+                    alert('Veuillez sélectionner au moins un type d\'employé');
                     self.checked = false;
                     // Remove view from container
                     if ($('#specific_user')) {
