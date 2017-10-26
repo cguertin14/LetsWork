@@ -145,12 +145,23 @@ class ScheduleController extends Controller
     public function edit($slug)
     {
         $scheduleelement = ScheduleElement::findBySlugOrFail($slug);//Helper::getCurrentSchedule()->scheduleelements()->get()->where('slug',$slug)->first();
-        //return $scheduleelement->specialroles->pluck('name','id');
         $specialRoles = SpecialRole::where('company_id',session('CurrentCompany')->id)
                                     ->get()
                                     ->pluck('name','id');//$scheduleelement->specialroles->pluck('name','id');
         $schedules = session('CurrentCompany')->schedules->pluck('name','id');
-        return view('schedule.edit',compact('scheduleelement','specialRoles','schedules'));
+        $employees = [];
+        $companyEmployees = session('CurrentCompany')->employees;
+        $availableEmployees = [];
+        foreach ($scheduleelement->employees as $employee)
+            array_push($employees,$employee->user);
+        foreach ($companyEmployees as $employee)
+            foreach ($scheduleelement->specialroles as $specialrole)
+                if (count($employee->specialroles->where('id',$specialrole->id)) > 0)
+                    array_push($availableEmployees,$employee->user);
+
+        $employees = collect($employees)->pluck('name','id');
+        $availableEmployees = collect($availableEmployees)->pluck('name','id');
+        return view('schedule.edit',compact('scheduleelement','specialRoles','schedules','employees','availableEmployees'));
     }
 
     /**
