@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use App\Employee;
 use App\Http\Requests\CreateEventRequest;
 use App\Http\Requests\CreateScheduleRequest;
@@ -13,10 +14,12 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use function MongoDB\BSON\toJSON;
 
 class ScheduleController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -66,16 +69,22 @@ class ScheduleController extends Controller
      */
     public function getEmployees($specialroles)
     {
-        $employees = session('CurrentCompany')->employees;
+        $employees = session('CurrentCompany')->employees()->get();
         $selectedEmployees = [];
         // Go through all special roles
         // of the employees of the company
         // to check if they have the $specialroles
         foreach ($employees as $employee)
-            foreach (explode(',',$specialroles) as $specialrole)
-                if (count($employee->specialroles->where('id',$specialrole)) > 0)
+        {
+            if (strpos($specialroles,',') !== false) {
+                foreach (explode(',',$specialroles) as $specialrole)
+                    if (count($employee->specialroles->where('id',$specialrole)) > 0)
+                        array_push($selectedEmployees,$employee->user);
+            } else {
+                if (count($employee->specialroles->where('id',$specialroles)) > 0)
                     array_push($selectedEmployees,$employee->user);
-
+            }
+        }
         return response()->json(['employees' => $selectedEmployees]);
     }
 
@@ -150,16 +159,16 @@ class ScheduleController extends Controller
                                     ->pluck('name','id');//$scheduleelement->specialroles->pluck('name','id');
         $schedules = session('CurrentCompany')->schedules->pluck('name','id');
         $employees = [];
-        $companyEmployees = session('CurrentCompany')->employees;
+        $companyEmployees = session('CurrentCompany')->employees()->get();
         $availableEmployees = [];
+        //return $scheduleelement->employees;
         foreach ($scheduleelement->employees as $employee)
             array_push($employees,$employee->user);
         foreach ($companyEmployees as $employee)
             foreach ($scheduleelement->specialroles as $specialrole)
                 if (count($employee->specialroles->where('id',$specialrole->id)) > 0)
                     array_push($availableEmployees,$employee->user);
-
-        $employees = collect($employees)->pluck('name','id');
+        $employees = collect($employees)->pluck('id');
         $availableEmployees = collect($availableEmployees)->pluck('name','id');
         return view('schedule.edit',compact('scheduleelement','specialRoles','schedules','employees','availableEmployees'));
     }
@@ -174,8 +183,7 @@ class ScheduleController extends Controller
         return view('schedule.editing',compact('schedules'));
     }
 
-    /////////////////////////////////UPDATE SCHEDULE ELEMENT BEGIN///////////////////////////////////////////////////////////
-
+    //<editor-fold desc="Update Schedule Element">
     /**
      * Update the specified resource in storage.
      *
@@ -285,8 +293,7 @@ class ScheduleController extends Controller
             foreach ($employeesToAttach as $employeeToAttach)
                 $scheduleelement->employees()->detach($employeeToAttach);
     }
-
-    /////////////////////////////////UPDATE SCHEDULE ELEMENT END/////////////////////////////////////////////////////////////
+    //</editor-fold>
 
     /**
      * Remove the specified resource from storage.
@@ -301,6 +308,7 @@ class ScheduleController extends Controller
         return response()->json(['status' => 'Deleted!']);
     }
 
+    //<editor-fold desc="Get Schedule elements in JSON Structure">
     /**
      *  Get schedule elements from this week's schedule
      *  and return them as JSON to the client.
@@ -329,7 +337,7 @@ class ScheduleController extends Controller
                     if ($element->begin >= Carbon::now()->startOfWeek() && $element->end <= Carbon::now()->endOfWeek()) {
                         if ($days[Carbon::createFromFormat('Y-m-d H:i:s',$element->begin)->dayOfWeek] == $day)
                         {
-                            $test = $element->first();
+                            $test = $element;
                             $test['begin'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['begin'])->toTimeString())->toTimeString(),0,5);
                             $test['end'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['end'])->toTimeString())->toTimeString(),0,5);
                             array_push($weekEvents[$day], $test);
@@ -380,4 +388,5 @@ class ScheduleController extends Controller
         // Return data as JSON.
         return response()->json($data);
     }
+    //</editor-fold>
 }

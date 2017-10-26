@@ -86,6 +86,9 @@
 
 <script>
     $(function () {
+        const cBox = document.getElementById('specific_user_checkbox');
+        if (!cBox.checked)
+            cBox.disabled = false;
         $('#begin').datetimepicker({
             useCurrent: false,
             date: new Date($('input[id=begin]').attr('value')),

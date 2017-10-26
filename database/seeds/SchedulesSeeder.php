@@ -48,8 +48,10 @@ class SchedulesSeeder extends Seeder
                 'slug' => $faker->slug()
             ]);
 
-            $scheduleElement->specialroles()->attach(SpecialRole::where('company_id',$company->id)->get()->random());
-            $scheduleElement->employees()->attach($company->employees()->get()->random());
+            $specialrole = SpecialRole::where('company_id',$company->id)->first();
+
+            $scheduleElement->specialroles()->attach($specialrole);
+            $scheduleElement->employees()->attach($specialrole->employees()->first());
 
             /*foreach (range(1, $dateEnd->daysInMonth) as $month) {
                 $min_epoch = strtotime($schedule->begin);

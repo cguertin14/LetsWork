@@ -437,5 +437,6 @@ function placerhoraire(){
 			'transform': value
 		});
 	}
-return {load:load};
-};
+
+	return {load:load};
+}
