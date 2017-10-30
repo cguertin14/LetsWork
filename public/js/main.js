@@ -1,5 +1,5 @@
 function placerhoraire(){
-
+	var isManager = 'undefined';
 	var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
 	var transitionsSupported = ( $('.csstransitions').length > 0 );
 	//if browser does not support transitions - use a different event to trigger them
@@ -154,26 +154,44 @@ function placerhoraire(){
 			self.element.addClass('content-loaded');
 		});*/
 
-		$.ajax({
-            method: 'GET',
-			url: '/isauthmanager',
-			success: function (data) {
-				if (data) {
-					$.ajax({
-						method: 'GET',
-						url: '/schedule/' + event.parent().attr('data-slug') + '/edit',
-						success: function (view) {
-                            self.modalBody.find('.event-info').html(view);
-                        }
-					});
-				} else {
-                    self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
+		if (isManager === 'undefined') {
+            $.ajax({
+                method: 'GET',
+                url: '/isauthmanager',
+                success: function (data) {
+                    if (data) {
+                    	isManager = true;
+                        $.ajax({
+                            method: 'GET',
+                            url: '/schedule/' + event.parent().attr('data-slug') + '/edit',
+                            success: function (view) {
+                                self.modalBody.find('.event-info').html(view);
+                            }
+                        });
+                    } else {
+                        isManager = false;
+                        self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
+                    }
                 }
-            }
-		}).done(function (data) {
+            }).done(function (data) {
+                self.element.addClass('content-loaded');
+                self.element.addClass('modal-is-open');
+            });
+		} else {
+			if (isManager) {
+                $.ajax({
+                    method: 'GET',
+                    url: '/schedule/' + event.parent().attr('data-slug') + '/edit',
+                    success: function (view) {
+                        self.modalBody.find('.event-info').html(view);
+                    }
+                });
+			} else {
+                self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
+			}
             self.element.addClass('content-loaded');
             self.element.addClass('modal-is-open');
-        });
+		}
 
         /*self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
         self.element.addClass('content-loaded');

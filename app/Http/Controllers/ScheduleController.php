@@ -11,6 +11,7 @@ use App\ScheduleElement;
 use App\SpecialRole;
 use App\Tools\Helper;
 use Carbon\Carbon;
+use function foo\func;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -153,23 +154,26 @@ class ScheduleController extends Controller
      */
     public function edit($slug)
     {
-        $scheduleelement = ScheduleElement::findBySlugOrFail($slug);//Helper::getCurrentSchedule()->scheduleelements()->get()->where('slug',$slug)->first();
-        $specialRoles = SpecialRole::where('company_id',session('CurrentCompany')->id)
-                                    ->get()
-                                    ->pluck('name','id');//$scheduleelement->specialroles->pluck('name','id');
+        $scheduleelement = ScheduleElement::findBySlugOrFail($slug);
+        $specialRoles    = SpecialRole::where('company_id',session('CurrentCompany')->id)
+                                        ->get()
+                                        ->pluck('name','id');//$scheduleelement->specialroles->pluck('name','id');
         $schedules = session('CurrentCompany')->schedules->pluck('name','id');
-        $employees = [];
         $companyEmployees = session('CurrentCompany')->employees()->get();
         $availableEmployees = [];
-        //return $scheduleelement->employees;
-        foreach ($scheduleelement->employees as $employee)
-            array_push($employees,$employee->user);
+
+        $employees = $scheduleelement->employees()->get()->map(function ($employee) {
+            return $employee->user;
+        });
+
         foreach ($companyEmployees as $employee)
-            foreach ($scheduleelement->specialroles as $specialrole)
-                if (count($employee->specialroles->where('id',$specialrole->id)) > 0)
+            foreach ($scheduleelement->specialroles()->get() as $specialrole)
+                if (count($employee->specialroles()->get()->find($specialrole->id)) > 0)
                     array_push($availableEmployees,$employee->user);
-        $employees = collect($employees)->pluck('id');
+
+        $employees = $employees->pluck('id');
         $availableEmployees = collect($availableEmployees)->pluck('name','id');
+
         return view('schedule.edit',compact('scheduleelement','specialRoles','schedules','employees','availableEmployees'));
     }
 

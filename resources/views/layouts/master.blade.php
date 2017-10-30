@@ -130,9 +130,10 @@
                             <li>
                                 <a id="dropdown5Title" href="#">Calendrier <span id="img5" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
                                 <ul id="dropdown5" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
-                                    <li><a href="{{route('schedule.index')}}">Voir</a></li>
                                     @if (Illuminate\Support\Facades\Auth::user()->isOwner())
                                         <li><a href="{{route('schedule.editing')}}">Modifier</a></li>
+                                    @else
+                                        <li><a href="{{route('schedule.index')}}">Voir</a></li>
                                     @endif
                                 </ul>
                             </li>
@@ -167,7 +168,7 @@
 @section("scriptsm")
     <script>
         $("#punch").click(function () {
-            let self = this;
+            var self = this;
             $.ajax({
                 url: '/punch',
                 method: 'POST',

@@ -128,7 +128,7 @@
 @section('scripts')
 <script type="text/javascript" src="{{asset('js/main.js')}}"></script>
     <script>
-        var place=new placerhoraire();
+        var place = new placerhoraire();
         new Vue({
             el: "#calendar",
             data: {
@@ -146,7 +146,7 @@
                     return this.weekevents[day];
                 },
                 loadThisWeek: function () {
-                    let self = this;
+                    var self = this;
                     $.ajax({
                         method: 'GET',
                         url: '/schedule/thisweek',
