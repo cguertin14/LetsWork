@@ -58,8 +58,8 @@ class ScheduleController extends Controller
         // Donc l'appeler en javascript => ajax,
         // et la mettre dedans le modal ensuite
         $specialRoles = SpecialRole::where('company_id',session('CurrentCompany')->id)
-            ->get()
-            ->pluck('name','id');
+                                     ->get()
+                                     ->pluck('name','id');
         $schedules = session('CurrentCompany')->schedules->pluck('name','id');
         return view('schedule.createelement',compact('specialRoles','schedules'));
     }
@@ -383,7 +383,12 @@ class ScheduleController extends Controller
                 foreach ($weekElements as $element) {
                     if ($element->begin >= $dateCarbon->startOfWeek() && $element->end <= $dateCarbon->endOfWeek()) {
                         if ($days[Carbon::createFromFormat('Y-m-d H:i:s',$element->begin)->dayOfWeek] == $day)
-                            array_push($weekEvents[$day], $element);
+                        {
+                            $test = $element;
+                            $test['begin'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['begin'])->toTimeString())->toTimeString(),0,5);
+                            $test['end'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['end'])->toTimeString())->toTimeString(),0,5);
+                            array_push($weekEvents[$day], $test);
+                        }
                     }
                 }
             }

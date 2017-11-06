@@ -20,8 +20,8 @@ function setUserProfilePic(route) {
 }
 
 function formErrors(errors,modal) {
-    let formErrors = JSON.parse(errors.responseText.replace(/\\'/g, "'"));
-    let errorsContainer = $('<div class="alert alert-danger"><ul id="errors" style="list-style: inherit !important;"></ul></div>');
+    var formErrors = JSON.parse(errors.responseText.replace(/\\'/g, "'"));
+    var errorsContainer = $('<div class="alert alert-danger"><ul id="errors" style="list-style: inherit !important;"></ul></div>');
     $.each(formErrors,function (key,error) {
         errorsContainer.find('#errors').append('<li>'+error+'</li>')
     });

@@ -59,15 +59,13 @@
                 });
             });
             function setNewEvent() {
-                let content = $.parseHTML('<tr id="add-event-section" style="margin-top: 2em;background-color: transparent;display: none;">\n' +
-                    '                <td class="col-xs-2">\n' +
-                    '                    <img style="cursor: pointer;display: inline-block" id="new-event" src="{{asset('image/purple_plus.png')}}" alt="" height="70px" width="70px">\n' +
-                    '                </td>\n' +
-                    '                <td class="col-xs-10">\n' +
-                    '                    <h1 class="page-title" style="font-size: 2em">Ajouter un événement</h1>\n' +
-                    '                </td>\n' +
-                    '          </tr>');
-                $(content).appendTo('#tbody').show('slow');
+                var content = $.parseHTML('<td class="col-xs-2">\n' +
+                    '                        <img style="cursor: pointer;display: inline-block" id="new-event" src="{{asset('image/purple_plus.png')}}" alt="" height="70px" width="70px">\n' +
+                    '                    </td>\n' +
+                    '                    <td class="col-xs-10">\n' +
+                    '                        <h1 class="page-title" style="font-size: 2em">Ajouter un événement</h1>\n' +
+                    '                    </td>');
+                $(content).appendTo('#add-event-section').show('slow');
             }
         </script>
     @endslot
