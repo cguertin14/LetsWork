@@ -86,6 +86,9 @@
     tr>td {
         padding-bottom: 1em;
     }
+    .modal-backdrop {
+        background-color: rgba(255,255,255,0.5);
+    }
 </style>
 @endsection
 
@@ -96,6 +99,17 @@
 
 <div class="modal fade" id="createScheduleModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div class="modal fade" id="createEventModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center" role="document">
+            <div class="modal-content">
+                <div class="modal-body" style="background-color: #262626">
+                    <img src="{{asset('image/loading.gif')}}" alt="" style="height: 100%;width:100%;background-color: #262626;display:block">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div style="margin:2em !important">
     <div class="container custom-container custom-table" style="margin:2em auto!important;max-width:1400px!important;width: 90%!important;">
@@ -151,57 +165,65 @@
 @section('scripts')
 <script type="text/javascript" src="{{asset('js/main.js')}}"></script>
 <script>
-        var place = new placerhoraire();
-        var calendarVue = new Vue({
-            el: "#calendar",
-            data: {
-                days: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"],
-                weekevents: []
+    var place = new placerhoraire();
+    var calendarVue = new Vue({
+        el: "#calendar",
+        data: {
+            days: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"],
+            weekevents: []
+        },
+        computed: {},
+        methods: {
+            thisdayhaveanevent: function (day) {
+                return this.weekevents[day] !== 'undefined';
             },
-            computed: {},
-            methods: {
-                thisdayhaveanevent: function (day) {
-                    return this.weekevents[day] !== 'undefined';
-                },
-                getevent: function (day) {
-                    return this.weekevents[day];
-                },
-                loadThisWeek: function () {
-                    var self = this;
-                    $.ajax({
-                        method: 'GET',
-                        url: '/schedule/thisweek',
-                        success: function (data) {
-                            self.weekevents = data.weekevents;
-                        }
-                    });
-                },
-                loadFromDate: function(date) {
-                    var self = this;
-                    self.weekevents = [];
-                    $.ajax({
-                        method: 'GET',
-                        url: '/schedule/week/' + date,
-                        success: function (data) {
-                            self.weekevents = data.weekevents;
-                        }
-                    });
+            getevent: function (day) {
+                return this.weekevents[day];
+            },
+            loadThisWeek: function () {
+                var self = this;
+                $.ajax({
+                    method: 'GET',
+                    url: '/schedule/thisweek',
+                    success: function (data) {
+                        self.weekevents = data.weekevents;
+                    }
+                });
+            },
+            loadFromDate: function(date) {
+                var self = this;
+                self.weekevents = [];
+
+                var modal = $('#loading');
+                modal.modal();
+                function afterModalTransition(e) {
+                    e.setAttribute("style", "display: none !important;");
                 }
-            },
-            created: function () {
-            },
-            updated: function () {
-                place.load();
-            },
-            mounted: function() {
-                this.loadThisWeek();
-            },
-            beforeMount: function() {
-            },
-            ready:function(){
+                modal.on('hide.bs.modal', function (e) {
+                    setTimeout( () => afterModalTransition(this), 200);
+                });
+
+                $.ajax({
+                    method: 'GET',
+                    url: '/schedule/week/' + date,
+                    success: function (data) {
+                        self.weekevents = data.weekevents;
+                        $('#loading').modal('hide');
+                    }
+                });
             }
-        });
-    </script>
+        },
+        created: function () {},
+        updated: function () {
+            place.load();
+        },
+        mounted: function() {
+            this.loadThisWeek();
+        },
+        beforeMount: function() {},
+        ready:function() {}
+    });
+</script>
 <script>
     // add once, make sure dhtmlxcalendar.js is loaded
     dhtmlXCalendarObject.prototype.langData["fr"] = {
@@ -252,5 +274,6 @@
     $('#firstSection').height($('#secondSection').height());
     var tableMarginTop = Math.round( ($('#firstSection').height() - $('#firstTable').height()) / 2 );
     $('#firstTable').css('margin-top', tableMarginTop);
+
 </script>
 @endsection

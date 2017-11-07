@@ -19,5 +19,9 @@
         @include('include.selectcompany')
         @include('include.dropdown')
         @yield('scriptsm')
+        {{--<!-- Site footer -->--}}
+        {{--<footer class="footer">--}}
+            {{--<p>&copy; Company 2017</p>--}}
+        {{--</footer>--}}
     </body>
 </html>

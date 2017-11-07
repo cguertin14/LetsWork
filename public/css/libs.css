@@ -48,6 +48,9 @@
     font-size: 20px;
     color: #000000;
 }
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css');
+
 /*BASIC CSS FOR CENTERING DIV IN PAGE  -->  inner inside middle inside outer*/
 
 .outer {
@@ -72,6 +75,42 @@
     background-color: #552AD6 !important;
     color: white;
     font-size: 17px !important;
+}
+
+.purplebtn:hover {
+    color: #b0b0b0 !important;
+}
+
+.rounded {
+    border-radius: 0.25rem !important;
+}
+
+.rounded-top {
+    border-top-left-radius: 0.25rem !important;
+    border-top-right-radius: 0.25rem !important;
+}
+
+.rounded-right {
+    border-top-right-radius: 0.25rem !important;
+    border-bottom-right-radius: 0.25rem !important;
+}
+
+.rounded-bottom {
+    border-bottom-right-radius: 0.25rem !important;
+    border-bottom-left-radius: 0.25rem !important;
+}
+
+.rounded-left {
+    border-top-left-radius: 0.25rem !important;
+    border-bottom-left-radius: 0.25rem !important;
+}
+
+.rounded-circle {
+    border-radius: 50% !important;
+}
+
+.rounded-0 {
+    border-radius: 0 !important;
 }
 
 /*BASIC CSS FOR CENTERING DIV IN PAGE (END)*/
@@ -2103,6 +2142,7 @@ Main Components
 .cd-schedule.modal-is-open .cover-layer {
   opacity: 1;
   visibility: visible;
+  z-index: 88888;
 }
 #wrapper {
     padding-left: 300px;

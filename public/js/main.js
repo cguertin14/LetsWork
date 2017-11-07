@@ -75,6 +75,7 @@ function placerhoraire(){
 			$(this).on('click', 'a', function(event) {
 				event.preventDefault();
 				if( !self.animating ) self.openModal($(this));
+				$('#calendarPicker').hide();
 			});
 		});
 
@@ -82,6 +83,7 @@ function placerhoraire(){
 		this.modal.on('click', '.close', function(event){
 			event.preventDefault();
 			if( !self.animating ) self.closeModal(self.eventsGroup.find('.selected-event'));
+            $('#calendarPicker').show();
 		});
         // Update schedule element form prevention. (AJAX)
         this.modal.find('.event-info').on('submit','#updateForm',function(event) {
@@ -115,7 +117,10 @@ function placerhoraire(){
             event.preventDefault();
         });
 		this.element.on('click', '.cover-layer', function(event){
-			if( !self.animating && self.element.hasClass('modal-is-open') ) self.closeModal(self.eventsGroup.find('.selected-event'));
+			if( !self.animating && self.element.hasClass('modal-is-open') ) {
+				self.closeModal(self.eventsGroup.find('.selected-event'));
+                $('#calendarPicker').show();
+            }
 		});
 	};
 
@@ -232,6 +237,7 @@ function placerhoraire(){
 				height: modalHeight+'px',
 				width: modalWidth+'px',
 			});
+			self.modal.css('z-index',99999);
 			transformElement(self.modal, 'translateY('+modalTranslateY+'px) translateX('+modalTranslateX+'px)');
 
 			//set modalHeader width
@@ -413,6 +419,17 @@ function placerhoraire(){
 		schedules.each(function(e){
 			//create SchedulePlan objects
 			objSchedulesPlan.push(new SchedulePlan($(this)));
+            if ($('.single-event').length > 0) {
+                var top = $($(".single-event")[Math.floor(Math.random() * $(".single-event").length)]).offset().top;
+                $('#loading').modal('hide');
+                $('html, body').animate({
+                    scrollTop: top - 400
+                }, 500);
+            } else {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 500);
+            }
 		});
 	}
 
