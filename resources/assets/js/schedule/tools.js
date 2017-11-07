@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
             method: 'GET',
             url: '/schedule/scheduleelement',
             success: function (view) {
-                let createEventModal = $('#createEventModal');
+                var createEventModal = $('#createEventModal');
                 createEventModal.empty();
                 createEventModal.html(view);
                 createEventModal.modal();
@@ -20,6 +20,7 @@ jQuery(document).ready(function ($) {
                             data: createEventModal.find('#createForm').serialize(),
                             success: function(data) {
                                 ///////////// PLACE DATA IN CALENDAR WITH VUE.JS.
+                                //calendarVue.$data.
                                 createEventModal.modal('hide');
                             }
                         });
@@ -38,7 +39,7 @@ jQuery(document).ready(function ($) {
             method: 'GET',
             url: '/schedule/create',
             success: function (view) {
-                let createScheduleModal = $('#createScheduleModal');
+                var createScheduleModal = $('#createScheduleModal');
                 createScheduleModal.empty();
                 createScheduleModal.html(view);
                 createScheduleModal.modal();
@@ -74,7 +75,7 @@ function getEmployeesByRole(roles,size) {
     const self = document.getElementById('specific_user_checkbox');
     if (self.checked) {
         // Get employés selon leur role
-        let specificuser = null;
+        var specificuser = null;
         if ($('#container').find('#specific_user').length === 0) {
             specificuser = $.parseHTML("<div id=\"specific_user\" style='display: none;' class=\"col-md-"+size+"\">" +
                         "                    <div class=\"form-group\">" +

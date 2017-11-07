@@ -13,6 +13,8 @@
 
 /* Other Routes */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', 'OtherController@homepage')->name('homepage.content');
 Route::get('/aboutus', 'OtherController@aboutus')->name('information.aboutus');
 Route::get('/termsofservice', 'OtherController@termsofservice')->name('information.termsofservice');

@@ -17,9 +17,12 @@ mix.styles([
     'resources/assets/css/bootstrap-select.css',
     'resources/assets/css/schedule/style.css',
     'resources/assets/css/libs/sidemenu.css',
+    'resources/assets/css/schedule/dhtmlxcalendar.css',
 ],'public/css/libs.css');
 
 mix.scripts([
+    'resources/assets/js/schedule/dhtmlxcalendar.js',
+    'resources/assets/js/schedule/date.format.js',
     'node_modules/jquery/dist/jquery.js',
     'resources/assets/js/schedule/hour-container.js',
     'resources/assets/js/tether.js',
@@ -43,7 +46,7 @@ mix.scripts([
     'resources/assets/js/schedule/modernizr.js',
     'resources/assets/js/schedule/tools.js',
     'resources/assets/js/libs/jquery.mask.js',
-    'resources/assets/js/libs/schedule/main.js',
+    'resources/assets/js/libs/modal.js',
     'resources/assets/js/libs/Chart.js',
-    'resources/assets/js/libs/socket.io.js'
+    'resources/assets/js/libs/socket.io.js',
 ],'public/js/libs.js');

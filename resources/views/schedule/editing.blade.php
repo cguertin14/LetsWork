@@ -86,6 +86,9 @@
     tr>td {
         padding-bottom: 1em;
     }
+    .modal-backdrop {
+        background-color: rgba(255,255,255,0.5);
+    }
 </style>
 @endsection
 
@@ -96,88 +99,181 @@
 
 <div class="modal fade" id="createScheduleModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div class="modal fade" id="createEventModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
-
-<div class="custom-container custom-table" style="margin: 2em auto;max-width: 1400px!important;width: 90%!important;">
-    <table style="margin: 2em">
-        <tbody id="tbody">
-            <tr>
-                <td class="col-xs-2">
-                    <img style="cursor: pointer;display: inline-block" id="new-schedule" src="{{asset('image/purple_plus.png')}}" alt="" height="70px" width="70px">
-                </td>
-                <td class="col-xs-10">
-                    <h1 class="page-title" style="font-size: 2em">Ajouter un horaire</h1>
-                </td>
-            </tr>
-            @if(count(session('CurrentCompany')->schedules()->get()) > 0)
-            <tr id="add-event-section" style="margin-top: 2em;background-color: transparent">
-                <td class="col-xs-2">
-                    <img style="cursor: pointer;display: inline-block" id="new-event" src="{{asset('image/purple_plus.png')}}" alt="" height="70px" width="70px">
-                </td>
-                <td class="col-xs-10">
-                    <h1 class="page-title" style="font-size: 2em">Ajouter un événement</h1>
-                </td>
-            </tr>
-            @endif
-        </tbody>
-    </table>
+<div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center" role="document">
+            <div class="modal-content">
+                <div class="modal-body" style="background-color: #262626">
+                    <img src="{{asset('image/loading.gif')}}" alt="" style="height: 100%;width:100%;background-color: #262626;display:block">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-@include('include.calendar-template')
+<div style="margin:2em !important">
+    <div class="container custom-container custom-table" style="margin:2em auto!important;max-width:1400px!important;width: 90%!important;">
+        <div class="col-md-12">
+            <div class="col-md-6" id="firstSection">
+                <table  style="margin:2em auto;" id="firstTable">
+                    <tbody id="tbody">
+                        <tr>
+                            <td class="col-xs-2">
+                                <img style="cursor: pointer;display: inline-block" id="new-schedule" src="{{asset('image/purple_plus.png')}}" alt="" height="70px" width="70px">
+                            </td>
+                            <td class="col-xs-10">
+                                <h1 class="page-title" style="font-size: 2em">Ajouter un horaire</h1>
+                            </td>
+                        </tr>
+                        <tr id="add-event-section" style="margin-top: 2em;background-color: transparent">
+                            @if(count(session('CurrentCompany')->schedules()->get()) > 0)
+                                <td class="col-xs-2">
+                                    <img style="cursor: pointer;display: inline-block" id="new-event" src="{{asset('image/purple_plus.png')}}" alt="" height="70px" width="70px">
+                                </td>
+                                <td class="col-xs-10">
+                                    <h1 class="page-title" style="font-size: 2em">Ajouter un événement</h1>
+                                </td>
+                            @endif
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6" id="secondSection" style="width: 320px;float: right;">
+            <table style="margin: 2em">
+                <tbody>
+                    <tr style="float: right;">
+                        <td>
+                            <div id="calendarPicker" style="position:relative;height: 250px"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="col-md-12">
+    <div class="col-md-12">
+        @include('include.calendar-template')
+    </div>
+</div>
 @endsection
 
 @section('scripts')
 <script type="text/javascript" src="{{asset('js/main.js')}}"></script>
-    <script>
-        var place=new placerhoraire();
-        new Vue({
-            el: "#calendar",
-            data: {
-                days: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"],
-                weekevents: []
+<script>
+    var place = new placerhoraire();
+    var calendarVue = new Vue({
+        el: "#calendar",
+        data: {
+            days: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"],
+            weekevents: []
+        },
+        computed: {},
+        methods: {
+            thisdayhaveanevent: function (day) {
+                return this.weekevents[day] !== 'undefined';
             },
-            computed: {},
-            methods: {
-                thisdayhaveanevent: function (day) {
-                    if (this.weekevents[day] !== 'undefined')
-                        return true;
-                    return false;
-                },
-                getevent: function (day) {
-                    return this.weekevents[day];
-                },
-                loadThisWeek: function () {
-                    let self = this;
-                    $.ajax({
-                        method: 'GET',
-                        url: '/schedule/thisweek',
-                        success: function (data) {
-                            self.weekevents = data.weekevents;
-                        }
-                    });
-                },
-                loadNextWeek: function () {
-                    $.getJSON("", {}, function (data) {
+            getevent: function (day) {
+                return this.weekevents[day];
+            },
+            loadThisWeek: function () {
+                var self = this;
+                $.ajax({
+                    method: 'GET',
+                    url: '/schedule/thisweek',
+                    success: function (data) {
+                        self.weekevents = data.weekevents;
+                    }
+                });
+            },
+            loadFromDate: function(date) {
+                var self = this;
+                self.weekevents = [];
 
-                    });
-                },
-                loadLastWeek: function () {
-                    $.getJSON("", {}, function (data) {
-
-                    });
+                var modal = $('#loading');
+                modal.modal();
+                function afterModalTransition(e) {
+                    e.setAttribute("style", "display: none !important;");
                 }
-            },
-            created: function () {
-            },
-            updated: function () {
-                place.load();
-            },
-            mounted: function() {
-                this.loadThisWeek();
-            },
-            beforeMount: function() {
-            },
-            ready:function(){
+                modal.on('hide.bs.modal', function (e) {
+                    setTimeout( () => afterModalTransition(this), 200);
+                });
+
+                $.ajax({
+                    method: 'GET',
+                    url: '/schedule/week/' + date,
+                    success: function (data) {
+                        self.weekevents = data.weekevents;
+                        $('#loading').modal('hide');
+                    }
+                });
             }
-        });
-    </script>
+        },
+        created: function () {},
+        updated: function () {
+            place.load();
+        },
+        mounted: function() {
+            this.loadThisWeek();
+        },
+        beforeMount: function() {},
+        ready:function() {}
+    });
+</script>
+<script>
+    // add once, make sure dhtmlxcalendar.js is loaded
+    dhtmlXCalendarObject.prototype.langData["fr"] = {
+        // date format
+        dateformat: "%Y.%m.%d",
+        // full names of months
+        monthesFNames: [
+            "Janvier","Février","Mars","Avril","Mai","Juin","Juillet",
+            "Août","Septembre","Octobre","Novembre","Décembre"
+        ],
+        // short names of months
+        monthesSNames: [
+            "Janv","Févr","Mar","Avr","Mai","Juin",
+            "Juill","Août","Sept","Oct","Nov","Déc"
+        ],
+        // full names of days
+        daysFNames: [
+            "Dimanche","Lundi","Mardi","Mercredi",
+            "Jeudi","Vendredi","Samedi"
+        ],
+        // short names of days
+        daysSNames: [
+            "Dim","Lun","Mar","Mer",
+            "Jeu","Ven","Sam"
+        ],
+        // starting day of a week. Number from 1(Monday) to 7(Sunday)
+        weekstart: 1,
+        // the title of the week number column
+        weekname: "s"
+    };
+    // init calendar
+    var myCalendar = new dhtmlXCalendarObject('calendarPicker');
+    myCalendar.loadUserLanguage('fr');
+    myCalendar.setDate(new Date());
+    myCalendar.hideTime();
+
+    // Set onTimeChange event to reload calendar with new data from server
+    // with the selected date
+    myCalendar.attachEvent('onBeforeChange',function(date) {
+        var dateToSend = date.format('yyyy-mm-dd');
+        calendarVue.loadFromDate(dateToSend);
+        return true;
+    });
+
+    // Show calendar
+    myCalendar.show();
+
+    $('#firstSection').height($('#secondSection').height());
+    var tableMarginTop = Math.round( ($('#firstSection').height() - $('#firstTable').height()) / 2 );
+    $('#firstTable').css('margin-top', tableMarginTop);
+
+</script>
 @endsection
