@@ -1,8 +1,8 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-//var Redis = require('ioredis');
-//var redis = new Redis();
+var Redis = require('ioredis');
+var redis = new Redis();
 
 function returnHash() {
     var abc = "abcdefghijklmnopqrstuvwxyz1234567890".split("");
@@ -20,6 +20,10 @@ http.listen(3000, function () {
 var users = [];
 var chatrooms = new Map();
 
+function allonlineusers() {
+	io.emit('user.all.online', users);
+}
+
 function echoback(data) {
     io.emit('chat.message', data);
 }
@@ -31,6 +35,20 @@ function connection(data) {
     else {
         users.push(data.user);
         io.emit(data.user, {result: true});
+        redis.set('userslist', JSON.stringify(users));
+        allonlineusers();
+    }
+}
+
+function deconnection(data) {
+    if (users.indexOf(data.user)<0) {
+        io.emit(data.user, {result: false});
+    }
+    else {
+        users.splice(users.indexOf(data.user),1);
+        io.emit(data.user, {result: true});
+        redis.set('userslist', JSON.stringify(users));
+        allonlineusers();
     }
 }
 
@@ -47,23 +65,23 @@ function duochatconnect(data) {
             io.emit(roomname, data);
         });
         chatrooms.set(room, token);
+        redis.set('chatroomslist', JSON.stringify(chatrooms));
     }
 }
 
 function duochatunconnect(data) {
     if (chatrooms.get(data.roomname) === data.token) {
         socket.removeAllListeners(data.roomname);
+        chatrooms.delete(data.roomname);
+        redis.set('chatroomslist', JSON.stringify(chatrooms));
     }
 }
-
-function allonlineusers() {
-	io.emit('user.all.online', users);
-}
-setInterval(allonlineusers,3000);
 
 io.on('connection', function (socket) {
     socket.on('chat.message', echoback);
     socket.on('user.connection', connection);
+    socket.on('user.list',allonlineusers);
+    socket.on('user.deconnection',deconnection);
     socket.on('user.request.duochat.connect', duochatconnect);
     socket.on('user.request.duochat.unconnect', duochatunconnect);
 });

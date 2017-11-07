@@ -15,6 +15,8 @@
         </div>
         <input type="text" v-model="message">
         <button v-on:click="send">Envoyer</button>
+        <button v-on:click="connection" v-if="!connected">Connection</button>
+        <button v-on:click="deconnection" v-if="connected">Deconnection</button>
     </div>
 @endsection
 
@@ -33,11 +35,35 @@
                 },
                 connection:function () {
                     socket.on(this.currentuser,function (data) {
-                       this.connected=data.result;
+                        if(data.result==false)
+                        {
+                            this.connected=!data.result;
+                        }
+                        else
+                        this.connected=data.result;
                     }.bind(this));
 
                     socket.emit("user.connection",{
                         user:this.currentuser
+                    });
+                },
+                deconnection:function (event) {
+                    socket.on(this.currentuser,function (data) {
+                        if(data.result==false)
+                        {
+                            this.connected=!data.result;
+                        }
+                        else
+                        this.connected=!data.result;
+                    }.bind(this));
+
+                    socket.emit("user.deconnection",{
+                        user:this.currentuser
+                    });
+                },
+                getuserlist:function () {
+                    socket.emit("user.list",{
+                        data:null
                     });
                 }
             },
@@ -64,6 +90,8 @@
                 {
                     this.connection();
                 }
+                this.getuserlist();
+                document.addEventListener('beforeunload',this.deconnection);
             }
         });
     </script>
