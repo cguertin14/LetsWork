@@ -1,5 +1,5 @@
 function placerhoraire(){
-
+	var isManager = 'undefined';
 	var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
 	var transitionsSupported = ( $('.csstransitions').length > 0 );
 	//if browser does not support transitions - use a different event to trigger them
@@ -75,6 +75,7 @@ function placerhoraire(){
 			$(this).on('click', 'a', function(event) {
 				event.preventDefault();
 				if( !self.animating ) self.openModal($(this));
+				$('#calendarPicker').hide();
 			});
 		});
 
@@ -82,6 +83,7 @@ function placerhoraire(){
 		this.modal.on('click', '.close', function(event){
 			event.preventDefault();
 			if( !self.animating ) self.closeModal(self.eventsGroup.find('.selected-event'));
+            $('#calendarPicker').show();
 		});
         // Update schedule element form prevention. (AJAX)
         this.modal.find('.event-info').on('submit','#updateForm',function(event) {
@@ -115,7 +117,10 @@ function placerhoraire(){
             event.preventDefault();
         });
 		this.element.on('click', '.cover-layer', function(event){
-			if( !self.animating && self.element.hasClass('modal-is-open') ) self.closeModal(self.eventsGroup.find('.selected-event'));
+			if( !self.animating && self.element.hasClass('modal-is-open') ) {
+				self.closeModal(self.eventsGroup.find('.selected-event'));
+                $('#calendarPicker').show();
+            }
 		});
 	};
 
@@ -154,26 +159,44 @@ function placerhoraire(){
 			self.element.addClass('content-loaded');
 		});*/
 
-		$.ajax({
-            method: 'GET',
-			url: '/isauthmanager',
-			success: function (data) {
-				if (data) {
-					$.ajax({
-						method: 'GET',
-						url: '/schedule/' + event.parent().attr('data-slug') + '/edit',
-						success: function (view) {
-                            self.modalBody.find('.event-info').html(view);
-                        }
-					});
-				} else {
-                    self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
+		if (isManager === 'undefined') {
+            $.ajax({
+                method: 'GET',
+                url: '/isauthmanager',
+                success: function (data) {
+                    if (data) {
+                    	isManager = true;
+                        $.ajax({
+                            method: 'GET',
+                            url: '/schedule/' + event.parent().attr('data-slug') + '/edit',
+                            success: function (view) {
+                                self.modalBody.find('.event-info').html(view);
+                            }
+                        });
+                    } else {
+                        isManager = false;
+                        self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
+                    }
                 }
-            }
-		}).done(function (data) {
+            }).done(function (data) {
+                self.element.addClass('content-loaded');
+                self.element.addClass('modal-is-open');
+            });
+		} else {
+			if (isManager) {
+                $.ajax({
+                    method: 'GET',
+                    url: '/schedule/' + event.parent().attr('data-slug') + '/edit',
+                    success: function (view) {
+                        self.modalBody.find('.event-info').html(view);
+                    }
+                });
+			} else {
+                self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
+			}
             self.element.addClass('content-loaded');
             self.element.addClass('modal-is-open');
-        });
+		}
 
         /*self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
         self.element.addClass('content-loaded');
@@ -214,6 +237,7 @@ function placerhoraire(){
 				height: modalHeight+'px',
 				width: modalWidth+'px',
 			});
+			self.modal.css('z-index',99999);
 			transformElement(self.modal, 'translateY('+modalTranslateY+'px) translateX('+modalTranslateX+'px)');
 
 			//set modalHeader width
@@ -395,6 +419,17 @@ function placerhoraire(){
 		schedules.each(function(e){
 			//create SchedulePlan objects
 			objSchedulesPlan.push(new SchedulePlan($(this)));
+            if ($('.single-event').length > 0) {
+                var top = $($(".single-event")[Math.floor(Math.random() * $(".single-event").length)]).offset().top;
+                $('#loading').modal('hide');
+                $('html, body').animate({
+                    scrollTop: top - 400
+                }, 500);
+            } else {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 500);
+            }
 		});
 	}
 
@@ -437,5 +472,6 @@ function placerhoraire(){
 			'transform': value
 		});
 	}
-return {load:load};
-};
+
+	return {load:load};
+}

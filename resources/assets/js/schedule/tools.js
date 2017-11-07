@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
             method: 'GET',
             url: '/schedule/scheduleelement',
             success: function (view) {
-                let createEventModal = $('#createEventModal');
+                var createEventModal = $('#createEventModal');
                 createEventModal.empty();
                 createEventModal.html(view);
                 createEventModal.modal();
@@ -20,6 +20,7 @@ jQuery(document).ready(function ($) {
                             data: createEventModal.find('#createForm').serialize(),
                             success: function(data) {
                                 ///////////// PLACE DATA IN CALENDAR WITH VUE.JS.
+                                //calendarVue.$data.
                                 createEventModal.modal('hide');
                             }
                         });
@@ -38,7 +39,7 @@ jQuery(document).ready(function ($) {
             method: 'GET',
             url: '/schedule/create',
             success: function (view) {
-                let createScheduleModal = $('#createScheduleModal');
+                var createScheduleModal = $('#createScheduleModal');
                 createScheduleModal.empty();
                 createScheduleModal.html(view);
                 createScheduleModal.modal();
@@ -74,7 +75,7 @@ function getEmployeesByRole(roles,size) {
     const self = document.getElementById('specific_user_checkbox');
     if (self.checked) {
         // Get employés selon leur role
-        let specificuser = null;
+        var specificuser = null;
         if ($('#container').find('#specific_user').length === 0) {
             specificuser = $.parseHTML("<div id=\"specific_user\" style='display: none;' class=\"col-md-"+size+"\">" +
                         "                    <div class=\"form-group\">" +
@@ -92,16 +93,27 @@ function getEmployeesByRole(roles,size) {
             method: 'GET',
             url: '/schedule/employees/' + roles,
             success: function (data) {
-                if (data.employees.length > 0) {
-                    $.each(data, function() {
-                        $.each(this, function(key, user) {
-                            $(specificuser).find('#users').append('<option value="'+user.id+'">'+user.name+'</option>');
+                if (data !== '') {
+                    if (data.employees.length > 0) {
+                        $.each(data, function() {
+                            $.each(this, function(key, user) {
+                                $(specificuser).find('#users').append('<option value="'+user.id+'">'+user.name+'</option>');
+                            });
                         });
-                    });
-                    $(specificuser).find('#users').selectpicker({});
-                    $(specificuser).appendTo('#container').show('slow');
+                        $(specificuser).find('#users').selectpicker({});
+                        $(specificuser).appendTo('#container').show('slow');
+                    } else {
+                        alert('Il n\'y a pas d\'employé qui ont ce poste, veuillez réessayer');
+                        self.checked = false;
+                        // Remove view from container
+                        if ($('#specific_user')) {
+                            $('#specific_user').hide(500,function () {
+                                $(this).remove()
+                            });
+                        }
+                    }
                 } else {
-                    alert('Il n\'y a pas d\'employé qui ont ce poste, veuillez réessayer');
+                    alert('Veuillez sélectionner au moins un type d\'employé');
                     self.checked = false;
                     // Remove view from container
                     if ($('#specific_user')) {

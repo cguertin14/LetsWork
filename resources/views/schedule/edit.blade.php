@@ -60,10 +60,10 @@
             </div>
             @if(count($scheduleelement->employees) > 0)
                 {{-- Add multi select here --}}
-                <div class="col-md-12">
+                <div class="col-md-12" id="specific_user">
                     <div class="form-group">
-                        {{--{!! Form::label('employees[]', 'Employés spécifiques voulus', ['class' => 'section-title','style' => 'color:black']); !!}--}}
-                        {{--{!! Form::select('employees[]',,['class' => 'form-control']); !!}--}}
+                        {!! Form::label('users[]', 'Employés spécifiques voulus', ['class' => 'section-title','style' => 'color:black']); !!}
+                        {!! Form::select('users[]',$availableEmployees,$employees,['class' => 'form-control selectpicker', 'multiple' => 'multiple','data-actions-box' => 'true']); !!}
                     </div>
                 </div>
             @endif
@@ -86,6 +86,9 @@
 
 <script>
     $(function () {
+        const cBox = document.getElementById('specific_user_checkbox');
+        if (!cBox.checked)
+            cBox.disabled = false;
         $('#begin').datetimepicker({
             useCurrent: false,
             date: new Date($('input[id=begin]').attr('value')),
