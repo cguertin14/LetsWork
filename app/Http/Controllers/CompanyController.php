@@ -93,7 +93,7 @@ class CompanyController extends Controller
         foreach (CompanyType::all() as $item) {
             $companyTypes[$item['id']] = $item['content'];
         }
-        return view('company.edit',compact(['data','companyTypes']));
+        return view('company.edit2',compact(['data','companyTypes']));
     }
 
     public function uploadphoto(Request $request)
@@ -116,6 +116,8 @@ class CompanyController extends Controller
         $data = $request->all();
         if ($data['user_id']!=Auth::id())
             return redirect()->back();
+        if (Session::has('CompanyPhoto'))
+            $data['photo'] = $request->session()->get('CompanyPhoto');
         Company::find($id)->update($data);
         return $this->show($data['name']);
     }
