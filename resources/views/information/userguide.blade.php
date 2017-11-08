@@ -372,7 +372,7 @@
         <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
             <h3 style="text-align:center;color: #ffffff;">Fin</h3>
             <br>
-            <p class="text-center">Voilà! C'était la documentation de LetsWork. Si vous avez besoin de plus de détails, n'hésitez pas à nous écrire au <a href="mailto:support@letswork.com"></a>.</p>
+            <p class="text-center">Voilà! C'était la documentation de LetsWork. Si vous avez besoin de plus de détails, n'hésitez pas à nous écrire au <a href="mailto:support@letswork.com">support@letswork.com</a>.</p>
         </div>
     </div>
 
