@@ -78,7 +78,7 @@ class SpecialRoleController extends Controller
     {
         $specialRole = SpecialRole::findBySlugOrFail($slug);
         $roles = Role::pluck('content','id')->all();
-        $skills = Skill::pluck('name','id')->all();
+        $skills = Skill::where('company_id',session('CurrentCompany')->id)->pluck('name','id')->all();
         return view('specialrole.edit',compact('specialRole','skills','roles'));
     }
 

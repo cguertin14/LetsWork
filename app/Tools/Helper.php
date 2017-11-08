@@ -14,6 +14,7 @@ use App\Availability;
 use App\Company;
 use App\JobOffer;
 use App\Punch;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -22,6 +23,7 @@ abstract class Helper
 {
     public static function CCompany()
     {
+        //\session(['CurrentCompany' => User::all()->random()->companies()->get()->random()]);
         return session('CurrentCompany');
     }
 
@@ -77,6 +79,7 @@ abstract class Helper
     public static function CRoles()
     {
         $rolea = [];
+        //if (count())
         foreach (self::CEmployee()->specialroles as $specialrole)
             foreach ($specialrole->roles as $role)
                 array_push($rolea, $role->content);
@@ -132,8 +135,13 @@ abstract class Helper
 
     public static function hasLastPunch()
     {
-        if(self::CEmployee()->punches()->where([['dateend',null],['company_id',self::CCompany()->id]])->get()->count()>0)
-            return true;
+        if (self::CEmployee() != null){
+            if (count(self::CEmployee()->punches()->get()) > 0)
+            {
+                if(self::CEmployee()->punches()->where([['dateend',null],['company_id',self::CCompany()->id]])->get()->count()>0)
+                    return true;
+            }
+        }
         return false;
     }
 
