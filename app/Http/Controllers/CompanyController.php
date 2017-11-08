@@ -46,14 +46,18 @@ class CompanyController extends Controller {
 	 */
 	public function store(CreateCompanyRequest $request) {
 		$data = $request->all();
-		$data['user_id'] = Auth::user()->id;
-		if (Session::has('CompanyPhoto')) {
+        $data['user_id'] = Auth::user()->id;
+
+        if (Session::has('CompanyPhoto')) {
 			$data['photo'] = $request->session()->get('CompanyPhoto');
 		}
 
-		Company::create($data);
+		$company = Company::create($data);
+        session(['CurrentCompany' => $company]);
+		$employee = $company->employees()->create(['user_id' => Auth::user()->id]);
+
 		$request->session()->forget('CompanyPhoto');
-		return $this->index();
+		return redirect('/');
 	}
 
 	/**

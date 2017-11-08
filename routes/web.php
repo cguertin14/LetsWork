@@ -13,6 +13,7 @@
 
 /* Other Routes */
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'OtherController@homepage')->name('homepage.content');
@@ -35,6 +36,7 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
 	/* Profile Routes */
 	Route::get('/profile/{slug}', 'ProfileController@view')->name('profile.view');
+    Route::get('/profile/{slug}/edit', 'ProfileController@edit')->name('profile.edit');
 	Route::patch('/profile/{slug}/update', 'ProfileController@update')->name('profile.update');
 	Route::patch('/profile/uploadphoto', 'ProfileController@uploadphoto')->name('profile.uploadphoto');
 	Route::get('/profilephoto', 'ProfileController@photo')->name('profile.photo');
@@ -67,8 +69,8 @@ Route::group(['middleware' => 'auth'], function () {
 	/* JobOfferUser Routes */
 	Route::get('/jobofferuser', 'JobOfferUserController@index')->name('jobofferuser.index');
 	Route::get('/jobofferuser/{id}', 'JobOfferUserController@show')->name('jobofferuser.show');
-	Route::post('/jobofferuser/{id}/accept', 'JobOfferUserController@accept')->name('jobofferuser.accept');
-	Route::post('/jobofferuser/{id}/interview', 'JobOfferUserController@interview')->name('jobofferuser.interview');
+	Route::post('/jobofferuser/{id}/accept', 'JobOfferUserController@accept')->name('jobofferuser.accept');//->middleware('manager');
+	Route::post('/jobofferuser/{id}/interview', 'JobOfferUserController@interview')->name('jobofferuser.interview');//->middleware('manager');
 	Route::delete('/jobofferuser/{id}/refuse', 'JobOfferUserController@refuse')->name('jobofferuser.refuse');
 
 	/* Schedule Routes */
@@ -76,7 +78,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/schedule/week/{datebegin}', 'ScheduleController@week')->name('schedule.week');
 	Route::get('/schedule/scheduleelement', 'ScheduleController@createelement')->name('schedule.createelement');
 	Route::post('/schedule/scheduleelement', 'ScheduleController@storeelement')->name('schedule.storeelement');
-	Route::get('/schedule/editing', 'ScheduleController@editing')->name('schedule.editing');
+	Route::get('/schedule/editing', 'ScheduleController@editing')->name('schedule.editing');//->middleware('manager');
 	Route::get('/schedule/employees/{specialrole}', 'ScheduleController@getEmployees')->name('schedule.employees');
 	Route::resource('/schedule', 'ScheduleController');
 

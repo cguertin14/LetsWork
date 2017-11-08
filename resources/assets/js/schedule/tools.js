@@ -20,8 +20,8 @@ jQuery(document).ready(function ($) {
                             data: createEventModal.find('#createForm').serialize(),
                             success: function(data) {
                                 ///////////// PLACE DATA IN CALENDAR WITH VUE.JS.
-                                //calendarVue.$data.
                                 createEventModal.modal('hide');
+                                calendarVue.loadFromDate(myCalendar.getDate().format('yyyy-mm-dd'));
                             }
                         });
                         event.preventDefault();
