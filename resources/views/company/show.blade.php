@@ -15,8 +15,9 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <img class="img-rounded" src="https://www.w3schools.com/css/trolltunga.jpg"
-                     style="width: 100%;height: auto ;background-color: black" alt="logo">
+                <div style="width:100%; height:70%" class="col-sm-offset-5">
+                    <img id="image" width="200px" height="200px" src="{{asset('image/default-profile.png')}}" style="border-radius: 50%">
+                </div>
             </div>
         </div>
         <div class="container">
@@ -26,8 +27,8 @@
             @if(count($joboffers)>0)
                 <div class="col-sm-8 col-md-12">
                     @foreach($joboffers as $joboffer)
-                        <div class="col-sm-8 col-md-12">
-                            <div>{{$joboffer->job_count.' ~ '.$joboffer->name}}</div>
+                        <div class="col-sm-8 col-md-12" style="background-color: #5d5d5d;color:white;">
+                            <div>{{$joboffer->job_count.' offres d\'emploi pour le poste de '.$joboffer->name}}</div>
                             <p>{{$joboffer->description}} <a href="{{route('joboffer.show',$joboffer->slug)}}" class="btn purplebtn pull-right">Voir l'offre d'emploi pour le poste de {{$joboffer->specialrole->name}}</a></p>
                         </div>
                     @endforeach
@@ -48,4 +49,13 @@
     @if(\Illuminate\Support\Facades\Auth::id()==$data['user_id'])
         <a href="{{route('company.edit',$data['name'])}}" class="btn purplebtn">Editer</a>
     @endif
+    <br><br>
+@endsection
+
+@section('scripts')
+    <script>
+@if($data['photo'])
+    $('#image').attr('src','{{$data['photo']}}');
+@endif
+    </script>
 @endsection
