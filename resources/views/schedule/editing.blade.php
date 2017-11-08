@@ -196,12 +196,6 @@
 
                 var modal = $('#loading');
                 modal.modal();
-                function afterModalTransition(e) {
-                    e.setAttribute("style", "display: none !important;");
-                }
-                modal.on('hide.bs.modal', function (e) {
-                    setTimeout( () => afterModalTransition(this), 200);
-                });
 
                 $.ajax({
                     method: 'GET',
