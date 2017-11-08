@@ -76,7 +76,7 @@
                 <div id="mySidenav" class="sidenav">
                     <ul style="list-style-type: none;padding-left: 0px;margin-right: 10px">
                         <li>
-                            <a id="dropdown1Title" href="#">Compagnies <span id="img1" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
+                            <a id="dropdown1Title" href="#">Entreprises <span id="img1" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
                             <ul id="dropdown1" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
                                 <li><a href="/company">Voir tout</a></li>
                                 <li><a href="/company/create">Créer</a></li>

@@ -55,7 +55,7 @@
 @section('scripts')
     <script>
 @if($data['photo'])
-    $('#image').attr('src','{{$data['photo']}}');
+    $('#image').attr('src',"data:image/png;base64," +'{{$data['photo']}}');
 @endif
     </script>
 @endsection
