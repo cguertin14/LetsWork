@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'OtherController@homepage')->name('homepage.content');
 Route::get('/aboutus', 'OtherController@aboutus')->name('information.aboutus');
+Route::get('/userguide', 'OtherController@userguide')->name('information.userguide');
 Route::get('/termsofservice', 'OtherController@termsofservice')->name('information.termsofservice');
 
 /* JobOffer Routes */
