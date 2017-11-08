@@ -32,8 +32,8 @@
                         @php($begin=\Carbon\Carbon::parse($dispo->begin))
                             @php($end=\Carbon\Carbon::parse($dispo->end))
                                 <tr class="section-index">
-                                    <td>{{\App\Tools\Helper::Day($dispo->begin)." à ".$begin->hour.":".$begin->minute.":".$begin->second}}</td>
-                                    <td>{{\App\Tools\Helper::Day($dispo->end)." à ".$end->hour.":".$end->minute.":".$end->second}}</td>
+                                    <td>{{\App\Tools\Helper::Day($begin)." à ".$begin->hour.":".$begin->minute.":".$begin->second}}</td>
+                                    <td>{{\App\Tools\Helper::Day($end)." à ".$end->hour.":".$end->minute.":".$end->second}}</td>
                                     <td>
                                         <div class="">
                                             {{Form::open(['method' => 'DELETE','action' => ['DispoController@destroy',$dispo->id]])}}

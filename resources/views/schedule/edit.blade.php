@@ -74,11 +74,11 @@
                     {!! Form::submit('Modifier',['class' => 'btn purplebtn','id' => 'submitUpdate']) !!}
                 </div>
                 {!! Form::close() !!}
-                {!! Form::open(['method' => 'DELETE','action' => ['ScheduleController@destroy',$scheduleelement->slug],'id' => 'deleteForm']) !!}
                 <div class="form-group pull-right">
-                    {!! Form::submit('Supprimer',['class' => 'btn btn-danger confirm_action','c_m_text' => 'Voulez-vous vraiment supprimer cet élément?','id' => 'submitDelete', 'style' => 'font-size: 17px!important']) !!}
+                    {!! Form::open(['method' => 'DELETE','action' => ['ScheduleController@destroy',$scheduleelement->slug],'id' => 'deleteForm']) !!}
+                    {!! Form::submit('Supprimer',['class' => 'pull-right btn btn-danger confirm_action','c_m_text' => 'Voulez-vous vraiment supprimer cet élément?','id' => 'submitDelete', 'style' => 'font-size: 17px!important']) !!}
+                    {!! Form::close() !!}
                 </div>
-                {!! Form::close() !!}
             </div>
         </div>
     </div>

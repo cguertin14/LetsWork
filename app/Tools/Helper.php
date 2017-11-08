@@ -79,6 +79,7 @@ abstract class Helper
     public static function CRoles()
     {
         $rolea = [];
+        //if (count())
         foreach (self::CEmployee()->specialroles as $specialrole)
             foreach ($specialrole->roles as $role)
                 array_push($rolea, $role->content);
@@ -134,8 +135,13 @@ abstract class Helper
 
     public static function hasLastPunch()
     {
-        if(self::CEmployee()->punches()->where([['dateend',null],['company_id',self::CCompany()->id]])->get()->count()>0)
-            return true;
+        if (self::CEmployee() != null){
+            if (count(self::CEmployee()->punches()->get()) > 0)
+            {
+                if(self::CEmployee()->punches()->where([['dateend',null],['company_id',self::CCompany()->id]])->get()->count()>0)
+                    return true;
+            }
+        }
         return false;
     }
 
