@@ -253,7 +253,7 @@
     <div class="bgimg-6"></div>
 
     <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
-        <h3 style="text-align:center;">Création d'offre d'emploi</h3>
+        <h3 style="text-align:center;">Dépôt du curriculum vitae</h3>
         <br>
         <p class="text-center">Vous pouvez facilement déposer votre C.V. sur le site web pour le transmettre aux entreprises de votre choix.  Le C.V. est à tout moment interchangeable.</p>
     </div>
@@ -372,7 +372,7 @@
         <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
             <h3 style="text-align:center;color: #ffffff;">Fin</h3>
             <br>
-            <p class="text-center">Voilà! C'était la documentation de LetsWork. Si vous avez besoin de plus de détails, n'hésitez pas à nous écrire au <a href="mailto:support@letswork.com"></a>.</p>
+            <p class="text-center">Voilà! C'était la documentation de LetsWork. Si vous avez besoin de plus de détails, n'hésitez pas à nous écrire au <a href="mailto:support@letswork.com">support@letswork.com</a>.</p>
         </div>
     </div>
 

@@ -148,6 +148,7 @@
             <div class="row">
                 <div class="text-center">
                     <img src="{{asset('image/laravel.png')}}" alt="" width="350" height="200">
+                    <img src="{{asset('image/php.png')}}" alt="" width="350" height="200" style="margin-left: 2em;">
                     <img src="{{asset('image/mysql.png')}}" alt="" width="350" height="250" style="margin-left: 3em;">
                     <img src="{{asset('image/blade.png')}}" alt="" width="370" height="200">
                     <img src="{{asset('image/vue.png')}}" alt="" width="350" height="350">
@@ -190,27 +191,28 @@
                 <div class="row" style="width: 100%;">
                     <div class="col-lg-4 col-sm-6 text-center mb-4" style="margin: 0 auto;">
                         <img class="rounded-circle img-fluid d-block mx-auto" height="300" width="300" src="{{asset('image/charles.jpg')}}" alt="">
-                        <h3 style="color: #a5a4a4;">Charles Guertin
-                            <small>Développeur Full-Stack</small>
-                        </h3>
+                        <h3 style="color: #a5a4a4;">Charles Guertin</h3>
+                        <h3 style="margin: 0;"><small>Développeur Full-Stack</small></h3>
+                        <br>
                         <a target="_blank" href="https://www.linkedin.com/in/charles-guertin-495b6520/" class="fa fa-linkedin"></a>
                         <a href="mailto:charlesguertin@live.ca" class="fa fa-envelope"></a>
+                        <br>
                         <p>Je suis un jeune développeur de 19 ans passionné d'informatique. J'adore apprendre de nouvelles technologies, utiliser des environnements de travail rapides, travailler en temps réel (Client/Serveur). Travailler en équipe et bien communiquer est une priorité pour moi, car sinon, un projet ne peut pas avoir de succès. Mon but principal est de toujours me dépasser afin d'être le meilleur développeur possible.</p>
                     </div>
                     <div class="col-lg-4 col-sm-6 text-center mb-4" style="margin: 0 auto;">
                         <img class="rounded-circle img-fluid d-block mx-auto"  height="300" width="300"  src="{{asset('image/ludo.jpg')}}" alt="">
-                        <h3 style="color: #a5a4a4;">Ludovic Lachance
-                            <small>Développeur Full-Stack</small>
-                        </h3>
+                        <h3 style="color: #a5a4a4;">Ludovic Lachance</h3>
+                        <h3 style="margin: 0;"><small>Développeur Full-Stack</small></h3>
+                        <br>
                         <a target="_blank" href="https://www.linkedin.com/in/ludovic-lachance/" class="fa fa-linkedin"></a>
                         <a href="mailto:ludovic.lachance@gmail.com" class="fa fa-envelope"></a>
                         <p>Ludovic Lachance. 21 ans. Étudiant en informatique depuis 3 ans, j'ai appris à maîtriser plusieurs languages me permettant d'imbriquer dans un projet plusieurs parties écrites avec des techniques différentes communiquantes de façon asynchrome en temps réel. J'adore l'informatique, car ça me permet de comprendre le monde qui m'entoure de façons plus précises.</p>
                     </div>
                     <div class="col-lg-4 col-sm-6 text-center mb-4" style="margin: 0 auto;">
                         <img class="rounded-circle img-fluid d-block mx-auto"  height="300" width="300" src="{{asset('image/phil.jpg')}}" alt="">
-                        <h3 style="color: #a5a4a4;">Philippe Simard
-                            <small>Superviseur de projet</small>
-                        </h3>
+                        <h3 style="color: #a5a4a4;">Philippe Simard</h3>
+                        <h3 style="margin: 0;"><small>Superviseur de projet</small></h3>
+                        <br>
                         <a target="_blank" href="https://www.linkedin.com/in/philippesimard/" class="fa fa-linkedin"></a>
                         <a href="mailto:Philippe.simard@clg.qc.ca" class="fa fa-envelope"></a>
                         <p>En tant que superviseur de projet, Philippe est un excellent conseiller informatique qui suit le progrès et l'avancement du développement de LetsWork. En plus de nous donner de bonnes idées, M. Simard est un excellent coach qui nous permet toujours d'aller plus loin.</p>

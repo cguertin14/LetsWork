@@ -20,8 +20,7 @@ class SpecialRoleController extends Controller
      */
     public function index()
     {
-        $specialRoles = SpecialRole::where('company_id',session('CurrentCompany')->id)->get();
-        $specialRoles = new Paginator($specialRoles,10,1);
+        $specialRoles = SpecialRole::where('company_id',session('CurrentCompany')->id)->paginate(10);
         return view('specialrole.index',compact('specialRoles'));
     }
 
