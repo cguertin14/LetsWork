@@ -14,6 +14,7 @@ use App\Availability;
 use App\Company;
 use App\JobOffer;
 use App\Punch;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -22,6 +23,7 @@ abstract class Helper
 {
     public static function CCompany()
     {
+        //\session(['CurrentCompany' => User::all()->random()->companies()->get()->random()]);
         return session('CurrentCompany');
     }
 

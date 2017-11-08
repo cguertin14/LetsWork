@@ -10,12 +10,26 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-    public function view($slug)
+    /**
+     * @param $slug
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit($slug)
     {
         $user = User::findBySlugOrFail($slug);
         return view('profile.edit',compact('user'));
     }
 
+    public function view($slug)
+    {
+        $user = User::findBySlugOrFail($slug);
+        return view('profile.show',compact('user'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function update(Request $request)
     {
         $user = Auth::user();
@@ -23,6 +37,9 @@ class ProfileController extends Controller
         return redirect('/');
     }
 
+    /**
+     * @param Request $request
+     */
     public function uploadphoto(Request $request)
     {
         $data = $request->except(['file','_method','_token']);
@@ -44,15 +61,24 @@ class ProfileController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function photo() {
         // return image as base64
         return response()->json(['photo' => Auth::user()->photo]);
     }
 
+    /**
+     * @param $slug
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function deleteuser($slug)
     {
+        Auth::logout();
         $user = User::findBySlugOrFail($slug);
         $user->delete();
+        session()->flush();
         return redirect('/');
     }
 }
