@@ -23,7 +23,7 @@
 @section('content')
 
     @include('include.tinyeditor')
-    <h1 class="h1" style="color: white">Modification de l'entreprise{{$data->pays}}</h1>
+    <h1 class="h1" style="color: white">Modification de l'entreprise</h1>
     <hr class="separator">
     <div class="col-md-12">
         <div class="row layout">
