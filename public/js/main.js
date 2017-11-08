@@ -212,6 +212,7 @@ function placerhoraire(){
 				self.modal.off(transitionEnd);
 				self.animating = false;
 			});
+			self.modal.css('z-index',99999);
 		} else {
 			var eventTop = event.offset().top - $(window).scrollTop(),
 				eventLeft = event.offset().left,
@@ -349,10 +350,14 @@ function placerhoraire(){
 
 		if( mq == 'mobile' ) {
 			//reset modal style on mobile
+			$('.cover-layer')[0].style.zIndex = 0;
 			self.modal.add(self.modalHeader).add(self.modalHeaderBg).add(self.modalBody).add(self.modalBodyBg).attr('style', '');
+			//self.modal.attr('style','z-index:99999');
 			self.modal.removeClass('no-transition');
 			self.animating = false;
+            self.modal.css('z-index',99999);
 		} else if( mq == 'desktop' && self.element.hasClass('modal-is-open') ) {
+            $('.cover-layer')[0].style.zIndex = 88888;
 			self.modal.addClass('no-transition');
 			self.element.addClass('animation-completed');
 			var event = self.eventsGroup.find('.selected-event');
@@ -377,6 +382,7 @@ function placerhoraire(){
 					height: modalHeight+'px',
 					top: (windowHeight/2 - modalHeight/2)+'px',
 					left: (windowWidth/2 - modalWidth/2)+'px',
+					zIndex: 99999
 				});
 				transformElement(self.modal, 'translateY(0) translateX(0)');
 				//change modal modalBodyBg height/width
