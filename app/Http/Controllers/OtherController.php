@@ -39,6 +39,14 @@ class OtherController extends Controller
     }
 
     /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function userguide()
+    {
+        return view('information.userguide');
+    }
+
+    /**
      * @return int
      */
     public function userIsManager()
