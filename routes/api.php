@@ -20,8 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/cpage', function (Request $request) {
     $page = $request->input('page');
     $name = $request->input('name');
-    return \App\Company::all(["name", "description"])
-//      ->where('description','like', '%'.$name.'%')
+    $data=\App\Company::where('description','like', "%". $name ."%")
+        ->orWhere('name', 'like',"%". $name ."%")
         ->forPage($page, 15)
+        ->get()
         ->toJson();
+    return $data;
 });

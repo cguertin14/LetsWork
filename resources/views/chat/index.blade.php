@@ -13,7 +13,7 @@
             <li class="" v-for="mess in messages">@{{mess}}</li>
         </ul>
         </div>
-        <input type="text" v-model="message">
+        <input type="text" v-model="message" v-on:keydown.enter="send">
         <button v-on:click="send">Envoyer</button>
         <button v-on:click="connection" v-if="!connected">Connection</button>
         <button v-on:click="deconnection" v-if="connected">Deconnection</button>
@@ -27,10 +27,13 @@
             el:"#chat",
             methods:{
                 send: function (e) {
-                    socket.emit("chat.message",{
-                        user:this.currentuser,
-                        message:this.message
-                    });
+                    if(this.message!='') {
+                        socket.emit("chat.message", {
+                            user: this.currentuser,
+                            message: this.message
+                        });
+                        this.message = '';
+                    }
                     e.preventDefault();
                 },
                 connection:function () {
