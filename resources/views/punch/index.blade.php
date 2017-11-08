@@ -42,7 +42,11 @@
                                 @php(\Carbon\Carbon::setLocale('fr'))
                                 <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin)->toDateString()}}</td>
                                 <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin)->diffForHumans()}}</td>
+                                @if($punch->dateend)
                                 <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->dateend)->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)}}</td>
+                                @else
+                                <td>Période de travail non terminé</td>
+                                @endif
                             </tr>
                         @endforeach
                         </tbody>
