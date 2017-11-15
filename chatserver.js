@@ -28,30 +28,6 @@ function echoback(data) {
     io.emit('chat.message', data);
 }
 
-function connection(data) {
-    if (users.indexOf(data.user)>=0) {
-        io.emit(data.user, {result: false});
-    }
-    else {
-        users.push(data.user);
-        io.emit(data.user, {result: true});
-        redis.set('userslist', JSON.stringify(users));
-        allonlineusers();
-    }
-}
-
-function deconnection(data) {
-    if (users.indexOf(data.user)<0) {
-        io.emit(data.user, {result: false});
-    }
-    else {
-        users.splice(users.indexOf(data.user),1);
-        io.emit(data.user, {result: true});
-        redis.set('userslist', JSON.stringify(users));
-        allonlineusers();
-    }
-}
-
 function duochatconnect(data) {
     if (!users.has(data.user) || !users.has(data.requesteduser)) {
         io.emit('user.request.duochat.' + data.user, {result: false});
@@ -79,9 +55,13 @@ function duochatunconnect(data) {
 
 io.on('connection', function (socket) {
     socket.on('chat.message', echoback);
-    socket.on('user.connection', connection);
     socket.on('user.list',allonlineusers);
-    socket.on('user.deconnection',deconnection);
     socket.on('user.request.duochat.connect', duochatconnect);
     socket.on('user.request.duochat.unconnect', duochatunconnect);
 });
+
+setInterval(function(){
+    redis.get('test', function (err, result) {
+        console.log(result); //will display 'value'
+    });
+}, 5000);

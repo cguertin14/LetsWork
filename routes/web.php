@@ -16,6 +16,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', 'OtherController@homepage')->name('homepage.content');
 Route::get('/aboutus', 'OtherController@aboutus')->name('information.aboutus');
 Route::get('/userguide', 'OtherController@userguide')->name('information.userguide');
@@ -99,7 +100,11 @@ Route::get('/fire', function () {
 	return "event fired";
 });
 
-Route::get('/test', function () {
+Route::get('/chat', function () {
 	// this checks for the event
 	return view('chat.index');
+});
+
+Route::get('/test', function () {
+    return \GuzzleHttp\json_encode(\App\Session::connectedUsers()->all());
 });

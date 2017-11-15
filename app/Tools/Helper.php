@@ -40,7 +40,7 @@ abstract class Helper
         $employee = self::CEmployee();
         $availabilitys = Availability::where([
             ['employee_id', '=', $employee->id],
-            ['company_id', '=', $company->id]
+            ['company_id', '=', $company->getId()]
         ])->get();
         return $availabilitys;
     }
@@ -117,7 +117,7 @@ abstract class Helper
     public static function getJobOfferUserById($id)
     {
         $jobofferuser = null;
-        $jobOffers = JobOffer::where('company_id',session('CurrentCompany')->id)->get();
+        $jobOffers = JobOffer::where('company_id',session('CurrentCompany')->getId())->get();
         foreach ($jobOffers as $joboffer) {
             if ($joboffer->users) {
                 foreach ($joboffer->users as $user)
@@ -138,7 +138,7 @@ abstract class Helper
         if (self::CEmployee() != null){
             if (count(self::CEmployee()->punches()->get()) > 0)
             {
-                if(self::CEmployee()->punches()->where([['dateend',null],['company_id',self::CCompany()->id]])->get()->count()>0)
+                if(self::CEmployee()->punches()->where([['dateend',null],['company_id',self::CCompany()->getId()]])->get()->count()>0)
                     return true;
             }
         }
@@ -187,7 +187,7 @@ abstract class Helper
     public static function getDaySum($day)
     {
         //$punches=self::CEmployee()->punches()->where([['datebegin','>=',new Carbon($day)],['datebegin','<=',new Carbon($day->tomorrow())],['company_id',self::CCompany()->id]])->get();
-        $punches=self::CEmployee()->punches()->whereBetween('datebegin',[new Carbon($day),new Carbon($day->addDay())])->where('company_id',self::CCompany()->id)->get();
+        $punches=self::CEmployee()->punches()->whereBetween('datebegin',[new Carbon($day),new Carbon($day->addDay())])->where('company_id',self::CCompany()->getId())->get();
         $average=0;
         foreach ($punches as $punch)
         {
@@ -302,5 +302,16 @@ abstract class Helper
                                             ->where('begin', '<=', Carbon::now())
                                             ->where('end'  , '>=', Carbon::now())
                                             ->first();
+    }
+
+    public static function setLogedRedisUsers()
+    {
+        try {
+            $redis = new \Predis\Client('localhost:6379');
+            $json = \App\Session::connectedUsers()->all();
+            $redis->set('test', \GuzzleHttp\json_encode($json));
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
     }
 }

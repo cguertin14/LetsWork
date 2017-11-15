@@ -89,4 +89,9 @@ class User extends Authenticatable
             return false;
         }
     }
+
+    public function session()
+    {
+        return $this->hasOne('App\Session');
+    }
 }
