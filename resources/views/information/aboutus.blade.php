@@ -121,11 +121,7 @@
         <p>De plus, notre application web peut être utilisée pour la recherche d'emploi et pour simplement travailler plus facilement, donc pour un employé ou un simple utilisateur.</p>
     </div>
 
-    <div class="bgimg-2">
-        {{--<div class="caption">
-            <span class="border" style="background-color:transparent;font-size:25px;color: #f7f7f7;">LESS HEIGHT</span>
-        </div>--}}
-    </div>
+    <div class="bgimg-2"></div>
 
     <div style="position:relative;">
         <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
@@ -157,11 +153,7 @@
         </div>
     </div>
 
-    <div class="bgimg-3">
-        {{--<div class="caption">
-            <span class="border" style="background-color:transparent;font-size:25px;color: #f7f7f7;"></span>
-        </div>--}}
-    </div>
+    <div class="bgimg-3"></div>
 
     <div style="position:relative;">
         <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
@@ -175,11 +167,7 @@
         </div>
     </div>
 
-    <div class="bgimg-4">
-        {{--<div class="caption">
-            <span class="border" style="background-color:transparent;font-size:25px;color: #f7f7f7;"></span>
-        </div>--}}
-    </div>
+    <div class="bgimg-4"></div>
 
     <div style="position:relative;">
         <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">

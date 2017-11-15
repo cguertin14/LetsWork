@@ -51,13 +51,13 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             {!! Form::label('name', 'Nom',['class' => 'section-title']) !!}
-                            {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                            {!! Form::text('name', null, ['class' => 'form-control','placeholder' => 'Nom','required']) !!}
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             {!! Form::label('telephone', 'Téléphone',['class' => 'section-title']) !!}
-                            {!! Form::text('telephone', null, ['class' => 'form-control']) !!}
+                            {!! Form::text('telephone', null, ['class' => 'form-control','placeholder' => 'Téléphone','required']) !!}
                         </div>
                     </div>
                 </div>
@@ -65,13 +65,13 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             {!! Form::label('email', 'Adresse Courriel',['class' => 'section-title']) !!}
-                            {!! Form::text('email', null, ['class' => 'form-control']) !!}
+                            {!! Form::text('email', null, ['class' => 'form-control','placeholder' => 'Adresse Courriel','required']) !!}
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             {!! Form::label('ville', 'Ville',['class' => 'section-title']) !!}
-                            {!! Form::text('ville', null, ['class' => 'form-control']) !!}
+                            {!! Form::text('ville', null, ['class' => 'form-control','placeholder' => 'Ville','required']) !!}
                         </div>
                     </div>
                 </div>
@@ -79,13 +79,13 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             {!! Form::label('adresse', 'Adresse',['class' => 'section-title']) !!}
-                            {!! Form::text('adresse', null, ['class' => 'form-control']) !!}
+                            {!! Form::text('adresse', null, ['class' => 'form-control','placeholder' => 'Adresse','required']) !!}
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             {!! Form::label('zipcode', 'Code Postal',['class' => 'section-title']) !!}
-                            {!! Form::text('zipcode', null, ['class' => 'form-control']) !!}
+                            {!! Form::text('zipcode', null, ['class' => 'form-control','placeholder' => 'Code Postal','required']) !!}
                         </div>
                     </div>
                 </div>
@@ -93,13 +93,13 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             {!! Form::label('pays', 'Pays',['class' => 'section-title']) !!}
-                            {!! Form::select('pays', $country_list,0, array('class' => 'form-control custom-select')) !!}
+                            {!! Form::select('pays', $country_list,0, array('class' => 'form-control custom-select','required')) !!}
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             {!! Form::label('company_type_id', 'Type de compagnie',['class' => 'section-title']) !!}
-                            {!! Form::select('company_type_id', $companyTypes ,0, ['class' => 'form-control custom-select']) !!}
+                            {!! Form::select('company_type_id', $companyTypes ,0, ['class' => 'form-control custom-select','required']) !!}
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             {!! Form::label('description', 'Description',['class' => 'section-title']) !!}
-                            {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
+                            {!! Form::textarea('description', null, ['class' => 'form-control','placeholder' => 'Description de la compagnie...','required']) !!}
                         </div>
                     </div>
                 </div>
