@@ -62,23 +62,10 @@
 
 @section('scripts')
     <script>
-        @if(\Illuminate\Support\Facades\Auth::user()->photo)
-        setUserProfilePic('{{route('profile.photo')}}');
+        @if($user->photo)
+        setUserProfilePic('{{route('profile.photo',$user->slug)}}');
         @else
         $('#image').attr('src','{{asset('image/default-profile.png')}}');
         @endif
-            Dropzone.autoDiscover = false;
-        $("#files").dropzone({
-            url: '{{route('profile.uploadphoto')}}',
-            acceptedFiles: "image/jpeg,image/png,image/gif",
-            maxFiles: 1,
-            maxfilesexceeded: function(file) {
-                this.removeAllFiles();
-                this.addFile(file);
-            },
-            queuecomplete: function () {
-                setUserProfilePic('{{route('profile.photo')}}');
-            }
-        });
     </script>
 @endsection

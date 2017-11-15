@@ -165,11 +165,12 @@
 @section('scripts')
 <script type="text/javascript" src="{{asset('js/main.js')}}"></script>
 <script>
-    var place = new placerhoraire();
+    var place = new PlacerHoraire();
     var calendarVue = new Vue({
         el: "#calendar",
         data: {
-            days: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"],
+            days: ["Dimanche","Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi","Samedi"],
+            colors: ['event-1','event-2','event-3','event-4'],
             weekevents: []
         },
         computed: {},
@@ -180,15 +181,101 @@
             getevent: function (day) {
                 return this.weekevents[day];
             },
-            loadThisWeek: function () {
-                var self = this;
-                $.ajax({
-                    method: 'GET',
-                    url: '/schedule/thisweek',
-                    success: function (data) {
-                        self.weekevents = data.weekevents;
-                    }
-                });
+            sort: function(data) {
+                var newEvents = [],
+                    self = this;
+                for (var day in data.weekevents) {
+                    data.weekevents[day].forEach(function (event) {
+                        event.color = self.colors[Math.floor(Math.random() * self.colors.length)];
+                    });
+                }
+                for (var day in data.weekevents) {
+                    data.weekevents[day].forEach(function (event) {
+                        var dateEnd = event.end.split(" ");
+                        if (dateEnd.length > 1) {
+                            // Get ending time from event ending date
+                            var end = dateEnd[1];
+                            // Create new event with same properties but starting the next day
+                            var newEvent = JSON.parse(JSON.stringify(event));
+                            // Set event to end at midnignt to allow new event to start the next day
+                            event.end = '23:59';
+                            // Set new event begin and end attributes
+                            newEvent.begin = '00:00';
+                            newEvent.end = end;
+
+                            var curr = new Date(dateEnd[0]),
+                                first = curr.getDate() - curr.getDay(), // First day is the day of the month - the day of the week
+                                last = first + 6,                       // last day is the first day + 6
+                                lastDayOfTheWeek = new Date(curr.setDate(last)).getDay();
+
+                            // Get date from event ending date
+                            var eventEndingDay = new Date(dateEnd[0]).getDay() + 1;
+                            for (var newDay = self.getDateFromDayInCurrentCalendarDate(day).getDay() + 1; newDay <= lastDayOfTheWeek; ++newDay) {
+                               if (newDay < eventEndingDay) {
+                                   newEvent.end = '23:59';
+                                   var nextDay = self.getStringDayFromNumberDay(newDay);
+                                   if (newEvents[nextDay] === undefined) newEvents[nextDay] = [];
+                                   newEvents[nextDay].push(newEvent);
+                               } else if (newDay === eventEndingDay) {
+                                   var LastDayEvent = JSON.parse(JSON.stringify(newEvent));
+                                   LastDayEvent.end = end;
+                                   var nextDay = self.getStringDayFromNumberDay(newDay);
+                                   if (newEvents[nextDay] === undefined) newEvents[nextDay] = [];
+                                   newEvents[nextDay].push(LastDayEvent);
+                               }
+                            }
+                        }
+                    });
+                }
+
+                // Put new events in main array of data (weekevents).
+                for (var day in newEvents) {
+                    newEvents[day].forEach(function (event) {
+                        data.weekevents[day].push(event);
+                    });
+                }
+                self.weekevents = data.weekevents;
+            },
+            getScheduleTimestamp: function(time) {
+                //accepts hh:mm format - convert hh:mm to timestamp
+                time = time.replace(/ /g,'');
+                var timeArray = time.split(':');
+                var timeStamp = parseInt(timeArray[0])*60 + parseInt(timeArray[1]);
+                return timeStamp;
+            },
+            getNextDayFromStringDay: function(day) {
+                switch (day) {
+                    case 'Lundi': return 'Mardi';     break;
+                    case 'Mardi': return 'Mercredi';  break;
+                    case 'Mercredi': return 'Jeudi';  break;
+                    case 'Jeudi': return 'Vendredi';  break;
+                    case 'Vendredi': return 'Samedi'; break;
+                    case 'Samedi': return 'Dimanche'; break;
+                    case 'Dimanche': return 'Lundi';  break;
+                }
+            },
+            getStringDayFromNumberDay: function(day) {
+                switch (day) {
+                    case 0: return 'Dimanche';     break;
+                    case 1: return 'Lundi';        break;
+                    case 2: return 'Mardi';        break;
+                    case 3: return 'Mercredi';     break;
+                    case 4: return 'Jeudi';        break;
+                    case 5: return 'Vendredi';     break;
+                    case 6: return 'Samedi';       break;
+                }
+            },
+            getDateFromDayInCurrentCalendarDate: function(day) {
+                var date = new Date(myCalendar.getDate(false));
+                switch (day) {
+                    case 'Dimanche': return new Date(date.setDate(date.getDate() - date.getDay()/* + 0*/)); break;
+                    case 'Lundi':    return new Date(date.setDate(date.getDate() - date.getDay() + 1));     break;
+                    case 'Mardi':    return new Date(date.setDate(date.getDate() - date.getDay() + 2));     break;
+                    case 'Mercredi': return new Date(date.setDate(date.getDate() - date.getDay() + 3));     break;
+                    case 'Jeudi':    return new Date(date.setDate(date.getDate() - date.getDay() + 4));     break;
+                    case 'Vendredi': return new Date(date.setDate(date.getDate() - date.getDay() + 5));     break;
+                    case 'Samedi':   return new Date(date.setDate(date.getDate() - date.getDay() + 6));     break;
+                }
             },
             loadFromDate: function(date) {
                 var self = this;
@@ -201,8 +288,9 @@
                     method: 'GET',
                     url: '/schedule/week/' + date,
                     success: function (data) {
-                        self.weekevents = data.weekevents;
-                        $('#loading').modal('hide');
+                        // Sort data to place events that last for 2 days or more
+                        self.sort(data);
+                        modal.modal('hide');
                     }
                 });
             }
@@ -212,10 +300,9 @@
             place.load();
         },
         mounted: function() {
-            this.loadThisWeek();
+            this.loadFromDate(new Date().format('yyyy-mm-dd'));
         },
-        beforeMount: function() {},
-        ready:function() {}
+        beforeMount: function() {}
     });
 </script>
 <script>

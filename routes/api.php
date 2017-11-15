@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +22,9 @@ Route::get('/cpage', function (Request $request) {
     $page = $request->input('page');
     $name = $request->input('name');
     $data=\App\Company::where('description','like', "%". $name ."%")
-        ->orWhere('name', 'like',"%". $name ."%")
-        ->forPage($page, 15)
-        ->get()
-        ->toJson();
+                        ->orWhere('name', 'like',"%". $name ."%")
+                        ->forPage($page, 15)
+                        ->get()
+                        ->toJson();
     return $data;
 });

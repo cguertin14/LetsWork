@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Session;
 
 abstract class Helper
 {
+    /**
+     * @return Company
+     */
     public static function CCompany()
     {
         //\session(['CurrentCompany' => User::all()->random()->companies()->get()->random()]);
@@ -79,9 +82,8 @@ abstract class Helper
     public static function CRoles()
     {
         $rolea = [];
-        //if (count())
-        foreach (self::CEmployee()->specialroles as $specialrole)
-            foreach ($specialrole->roles as $role)
+        foreach (self::CEmployee()->specialroles()->get() as $specialrole)
+            foreach ($specialrole->roles()->get() as $role)
                 array_push($rolea, $role->content);
         return $rolea;
     }
@@ -117,7 +119,7 @@ abstract class Helper
     public static function getJobOfferUserById($id)
     {
         $jobofferuser = null;
-        $jobOffers = JobOffer::where('company_id',session('CurrentCompany')->id)->get();
+        $jobOffers = JobOffer::where('company_id',self::CCompany()->id)->get();
         foreach ($jobOffers as $joboffer) {
             if ($joboffer->users) {
                 foreach ($joboffer->users as $user)
@@ -272,11 +274,13 @@ abstract class Helper
     public static function getWeekDays()
     {
         return [
+            'Dimanche',
             'Lundi',
             'Mardi',
             'Mercredi',
             'Jeudi',
-            'Vendredi'
+            'Vendredi',
+            'Samedi'
         ];
     }
 
@@ -284,11 +288,13 @@ abstract class Helper
     {
         return collect([
             'weekevents' => [
+                'Dimanche' => [],
                 'Lundi' => [],
                 'Mardi' => [],
                 'Mercredi' => [],
                 'Jeudi' => [],
                 'Vendredi' => [],
+                'Samedi' => [],
             ]
         ]);
     }

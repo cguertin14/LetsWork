@@ -15,10 +15,10 @@ class CompanyTableSeeder extends Seeder
         foreach (range(1,20) as $index) {
             $employee = \App\Employee::all()->random();
             $company = \App\Company::create([
-                'name' => $faker->company,
+                'name' => $faker->unique()->company,
                 'description' => $faker->text(800),
-                'telephone' => $faker->phoneNumber,
-                'email' => $faker->email,
+                'telephone' => $faker->unique()->phoneNumber,
+                'email' => $faker->unique()->email,
                 'ville' => $faker->city,
                 'adresse' => $faker->address,
                 'zipcode' => $faker->postcode,

@@ -51462,7 +51462,7 @@ jQuery(document).ready(function ($) {
                             success: function(data) {
                                 ///////////// PLACE DATA IN CALENDAR WITH VUE.JS.
                                 createEventModal.modal('hide');
-                                calendarVue.loadFromDate(myCalendar.getDate());
+                                calendarVue.loadFromDate(myCalendar.getDate().format('yyyy-mm-dd'));
                             }
                         });
                         event.preventDefault();

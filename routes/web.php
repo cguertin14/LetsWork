@@ -39,7 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/profile/{slug}/edit', 'ProfileController@edit')->name('profile.edit');
 	Route::patch('/profile/{slug}/update', 'ProfileController@update')->name('profile.update');
 	Route::patch('/profile/uploadphoto', 'ProfileController@uploadphoto')->name('profile.uploadphoto');
-	Route::get('/profilephoto', 'ProfileController@photo')->name('profile.photo');
+	Route::get('/profile/{slug}/photo', 'ProfileController@photo')->name('profile.photo');
 	Route::delete('/profile/{slug}/delete', 'ProfileController@deleteuser')->name('profile.delete');
 
 	/* Company Routes */
@@ -74,7 +74,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('/jobofferuser/{id}/refuse', 'JobOfferUserController@refuse')->name('jobofferuser.refuse');
 
 	/* Schedule Routes */
-	Route::get('/schedule/thisweek', 'ScheduleController@thisweek')->name('schedule.thisweek');
 	Route::get('/schedule/week/{datebegin}', 'ScheduleController@week')->name('schedule.week');
 	Route::get('/schedule/scheduleelement', 'ScheduleController@createelement')->name('schedule.createelement');
 	Route::post('/schedule/scheduleelement', 'ScheduleController@storeelement')->name('schedule.storeelement');

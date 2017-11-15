@@ -24,10 +24,10 @@ class CreateCompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => 'required|unique:companies',
             'description' => 'required',
-            'telephone' => 'required',
-            'email' => 'required',
+            'telephone' => 'required|unique:companies',
+            'email' => 'required|unique:companies',
             'ville' => 'required',
             'adresse' => 'required',
             'zipcode' => 'required',
@@ -40,6 +40,9 @@ class CreateCompanyRequest extends FormRequest
     {
         return [
             'name.required' => 'Le nom de la compagnie est nécessaire',
+            'name.unique' => 'Le nom de la compagnie est déjà pris',
+            'telephone.unique' => 'Le numéro de téléphone de la compagnie est déjà pris',
+            'email.unique' => 'L\'adresse courriel de la compagnie est déjà prise',
             'description.required' => 'La description de la compagnie est nécessaire',
             'telephone.required' => 'Le téléphone de la compagnie est nécessaire',
             'email.required' => 'L\'adresse courriel de la compagnie est nécessaire',

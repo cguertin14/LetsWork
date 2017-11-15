@@ -18,7 +18,7 @@ class CheckManager
         if (\App\Tools\Helper::CIsManager()) {
             return $next($request);
         } else {
-            return redirect('/');
+            return redirect()->back();
         }
     }
 }
