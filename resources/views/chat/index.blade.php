@@ -58,20 +58,25 @@
 .item{
     cursor:pointer;
 }
+.red
+{
+    background-color: red;
+}
+
     </style>
 @endsection
 
 @section('content')
-    <div id="chat" style="height: 35em">
+    <div id="chat" style="height: 35em;">
         <div id="rooms" class="col-md-3" style="height: 100%;">
             <h4 style="color: white; text-align: center;">Conversations</h4>
             <div class="parent" style="height: 100%;">
                 <div class="list-group child">
-                    <div class="list-group-item item" v-for="room in Object.keys(rooms)" v-bind:data-room="room" v-on:click="setroom(room)">@{{room}}</div>
+                    <div class="list-group-item item" v-bind:class="seen(room)" v-for="room in Object.keys(rooms)" v-bind:data-room="room" v-on:click="setroom(room)">@{{room}}</div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6" style="height: 100%;">
+        <div class="col-md-6" style="height: 100%;border: 2px solid white;border-radius: 1em">
             <div class="parent" style="height: 100%;">
                 <div id="chatbox" class="list-group child row">
                     <div class="col-md-12" v-for="mess in currentmessages" v-bind:data-user="mess.user.name">
@@ -82,7 +87,7 @@
                     </div>
                 </div>
             </div>
-            <input style="width: 100%" type="text" v-model="message" v-on:keydown.enter="send">
+            <input class="form-control" placeholder="Envoyer un message..." style="width: 100%" type="text" v-model="message" v-on:keydown.enter="send">
 <!-- <button class="" v-on:click="send">Envoyer</button> -->
         </div>
         <div class="col-md-3" style="height: 100%;">
@@ -113,11 +118,14 @@
                         }
                         else
                         {
-                            socket.emit('roomchat', {
+                            var message={
                                 hash: this.rooms[this.currentroom].hash,
                                 message: this.message,
-                                sender: this.currentuser
-                            });
+                                sender: this.currentuser,
+                                receiver: this.rooms[this.currentroom].user
+                            };
+                            socket.emit('roomchat', message);
+                            this.savemessage(message);
                         }
                         this.message = '';
                     }
@@ -151,6 +159,21 @@
                     $.when(this.currentroom=room).then(function () {
                         $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
                     });
+                    this.rooms[this.currentroom]['seen']=true;
+                },
+                savemessage:function (message) {
+                   // $.post('/test1', { message: message, _token: {{csrf_token()}} });
+                   $.ajax({
+                        method: 'POST',
+                        url: '/savemessages',
+                        data: { message: message, _token: '{{csrf_token()}}' }
+                   });
+                },
+                seen:function (room) {
+                   return this.rooms[room].seen?"":"red";
+                },
+                loadlastmessages:function () {
+
                 }
             },
             computed: {
@@ -162,7 +185,7 @@
                 currentuser: @if(!\Illuminate\Support\Facades\Auth::guest()){email:'{{\Illuminate\Support\Facades\Auth::user()->email}}',name:'{{\Illuminate\Support\Facades\Auth::user()->name}}'}
                 @else 'Anon' @endif,
                 message: '',
-                rooms:{Entreprise:{messages:[]}},
+                rooms:{Entreprise:{messages:[],seen:true}},
                 currentroom:'Entreprise',
                 messages: [],
                 allusersonline: [],
@@ -176,6 +199,8 @@
                         .then(function(){
                     $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight)
                         });
+                        if('Entreprise'!=app.currentroom)
+                        app.rooms['Entreprise']['seen']=false;
                 }.bind(this));
 
                 socket.on('globalchat.users', function (data) {
@@ -191,7 +216,8 @@
                     app.rooms[data.sender.name]={};
                     app.rooms[data.sender.name]['messages']=[];
                     app.rooms[data.sender.name]['hash']=data.hash;
-
+                    app.rooms[data.sender.name]['user']=data.sender;
+                    app.rooms[data.sender.name]['seen']=true;
                     socket.on('roomchat.'+data.hash, function (data2) {
                         $.when(app.rooms[data.sender.name].messages.push({user:data2.sender, message:data2.message}))
                             .then(function(){
@@ -199,6 +225,8 @@
                                     $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
                                 });
                             });
+                        if(data.sender.name!=app.currentroom)
+                        app.rooms[data.sender.name]['seen']=false;
                     }.bind(app));
                     app.currentroom=data.sender.name;
                 }.bind(this));
@@ -207,7 +235,8 @@
                     app.rooms[data.receiver.name]={};
                     app.rooms[data.receiver.name]['messages']=[];
                     app.rooms[data.receiver.name]['hash']=data.hash;
-
+                    app.rooms[data.receiver.name]['user']=data.receiver;
+                    app.rooms[data.receiver.name]['seen']=true;
                     socket.on('roomchat.'+data.hash, function (data2) {
                         $.when(app.rooms[data.receiver.name]['messages'].push({user:data2.sender, message:data2.message}))
                             .then(function(){
@@ -215,6 +244,8 @@
                                     $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
                                 });
                         });
+                        if(data.receiver.name!=app.currentroom)
+                        app.rooms[data.receiver.name]['seen']=false;
                     }.bind(app));
                     app.currentroom=data.receiver.name;
                 }.bind(this));

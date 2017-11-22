@@ -13,6 +13,7 @@
 
 /* Other Routes */
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -116,4 +117,12 @@ Route::get('/test', function () {
 		die($e->getMessage());
 	}
 	return \GuzzleHttp\json_encode($json);
+});
+
+Route::post('/savemessages', function (Request $request) {
+	\App\Message::create([
+		'sender_id' => \App\User::where('email', '=', $request->input('message.sender.email'))->first()->id,
+		'receiver_id' => \App\User::where('email', '=', $request->input('message.receiver.email'))->first()->id,
+		'content' => $request->input('message.message'),
+	]);
 });
