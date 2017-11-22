@@ -102,7 +102,7 @@ Route::get('/fire', function () {
 Route::get('/chat', function () {
 	// this checks for the event
 	return view('chat.index');
-});
+})->name('chat');
 
 Route::get('/test', function () {
 	$json = [];

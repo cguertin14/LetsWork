@@ -18,8 +18,10 @@
     top: 0;
     bottom: 0;
     left: 0;
-    right: -17px; /* Increase/Decrease this value for cross-browser compatibility */
+    right: 0;
     overflow-y: scroll;
+    margin-right: -100px;
+    padding-right: 100px;
 }
 
 .boxsize{
@@ -65,16 +67,16 @@
             <h4 style="color: white; text-align: center;">Conversations</h4>
             <div class="parent" style="height: 100%;">
                 <div class="list-group child">
-                    <div class="list-group-item item" v-for="room in Object.keys(rooms)" v-bind:data-room="room">@{{room}}</div>
+                    <div class="list-group-item item" v-for="room in Object.keys(rooms)" v-bind:data-room="room" v-on:click="setroom(room)">@{{room}}</div>
                 </div>
             </div>
         </div>
         <div class="col-md-6" style="height: 100%;">
             <div class="parent" style="height: 100%;">
                 <div id="chatbox" class="list-group child row">
-                    <div class="col-md-12" v-for="mess in rooms[currentroom].messages" v-bind:data-user="mess.user.name">
-                        <div v-bind:class="iscurrentuser(mess.user.email)" class="username"> @{{mess.user.name}} </div>
-                        <div v-bind:class="iscurrentuser(mess.user.email)">
+                    <div class="col-md-12" v-for="mess in currentmessages" v-bind:data-user="mess.user.name">
+                        <div v-bind:class="iscurrentuser(mess.user)" class="username"> @{{mess.user.name}} </div>
+                        <div v-bind:class="iscurrentuser(mess.user)">
                             <p class="text">@{{mess.message}}</p>
                         </div>
                     </div>
@@ -111,8 +113,8 @@
                         }
                         else
                         {
-                            socket.emit("roomchat", {
-                                hash: this.rooms[this.currentroom]['hash'],
+                            socket.emit('roomchat', {
+                                hash: this.rooms[this.currentroom].hash,
                                 message: this.message,
                                 sender: this.currentuser
                             });
@@ -131,17 +133,30 @@
                     return this.allusersonline.filter(function(x) { return x.email !== cuser.email; });
                 },
                 iscurrentuser: function (user) {
-                    return this.currentuser.email===user? "boxsize currentuser pull-right": "boxsize otheruser pull-left";
+                    return this.currentuser.email===user.email? "boxsize currentuser pull-right": "boxsize otheruser pull-left";
                 },
                 cchatroom:function (user){
-                    socket.emit("roomchat.create", {
-                        sender: this.currentuser,
-                        receivers:[user]
+                    if(this.rooms[user.name]==null) {
+                        socket.emit("roomchat.create", {
+                            sender: this.currentuser,
+                            receivers: [user]
+                        });
+                    }
+                    else
+                    {
+                        this.currentroom=user.name;
+                    }
+                },
+                setroom:function (room) {
+                    $.when(this.currentroom=room).then(function () {
+                        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
                     });
                 }
             },
             computed: {
-
+                currentmessages:function () {
+                    return this.rooms[this.currentroom].messages;
+                }
             },
             data: {
                 currentuser: @if(!\Illuminate\Support\Facades\Auth::guest()){email:'{{\Illuminate\Support\Facades\Auth::user()->email}}',name:'{{\Illuminate\Support\Facades\Auth::user()->name}}'}
@@ -154,35 +169,56 @@
                 auth: @if(!\Illuminate\Support\Facades\Auth::guest()) {{'true'}} @else {{'false'}} @endif
             },
             mounted: function () {
+                var app=this;
+
                 socket.on('globalchat.message', function (data) {
-                    $.when(
-                    this.rooms[this.currentroom].messages.push({user:data.user, message:data.message})).then(function(){
-                    $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight)});
+                    $.when(app.rooms['Entreprise'].messages.push({user:data.user, message:data.message}))
+                        .then(function(){
+                    $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight)
+                        });
                 }.bind(this));
+
                 socket.on('globalchat.users', function (data) {
                     this.allusersonline = $.parseJSON(data);
                 }.bind(this));
-                socket.on('roomchat.invite.'+this.currentuser.email, function (data) {
+
+                socket.on('roomchat.invite.'+app.currentuser.email, function (data) {
                     socket.emit("roomchat.confirm", {
                         confirm: true,
-                        sender:this.currentuser,
+                        sender:app.currentuser,
                         hash:data.hash
                     });
-                    this.rooms[data.sender.name]['messages']=[];
-                    this.rooms[data.sender.name]['hash']=data.hash;
-                    socket.on('roomchat.'+data.hash, function (data) {
-                        $.when(this.rooms[data.sender.name].messages.push({user:data.user, message:data.message})).then(function(){
-                            $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight)});}.bind(this));
-                    this.currentroom=data.sender.name;
+                    app.rooms[data.sender.name]={};
+                    app.rooms[data.sender.name]['messages']=[];
+                    app.rooms[data.sender.name]['hash']=data.hash;
+
+                    socket.on('roomchat.'+data.hash, function (data2) {
+                        $.when(app.rooms[data.sender.name].messages.push({user:data2.sender, message:data2.message}))
+                            .then(function(){
+                                $.when(app.$forceUpdate()).then(function () {
+                                    $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+                                });
+                            });
+                    }.bind(app));
+                    app.currentroom=data.sender.name;
                 }.bind(this));
-                socket.on('roomchat.'+this.currentuser.email, function (data) {
-                    this.rooms[data.receiver.name]['messages']=[];
-                    this.rooms[data.receiver.name]['hash']=data.hash;
-                    socket.on('roomchat.'+data.hash, function (data) {
-                        $.when(this.rooms[data.receiver.name].messages.push({user:data.user, message:data.message})).then(function(){
-                            $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight)});}.bind(this));
-                    this.currentroom=data.receiver.name;
+
+                socket.on('roomchat.'+app.currentuser.email, function (data) {
+                    app.rooms[data.receiver.name]={};
+                    app.rooms[data.receiver.name]['messages']=[];
+                    app.rooms[data.receiver.name]['hash']=data.hash;
+
+                    socket.on('roomchat.'+data.hash, function (data2) {
+                        $.when(app.rooms[data.receiver.name]['messages'].push({user:data2.sender, message:data2.message}))
+                            .then(function(){
+                                $.when(app.$forceUpdate()).then(function () {
+                                    $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+                                });
+                        });
+                    }.bind(app));
+                    app.currentroom=data.receiver.name;
                 }.bind(this));
+
                 this.getuserlist();
             }
         });

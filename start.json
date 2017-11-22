@@ -1,0 +1,10 @@
+{
+  "apps" : [{
+    "name"        : "redis-server",
+    "script"      : "./redis-server.exe",
+    "args"        : "redis.conf"
+  },{
+    "name"       : "chatserver",
+    "script"     : "./chatserver.js"
+  }]
+}

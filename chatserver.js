@@ -8,7 +8,7 @@ var sub = new Redis();
 function newHash() {
     var abc = "abcdefghijklmnopqrstuvwxyz1234567890".split("");
     var token = "";
-    for (var i = 0; i < 128; i++) {
+    for (var i = 0; i < 64; i++) {
         token += abc[Math.floor(Math.random() * abc.length)];
     }
     return token; //Will return a 32 bit "hash"
@@ -19,7 +19,7 @@ http.listen(3000, function() {
 });
 
 var OnlineUsers = [];
-var ChatRooms;
+var ChatRooms={};
 
 function getOnlineUsers(data) {
     io.emit('globalchat.users', OnlineUsers);
@@ -39,16 +39,18 @@ function removeUserFromChatRoom(data) {
 
 function createChatRoom(data) {
     let hash = newHash();
+    ChatRooms[hash]={};
     ChatRooms[hash].users = [];
     ChatRooms[hash].users.push(data.sender);
     io.emit('roomchat.' + data.sender.email, {hash:hash,receiver:data.receivers[0]});
     addUserToChatRoom(data.sender, hash);
-    for(let receiver in data.receivers) {
+    data.receivers.forEach(function (receiver) {
         io.emit('roomchat.invite.' + receiver.email, {
+            email:receiver.email,
             hash: hash,
             sender: data.sender
         });
-    }
+    });
 }
 
 function confirmationJoinRoom(data) {
@@ -64,6 +66,10 @@ function roomMessage(data) {
     });
 }
 
+function roominvite(data) {
+    io.emit('roomchat.invite.' + data.email, data);
+}
+
 io.on('connection', function(socket) {
     socket.on('globalchat.users.get', getOnlineUsers);
     socket.on('globalchat', echoback);
@@ -71,6 +77,7 @@ io.on('connection', function(socket) {
     socket.on('roomchat.confirm', confirmationJoinRoom);
     socket.on('roomchat', roomMessage);
     socket.on('roomchat.out', removeUserFromChatRoom);
+    socket.on('roomchat.invite.*', roominvite);
 });
 
 sub.subscribe('__keyevent@0__:set', function(err, count) {});
