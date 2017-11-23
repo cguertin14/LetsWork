@@ -6,14 +6,17 @@ use App\Company;
 use App\JobOffer;
 use App\JobOfferUser;
 use App\Tools\Helper;
+use App\User;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Route;
 
 class JobOfferUserController extends BaseController
 {
@@ -28,14 +31,21 @@ class JobOfferUserController extends BaseController
             return redirect('/');
         Carbon::setLocale('fr');
         if (Session::has('sortJobOfferUsers')) {
-            // Sort data...
             $sesh = session('sortJobOfferUsers');
-            $jobofferusers = $this->getJobOfferUsers();
+            if ($sesh['column'] === 'fullname') {
+                // Sort data...
+                $jobofferusers = DB::table('job_offer_user')->paginate(10); ////// To continue...
+            } else if ($sesh['column'] === 'poste') {
+                // Sort data...
+                $jobofferusers = $this->getJobOfferUsers()->orderBy($sesh['column'],$sesh['order'])->paginate(10);
+            } else {
+                $jobofferusers = $this->getJobOfferUsers()->orderBy($sesh['column'],$sesh['order'])->paginate(10);
+            }
         } else {
-            $jobofferusers = $this->getJobOfferUsers();
-            $jobofferusers = new LengthAwarePaginator($jobofferusers,count($jobofferusers),10,1);
+            $jobofferusers = $this->getJobOfferUsers()->paginate(10);
+            $sesh = [];
         }
-        return view('jobofferuser.index',compact('jobofferusers'));
+        return view('jobofferuser.index',compact('jobofferusers','sesh'));
     }
 
     /**

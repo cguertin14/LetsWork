@@ -17,12 +17,12 @@
         <div class="row layout">
             @if (count($jobofferusers) > 0)
             <div class="centre custom-container" style="margin-bottom: 2em !important;">
-                <table class="table custom-table" style="margin: 0px !important">
+                <table id="table" class="table custom-table" style="margin: 0px !important">
                     <thead>
                     <tr class="section-title">
-                        <th>Nom de l'appliquant <span class="sort"></span></th>
-                        <th>Poste <span class="sort"></span></th>
-                        <th>Demande <span class="sort"></span></th>
+                        <th>Nom de l'appliquant <span v-on:click="sortFullName()" id="fullnameSort" class="sort"></span></th>
+                        <th>Poste <span v-on:click="sortPoste()" id="posteSort" class="sort"></span></th>
+                        <th>Demande <span v-on:click="sortPublication()" id="dateSort" class="sort"></span></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -85,59 +85,45 @@
                     // Place correct images for sorting in header columns
                     @if (count($sesh) > 0)
                         let order = '{{$sesh['order']}}';
-                        @if ($sesh['column'] === 'name')
-                            $('#titleSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
-                        @elseif ($sesh['column'] === 'companyName')
-                            $('#companySort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
-                        @elseif ($sesh['column'] === 'companyCity')
-                            $('#citySort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                        @if ($sesh['column'] === 'fullname')
+                            $('#fullnameSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                        @elseif ($sesh['column'] === 'poste')
+                            $('#posteSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
                         @elseif ($sesh['column'] === 'created_at')
-                            $('#publicationSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                            $('#dateSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
                         @endif
                     @endif
                 },
-                sortTitle: function() {
-                    const order = $('#titleSort').css('background-image') === this.sortNormal ? 'ASC' :
-                        ($('#titleSort').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                sortFullName: function() {
+                    const order = $('#fullnameSort').css('background-image') === this.sortNormal ? 'ASC' :
+                                  ($('#fullnameSort').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
                     $.ajax({
                         method: 'POST',
-                        url: '{{route('joboffer.sort')}}',
-                        data: { column: 'name', order: order, _token: '{{csrf_token()}}' },
+                        url: '{{route('jobofferuser.sort')}}',
+                        data: { column: 'fullname', order: order, _token: '{{csrf_token()}}' },
                         success: function () {
                             location.reload();
                         }
                     });
                 },
-                sortCompany: function() {
-                    const order = $('#companySort').css('background-image') === this.sortNormal ? 'ASC' :
-                        ($('#companySort').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                sortPoste: function() {
+                    const order = $('#posteSort').css('background-image') === this.sortNormal ? 'ASC' :
+                                  ($('#posteSort').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
                     $.ajax({
                         method: 'POST',
-                        url: '{{route('joboffer.sort')}}',
-                        data: { column: 'companyName', order: order, _token: '{{csrf_token()}}' },
-                        success: function () {
-                            location.reload();
-                        }
-                    });
-                },
-                sortCity: function() {
-                    const order = $('#citySort').css('background-image') === this.sortNormal ? 'ASC' :
-                        ($('#citySort').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
-                    $.ajax({
-                        method: 'POST',
-                        url: '{{route('joboffer.sort')}}',
-                        data: { column: 'companyCity', order: order, _token: '{{csrf_token()}}' },
+                        url: '{{route('jobofferuser.sort')}}',
+                        data: { column: 'poste', order: order, _token: '{{csrf_token()}}' },
                         success: function () {
                             location.reload();
                         }
                     });
                 },
                 sortPublication: function () {
-                    const order = $('#publicationSort').css('background-image') === this.sortNormal ? 'ASC' :
-                        ($('#publicationSort').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                    const order = $('#dateSort').css('background-image') === this.sortNormal ? 'ASC' :
+                                  ($('#dateSort').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
                     $.ajax({
                         method: 'POST',
-                        url: '{{route('joboffer.sort')}}',
+                        url: '{{route('jobofferuser.sort')}}',
                         data: { column: 'created_at', order: order, _token: '{{csrf_token()}}' },
                         success: function () {
                             location.reload();

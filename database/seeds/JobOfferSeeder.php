@@ -13,9 +13,8 @@ class JobOfferSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
         foreach (\App\SpecialRole::all() as $specialRole) {
-
             \App\JobOffer::create([
-                'name' => $faker->name(),
+                'name' => $faker->unique()->name(),
                 'description'=>$faker->text(250),
                 'job_count'=>$faker->randomNumber(2),
                 'company_id'=>$specialRole->company_id,

@@ -38,10 +38,12 @@ class JobOfferController extends BaseController
                 if ($sesh['column'] === 'companyName') {
                     $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
                                                               ->orderBy('companies.ville',$sesh['order'])
+                                                              ->select('job_offers.*')
                                                               ->paginate(10);
                 } else if ($sesh['column'] === 'companyCity') {
                     $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
                                                               ->orderBy('companies.ville',$sesh['order'])
+                                                              ->select('job_offers.*')
                                                               ->paginate(10);
                 } else{
                     $jobOffers = self::CCompany()->joboffers()->orderBy($sesh['column'],$sesh['order'])->paginate(10);
@@ -56,10 +58,12 @@ class JobOfferController extends BaseController
                 if ($sesh['column'] === 'companyName') {
                     $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
                                            ->orderBy('companies.name',$sesh['order'])
+                                           ->select('job_offers.*')
                                            ->paginate(10);
                 } else if ($sesh['column'] === 'companyCity') {
                     $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
                                            ->orderBy('companies.ville',$sesh['order'])
+                                           ->select('job_offers.*')
                                            ->paginate(10);
                 } else {
                     $jobOffers = JobOffer::orderBy($sesh['column'], $sesh['order'])->paginate(10);
