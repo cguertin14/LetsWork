@@ -146,6 +146,18 @@ div.centre {
     font-size: 15px;
 }
 
+.section-index-2 {
+    color: #ffffff;
+    background-color: #606060;
+    font-size: 15px;
+}
+
+.section-index-2:hover {
+    background-color: #ffffff;
+    color: #707070;
+    cursor: pointer;
+}
+
 .section-index:hover {
     background-color: #ffffff;
     color: #707070;
@@ -275,3 +287,45 @@ div.centre {
 
 
 /* end .slideTwo */
+
+
+/* Start Table sorting styles */
+
+.sort {
+    display: inline-block;
+    background-image: url('/image/sort.png');
+    background-size:     cover;
+    background-repeat:   no-repeat;
+    background-position: center center;
+    vertical-align: text-bottom;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+}
+
+.sort-up {
+    display: inline-block;
+    background-image: url('/image/sortup.png');
+    background-size:     cover;
+    background-repeat:   no-repeat;
+    background-position: center center;
+    vertical-align: text-bottom;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+}
+
+.sort-down {
+    display: inline-block;
+    background-image: url('/image/sortdown.png');
+    background-size:     cover;
+    background-repeat:   no-repeat;
+    background-position: center center;
+    vertical-align: text-bottom;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+}
+
+
+/* End table sorting styles */

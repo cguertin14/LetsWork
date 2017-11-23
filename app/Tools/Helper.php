@@ -12,14 +12,16 @@ namespace App\Tools;
 use App\Admin;
 use App\Availability;
 use App\Company;
+use App\Employee;
 use App\JobOffer;
 use App\Punch;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-abstract class Helper
+trait Helper
 {
     /**
      * @return Company
@@ -30,21 +32,29 @@ abstract class Helper
         return session('CurrentCompany');
     }
 
+    /**
+     * @return Employee
+     */
     public static function CEmployee()
     {
-        return self::CCompany()->employees->where('user_id', Auth::user()->id)->get(0);
+        return self::CCompany()->employees()->where('user_id', Auth::user()->id)->first();
     }
 
-    public static function CAvailability()
+    /**
+     * @return array
+     */
+    public function CAvailability()
     {
-        if(!Session::has('CurrentCompany'))
+        if(self::CCompany() == null)
             return [];
         $company = self::CCompany();
         $employee = self::CEmployee();
+        if ($employee == null)
+            return [];
         $availabilitys = Availability::where([
             ['employee_id', '=', $employee->id],
             ['company_id', '=', $company->id]
-        ])->get();
+        ]);
         return $availabilitys;
     }
 
@@ -62,64 +72,64 @@ abstract class Helper
         return $daysofweek_fr[$carbon->dayOfWeek];
     }
 
-    public static function Month($carbon)
+    public function Month(Carbon $carbon)
     {
-        $month_fr=["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-        return $month_fr[$carbon->month-1];
+        $month_fr = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+        return $month_fr[$carbon->month - 1];
     }
 
-    public static function getlastyearmonth($today)
+    public function getlastyearmonth(Carbon $today)
     {
         $months=[];
         for ($i=0; $i < 12; $i++) {
-            array_push($months,self::Month($today));
-            $today=$today->subDays(30);
+            array_push($months,$this->Month($today));
+            $today = $today->subDays(30);
         }
         $months=array_reverse($months);
         return $months;
     }
 
-    public static function CRoles()
+    public function CRoles()
     {
         $rolea = [];
-        foreach (self::CEmployee()->specialroles()->get() as $specialrole)
+        foreach ($this->CEmployee()->specialroles()->get() as $specialrole)
             foreach ($specialrole->roles()->get() as $role)
                 array_push($rolea, $role->content);
         return $rolea;
     }
 
-    public static function CIsCEO()
+    public function CIsCEO()
     {
-        if (in_array("Owner", self::CRoles()))
+        if (in_array("Owner", $this->CRoles()))
             return true;
         return false;
     }
 
-    public static function CIsManager()
+    public function CIsManager()
     {
-        if (in_array("Manager", self::CRoles()))
+        if (in_array("Manager", $this->CRoles()))
             return true;
         return false;
     }
 
-    public static function CIsEmployee()
+    public function CIsEmployee()
     {
-        if (in_array("Employee", self::CRoles()))
+        if (in_array("Employee", $this->CRoles()))
             return true;
         return false;
     }
 
-    public static function IsAdmin()
+    public function IsAdmin()
     {
-        if (in_array("Administrator", self::CRoles()))
+        if (in_array("Administrator", $this->CRoles()))
             return true;
         return false;
     }
 
-    public static function getJobOfferUserById($id)
+    public function getJobOfferUserById($id)
     {
         $jobofferuser = null;
-        $jobOffers = JobOffer::where('company_id',self::CCompany()->id)->get();
+        $jobOffers = $this->CCompany()->joboffers()->get();
         foreach ($jobOffers as $joboffer) {
             if ($joboffer->users) {
                 foreach ($joboffer->users as $user)
@@ -130,7 +140,7 @@ abstract class Helper
         return $jobofferuser;
     }
 
-    public static function getEmployeeFromCompany()
+    public function getEmployeeFromCompany()
     {
         return session('CurrentCompany')->employees->where('user_id',Auth::user()->id)->get();
     }
@@ -169,13 +179,13 @@ abstract class Helper
         return $lastweek;
     }
 
-    public static function getlastweekdates($today)
+    public function getlastweekdates($today)
     {
         $lastweek=[];
         $i=5;
         while($i>0)
         {
-            if(self::Day($today)!='Dimanche' && self::Day($today)!='Samedi')
+            if($this->Day($today)!='Dimanche' && $this->Day($today)!='Samedi')
             {
                 array_push($lastweek,new Carbon($today));
                 --$i;
@@ -186,10 +196,10 @@ abstract class Helper
         return $lastweek;
     }
 
-    public static function getDaySum($day)
+    public function getDaySum($day)
     {
-        //$punches=self::CEmployee()->punches()->where([['datebegin','>=',new Carbon($day)],['datebegin','<=',new Carbon($day->tomorrow())],['company_id',self::CCompany()->id]])->get();
-        $punches=self::CEmployee()->punches()->whereBetween('datebegin',[new Carbon($day),new Carbon($day->addDay())])->where('company_id',self::CCompany()->id)->get();
+        //$punches=$this->CEmployee()->punches()->where([['datebegin','>=',new Carbon($day)],['datebegin','<=',new Carbon($day->tomorrow())],['company_id',$this->CCompany()->id]])->get();
+        $punches=$this->CEmployee()->punches()->whereBetween('datebegin',[new Carbon($day),new Carbon($day->addDay())])->where('company_id',$this->CCompany()->id)->get();
         $average=0;
         foreach ($punches as $punch)
         {
@@ -199,24 +209,24 @@ abstract class Helper
         return $average/60/60;
     }
 
-    public static function getLastWeekSum($today)
+    public function getLastWeekSum($today)
     {
-        $week=self::getlastweekdates($today);
+        $week=$this->getlastweekdates($today);
         $averages=[];
         foreach ($week as $day)
         {
-            array_push($averages,round(self::getDaySum($day),2));
+            array_push($averages,round($this->getDaySum($day),2));
         }
         return $averages;
     }
 
-    public static function getLast4WeekDates($today)
+    public function getLast4WeekDates($today)
     {
         $s4Week=[];
         $i=5*4;
         while($i>0)
         {
-            if(self::Day($today)!='Dimanche' && self::Day($today)!='Samedi')
+            if($this->Day($today)!='Dimanche' && $this->Day($today)!='Samedi')
             {
                 array_push($s4Week,new Carbon($today));
                 --$i;
@@ -226,18 +236,18 @@ abstract class Helper
         $s4Week=array_reverse($s4Week);
         // $s4weeksums=[];
         // foreach ($s4Week as $key) {
-        //     array_push($s4weeksums,self::getDaySum($key));
+        //     array_push($s4weeksums,$this->getDaySum($key));
         // }
         // var_dump($s4weeksums);
         return $s4Week;
     }
-    public static function getLastYearsDates($today)
+    public function getLastYearsDates($today)
     {
         $years=[];
         $i=5*4*12;
         while($i>0)
         {
-            if(self::Day($today)!='Dimanche' && self::Day($today)!='Samedi')
+            if($this->Day($today)!='Dimanche' && $this->Day($today)!='Samedi')
             {
                 array_push($years,new Carbon($today));
                 --$i;
@@ -248,17 +258,17 @@ abstract class Helper
         return $years;
     }
 
-    public static function makeSum($array,$first_n,$n)
+    public function makeSum($array,$first_n,$n)
     {
         $sum=0;
         $nn=$first_n*$n;
         for ($i=0+$nn; $i < $first_n+$nn ; $i++) {
-            $sum+=self::getDaySum($array[$i]);
+            $sum+=$this->getDaySum($array[$i]);
         }
         return round($sum,2);
     }
 
-    public static function getDays()
+    public function getDays()
     {
         return [
             'Dimanche',
@@ -271,20 +281,7 @@ abstract class Helper
         ];
     }
 
-    public static function getWeekDays()
-    {
-        return [
-            'Dimanche',
-            'Lundi',
-            'Mardi',
-            'Mercredi',
-            'Jeudi',
-            'Vendredi',
-            'Samedi'
-        ];
-    }
-
-    public static function getWeekDaysJson()
+    public function getWeekDaysJson()
     {
         return collect([
             'weekevents' => [
@@ -302,11 +299,27 @@ abstract class Helper
     /**
      * @return \App\Schedule
      */
-    public static function getCurrentSchedule()
+    public function getCurrentSchedule()
     {
-        return session('CurrentCompany')->schedules
-                                            ->where('begin', '<=', Carbon::now())
-                                            ->where('end'  , '>=', Carbon::now())
-                                            ->first();
+        return $this->CCompany()->schedules()
+                               ->where('begin', '<=', Carbon::now())
+                               ->where('end'  , '>=', Carbon::now())
+                               ->first();
+    }
+
+    /**
+     * @return array
+     */
+    public function getJobOfferUsers()
+    {
+        $jobofferusers = [];
+        $jobOffers = self::CCompany()->joboffers()->get();
+        foreach ($jobOffers as $joboffer) {
+            if ($joboffer->users) {
+                foreach ($joboffer->users as $user)
+                    array_push($jobofferusers,$user->pivot);
+            }
+        }
+        return $jobofferusers;
     }
 }

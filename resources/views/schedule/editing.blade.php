@@ -209,9 +209,10 @@
                                 lastDayOfTheWeek = new Date(curr.setDate(last)).getDay();
 
                             // Get date from event ending date
-                            var eventEndingDay = new Date(dateEnd[0]).getDay() + 1;
+                            var eventEndingDate = new Date(dateEnd[0]);
+                            var eventEndingDay = eventEndingDate.getDay() + 1;
                             for (var newDay = self.getDateFromDayInCurrentCalendarDate(day).getDay() + 1; newDay <= lastDayOfTheWeek; ++newDay) {
-                               if (newDay < eventEndingDay) {
+                               if (self.getDateFromDayInCurrentCalendarDate(self.getStringDayFromNumberDay(newDay)) < eventEndingDate) {
                                    newEvent.end = '23:59';
                                    var nextDay = self.getStringDayFromNumberDay(newDay);
                                    if (newEvents[nextDay] === undefined) newEvents[nextDay] = [];

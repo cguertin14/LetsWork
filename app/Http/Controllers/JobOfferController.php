@@ -7,14 +7,17 @@ use App\Http\Requests\CreateJobOfferRequest;
 use App\Http\Requests\ModifyJobOfferRequest;
 use App\JobOffer;
 use App\SpecialRole;
+use App\Tools\Helper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use \Yajra\DataTables\Facades\DataTables;
 
-class JobOfferController extends Controller
+class JobOfferController extends BaseController
 {
     public function __construct()
     {
@@ -30,11 +33,53 @@ class JobOfferController extends Controller
     {
         Carbon::setLocale('fr');
         if (Session::has('CurrentCompany')) {
-            $jobOffers = JobOffer::where('company_id',session('CurrentCompany')->id)->paginate(10);
+            if (Session::has('sortJobOffers')) {
+                $sesh = session('sortJobOffers');
+                if ($sesh['column'] === 'companyName') {
+                    $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
+                                                              ->orderBy('companies.ville',$sesh['order'])
+                                                              ->paginate(10);
+                } else if ($sesh['column'] === 'companyCity') {
+                    $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
+                                                              ->orderBy('companies.ville',$sesh['order'])
+                                                              ->paginate(10);
+                } else{
+                    $jobOffers = self::CCompany()->joboffers()->orderBy($sesh['column'],$sesh['order'])->paginate(10);
+                }
+            } else {
+                $jobOffers = self::CCompany()->joboffers()->paginate(10);
+                $sesh = [];
+            }
         } else {
-            $jobOffers = JobOffer::paginate(10);
+            if (Session::has('sortJobOffers')) {
+                $sesh = session('sortJobOffers');
+                if ($sesh['column'] === 'companyName') {
+                    $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
+                                           ->orderBy('companies.name',$sesh['order'])
+                                           ->paginate(10);
+                } else if ($sesh['column'] === 'companyCity') {
+                    $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
+                                           ->orderBy('companies.ville',$sesh['order'])
+                                           ->paginate(10);
+                } else {
+                    $jobOffers = JobOffer::orderBy($sesh['column'], $sesh['order'])->paginate(10);
+                }
+            } else {
+                $jobOffers = JobOffer::paginate(10);
+                $sesh = [];
+            }
         }
-        return view('joboffer.index',compact('jobOffers'));
+        return view('joboffer.index',compact('jobOffers','sesh'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sort(Request $request)
+    {
+        session(['sortJobOffers' => $request->all()]);
+        return redirect()->action('JobOfferController@index');
     }
 
     /**
@@ -44,10 +89,7 @@ class JobOfferController extends Controller
      */
     public function create()
     {
-        $specialRoles = SpecialRole::all()
-            ->where('company_id',session('CurrentCompany')->id)
-            ->pluck('name','id');
-
+        $specialRoles = self::CCompany()->specialroles()->pluck('name','id');
         return view('joboffer.create',compact('specialRoles'));
     }
 
@@ -60,7 +102,7 @@ class JobOfferController extends Controller
     public function store(CreateJobOfferRequest $request)
     {
         $data = $request->except(['_token','_method']);
-        $data['company_id'] = session('CurrentCompany')->id;
+        $data['company_id'] = $this->CCompany()->id;
         JobOffer::create($data);
         return redirect('/joboffer');
     }
@@ -87,7 +129,7 @@ class JobOfferController extends Controller
     {
         $jobOffer = JobOffer::findBySlugOrFail($slug);
         $specialRoles = SpecialRole::all()
-            ->where('company_id',session('CurrentCompany')->id)
+            ->where('company_id',$this->CCompany()->id)
             ->pluck('name','id');
         return view('joboffer.edit',compact(['jobOffer','specialRoles']));
     }

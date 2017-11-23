@@ -31,9 +31,9 @@
                     <table class="table custom-table"style="margin: 0px !important;">
                         <thead>
                         <tr class="section-title">
-                            <th>Date de début</th>
-                            <th>Quand</th>
-                            <th>Durée</th>
+                            <th>Date de début <span class="sort"></span></th>
+                            <th>Quand <span class="sort"></span></th>
+                            <th>Durée <span class="sort"></span></th>
                         </tr>
                         </thead>
                         <tbody class="section">

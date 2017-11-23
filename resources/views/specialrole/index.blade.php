@@ -14,22 +14,23 @@
     <hr style="border-top: 1px solid #474747">
 
     <div class="layout">
-        <div class="col-md-12">
+        <div id="container" class="col-md-12">
             @if(count($specialRoles) > 0)
             <div class="centre custom-container">
-                <table class="table custom-table" style="margin: 0px !important;">
+                <table id="table" class="table custom-table" style="margin: 0px !important;">
                     <thead>
                         <tr class="section-title">
-                           <th>Nom</th>
-                           <th>Description</th>
+                           <th>Nom <span v-on:click="sortName()" id="nameSort" class="sort"></span></th>
+                           <th>Description <span v-on:click="sortDescription()" id="descriptionSort" class="sort"></span></th>
                            <th>Rôles</th>
                            <th>Compétences</th>
                         </tr>
                     </thead>
                     <tbody class="section">
                         @if($specialRoles)
+                            @php($i = 0)
                             @foreach($specialRoles as $specialRole)
-                                <tr class="clickable-section" data-href="{{route('specialrole.edit',$specialRole->slug)}}">
+                                <tr class="clickable-section @if ($i % 2 == 0 ) section-index-2 @else section-index @endif" data-href="{{route('specialrole.edit',$specialRole->slug)}}">
                                     <td>{{$specialRole->name}}</td>
                                     <td>{{$specialRole->description}}</td>
                                     <td>
@@ -51,6 +52,7 @@
                                         @endforeach
                                     </td>
                                 </tr>
+                                @php(++$i)
                             @endforeach
                         @endif
                     </tbody>
@@ -72,4 +74,64 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+<script>
+    new Vue({
+        el: '#table',
+        data: {
+            sortNormal:  'url("http://letswork.dev/image/sort.png")',
+            sortUp:      'url("http://letswork.dev/image/sortup.png")',
+            sortDown:    'url("http://letswork.dev/image/sortdown.png")'
+        },
+        computed: {},
+        methods: {
+            init: function() {
+                // Place correct images for sorting in header columns
+                @if (count($sesh) > 0)
+                    let order = '{{$sesh['order']}}';
+                    @if ($sesh['column'] === 'name')
+                        $('#nameSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                    @elseif ($sesh['column'] === 'description')
+                        $('#descriptionSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                    @endif
+                @endif
+            },
+            sortName: function() {
+                const order = $('#nameSort').css('background-image') === this.sortNormal ? 'ASC' :
+                              ($('#nameSort').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                $.ajax({
+                    method: 'POST',
+                    url: '{{route('specialroles.sort')}}',
+                    data: { column: 'name', order: order, _token: '{{csrf_token()}}' },
+                    success: function () {
+                        location.reload();
+                    }
+                });
+            },
+            sortDescription: function() {
+                const order = $('#descriptionSort').css('background-image') === this.sortNormal ? 'ASC' :
+                              ($('#descriptionSort').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                $.ajax({
+                    method: 'POST',
+                    url: '{{route('specialroles.sort')}}',
+                    data: { column: 'description', order: order, _token: '{{csrf_token()}}' },
+                    success: function () {
+                        location.reload();
+                    }
+                });
+            },
+        },
+        created: function () {
+            this.init();
+        },
+        updated: function () {
+
+        },
+        mounted: function () {
+
+        }
+    });
+</script>
 @endsection

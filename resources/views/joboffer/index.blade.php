@@ -5,6 +5,9 @@
         body {
             background-color: #5d5d5d;
         }
+        .list-group-item {
+            background-color: #8c8c8c !important;
+        }
     </style>
 @endsection
 
@@ -17,18 +20,19 @@
         <div class="row layout">
             @if (count($jobOffers) > 0)
             <div class="centre custom-container">
-                <table class="table custom-table" style="margin: 0px !important;">
+                <table id="table" class="table custom-table" style="margin: 0px !important;">
                     <thead>
                         <tr class="section-title">
-                            <th>Titre</th>
-                            <th>Compagnie</th>
-                            <th>Ville</th>
-                            <th>Publication</th>
+                            <th>Titre <span id="titleSort" v-on:click="sortTitle()" class="sort"></span></th>
+                            <th>Compagnie <span id="companySort" v-on:click="sortCompany()" class="sort"></span></th>
+                            <th>Ville <span id="citySort" v-on:click="sortCity()" class="sort"></span></th>
+                            <th>Publication <span id="publicationSort" v-on:click="sortPublication()" class="sort"></span></th>
                         </tr>
                     </thead>
                     <tbody>
+                        @php($i = 0)
                         @foreach($jobOffers as $jobOffer)
-                        <tr data-toggle="collapse" data-target="#accordion{{$jobOffer->id}}" class="accordion-toggle section-index">
+                        <tr data-toggle="collapse" data-target="#accordion{{$jobOffer->id}}" class="accordion-toggle @if ($i % 2 == 0 ) section-index-2 @else section-index @endif">
                             <td>{{$jobOffer->name}}</td>
                             <td>{{$jobOffer->company->name}}</td>
                             <td>{{$jobOffer->company->ville}}</td>
@@ -45,7 +49,7 @@
                                                         Adresse:
                                                     @endslot
                                                     @slot('content')
-                                                        <a href="https://www.google.ca/maps/place/{{$jobOffer->company->adresse}}" target="_blank">
+                                                        <a style="color:white!important;text-decoration: none" href="https://www.google.ca/maps/place/{{$jobOffer->company->adresse}}" target="_blank">
                                                             {{$jobOffer->company->adresse}}
                                                         </a>
                                                     @endslot
@@ -93,7 +97,7 @@
                                                         Description:
                                                     @endslot
                                                     @slot('content')
-                                                        <textarea style="resize: none;" class="form-control" disabled>{{$jobOffer->description}}</textarea>
+                                                        <textarea style="resize: none; background-color: #707070;color: #dbdbdb;" class="form-control" disabled>{{$jobOffer->description}}</textarea>
                                                     @endslot
                                                 @endcomponent
                                             </td>
@@ -123,6 +127,7 @@
                                 </div>
                             </td>
                         </tr>
+                        @php(++$i)
                         @endforeach
                     </tbody>
                 </table>
@@ -142,4 +147,92 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+    <script>
+        new Vue({
+            el: '#table',
+            data: {
+                sortNormal:  'url("http://letswork.dev/image/sort.png")',
+                sortUp:      'url("http://letswork.dev/image/sortup.png")',
+                sortDown:    'url("http://letswork.dev/image/sortdown.png")'
+            },
+            computed: {},
+            methods: {
+                init: function() {
+                    // Place correct images for sorting in header columns
+                    @if (count($sesh) > 0)
+                        let order = '{{$sesh['order']}}';
+                        @if ($sesh['column'] === 'name')
+                            $('#titleSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                        @elseif ($sesh['column'] === 'companyName')
+                            $('#companySort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                        @elseif ($sesh['column'] === 'companyCity')
+                            $('#citySort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                        @elseif ($sesh['column'] === 'created_at')
+                            $('#publicationSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                        @endif
+                    @endif
+                },
+                sortTitle: function() {
+                    const order = $('#titleSort').css('background-image') === this.sortNormal ? 'ASC' :
+                                  ($('#titleSort').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                    $.ajax({
+                        method: 'POST',
+                        url: '{{route('joboffer.sort')}}',
+                        data: { column: 'name', order: order, _token: '{{csrf_token()}}' },
+                        success: function () {
+                            location.reload();
+                        }
+                    });
+                },
+                sortCompany: function() {
+                    const order = $('#companySort').css('background-image') === this.sortNormal ? 'ASC' :
+                                  ($('#companySort').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                    $.ajax({
+                        method: 'POST',
+                        url: '{{route('joboffer.sort')}}',
+                        data: { column: 'companyName', order: order, _token: '{{csrf_token()}}' },
+                        success: function () {
+                            location.reload();
+                        }
+                    });
+                },
+                sortCity: function() {
+                    const order = $('#citySort').css('background-image') === this.sortNormal ? 'ASC' :
+                                  ($('#citySort').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                    $.ajax({
+                        method: 'POST',
+                        url: '{{route('joboffer.sort')}}',
+                        data: { column: 'companyCity', order: order, _token: '{{csrf_token()}}' },
+                        success: function () {
+                            location.reload();
+                        }
+                    });
+                },
+                sortPublication: function () {
+                    const order = $('#publicationSort').css('background-image') === this.sortNormal ? 'ASC' :
+                                  ($('#publicationSort').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                    $.ajax({
+                        method: 'POST',
+                        url: '{{route('joboffer.sort')}}',
+                        data: { column: 'created_at', order: order, _token: '{{csrf_token()}}' },
+                        success: function () {
+                            location.reload();
+                        }
+                    });
+                }
+            },
+            created: function () {
+                this.init();
+            },
+            updated: function () {
+
+            },
+            mounted: function () {
+
+            }
+        });
+    </script>
 @endsection

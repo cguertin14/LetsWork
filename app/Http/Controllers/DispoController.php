@@ -11,8 +11,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Tools\Helper;
+use Illuminate\Support\Facades\Session;
 
-class DispoController extends Controller
+class DispoController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -21,19 +22,31 @@ class DispoController extends Controller
      */
     public function index()
     {
-        if (Helper::CAvailability()->count() <= 0) {
-            $dispos = [];
+        if (self::CCompany() == null)
+            return redirect('/');
+        if (Session::has('sortDispo')) {
+            // Sort data...
+            $sesh = session('sortDispo');
+            $dispos = $this->CAvailability()->get()->first()->availabilityelements()->orderBy($sesh['column'],$sesh['order'])->paginate(10);
         } else {
-            $dispos = Helper::CAvailability()->get(0)->availabilityelements;
+            if ($this->CAvailability()->count() <= 0) {
+                $dispos = [];
+            } else {
+                $dispos = $this->CAvailability()->get()->first()->availabilityelements()->paginate(10);
+            }
+            $sesh = [];
         }
-        return view("dispo.index", compact('dispos'));
+        return view("dispo.index", compact('dispos','sesh'));
+    }
+
+    public function sort(Request $request)
+    {
+        session(['sortDispo' => $request->all()]);
+        return redirect()->action('DispoController@index');
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @param CreateDispoRequest $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -41,10 +54,8 @@ class DispoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param CreateDispoRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function store(CreateDispoRequest $request)
     {
@@ -57,9 +68,9 @@ class DispoController extends Controller
             return redirect()->back();
         }
 
-        $company = Helper::CCompany();
-        $employee = Helper::CEmployee();
-        $availabilitys = Helper::CAvailability();
+        $company = self::CCompany();
+        $employee = self::CEmployee();
+        $availabilitys = $this->CAvailability();
         if ($availabilitys->count() <= 0) {
             $availability = $employee->availabilities()->create([
                 'company_id' => $company->id
@@ -68,41 +79,7 @@ class DispoController extends Controller
             $availability = $availabilitys->get(0);
         }
         $availability->availabilityelements()->create($request->except('_token'));
-        return $this->index();
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        return redirect()->action('DispoController@index');
     }
 
     /**
@@ -114,6 +91,6 @@ class DispoController extends Controller
     public function destroy($id)
     {
         AvailabilityElement::destroy($id);
-        return $this->index();
+        return redirect()->action('DispoController@index');
     }
 }

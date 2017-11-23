@@ -51,12 +51,18 @@ Route::group(['middleware' => 'auth'], function () {
 
 	/* Special Roles Routes */
 	Route::resource('specialrole', 'SpecialRoleController');
+    Route::post('/specialroles/sort','SpecialRoleController@sort')->name('specialroles.sort');
 
 	/* Dispo Routes */
-	Route::resource('dispo', 'DispoController');
+	Route::get('/dispo','DispoController@index')->name('dispo.index');
+    Route::get('/dispo/create','DispoController@create')->name('dispo.create');
+    Route::post('/dispo','DispoController@store')->name('dispo.store');
+    Route::delete('/dispo/{id}','DispoController@destroy')->name('dispo.destroy');
+    Route::post('/dispo/sort','DispoController@sort')->name('dispo.sort');
 
 	/* Skills Routes */
 	Route::resource('skill', 'SkillController');
+    Route::post('/skills/sort','SkillController@sort')->name('skills.sort');
 
 	/* Cv Routes */
 	Route::get('/cv/create', 'CvController@create')->name('cv.create');
@@ -65,6 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	/* JobOffer Routes (suite...) */
 	Route::post('/joboffer/{slug}/apply', 'JobOfferController@apply')->name('joboffer.apply');
+    Route::post('/joboffers/sort','JobOfferController@sort')->name('joboffer.sort');
 
 	/* JobOfferUser Routes */
 	Route::get('/jobofferuser', 'JobOfferUserController@index')->name('jobofferuser.index');
@@ -72,6 +79,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/jobofferuser/{id}/accept', 'JobOfferUserController@accept')->name('jobofferuser.accept');//->middleware('manager');
 	Route::post('/jobofferuser/{id}/interview', 'JobOfferUserController@interview')->name('jobofferuser.interview');//->middleware('manager');
 	Route::delete('/jobofferuser/{id}/refuse', 'JobOfferUserController@refuse')->name('jobofferuser.refuse');
+    Route::post('/jobofferuser/sort','JobOfferUserController@sort')->name('jobofferuser.sort');
 
 	/* Schedule Routes */
 	Route::get('/schedule/week/{datebegin}', 'ScheduleController@week')->name('schedule.week');
@@ -87,6 +95,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/punches/lastweek', 'PunchController@lastweek');
 	Route::get('/punches/lastmouth', 'PunchController@lastmouth');
 	Route::get('/punches/lastyear', 'PunchController@lastyear');
+    Route::post('/punches/sort','PunchController@sort')->name('punches.sort');
 
 	/* Other Routes */
 	Route::get('/isauthmanager', 'OtherController@userIsManager');
@@ -100,5 +109,5 @@ Route::get('/fire', function () {
 
 Route::get('/test', function () {
 	// this checks for the event
-	return view('chat.index');
+	return \App\Tools\Helper::CEmployee();
 });
