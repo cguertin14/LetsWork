@@ -28,16 +28,19 @@ class BaseController extends Controller
     public function sort(Request $request) {}
 
     /**
-     * @param array|Collection $items
-     * @param int $perPage
+     * @param $perPage
+     * @param null $total
      * @param null $page
-     * @param array $options
+     * @param string $pageName
      * @return LengthAwarePaginator
      */
-    public function paginate($items, $perPage = 15, $page = null, $options = [])
+    public function paginate( $perPage, $total = null, $page = null, $pageName = 'page' )
     {
-        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-        $items = $items instanceof Collection ? $items : Collection::make($items);
-        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+        $page = $page ?: LengthAwarePaginator::resolveCurrentPage( $pageName );
+
+        return new LengthAwarePaginator( $this->forPage( $page, $perPage ), $total ?: $this->count(), $perPage, $page, [
+            'path' => LengthAwarePaginator::resolveCurrentPath(),
+            'pageName' => $pageName,
+        ]);
     }
 }

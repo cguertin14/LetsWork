@@ -313,15 +313,6 @@ trait Helper
      */
     public function getJobOfferUsers()
     {
-//        $jobofferusers = [];
-//        $jobOffers = self::CCompany()->joboffers()->get();
-//        foreach ($jobOffers as $joboffer) {
-//            if ($joboffer->users) {
-//                foreach ($joboffer->users as $user)
-//                    array_push($jobofferusers,$user->pivot);
-//            }
-//        }
-//        return $jobofferusers;
         return self::CCompany()->joboffers()->join('job_offer_user','job_offers.id','=','job_offer_user.job_offer_id')
                                             ->select('job_offers.*')
                                             ->get()

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Company;
 use App\JobOffer;
 use App\JobOfferUser;
+use App\Tools\Collection;
 use App\Tools\Helper;
 use App\User;
 use Carbon\Carbon;
@@ -32,17 +33,19 @@ class JobOfferUserController extends BaseController
         Carbon::setLocale('fr');
         if (Session::has('sortJobOfferUsers')) {
             $sesh = session('sortJobOfferUsers');
+            $jobofferusers = new Collection($this->getJobOfferUsers());
             if ($sesh['column'] === 'fullname') {
                 // Sort data...
-                $jobofferusers = DB::table('job_offer_user')->paginate(10); ////// To continue...
+                $jobofferusers = $jobofferusers->sortBy($sesh['column'],$sesh['order'] === 'ASC' ? SORT_ASC : SORT_DESC); ////// To continue...
+                $jobofferusers = $jobofferusers->paginate(10);
             } else if ($sesh['column'] === 'poste') {
                 // Sort data...
-                $jobofferusers = $this->getJobOfferUsers()->orderBy($sesh['column'],$sesh['order'])->paginate(10);
+                $jobofferusers = $jobofferusers->sortBy($sesh['column'],$sesh['order'])->paginate(10);
             } else {
-                $jobofferusers = $this->getJobOfferUsers()->orderBy($sesh['column'],$sesh['order'])->paginate(10);
+                $jobofferusers = $jobofferusers->sortBy($sesh['column'],$sesh['order'] === 'ASC' ? SORT_ASC : SORT_DESC,$sesh['order'] === 'ASC' ? false : true)->paginate(10);
             }
         } else {
-            $jobofferusers = $this->getJobOfferUsers()->paginate(10);
+            $jobofferusers = (new Collection($this->getJobOfferUsers()))->paginate(10);
             $sesh = [];
         }
         return view('jobofferuser.index',compact('jobofferusers','sesh'));
