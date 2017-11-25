@@ -309,17 +309,52 @@ trait Helper
     }
 
     /**
-     * @return array
+     * @return \Illuminate\Support\Collection|static
      */
     public function getJobOfferUsers()
     {
         return self::CCompany()->joboffers()->join('job_offer_user','job_offers.id','=','job_offer_user.job_offer_id')
                                             ->select('job_offers.*')
                                             ->get()
-                                            ->map(function($joboffer) {
-                                                return $joboffer->users()->get()->map(function ($user) {
+                                            ->map(function(JobOffer $joboffer) {
+                                                return $joboffer->users()->get()->map(function (User $user) {
                                                     return $user->pivot;
                                                 })->first();
-                                            });
+                                            })->unique();
+    }
+
+    /**
+     * @param string $order
+     * @return \Illuminate\Support\Collection|static
+     */
+    public function getJobOfferUsersSortedByName($order)
+    {
+        return self::CCompany()->joboffers()->join('job_offer_user','job_offers.id','=','job_offer_user.job_offer_id')
+                                            ->select('job_offers.*')
+                                            ->groupBy('job_offers.id')
+                                            ->get()
+                                            ->map(function(JobOffer $joboffer) use ($order) {
+                                                return $joboffer->users()->orderBy('name',$order)->get()->map(function (User $user) {
+                                                    return $user->pivot;
+                                                })->first();
+                                            })->unique();
+    }
+
+    /**
+     * @param string $order
+     * @return \Illuminate\Support\Collection|static
+     */
+    public function getJobOfferUsersSortedByPoste($order)
+    {
+        return self::CCompany()->joboffers()->join('job_offer_user','job_offers.id','=','job_offer_user.job_offer_id')
+                                            ->select('job_offers.*')
+                                            ->orderBy('name',$order)
+                                            ->groupBy('job_offers.id')
+                                            ->get()
+                                            ->map(function(JobOffer $joboffer) {
+                                                return $joboffer->users()->get()->map(function (User $user) {
+                                                    return $user->pivot;
+                                                })->first();
+                                            })->unique();
     }
 }

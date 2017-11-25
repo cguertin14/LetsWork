@@ -21,7 +21,7 @@ class JobOfferController extends BaseController
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index','show','lettre']]);
+        $this->middleware('auth');
     }
 
     /**
@@ -32,7 +32,7 @@ class JobOfferController extends BaseController
     public function index()
     {
         Carbon::setLocale('fr');
-        if (Session::has('CurrentCompany')) {
+        if (self::CCompany() != null) {
             if (Session::has('sortJobOffers')) {
                 $sesh = session('sortJobOffers');
                 if ($sesh['column'] === 'companyName') {

@@ -33,16 +33,12 @@ class JobOfferUserController extends BaseController
         Carbon::setLocale('fr');
         if (Session::has('sortJobOfferUsers')) {
             $sesh = session('sortJobOfferUsers');
-            $jobofferusers = new Collection($this->getJobOfferUsers());
             if ($sesh['column'] === 'fullname') {
-                // Sort data...
-                $jobofferusers = $jobofferusers->sortBy($sesh['column'],$sesh['order'] === 'ASC' ? SORT_ASC : SORT_DESC); ////// To continue...
-                $jobofferusers = $jobofferusers->paginate(10);
+                $jobofferusers = (new Collection($this->getJobOfferUsersSortedByName($sesh['order'])))->paginate(10);
             } else if ($sesh['column'] === 'poste') {
-                // Sort data...
-                $jobofferusers = $jobofferusers->sortBy($sesh['column'],$sesh['order'])->paginate(10);
+                $jobofferusers = (new Collection($this->getJobOfferUsersSortedByPoste($sesh['order'])))->paginate(10);
             } else {
-                $jobofferusers = $jobofferusers->sortBy($sesh['column'],$sesh['order'] === 'ASC' ? SORT_ASC : SORT_DESC,$sesh['order'] === 'ASC' ? false : true)->paginate(10);
+                $jobofferusers = (new Collection($this->getJobOfferUsers()))->sortBy($sesh['column'],$sesh['order'] === 'ASC' ? SORT_ASC : SORT_DESC,$sesh['order'] === 'ASC' ? false : true)->paginate(10);
             }
         } else {
             $jobofferusers = (new Collection($this->getJobOfferUsers()))->paginate(10);

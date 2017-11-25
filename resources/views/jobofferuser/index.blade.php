@@ -21,7 +21,7 @@
                     <thead>
                     <tr class="section-title">
                         <th>Nom de l'appliquant <span v-on:click="sortFullName()" id="fullnameSort" class="sort"></span></th>
-                        <th>Poste <span v-on:click="sortPoste()" id="posteSort" class="sort"></span></th>
+                        <th>Poste voulu <span v-on:click="sortPoste()" id="posteSort" class="sort"></span></th>
                         <th>Demande <span v-on:click="sortPublication()" id="dateSort" class="sort"></span></th>
                     </tr>
                     </thead>
@@ -30,7 +30,7 @@
                         @php($i = 0)
                         @foreach($jobofferusers as $jobofferuser)
                             <tr data-toggle="collapse" data-target="#accordion{{$jobofferuser->id}}" class="accordion-toggle @if ($i % 2 == 0 ) section-index-2 @else section-index @endif">
-                                <td>{{$jobofferuser->user->fullname}}</td>
+                                <td>{{$jobofferuser->user->name}}</td>
                                 <td>{{$jobofferuser->joboffer->specialrole->name}}</td>
                                 <td>{{$jobofferuser->created_at->diffForHumans()}}</td>
                             </tr>

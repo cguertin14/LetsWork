@@ -20,6 +20,37 @@
         <div class="row layout">
             @if (count($jobOffers) > 0)
             <div class="centre custom-container">
+                <table id="headerTable" class="table custom-table" style="margin: 0px !important;">
+                    <thead>
+                        <tr class="section-title">
+                            <th>Trier par</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @php ($sorts = ['Ville','Compagnie'])
+                            @foreach($sorts as $sort)
+                            <td class="text-center">
+                                <div class="form-group" style="margin: 0;">
+                                    <section style="display: inline-flex">
+                                        <!-- .slideTwo -->
+                                        <div class="slideTwo">
+                                            <input type="checkbox" v-model="@if ($sort === 'Ville') cityChecked @else companyChecked @endif" v-on:change="@if ($sort === 'Ville') cityChanged @else companyChanged @endif" value="None" id="sort{{$sort}}" name="check"/>
+                                            <label for="sort{{$sort}}"></label>
+                                        </div>
+                                        <!-- end .slideTwo -->
+                                    </section>
+                                    <label class="text-center section-title" style="font-style: normal;margin-left: 0.5em;color: white;">{{$sort}}</label>
+                                </div>
+                            </td>
+                            @endforeach
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <div class="centre custom-container" style="margin-bottom: 2em">
                 <table id="table" class="table custom-table" style="margin: 0px !important;">
                     <thead>
                         <tr class="section-title">
@@ -151,6 +182,7 @@
 
 @section('scripts')
     <script>
+        // Main table Vue
         new Vue({
             el: '#table',
             data: {
@@ -233,6 +265,38 @@
             mounted: function () {
 
             }
+        });
+
+        // Header table Vue
+        new Vue({
+           el: '#headerTable',
+           data: {
+               cityChecked: false,
+               companyChecked: false
+           },
+           computed: {},
+           methods: {
+               cityChanged: function () {
+                   console.log('city changed ' + this.cityChecked);
+                   if (this.cityChecked) {
+                       // Disable other checkbox
+                       this.companyChecked = false;
+                   }
+               },
+               companyChanged: function () {
+                   console.log('company changed ' + this.companyChecked);
+                   if (this.companyChecked) {
+                       // Disable other checkbox
+                       this.cityChecked = false;
+                   }
+               },
+               sortCities: function() {
+
+               },
+               sortCompanies: function() {
+
+               }
+           }
         });
     </script>
 @endsection
