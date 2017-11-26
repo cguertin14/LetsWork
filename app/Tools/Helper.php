@@ -331,7 +331,6 @@ trait Helper
     {
         return self::CCompany()->joboffers()->join('job_offer_user','job_offers.id','=','job_offer_user.job_offer_id')
                                             ->select('job_offers.*')
-                                            ->groupBy('job_offers.id')
                                             ->get()
                                             ->map(function(JobOffer $joboffer) use ($order) {
                                                 return $joboffer->users()->orderBy('name',$order)->get()->map(function (User $user) {
@@ -349,7 +348,6 @@ trait Helper
         return self::CCompany()->joboffers()->join('job_offer_user','job_offers.id','=','job_offer_user.job_offer_id')
                                             ->select('job_offers.*')
                                             ->orderBy('name',$order)
-                                            ->groupBy('job_offers.id')
                                             ->get()
                                             ->map(function(JobOffer $joboffer) {
                                                 return $joboffer->users()->get()->map(function (User $user) {

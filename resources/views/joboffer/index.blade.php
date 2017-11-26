@@ -27,16 +27,16 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="headerBody">
                         <tr>
-                            @php ($sorts = ['Ville','Compagnie'])
+                            @php $sorts = ['Ville','Compagnie'] @endphp
                             @foreach($sorts as $sort)
                             <td class="text-center">
                                 <div class="form-group" style="margin: 0;">
                                     <section style="display: inline-flex">
                                         <!-- .slideTwo -->
                                         <div class="slideTwo">
-                                            <input type="checkbox" v-model="@if ($sort === 'Ville') cityChecked @else companyChecked @endif" v-on:change="@if ($sort === 'Ville') cityChanged @else companyChanged @endif" value="None" id="sort{{$sort}}" name="check"/>
+                                            <input @if ($sort === 'Ville') @if(array_key_exists('cities',$sesh)) checked  @endif @else @if(array_key_exists('names',$sesh)) checked @endif @endif type="checkbox" v-model="@if ($sort === 'Ville') cityChecked @else companyChecked @endif" v-on:change="@if ($sort === 'Ville') cityChanged() @else companyChanged() @endif" value="None" id="sort{{$sort}}" name="check"/>
                                             <label for="sort{{$sort}}"></label>
                                         </div>
                                         <!-- end .slideTwo -->
@@ -45,6 +45,35 @@
                                 </div>
                             </td>
                             @endforeach
+                        </tr>
+                        <tr id="sortRow"  @if (! array_key_exists('cities',$sesh) && ! array_key_exists('names',$sesh)) style="display: none" @endif>
+                            <td id="cities" class="text-center" @if(!array_key_exists('cities',$sesh)) style="display: none;" @endif>
+                                {!! Form::open(['method' => 'POST','action' => 'JobOfferController@sort']) !!}
+                                <div class="form-group" style="margin: 0;">
+                                    @php
+                                        $citiesSorted = array_key_exists('citiesSorted',$sesh) ? $sesh['citiesSorted'] : null
+                                    @endphp
+                                    {!! Form::select('cities[]',$cities,$citiesSorted,['class' => 'form-control selectpicker', 'data-actions-box' => 'true','multiple' => 'multiple','placeholder' => 'Choisir une ville...','id' => 'citiesSelect','required' => 'required']) !!}
+                                </div>
+                                <div class="form-group" style="margin-top: 1em">
+                                    {!! Form::submit('Trier',['class' => 'btn purplebtn pull-left']) !!}
+                                </div>
+                                {!! Form::close() !!}
+                            </td>
+                            <td id="names" class="text-center" @if(!array_key_exists('names',$sesh)) style="display: none;" @endif>
+                                {!! Form::open(['method' => 'POST','action' => 'JobOfferController@sort']) !!}
+                                <div class="form-group" style="margin: 0;">
+                                    @php
+                                        $namesSorted = array_key_exists('namesSorted',$sesh) ? $sesh['namesSorted'] : null
+                                    @endphp
+                                    {!! Form::select('names[]',$names,$namesSorted,['class' => 'form-control selectpicker', 'data-actions-box' => 'true','required' => 'required','multiple' => 'multiple','id' => 'namesSelect','placeholder' => 'Choisir une compagnie...']) !!}
+                                </div>
+                                <div class="form-group" style="margin-top: 1em">
+                                    {!! Form::submit('Trier',['class' => 'btn purplebtn pull-left']) !!}
+                                </div>
+                                {!! Form::close() !!}
+                            </td>
+                            <td id="space" @if (! array_key_exists('cities',$sesh) && ! array_key_exists('names',$sesh)) style="display: none" @endif></td>
                         </tr>
                     </tbody>
                 </table>
@@ -194,16 +223,18 @@
             methods: {
                 init: function() {
                     // Place correct images for sorting in header columns
-                    @if (count($sesh) > 0)
-                        let order = '{{$sesh['order']}}';
-                        @if ($sesh['column'] === 'name')
-                            $('#titleSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
-                        @elseif ($sesh['column'] === 'companyName')
-                            $('#companySort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
-                        @elseif ($sesh['column'] === 'companyCity')
-                            $('#citySort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
-                        @elseif ($sesh['column'] === 'created_at')
-                            $('#publicationSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                    @if (array_key_exists('order',$sesh))
+                        @if (count($sesh) > 0)
+                            let order = '{{$sesh['order']}}';
+                            @if ($sesh['column'] === 'name')
+                                $('#titleSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                            @elseif ($sesh['column'] === 'companyName')
+                                $('#companySort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                            @elseif ($sesh['column'] === 'companyCity')
+                                $('#citySort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                            @elseif ($sesh['column'] === 'created_at')
+                                $('#publicationSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                            @endif
                         @endif
                     @endif
                 },
@@ -271,31 +302,94 @@
         new Vue({
            el: '#headerTable',
            data: {
-               cityChecked: false,
-               companyChecked: false
+               cityChecked: @if(array_key_exists('cities',$sesh)) true, @else false, @endif
+               companyChecked: @if(array_key_exists('names',$sesh)) true, @else false, @endif
            },
            computed: {},
            methods: {
+               init: function() {
+                   $("select option[value='']:selected").attr('disabled',"disabled");
+                   $("select option:first").prop('disabled', true);
+               },
                cityChanged: function () {
-                   console.log('city changed ' + this.cityChecked);
                    if (this.cityChecked) {
                        // Disable other checkbox
                        this.companyChecked = false;
+                       // Show cities in select
+                       this.showCities();
+                   } else {
+                       this.hideCities();
                    }
+                   this.init();
                },
                companyChanged: function () {
-                   console.log('company changed ' + this.companyChecked);
                    if (this.companyChecked) {
                        // Disable other checkbox
                        this.cityChecked = false;
+                       // Show companies in select
+                       this.showCompanies();
+                   } else {
+                       this.hideCompanies();
+                   }
+                   this.init();
+               },
+               hideCities: function () {
+                   $('#space').stop().fadeOut(700);
+                   $('#cities').stop().fadeOut(700);
+                   $('#sortRow').stop().slideUp(1500);
+               },
+               hideCompanies: function () {
+                   $('#space').stop().fadeOut(700);
+                   $('#names').stop().fadeOut(700);
+                   $('#sortRow').stop().slideUp(1200);
+               },
+               showCities: function() {
+                   $('#space').toggle();
+                   // Show new Select with cities in it
+                   if ($('#sortRow').is(':visible')) {
+                        if ($('#names').is(':visible')) {
+                            $('#names').fadeOut(500,function () {
+                                $('#cities').fadeIn();
+                            })
+                        } else {
+                            $('#cities').fadeIn();
+                        }
+                   } else {
+                       $('#sortRow').stop().slideDown(1200);
+                       if ($('#names').is(':visible')) {
+                           $('#names').fadeOut(500,function () {
+                               $('#cities').fadeIn();
+                           })
+                       } else {
+                           $('#cities').stop().fadeIn();
+                       }
                    }
                },
-               sortCities: function() {
-
+               showCompanies: function () {
+                   $('#space').toggle();
+                   // Show new Select with companies in it
+                   if ($('#sortRow').is(':visible')) {
+                       if ($('#cities').is(':visible')) {
+                           $('#cities').fadeOut(500,function () {
+                               $('#names').fadeIn();
+                           })
+                       } else {
+                           $('#names').fadeIn();
+                       }
+                   } else {
+                       $('#sortRow').stop().slideDown(1200);
+                       if ($('#cities').is(':visible')) {
+                           $('#cities').fadeOut(500,function () {
+                               $('#names').stop().fadeIn();
+                           })
+                       } else {
+                           $('#names').stop().fadeIn();
+                       }
+                   }
                },
-               sortCompanies: function() {
-
-               }
+           },
+           created: function () {
+               this.init();
            }
         });
     </script>
