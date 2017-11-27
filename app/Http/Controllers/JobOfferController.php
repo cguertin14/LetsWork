@@ -38,6 +38,7 @@ class JobOfferController extends BaseController
         if (self::CCompany() != null) {
             if (Session::has('sortJobOffers')) {
                 $sesh = session('sortJobOffers');
+                //return $sesh;
                 if ($sesh['column'] === 'companyName') {
                     $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
                                                               ->orderBy('companies.ville',$sesh['order'])
@@ -109,19 +110,29 @@ class JobOfferController extends BaseController
      */
     public function sort(Request $request)
     {
-        $data = $request->all();
-        if (! $request->has('column') || ! $request->has('order')) {
-            if ($request->has('cities')) {
-                $data['column'] = 'cities';
-                $data['citiesSorted'] = new Collection();
-                foreach ($data['cities'] as $city) $data['citiesSorted'][$city] = $city;
-            } else if ($request->has('names')) {
-                $data['column'] = 'names';
-                $data['namesSorted'] = new Collection();
-                foreach ($data['names'] as $name) $data['namesSorted'][$name] = $name;
+        $sesh = session('sortJobOffers');
+        if ($sesh != null) {
+            $sesh = new Collection($sesh);
+            if ($sesh->has('cities') || $sesh->has('names')) {
+
+            } else {
+
             }
+        } else {
+            $data = $request->all();
+            if ( ! $request->has('column') || ! $request->has('order') ) {
+                if ($request->has('cities')) {
+                    $data['column'] = 'cities';
+                    $data['citiesSorted'] = new Collection();
+                    foreach ($data['cities'] as $city) $data['citiesSorted'][$city] = $city;
+                } else if ($request->has('names')) {
+                    $data['column'] = 'names';
+                    $data['namesSorted'] = new Collection();
+                    foreach ($data['names'] as $name) $data['namesSorted'][$name] = $name;
+                }
+            }
+            session(['sortJobOffers' => $data]);
         }
-        session(['sortJobOffers' => $data]);
         return redirect()->action('JobOfferController@index');
     }
 

@@ -53,7 +53,7 @@
                                     @php
                                         $citiesSorted = array_key_exists('citiesSorted',$sesh) ? $sesh['citiesSorted'] : null
                                     @endphp
-                                    {!! Form::select('cities[]',$cities,$citiesSorted,['class' => 'form-control selectpicker', 'data-actions-box' => 'true','multiple' => 'multiple','placeholder' => 'Choisir une ville...','id' => 'citiesSelect','required' => 'required']) !!}
+                                    {!! Form::select('cities[]',$cities,$citiesSorted,['class' => 'form-control selectpicker', 'data-actions-box' => 'true','multiple' => 'multiple','id' => 'citiesSelect','required' => 'required']) !!}
                                 </div>
                                 <div class="form-group" style="margin-top: 1em">
                                     {!! Form::submit('Trier',['class' => 'btn purplebtn pull-left']) !!}
@@ -66,7 +66,7 @@
                                     @php
                                         $namesSorted = array_key_exists('namesSorted',$sesh) ? $sesh['namesSorted'] : null
                                     @endphp
-                                    {!! Form::select('names[]',$names,$namesSorted,['class' => 'form-control selectpicker', 'data-actions-box' => 'true','required' => 'required','multiple' => 'multiple','id' => 'namesSelect','placeholder' => 'Choisir une compagnie...']) !!}
+                                    {!! Form::select('names[]',$names,$namesSorted,['class' => 'form-control selectpicker', 'data-actions-box' => 'true','required' => 'required','multiple' => 'multiple','id' => 'namesSelect']) !!}
                                 </div>
                                 <div class="form-group" style="margin-top: 1em">
                                     {!! Form::submit('Trier',['class' => 'btn purplebtn pull-left']) !!}
@@ -211,6 +211,92 @@
 
 @section('scripts')
     <script>
+        // Header table Vue
+        new Vue({
+            el: '#headerTable',
+            data: {
+                cityChecked: @if(array_key_exists('cities',$sesh)) true, @else false, @endif
+                companyChecked: @if(array_key_exists('names',$sesh)) true, @else false, @endif
+            },
+            computed: {},
+            methods: {
+                cityChanged: function () {
+                    if (this.cityChecked) {
+                        // Disable other checkbox
+                        this.companyChecked = false;
+                        // Show cities in select
+                        this.showCities();
+                    } else {
+                        this.hideCities();
+                    }
+                },
+                companyChanged: function () {
+                    if (this.companyChecked) {
+                        // Disable other checkbox
+                        this.cityChecked = false;
+                        // Show companies in select
+                        this.showCompanies();
+                    } else {
+                        this.hideCompanies();
+                    }
+                },
+                hideCities: function () {
+                    $('#space').stop().fadeOut(700);
+                    $('#cities').stop().fadeOut(700);
+                    $('#sortRow').stop().slideUp(1500);
+                },
+                hideCompanies: function () {
+                    $('#space').stop().fadeOut(700);
+                    $('#names').stop().fadeOut(700);
+                    $('#sortRow').stop().slideUp(1200);
+                },
+                showCities: function() {
+                    $('#space').toggle();
+                    // Show new Select with cities in it
+                    if ($('#sortRow').is(':visible')) {
+                        if ($('#names').is(':visible')) {
+                            $('#names').fadeOut(500,function () {
+                                $('#cities').fadeIn();
+                            })
+                        } else {
+                            $('#cities').fadeIn();
+                        }
+                    } else {
+                        $('#sortRow').stop().slideDown(1200);
+                        if ($('#names').is(':visible')) {
+                            $('#names').fadeOut(500,function () {
+                                $('#cities').fadeIn();
+                            })
+                        } else {
+                            $('#cities').stop().fadeIn();
+                        }
+                    }
+                },
+                showCompanies: function () {
+                    $('#space').toggle();
+                    // Show new Select with companies in it
+                    if ($('#sortRow').is(':visible')) {
+                        if ($('#cities').is(':visible')) {
+                            $('#cities').fadeOut(500,function () {
+                                $('#names').fadeIn();
+                            })
+                        } else {
+                            $('#names').fadeIn();
+                        }
+                    } else {
+                        $('#sortRow').stop().slideDown(1200);
+                        if ($('#cities').is(':visible')) {
+                            $('#cities').fadeOut(500,function () {
+                                $('#names').stop().fadeIn();
+                            })
+                        } else {
+                            $('#names').stop().fadeIn();
+                        }
+                    }
+                },
+            }
+        });
+
         // Main table Vue
         new Vue({
             el: '#table',
@@ -296,101 +382,6 @@
             mounted: function () {
 
             }
-        });
-
-        // Header table Vue
-        new Vue({
-           el: '#headerTable',
-           data: {
-               cityChecked: @if(array_key_exists('cities',$sesh)) true, @else false, @endif
-               companyChecked: @if(array_key_exists('names',$sesh)) true, @else false, @endif
-           },
-           computed: {},
-           methods: {
-               init: function() {
-                   $("select option[value='']:selected").attr('disabled',"disabled");
-                   $("select option:first").prop('disabled', true);
-               },
-               cityChanged: function () {
-                   if (this.cityChecked) {
-                       // Disable other checkbox
-                       this.companyChecked = false;
-                       // Show cities in select
-                       this.showCities();
-                   } else {
-                       this.hideCities();
-                   }
-                   this.init();
-               },
-               companyChanged: function () {
-                   if (this.companyChecked) {
-                       // Disable other checkbox
-                       this.cityChecked = false;
-                       // Show companies in select
-                       this.showCompanies();
-                   } else {
-                       this.hideCompanies();
-                   }
-                   this.init();
-               },
-               hideCities: function () {
-                   $('#space').stop().fadeOut(700);
-                   $('#cities').stop().fadeOut(700);
-                   $('#sortRow').stop().slideUp(1500);
-               },
-               hideCompanies: function () {
-                   $('#space').stop().fadeOut(700);
-                   $('#names').stop().fadeOut(700);
-                   $('#sortRow').stop().slideUp(1200);
-               },
-               showCities: function() {
-                   $('#space').toggle();
-                   // Show new Select with cities in it
-                   if ($('#sortRow').is(':visible')) {
-                        if ($('#names').is(':visible')) {
-                            $('#names').fadeOut(500,function () {
-                                $('#cities').fadeIn();
-                            })
-                        } else {
-                            $('#cities').fadeIn();
-                        }
-                   } else {
-                       $('#sortRow').stop().slideDown(1200);
-                       if ($('#names').is(':visible')) {
-                           $('#names').fadeOut(500,function () {
-                               $('#cities').fadeIn();
-                           })
-                       } else {
-                           $('#cities').stop().fadeIn();
-                       }
-                   }
-               },
-               showCompanies: function () {
-                   $('#space').toggle();
-                   // Show new Select with companies in it
-                   if ($('#sortRow').is(':visible')) {
-                       if ($('#cities').is(':visible')) {
-                           $('#cities').fadeOut(500,function () {
-                               $('#names').fadeIn();
-                           })
-                       } else {
-                           $('#names').fadeIn();
-                       }
-                   } else {
-                       $('#sortRow').stop().slideDown(1200);
-                       if ($('#cities').is(':visible')) {
-                           $('#cities').fadeOut(500,function () {
-                               $('#names').stop().fadeIn();
-                           })
-                       } else {
-                           $('#names').stop().fadeIn();
-                       }
-                   }
-               },
-           },
-           created: function () {
-               this.init();
-           }
         });
     </script>
 @endsection
