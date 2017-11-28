@@ -8,10 +8,13 @@
 
 namespace App\Tools;
 
+
+use App\Admin;
 use App\Availability;
 use App\Company;
 use App\Employee;
 use App\JobOffer;
+use App\Punch;
 use App\User;
 use Carbon\Carbon;
 use function foo\func;
@@ -56,14 +59,19 @@ trait Helper
         return $availabilitys;
     }
 
-		$company = self::CCompany();
-		$employee = self::CEmployee();
-		$availabilitys = Availability::where([
-			['employee_id', '=', $employee->id],
-			['company_id', '=', $company->getId()],
-		])->get();
-		return $availabilitys;
-	}
+    public static function Day($carbon)
+    {
+        $daysofweek_fr = [
+            "Samedi",
+            "Dimanche",
+            "Lundi",
+            "Mardi",
+            "Mercredi",
+            "Jeudi",
+            "Vendredi"
+        ];
+        return $daysofweek_fr[$carbon->dayOfWeek];
+    }
 
     public function Month(Carbon $carbon)
     {
@@ -90,15 +98,6 @@ trait Helper
                 array_push($rolea, $role->content);
         return $rolea;
     }
-	public static function getlastyearmonth($today) {
-		$months = [];
-		for ($i = 0; $i < 12; $i++) {
-			array_push($months, self::Month($today));
-			$today = $today->subDays(30);
-		}
-		$months = array_reverse($months);
-		return $months;
-	}
 
     public function CIsCEO()
     {
@@ -141,23 +140,28 @@ trait Helper
         }
         return $jobofferuser;
     }
-	public static function CIsManager() {
-		if (in_array("Manager", self::CRoles())) {
-			return true;
-		}
 
     public function getEmployeeFromCompany()
     {
         return session('CurrentCompany')->employees->where('user_id',Auth::user()->id)->get();
     }
 
-	public static function CIsEmployee() {
-		if (in_array("Employee", self::CRoles())) {
-			return true;
-		}
+    public static function hasLastPunch()
+    {
+        if (self::CEmployee() != null){
+            if (count(self::CEmployee()->punches()->get()) > 0)
+            {
+                if(self::CEmployee()->punches()->where([['dateend',null],['company_id',self::CCompany()->id]])->get()->count()>0)
+                    return true;
+            }
+        }
+        return false;
+    }
 
-		return false;
-	}
+    public static function punchMessage($bool)
+    {
+        return !$bool ? "Commencer à travailler" : "Terminer de travailler";
+    }
 
     public static function getlastweek(Carbon $today)
     {
@@ -292,19 +296,6 @@ trait Helper
             ]
         ]);
     }
-	public static function getlastweek($today) {
-		$lastweek = [];
-		$i = 5;
-		while ($i > 0) {
-			if (self::Day($today) != 'Dimanche' && self::Day($today) != 'Samedi') {
-				array_push($lastweek, self::Day($today));
-				--$i;
-			}
-			$today = $today->subDays(1);
-		}
-		$lastweek = array_reverse($lastweek);
-		return $lastweek;
-	}
 
     /**
      * @return \App\Schedule
@@ -312,9 +303,9 @@ trait Helper
     public function getCurrentSchedule()
     {
         return self::CCompany()->schedules()
-                               ->where('begin', '<=', Carbon::now())
-                               ->where('end'  , '>=', Carbon::now())
-                               ->first();
+            ->where('begin', '<=', Carbon::now())
+            ->where('end'  , '>=', Carbon::now())
+            ->first();
     }
 
     /**
@@ -323,11 +314,11 @@ trait Helper
     public function getJobOfferUsers()
     {
         return self::CCompany()->joboffers()->get()
-                                            ->map(function(JobOffer $joboffer) {
-                                                return $joboffer->users()->get()->map(function (User $user) {
-                                                    return $user->pivot;
-                                                })->first();
-                                            })->unique();
+            ->map(function(JobOffer $joboffer) {
+                return $joboffer->users()->get()->map(function (User $user) {
+                    return $user->pivot;
+                })->first();
+            })->unique();
     }
 
     /**
@@ -337,11 +328,11 @@ trait Helper
     public function getJobOfferUsersSortedByName($order)
     {
         return self::CCompany()->joboffers()->get()
-                                            ->map(function(JobOffer $joboffer) use ($order) {
-                                                return $joboffer->users()->orderBy('name',$order)->get()->map(function (User $user) {
-                                                    return $user->pivot;
-                                                })->first();
-                                            })->unique();
+            ->map(function(JobOffer $joboffer) use ($order) {
+                return $joboffer->users()->orderBy('name',$order)->get()->map(function (User $user) {
+                    return $user->pivot;
+                })->first();
+            })->unique();
     }
 
     /**
@@ -351,11 +342,11 @@ trait Helper
     public function getJobOfferUsersSortedByPoste($order)
     {
         return self::CCompany()->joboffers()->orderBy('name',$order)
-                                            ->get()
-                                            ->map(function(JobOffer $joboffer) {
-                                                return $joboffer->users()->get()->map(function (User $user) {
-                                                    return $user->pivot;
-                                                })->first();
-                                            })->unique();
+            ->get()
+            ->map(function(JobOffer $joboffer) {
+                return $joboffer->users()->get()->map(function (User $user) {
+                    return $user->pivot;
+                })->first();
+            })->unique();
     }
 }
