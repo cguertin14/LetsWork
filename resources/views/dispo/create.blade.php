@@ -16,10 +16,12 @@
 @endsection
 
 @section('content')
-    <h1 class="title-absence">Donner une nouvelle disponibilité</h1>
-    <hr class="separator">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+    <div class="page-title-header">
+        <h1 class="page-title">Donner une nouvelle disponibilité</h1>
+        <hr class="separator">
+    </div>
+    <div class="centre custom-table custom-container" style="padding: 5px;margin-bottom: 20px;">
+        <div style="margin: 2em;">
         {!! Form::open(['method' => 'POST','action' => 'DispoController@store']) !!}
             <div class="row">
                 <div class="col-md-6">

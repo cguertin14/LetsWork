@@ -21,7 +21,7 @@
                         <li><a href="{{route('chat')}}" style="color: white"><span style="color: white"></span> Chat</a></li>
                         <li><a href="{{route('information.aboutus')}}" style="color: white"><span class="glyphicon glyphicon-question-sign" style="color: white"></span> À Propos</a></li>
                         <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: white">Mon travail</a>
+                            <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-expanded="false" style="color: white"><span class="fa fa-globe" style="color: white"></span> Mon travail</a>
                             <ul class="dropdown-menu" role="menu">
                                 <li>
                                     <a id="punch" class="dropdown-toggle" role="button">
@@ -35,7 +35,7 @@
                         </li>
                     </ul>
                 @endif
-                @if (!Auth::check())
+                @if (!\Illuminate\Support\Facades\Auth::check())
                     <ul class="nav navbar-nav">
                         <li><a href="{{route('information.aboutus')}}" style="color: white"><span class="glyphicon glyphicon-question-sign" style="color: white"></span> À Propos</a></li>
                         <li><a href="/login" style="color: white"><span class="glyphicon glyphicon-log-in" style="color: white"></span> Se Connecter</a></li>
@@ -162,7 +162,7 @@
             <!-- End of content section -->
         </div>
     @else
-        <div id="body" style="padding-top: 60px;">
+        <div id="body" style="padding-top: 60px;overflow-x: hidden">
             @yield('content')
         </div>
     @endif

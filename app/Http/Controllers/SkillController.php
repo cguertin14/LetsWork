@@ -7,9 +7,12 @@ use App\Http\Requests\CreateSkillRequest;
 use App\Http\Requests\ModifySkillRequest;
 use App\Skill;
 use App\SpecialRole;
+use App\Tools\Helper;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Session;
 
-class SkillController extends Controller
+class SkillController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +21,26 @@ class SkillController extends Controller
      */
     public function index()
     {
-        $skills = Skill::where('company_id',session('CurrentCompany')->id)->paginate(10);
-        return view('skills.index',compact('skills'));
+        if (self::CCompany() == null)
+            return redirect('/');
+        if (Session::has('sortSkills')) {
+            $sesh = session('sortSkills');
+            $skills = self::CCompany()->skills()->orderBy($sesh['column'],$sesh['order'])->paginate(10);
+        } else {
+            $skills = self::CCompany()->skills()->paginate(10);
+            $sesh = [];
+        }
+        return view('skills.index',compact('skills','sesh'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sort(Request $request)
+    {
+        session(['sortSkills' => ['column' => $request->column,'order' => $request->order]]);
+        return redirect()->action('SkillController@index');
     }
 
     /**
@@ -41,7 +62,7 @@ class SkillController extends Controller
     public function store(CreateSkillRequest $request)
     {
         $data = $request->except(['_token','_method']);
-        $data['company_id'] = session('CurrentCompany')->id;
+        $data['company_id'] = $this->CCompany()->id;
         Skill::create($data);
         return redirect('/skill');
     }

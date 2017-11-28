@@ -7,18 +7,24 @@ use App\Http\Requests\CreateJobOfferRequest;
 use App\Http\Requests\ModifyJobOfferRequest;
 use App\JobOffer;
 use App\SpecialRole;
+use App\Tools\Collection;
+use App\Tools\Helper;
 use Carbon\Carbon;
+use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Mockery\Exception;
+use \Yajra\DataTables\Facades\DataTables;
 
-class JobOfferController extends Controller
+class JobOfferController extends BaseController
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index','show','lettre']]);
+        $this->middleware('auth');
     }
 
     /**
@@ -29,12 +35,247 @@ class JobOfferController extends Controller
     public function index()
     {
         Carbon::setLocale('fr');
-        if (Session::has('CurrentCompany')) {
-            $jobOffers = JobOffer::where('company_id',session('CurrentCompany')->id)->paginate(10);
+        if (self::CCompany() != null) {
+            if (Session::has('sortJobOffers')) {
+                $sesh = session('sortJobOffers');
+                //return $sesh;
+                if ($sesh['column'] === 'companyName') {
+                    $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
+                                                              ->orderBy('companies.ville',$sesh['order'])
+                                                              ->select('job_offers.*')
+                                                              ->paginate(10);
+                } else if ($sesh['column'] === 'companyCity') {
+                    $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
+                                                              ->orderBy('companies.ville',$sesh['order'])
+                                                              ->select('job_offers.*')
+                                                              ->paginate(10);
+                } else if (strpos($sesh['column'],'cities') !== false) {
+                    if (strpos($sesh['column'],'companyName') !== false) {
+                        $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
+                                                                  ->whereIn('ville',$sesh['cities'])
+                                                                  ->orderBy('companies.name',$sesh['order'])
+                                                                  ->select('job_offers.*')
+                                                                  ->paginate(10);
+                    } else if (strpos($sesh['column'],'companyCity') !== false) {
+                        $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
+                                                                  ->whereIn('ville',$sesh['cities'])
+                                                                  ->orderBy('companies.ville',$sesh['order'])
+                                                                  ->select('job_offers.*')
+                                                                  ->paginate(10);
+                    } else if (strpos($sesh['column'],'name') !== false) {
+                        $jobOffers = self::CCompany()->joboffers()->orderBy('name',$sesh['order'])
+                                                                  ->join('companies','job_offers.company_id','=','companies.id')
+                                                                  ->whereIn('ville',$sesh['cities'])
+                                                                  ->select('job_offers.*')
+                                                                  ->paginate(10);
+                    } else if (strpos($sesh['column'],'created_at') !== false) {
+                        $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
+                                                                  ->whereIn('ville',$sesh['cities'])
+                                                                  ->orderBy('job_offers.created_at',$sesh['order'])
+                                                                  ->select('job_offers.*')
+                                                                  ->paginate(10);
+                    } else {
+                        $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
+                                                                  ->whereIn('ville',$sesh['cities'])
+                                                                  ->select('job_offers.*')
+                                                                  ->paginate(10);
+                    }
+                } else if (strpos($sesh['column'],'names') !== false) {
+                    if (strpos($sesh['column'],'companyName') !== false) {
+                        $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
+                                                                  ->whereIn('companies.name',$sesh['names'])
+                                                                  ->orderBy('companies.name',$sesh['order'])
+                                                                  ->select('job_offers.*')
+                                                                  ->paginate(10);
+                    } else if (strpos($sesh['column'],'companyCity') !== false) {
+                        $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
+                                                                  ->whereIn('companies.name',$sesh['names'])
+                                                                  ->orderBy('companies.ville',$sesh['order'])
+                                                                  ->select('job_offers.*')
+                                                                  ->paginate(10);
+                    } else if ($sesh['column'] === 'names,name') {
+                        $jobOffers = self::CCompany()->joboffers()->orderBy('name',$sesh['order'])
+                                                                  ->join('companies','job_offers.company_id','=','companies.id')
+                                                                  ->whereIn('companies.name',$sesh['names'])
+                                                                  ->select('job_offers.*')
+                                                                  ->paginate(10);
+                    } else if (strpos($sesh['column'],'created_at') !== false) {
+                        $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
+                                                                  ->whereIn('companies.name',$sesh['names'])
+                                                                  ->orderBy('job_offers.created_at',$sesh['order'])
+                                                                  ->select('job_offers.*')
+                                                                  ->paginate(10);
+                    } else {
+                        $jobOffers = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')
+                                                                  ->whereIn('companies.name',$sesh['names'])
+                                                                  ->select('job_offers.*')
+                                                                  ->paginate(10);
+                    }
+                    //return $sesh;
+                } else {
+                    $jobOffers = self::CCompany()->joboffers()->orderBy($sesh['column'],$sesh['order'])->paginate(10);
+                }
+            } else {
+                $jobOffers = self::CCompany()->joboffers()->paginate(10);
+                $sesh = [];
+            }
+            $cities = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')->pluck('companies.ville','companies.ville');
+            $names  = self::CCompany()->joboffers()->join('companies','job_offers.company_id','=','companies.id')->pluck('companies.name','companies.name');
         } else {
-            $jobOffers = JobOffer::paginate(10);
+            if (Session::has('sortJobOffers')) {
+                $sesh = session('sortJobOffers');
+                if ($sesh['column'] === 'companyName') {
+                    $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
+                                           ->orderBy('companies.name',$sesh['order'])
+                                           ->select('job_offers.*')
+                                           ->paginate(10);
+                } else if ($sesh['column'] === 'companyCity') {
+                    $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
+                                           ->orderBy('companies.ville',$sesh['order'])
+                                           ->select('job_offers.*')
+                                           ->paginate(10);
+                } else if (strpos($sesh['column'],'cities') !== false) {
+                    if (strpos($sesh['column'],'companyName') !== false) {
+                        $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
+                                                ->whereIn('ville',$sesh['cities'])
+                                                ->orderBy('companies.name',$sesh['order'])
+                                                ->select('job_offers.*')
+                                                ->paginate(10);
+                    } else if (strpos($sesh['column'],'companyCity') !== false) {
+                        $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
+                                                ->whereIn('ville',$sesh['cities'])
+                                                ->orderBy('companies.ville',$sesh['order'])
+                                                ->select('job_offers.*')
+                                                ->paginate(10);
+                    } else if (strpos($sesh['column'],'name') !== false) {
+                        $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
+                                                ->whereIn('ville',$sesh['cities'])
+                                                ->orderBy('companies.name',$sesh['order'])
+                                                ->select('job_offers.*')
+                                                ->paginate(10);
+                    } else if (strpos($sesh['column'],'created_at') !== false) {
+                        $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
+                                                ->whereIn('ville',$sesh['cities'])
+                                                ->orderBy('job_offers.created_at',$sesh['order'])
+                                                ->select('job_offers.*')
+                                                ->paginate(10);
+                    } else {
+                        $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
+                                                ->whereIn('ville',$sesh['cities'])
+                                                ->select('job_offers.*')
+                                                ->paginate(10);
+                    }
+                } else if (strpos($sesh['column'],'names') !== false) {
+                    if (strpos($sesh['column'],'companyName') !== false) {
+                        $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
+                                                ->whereIn('companies.name',$sesh['names'])
+                                                ->orderBy('companies.name',$sesh['order'])
+                                                ->select('job_offers.*')
+                                                ->paginate(10);
+                    } else if (strpos($sesh['column'],'companyCity') !== false) {
+                        $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
+                                                ->whereIn('companies.name',$sesh['names'])
+                                                ->orderBy('companies.ville',$sesh['order'])
+                                                ->select('job_offers.*')
+                                                ->paginate(10);
+                    } else if ($sesh['column'] === 'names,name') {
+                        $jobOffers = JobOffer::orderBy('name',$sesh['order'])
+                                                ->join('companies','job_offers.company_id','=','companies.id')
+                                                ->whereIn('companies.name',$sesh['names'])
+                                                ->select('job_offers.*')
+                                                ->paginate(10);
+                    } else if (strpos($sesh['column'],'created_at') !== false) {
+                        $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
+                                                ->whereIn('companies.name',$sesh['names'])
+                                                ->orderBy('job_offers.created_at',$sesh['order'])
+                                                ->select('job_offers.*')
+                                                ->paginate(10);
+                    } else {
+                        $jobOffers = JobOffer::join('companies','job_offers.company_id','=','companies.id')
+                                                ->whereIn('companies.name',$sesh['names'])
+                                                ->select('job_offers.*')
+                                                ->paginate(10);
+                    }
+                } else {
+                    $jobOffers = JobOffer::orderBy($sesh['column'], $sesh['order'])->paginate(10);
+                }
+            } else {
+                $jobOffers = JobOffer::paginate(10);
+                $sesh = [];
+            }
+            $cities = JobOffer::join('companies','job_offers.company_id','=','companies.id')->pluck('companies.ville','companies.ville');
+            $names  = JobOffer::join('companies','job_offers.company_id','=','companies.id')->pluck('companies.name','companies.name');
         }
-        return view('joboffer.index',compact('jobOffers'));
+        return view('joboffer.index',compact('jobOffers','sesh','cities','names'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sort(Request $request)
+    {
+        $sesh = session('sortJobOffers');
+        if ($sesh != null) {
+            $sesh = new Collection($sesh);
+            if ($sesh->has('citiesSorted') || $sesh->has('namesSorted')) {
+                if ($request->has('cities') || $request->has('names')) {
+                    $this->sortNormal($request);
+                } else {
+                    if (strpos($sesh->get('column'),'cities') !== false) {
+                        if (strpos($sesh->get('column'),$request->get('column')) === false)
+                            $sesh->put('column','cities' . ',' . $request->get('column'));
+                    } else if (strpos($sesh->get('column'),'names') !== false) {
+                        if ($request->get('column') === 'name') {
+                            if ($sesh->get('column') !== 'names,name') {
+                                $sesh->put('column','names' . ',' . $request->get('column'));
+                            }
+                        } else {
+                            if (strpos($sesh->get('column'),$request->get('column')) === false)
+                                $sesh->put('column','names' . ',' . $request->get('column'));
+                        }
+                    }
+                    $sesh->put('order',$request->get('order'));
+                    session(['sortJobOffers' => $sesh->toArray()]);
+                }
+            } else {
+                $this->sortNormal($request);
+            }
+        } else {
+            $this->sortNormal($request);
+        }
+        return redirect()->action('JobOfferController@index');
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function sortNormal(Request $request)
+    {
+        $data = $request->all();
+        if ( ! $request->has('column') || ! $request->has('order') ) {
+            if ($request->has('cities')) {
+                $data['column'] = 'cities';
+                $data['citiesSorted'] = new Collection();
+                foreach ($data['cities'] as $city) $data['citiesSorted'][$city] = $city;
+            } else if ($request->has('names')) {
+                $data['column'] = 'names';
+                $data['namesSorted'] = new Collection();
+                foreach ($data['names'] as $name) $data['namesSorted'][$name] = $name;
+            }
+        }
+        session(['sortJobOffers' => $data]);
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function unsort()
+    {
+        if (Session::has('sortJobOffers')) {
+            session()->forget('sortJobOffers');
+        }
+        return redirect()->action('JobOfferController@index');
     }
 
     /**
@@ -44,10 +285,7 @@ class JobOfferController extends Controller
      */
     public function create()
     {
-        $specialRoles = SpecialRole::all()
-            ->where('company_id',session('CurrentCompany')->id)
-            ->pluck('name','id');
-
+        $specialRoles = self::CCompany()->specialroles()->pluck('name','id');
         return view('joboffer.create',compact('specialRoles'));
     }
 
@@ -60,7 +298,7 @@ class JobOfferController extends Controller
     public function store(CreateJobOfferRequest $request)
     {
         $data = $request->except(['_token','_method']);
-        $data['company_id'] = session('CurrentCompany')->id;
+        $data['company_id'] = $this->CCompany()->id;
         JobOffer::create($data);
         return redirect('/joboffer');
     }
@@ -86,9 +324,7 @@ class JobOfferController extends Controller
     public function edit($slug)
     {
         $jobOffer = JobOffer::findBySlugOrFail($slug);
-        $specialRoles = SpecialRole::all()
-            ->where('company_id',session('CurrentCompany')->id)
-            ->pluck('name','id');
+        $specialRoles = self::CCompany()->specialroles()->pluck('name','id');
         return view('joboffer.edit',compact(['jobOffer','specialRoles']));
     }
 

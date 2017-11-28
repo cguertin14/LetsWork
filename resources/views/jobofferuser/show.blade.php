@@ -5,56 +5,59 @@
         body {
             background-color: #5d5d5d;
         }
+        .footer {
+            position: relative;
+        }
     </style>
 @endsection
 
 @section('content')
 
-    <table style="width: 100%;">
-        <tbody>
-        <tr>
-            <td style="vertical-align: middle">
-                <div class="pull-left">
-                    <h1 class="page-title">Détails d'une demande d'emploi</h1>
-                </div>
-            </td>
-            <td>
-                {{--////////////////// FAIRE UN IF POUR CHEKER SI LE USER EST EN ENTREVUE OU PAS ET SI IL LEST CHANGER LES FORM POUR DAUTRES--}}
-
-                <div class="pull-right" style="margin-top: 10px">
-                    <div class="col-md-12">
-                        @if($jobofferuser->interview)
-                            <div class="col-md-6">
-                                {!! Form::open(['method' => 'POST','action' => ['JobOfferUserController@accept',$jobofferuser->id]]) !!}
-                                {!! Form::submit('Accepter',['class' => 'btn btn-success','style' => 'width:200px']); !!}
-                                {!! Form::close() !!}
-                            </div>
-                        @else
-                            <div class="col-md-6">
-                                {!! Form::open(['method' => 'POST','action' => ['JobOfferUserController@interview',$jobofferuser->id]]) !!}
-                                {!! Form::submit('Donner une entrevue',['class' => 'btn btn-info','style' => 'width:200px']); !!}
-                                {!! Form::close() !!}
-                            </div>
-                        @endif
-                        <div class="col-md-6">
-                            {!! Form::open(['method' => 'DELETE','action' => ['JobOfferUserController@refuse',$jobofferuser->id]]) !!}
-                            {!! Form::submit('Refuser',['class' => 'btn btn-danger','style' => 'width:200px']); !!}
-                            {!! Form::close() !!}
+    <div class="page-title-header">
+        <table style="width: 100%;">
+            <tbody>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <div class="pull-left">
+                            <h1 class="page-title">Détails d'une demande d'emploi</h1>
                         </div>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <hr class="separator">
+                    </td>
+                    <td>
+                        <div class="pull-right" style="margin-top: 13px">
+                            <div class="col-md-12">
+                                @if($jobofferuser->interview)
+                                    <div class="col-md-6">
+                                        {!! Form::open(['method' => 'POST','action' => ['JobOfferUserController@accept',$jobofferuser->id]]) !!}
+                                        {!! Form::submit('Accepter',['class' => 'btn btn-success','style' => 'width:200px']); !!}
+                                        {!! Form::close() !!}
+                                    </div>
+                                @else
+                                    <div class="col-md-6">
+                                        {!! Form::open(['method' => 'POST','action' => ['JobOfferUserController@interview',$jobofferuser->id]]) !!}
+                                        {!! Form::submit('Donner une entrevue',['class' => 'btn btn-info','style' => 'width:200px']); !!}
+                                        {!! Form::close() !!}
+                                    </div>
+                                @endif
+                                <div class="col-md-6">
+                                    {!! Form::open(['method' => 'DELETE','action' => ['JobOfferUserController@refuse',$jobofferuser->id]]) !!}
+                                    {!! Form::submit('Refuser',['class' => 'btn btn-danger','style' => 'width:200px']); !!}
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr class="separator">
+    </div>
 
     <div class="col-md-12">
         <div class="row layout">
             <div class="centre custom-table custom-container" style="margin-bottom: 20px;">
                 <table style="width: 100%">
                     <tbody style="width: 100%">
-                    <tr>
+                        <tr>
                         <td class="col-md-12 title" style="font-size: 30px;padding: 30px">
                             <div class="col-md-12">
                                 <div id="header">

@@ -5,17 +5,22 @@
         body {
             background-color: #5d5d5d;
         }
+        .footer {
+            position: relative;
+        }
     </style>
 @endsection
 
 @section('content')
 
     @include('include.tinyeditor')
+    <div class="page-title-header">
+        <h1 class="page-title">Modifier une offre d'emploi</h1>
+        <hr class="separator">
+    </div>
 
-    <h1 class="page-title">Modifier une offre d'emploi</h1>
-    <hr class="separator">
-
-    <div class="col-md-12">
+    <div class="centre custom-table custom-container" style="padding: 5px;margin-bottom: 20px;">
+        <div class="layout" style="margin: 2em">
         {!! Form::model($jobOffer,['method' => 'PATCH','action' => ['JobOfferController@update',$jobOffer->slug]]) !!}
         {!! Form::hidden('company_id',$jobOffer->company_id) !!}
         <div class="row layout">

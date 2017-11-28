@@ -30,6 +30,9 @@ Route::post('/joboffer/lettre', 'JobOfferController@lettre')->name('joboffer.let
 
 /* Company Routes */
 Route::resource('company', 'CompanyController');
+Route::get('/cpage', 'CompanyController@cpage')->name('company.cpage');
+Route::post('/company/{slug}/sort','CompanyController@sort')->name('company.sort');
+Route::post('/company/sort','CompanyController@sortCompanies')->name('company.sortCompanies');
 
 /* Auth Routes */
 Auth::routes();
@@ -50,29 +53,38 @@ Route::group(['middleware' => 'auth'], function () {
     /* Absence Routes */
     Route::resource('absence', 'AbsenceController');
 
-    /* Special Roles Routes */
-    Route::resource('specialrole', 'SpecialRoleController');
+	/* Special Roles Routes */
+	Route::resource('specialrole', 'SpecialRoleController');
+    Route::post('/specialroles/sort','SpecialRoleController@sort')->name('specialroles.sort');
 
-    /* Dispo Routes */
-    Route::resource('dispo', 'DispoController');
+	/* Dispo Routes */
+	Route::get('/dispo','DispoController@index')->name('dispo.index');
+    Route::get('/dispo/create','DispoController@create')->name('dispo.create');
+    Route::post('/dispo','DispoController@store')->name('dispo.store');
+    Route::delete('/dispo/{id}','DispoController@destroy')->name('dispo.destroy');
+    Route::post('/dispo/sort','DispoController@sort')->name('dispo.sort');
 
-    /* Skills Routes */
-    Route::resource('skill', 'SkillController');
+	/* Skills Routes */
+	Route::resource('skill', 'SkillController');
+    Route::post('/skills/sort','SkillController@sort')->name('skills.sort');
 
     /* Cv Routes */
     Route::get('/cv/create', 'CvController@create')->name('cv.create');
     Route::get('/cv', 'CvController@getAuthCv')->name('cv.get');
     Route::post('/cv/store', 'CvController@store')->name('cv.store');
 
-    /* JobOffer Routes (suite...) */
-    Route::post('/joboffer/{slug}/apply', 'JobOfferController@apply')->name('joboffer.apply');
+	/* JobOffer Routes (suite...) */
+	Route::post('/joboffer/{slug}/apply', 'JobOfferController@apply')->name('joboffer.apply');
+    Route::post('/joboffers/sort','JobOfferController@sort')->name('joboffer.sort');
+    Route::post('/joboffers/unsort','JobOfferController@unsort')->name('joboffer.unsort');
 
-    /* JobOfferUser Routes */
-    Route::get('/jobofferuser', 'JobOfferUserController@index')->name('jobofferuser.index');
-    Route::get('/jobofferuser/{id}', 'JobOfferUserController@show')->name('jobofferuser.show');
-    Route::post('/jobofferuser/{id}/accept', 'JobOfferUserController@accept')->name('jobofferuser.accept'); //->middleware('manager');
-    Route::post('/jobofferuser/{id}/interview', 'JobOfferUserController@interview')->name('jobofferuser.interview'); //->middleware('manager');
-    Route::delete('/jobofferuser/{id}/refuse', 'JobOfferUserController@refuse')->name('jobofferuser.refuse');
+	/* JobOfferUser Routes */
+	Route::get('/jobofferuser', 'JobOfferUserController@index')->name('jobofferuser.index');
+	Route::get('/jobofferuser/{id}', 'JobOfferUserController@show')->name('jobofferuser.show');
+	Route::post('/jobofferuser/{id}/accept', 'JobOfferUserController@accept')->name('jobofferuser.accept');//->middleware('manager');
+	Route::post('/jobofferuser/{id}/interview', 'JobOfferUserController@interview')->name('jobofferuser.interview');//->middleware('manager');
+	Route::delete('/jobofferuser/{id}/refuse', 'JobOfferUserController@refuse')->name('jobofferuser.refuse');
+    Route::post('/jobofferuser/sort','JobOfferUserController@sort')->name('jobofferuser.sort');
 
 	/* Schedule Routes */
 	Route::get('/schedule/week/{datebegin}', 'ScheduleController@week')->name('schedule.week');
@@ -82,12 +94,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/schedule/employees/{specialrole}', 'ScheduleController@getEmployees')->name('schedule.employees');
 	Route::resource('/schedule', 'ScheduleController');
 
-    /* Punch Routes */
-    Route::post('/punch', 'PunchController@add');
-    Route::get('/punches', 'PunchController@index')->name('punch');
-    Route::get('/punches/lastweek', 'PunchController@lastweek');
-    Route::get('/punches/lastmouth', 'PunchController@lastmouth');
-    Route::get('/punches/lastyear', 'PunchController@lastyear');
+	/* Punch Routes */
+	Route::post('/punch', 'PunchController@add');
+	Route::get('/punches', 'PunchController@index')->name('punch');
+	Route::get('/punches/lastweek', 'PunchController@lastweek');
+	Route::get('/punches/lastmouth', 'PunchController@lastmouth');
+	Route::get('/punches/lastyear', 'PunchController@lastyear');
+    Route::post('/punches/sort','PunchController@sort')->name('punches.sort');
 
     /* Other Routes */
     Route::get('/isauthmanager', 'OtherController@userIsManager');

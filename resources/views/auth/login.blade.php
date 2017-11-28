@@ -22,7 +22,7 @@
                     <div class="row">
                         <div class="col-md-8 col-md-offset-2">
                             <div class="panel panel-default">
-                                <div class="panel-heading text-center">Connexion</div>
+                                <div class="panel-heading text-center formLaravel">Connexion</div>
                                 <div class="panel-body">
                                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                                         {{ csrf_field() }}
@@ -56,10 +56,10 @@
                                                 <button type="submit" class="btn purplebtn">
                                                     Se connecter
                                                 </button>
-                                                <a class="btn btn-link pull-right" href="{{ route('password.request') }}">Mot de passe oublié?</a>
+                                                <a class="btn btn-link pull-right formLaravel" href="{{ route('password.request') }}">Mot de passe oublié?</a>
                                             </div>
                                             <div class="col-md-12">
-                                                <a class="btn btn-link pull-right" href="/register">Pas de compte?</a>
+                                                <a class="btn btn-link pull-right formLaravel" href="/register">Pas de compte?</a>
                                             </div>
                                         </div>
                                     </form>

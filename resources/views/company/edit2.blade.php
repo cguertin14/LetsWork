@@ -17,16 +17,21 @@
         label, input {
             color: white;
         }
+        .footer {
+            position: relative;
+        }
     </style>
 @endsection
 
 @section('content')
 
     @include('include.tinyeditor')
-    <h1 class="h1" style="color: white">Modification de l'entreprise</h1>
-    <hr class="separator">
-    <div class="col-md-12">
-        <div class="row layout">
+    <div class="page-title-header">
+        <h1 class="page-title" style="color: white">Modification de l'entreprise</h1>
+        <hr class="separator">
+    </div>
+    <div class="centre custom-table custom-container" style="padding: 5px;margin-bottom: 20px;">
+        <div class="layout" style="margin: 2em">
             <div class="centre">
                 {!! Form::open(['method' => 'POST','action' => 'CompanyController@uploadphoto','class' => 'dropzone','id' => 'files']) !!}
                 <div class="row">
@@ -45,7 +50,7 @@
         <br>
         {!! Form::open(['method' => 'PATCH','action' => ['CompanyController@update',$data["id"]]]) !!}
         {{Form::hidden('user_id',$data['user_id'])}}
-        <div class="row layout">
+        <div class="row layout" style="margin: 2em">
             <div class="centre">
                 <div class="row">
                     <div class="col-lg-6">

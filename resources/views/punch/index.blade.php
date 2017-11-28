@@ -17,13 +17,19 @@
         [v-cloak] {
             display: none;
         }
+
+        .footer {
+            position: relative;
+        }
     </style>
 @endsection
 
 @section('content')
     <div id="app">
-        <h1 class="title-absence white">Mes périodes de travail</h1>
-        <hr class="separator">
+        <div class="page-title-header">
+            <h1 class="page-title">Mes périodes de travail</h1>
+            <hr class="separator">
+        </div>
         <div class="col-md-12">
             <div class="row layout">
                 @if (count($punches) > 0)
@@ -31,23 +37,25 @@
                     <table class="table custom-table"style="margin: 0px !important;">
                         <thead>
                         <tr class="section-title">
-                            <th>Date de début</th>
-                            <th>Quand</th>
-                            <th>Durée</th>
+                            <th>Début <span id="sortDateDebut" v-on:click="sortDateDebut()" class="sort"></span></th>
+                            <th>Fin <span id="sortDateFin" v-on:click="sortDateFin()" class="sort"></span></th>
+                            <th>Durée <span id="sortDuration" v-on:click="sortDuration()" class="sort"></span></th>
                         </tr>
                         </thead>
                         <tbody class="section">
+                        @php($i = 0)
                         @foreach($punches as $punch)
-                            <tr style="cursor:default;">
+                            <tr style="cursor:default;" class="@if ($i % 2 == 0 ) section-index-2 @else section-index @endif">
                                 @php(\Carbon\Carbon::setLocale('fr'))
-                                <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin)->toDateString()}}</td>
-                                <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin)->diffForHumans()}}</td>
+                                <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin)->toDateTimeString()}}</td>
+                                <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->dateend)->toDateTimeString()}}</td>
                                 @if($punch->dateend)
-                                <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->dateend)->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)}}</td>
+                                    <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->dateend)->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)}}</td>
                                 @else
-                                <td>Période de travail non terminé</td>
+                                    <td>Période de travail non terminée</td>
                                 @endif
                             </tr>
+                            @php(++$i)
                         @endforeach
                         </tbody>
                     </table>
@@ -140,26 +148,82 @@
         var app = new Vue({
             el: '#app',
             data: {
-                chartdata: null
+                chartdata: null,
+                sortNormal:  'url("http://letswork.dev/image/sort.png")',
+                sortUp:      'url("http://letswork.dev/image/sortup.png")',
+                sortDown:    'url("http://letswork.dev/image/sortdown.png")'
             },
             methods: {
+                init: function () {
+                    // Place correct images for sorting in header columns
+                    @if (count($sesh) > 0)
+                        let order = '{{$sesh['order']}}';
+                        @if (strpos($sesh['column'],'datebegin') !== false)
+                            $('#sortDateDebut').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                        @elseif (strpos($sesh['column'],'dateend') !== false)
+                            $('#sortDateFin').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                        @elseif (strpos($sesh['column'],'duration') !== false)
+                            $('#sortDuration').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                        @endif
+                    @endif
+                },
+                sortDateDebut: function () {
+                    // TODO
+                    const order = $('#sortDateDebut').css('background-image') === this.sortNormal ? 'ASC' :
+                                 ($('#sortDateDebut').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                    $.ajax({
+                        method: 'POST',
+                        url: '{{route('punches.sort')}}',
+                        data: { column: 'datebegin', order: order, _token: '{{csrf_token()}}' },
+                        success: function () {
+                            location.reload();
+                        }
+                    });
+                },
+                sortDateFin: function () {
+                    // TODO
+                    const order = $('#sortDateFin').css('background-image') === this.sortNormal ? 'ASC' :
+                                 ($('#sortDateFin').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                    $.ajax({
+                        method: 'POST',
+                        url: '{{route('punches.sort')}}',
+                        data: { column: 'dateend', order: order, _token: '{{csrf_token()}}' },
+                        success: function () {
+                            location.reload();
+                        }
+                    });
+                },
+                sortDuration: function () {
+                    // TODO
+                    const order = $('#sortDuration').css('background-image') === this.sortNormal ? 'ASC' :
+                                 ($('#sortDuration').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                    $.ajax({
+                        method: 'POST',
+                        url: '{{route('punches.sort')}}',
+                        data: { column: 'duration', order: order, _token: '{{csrf_token()}}' },
+                        success: function () {
+                            location.reload();
+                        }
+                    });
+                },
                 loadweek: function () {
                     $.getJSON('/punches/lastweek',function (data) {
-                        app.chartdata= data;
+                        app.chartdata = data;
                     });
                 },
                 loadmonth: function () {
                     $.getJSON('/punches/lastmouth',function (data) {
-                        app.chartdata= data;
+                        app.chartdata = data;
                     });
                 },
                 loadyear: function () {
                     $.getJSON('/punches/lastyear',function (data) {
-                        app.chartdata= data;
+                        app.chartdata = data;
                     });
                 }
             },
             created: function () {
+                this.init();
                 this.loadweek();
             }
         });

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Punch;
 use App\Tools\Helper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Session;
 
-class PunchController extends Controller
+class PunchController extends BaseController
 {
 
     /**
@@ -18,39 +20,62 @@ class PunchController extends Controller
      */
     public function add()
     {
-        $lastpunch = \App\Tools\Helper::CEmployee()->punches()->where([['dateend', null], ['company_id', \App\Tools\Helper::CCompany()->id]])->get();
+        $lastpunch = self::CEmployee()->punches()->where([['dateend', null], ['company_id', self::CCompany()->id]])->get();
         if ($lastpunch->count() > 0) {
-            $lastpunch->first()->dateend = \Carbon\Carbon::now();
+            $lastpunch->first()->dateend = Carbon::now();
             $lastpunch->first()->update();
             return 0;
         } else {
-            \App\Punch::create([
-                "datebegin" => \Carbon\Carbon::now(),
-                "employee_id" => \App\Tools\Helper::CEmployee()->id,
-                "company_id" => \App\Tools\Helper::CCompany()->id,
+            Punch::create([
+                "datebegin" => Carbon::now(),
+                "employee_id" => self::CEmployee()->id,
+                "company_id" => self::CCompany()->id,
             ]);
             return 1;
         }
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
-        $punches = \App\Tools\Helper::CEmployee()->punches()->where("company_id", \App\Tools\Helper::CCompany()->id)->paginate(5);
-        return view("punch.index", compact('punches'));
+        //session()->forget('sortPunches');
+        if (Session::has('sortPunches')) {
+            $sesh = session('sortPunches');
+            if ($sesh['column'] === 'duration') {
+                $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(10);
+            } else {
+                $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'],$sesh['order'])->paginate(10);
+            }
+        } else {
+            $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->paginate(5);
+            $sesh = [];
+        }
+        return view("punch.index", compact('punches','sesh'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sort(Request $request)
+    {
+        session(['sortPunches' => $request->all()]);
+        return redirect()->action('PunchController@index');
     }
 
     public function lastweek()
     {
         $moyenne=[];
-
         $data = [
-            "labels" => Helper::getlastweek(Carbon::today()),
+            "labels" => $this->getlastweek(Carbon::today()),
             "datasets" =>
                 [[
                     "label" => "La somme des heures travaillées",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
-                    "data" => Helper::getLastWeekSum(Carbon::today()),
+                    "data" => $this->getLastWeekSum(Carbon::today()),
                 ]
             ]
         ];
@@ -59,7 +84,7 @@ class PunchController extends Controller
 
     public function lastmouth()
     {
-        $today=Helper::getLast4WeekDates(Carbon::today());
+        $today=$this->getLast4WeekDates(Carbon::today());
         $data = [
             "labels" => ["1ère semaine", "2ième semaine", "3ième semaine", "4ième semaine"],
             "datasets" =>
@@ -68,10 +93,10 @@ class PunchController extends Controller
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => [
-                    Helper::makeSum($today,5,0),
-                    Helper::makeSum($today,5,1),
-                    Helper::makeSum($today,5,2),
-                    Helper::makeSum($today,5,3)],
+                    $this->makeSum($today,5,0),
+                    $this->makeSum($today,5,1),
+                    $this->makeSum($today,5,2),
+                    $this->makeSum($today,5,3)],
                 ]
             ]
         ];
@@ -80,27 +105,27 @@ class PunchController extends Controller
 
     public function lastyear()
     {
-        $today=Helper::getLastYearsDates(Carbon::today());
+        $today=$this->getLastYearsDates(Carbon::today());
         $data = [
-            "labels" => Helper::getlastyearmonth(Carbon::today()),
+            "labels" => $this->getlastyearmonth(Carbon::today()),
             "datasets" =>
                 [[
                     "label" => "La somme des heures travaillées",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => [
-                        Helper::makeSum($today,20,0),
-                        Helper::makeSum($today,20,1),
-                        Helper::makeSum($today,20,2),
-                        Helper::makeSum($today,20,3),
-                        Helper::makeSum($today,20,4),
-                        Helper::makeSum($today,20,5),
-                        Helper::makeSum($today,20,6),
-                        Helper::makeSum($today,20,7),
-                        Helper::makeSum($today,20,8),
-                        Helper::makeSum($today,20,9),
-                        Helper::makeSum($today,20,10),
-                        Helper::makeSum($today,20,11)],
+                        $this->makeSum($today,20,0),
+                        $this->makeSum($today,20,1),
+                        $this->makeSum($today,20,2),
+                        $this->makeSum($today,20,3),
+                        $this->makeSum($today,20,4),
+                        $this->makeSum($today,20,5),
+                        $this->makeSum($today,20,6),
+                        $this->makeSum($today,20,7),
+                        $this->makeSum($today,20,8),
+                        $this->makeSum($today,20,9),
+                        $this->makeSum($today,20,10),
+                        $this->makeSum($today,20,11)],
                 ]
             ]
         ];

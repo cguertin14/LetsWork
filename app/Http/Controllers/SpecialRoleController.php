@@ -8,10 +8,12 @@ use App\Http\Requests\UpdateSpecialRoleRequest;
 use App\Role;
 use App\Skill;
 use App\SpecialRole;
+use App\Tools\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Session;
 
-class SpecialRoleController extends Controller
+class SpecialRoleController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -20,8 +22,26 @@ class SpecialRoleController extends Controller
      */
     public function index()
     {
-        $specialRoles = SpecialRole::where('company_id',session('CurrentCompany')->id)->paginate(10);
-        return view('specialrole.index',compact('specialRoles'));
+        if (self::CCompany() == null)
+            return redirect('/');
+        if (Session::has('sortSpecialRoles')) {
+            $sesh = session('sortSpecialRoles');
+            $specialRoles = self::CCompany()->specialroles()->orderBy($sesh['column'],$sesh['order'])->paginate(10);
+        } else {
+            $specialRoles = self::CCompany()->specialroles()->paginate(10);
+            $sesh = [];
+        }
+        return view('specialrole.index',compact('specialRoles','sesh'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sort(Request $request)
+    {
+        session(['sortSpecialRoles' => ['column' => $request->column,'order' => $request->order]]);
+        return redirect()->action('SpecialRoleController@index');
     }
 
     /**
@@ -32,21 +52,19 @@ class SpecialRoleController extends Controller
     public function create()
     {
         $roles = Role::pluck('content','id')->all();
-        $skills = Skill::where('company_id',session('CurrentCompany')->id)->pluck('name','id')->all();
+        $skills = self::CCompany()->skills()->pluck('name','id')->all();
         return view('specialrole.create',compact('roles','skills'));
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateSpecialRoleRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(CreateSpecialRoleRequest $request)
     {
         // Création de rôle spécial
         $data = $request->except('_token');
-        $data['company_id'] = session('CurrentCompany')->id;
+        $data['company_id'] = self::CCompany()->id;
         $specialRole = SpecialRole::create($data);
 
         foreach($request->roles as $role)
@@ -69,25 +87,21 @@ class SpecialRoleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $slug
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($slug)
     {
         $specialRole = SpecialRole::findBySlugOrFail($slug);
         $roles = Role::pluck('content','id')->all();
-        $skills = Skill::where('company_id',session('CurrentCompany')->id)->pluck('name','id')->all();
+        $skills = $this->CCompany()->skills()->pluck('name','id')->all();
         return view('specialrole.edit',compact('specialRole','skills','roles'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateSpecialRoleRequest $request
+     * @param $slug
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update(UpdateSpecialRoleRequest $request, $slug)
     {

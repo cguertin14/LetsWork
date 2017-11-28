@@ -4,6 +4,8 @@ mix.js('resources/assets/js/app.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css');
 
 mix.styles([
+    'resources/assets/css/fonts.css',
+    'resources/assets/css/libs/font-awesome.css',
     'resources/assets/css/tether.css',
     'resources/assets/css/libs/homepage.css',
     'resources/assets/css/libs/tools.css',
@@ -49,4 +51,8 @@ mix.scripts([
     'resources/assets/js/libs/modal.js',
     'resources/assets/js/libs/Chart.js',
     'resources/assets/js/libs/socket.io.js',
+    'resources/assets/js/libs/jquery-ui.js',
+    'resources/assets/js/libs/bloodhound.js',
+    'resources/assets/js/libs/typeahead.bundle.js',
+    'resources/assets/js/libs/typeahead.jquery.js',
 ],'public/js/libs.js');

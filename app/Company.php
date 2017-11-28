@@ -5,6 +5,7 @@ namespace App;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class Company extends Model
 {
@@ -48,5 +49,13 @@ class Company extends Model
 
     public function joboffers() {
         return $this->hasMany('App\JobOffer');
+    }
+
+    public function skills() {
+        return $this->hasMany('App\Skill');
+    }
+
+    public function specialroles() {
+        return $this->hasMany('App\SpecialRole');
     }
 }

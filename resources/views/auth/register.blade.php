@@ -21,7 +21,7 @@
                     <div class="row">
                         <div class="col-md-8 col-md-offset-2">
                             <div class="panel panel-default">
-                                <div class="panel-heading text-center">S'inscrire</div>
+                                <div class="panel-heading text-center formLaravel">S'inscrire</div>
                                 <div class="panel-body">
                                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                                         {{ csrf_field() }}
@@ -109,7 +109,7 @@
                                                 <button id="submit" type="submit" class="btn purplebtn">
                                                     Soumettre
                                                 </button>
-                                                <a href="/login" class="btn btn-link pull-right">Je possède un compte</a>
+                                                <a href="/login" class="btn btn-link pull-right formLaravel">Je possède un compte</a>
                                             </div>
                                         </div>
                                     </form>
