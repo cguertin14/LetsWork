@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\User;
-use Illuminate\Foundation\Auth\
-AuthenticatesUsers;
+use App\Tools\Helper;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-
+use Predis;
+use App\Session;
 class LoginController extends Controller
 {
     /*
@@ -38,5 +38,22 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'logout']);
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        $request->session()->save(); //ligne qui a pris 3 heures a trouver...
+        Helper::setLogedRedisUsers();
+    }
+
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        Helper::setLogedRedisUsers();
+
+        return redirect('/');
     }
 }

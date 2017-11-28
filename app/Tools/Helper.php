@@ -303,9 +303,9 @@ trait Helper
     public function getCurrentSchedule()
     {
         return self::CCompany()->schedules()
-                               ->where('begin', '<=', Carbon::now())
-                               ->where('end'  , '>=', Carbon::now())
-                               ->first();
+            ->where('begin', '<=', Carbon::now())
+            ->where('end'  , '>=', Carbon::now())
+            ->first();
     }
 
     /**
@@ -314,11 +314,11 @@ trait Helper
     public function getJobOfferUsers()
     {
         return self::CCompany()->joboffers()->get()
-                                            ->map(function(JobOffer $joboffer) {
-                                                return $joboffer->users()->get()->map(function (User $user) {
-                                                    return $user->pivot;
-                                                })->first();
-                                            })->unique();
+            ->map(function(JobOffer $joboffer) {
+                return $joboffer->users()->get()->map(function (User $user) {
+                    return $user->pivot;
+                })->first();
+            })->unique();
     }
 
     /**
@@ -328,11 +328,11 @@ trait Helper
     public function getJobOfferUsersSortedByName($order)
     {
         return self::CCompany()->joboffers()->get()
-                                            ->map(function(JobOffer $joboffer) use ($order) {
-                                                return $joboffer->users()->orderBy('name',$order)->get()->map(function (User $user) {
-                                                    return $user->pivot;
-                                                })->first();
-                                            })->unique();
+            ->map(function(JobOffer $joboffer) use ($order) {
+                return $joboffer->users()->orderBy('name',$order)->get()->map(function (User $user) {
+                    return $user->pivot;
+                })->first();
+            })->unique();
     }
 
     /**
@@ -342,11 +342,11 @@ trait Helper
     public function getJobOfferUsersSortedByPoste($order)
     {
         return self::CCompany()->joboffers()->orderBy('name',$order)
-                                            ->get()
-                                            ->map(function(JobOffer $joboffer) {
-                                                return $joboffer->users()->get()->map(function (User $user) {
-                                                    return $user->pivot;
-                                                })->first();
-                                            })->unique();
+            ->get()
+            ->map(function(JobOffer $joboffer) {
+                return $joboffer->users()->get()->map(function (User $user) {
+                    return $user->pivot;
+                })->first();
+            })->unique();
     }
 }
