@@ -104,42 +104,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     /* Other Routes */
     Route::get('/isauthmanager', 'OtherController@userIsManager');
-});
 
-Route::get('/fire', function () {
-    // this fires the event
-    event(new App\Events\ChatEvent());
-    return "event fired";
-});
-
-Route::get('/chat', function () {
-    // this checks for the event
-    return view('chat.index');
-})->name('chat');
-
-Route::get('/test', function () {
-    $json = [];
-    try {
-        $redis = new \Predis\Client('localhost:6379');
-        foreach (\App\Session::connectedUsers() as $session) {
-            array_push($json, $session->user->email);
-        }
-        $redis->set('OnlineUsers', \GuzzleHttp\json_encode($json));
-    } catch (Exception $e) {
-        die($e->getMessage());
-    }
-    return \GuzzleHttp\json_encode($json);
-});
-
-Route::post('/savemessages', function (Request $request) {
-    \App\Message::create([
-        'sender_id' => \App\User::where('email', '=', $request->input('message.sender.email'))->first()->id,
-        'receiver_id' => \App\User::where('email', '=', $request->input('message.receiver.email'))->first()->id,
-        'content' => $request->input('message.message'),
-    ]);
-});
-
-Route::get('/lastmessages', function () {
-    $allm = \App\Message::where('sender_id', '=', Auth::id())->orWhere('receiver_id', '=', Auth::id())->with(['sender:id,name,email', 'receiver:id,name,email'])->get();
-    return  $allm->toJson();
+    //Chat Routes
+    Route::get('/chat', 'ChatController@index')->name('chat');
+    Route::post('/savemessages', 'ChatController@save');
+    Route::get('/lastmessages', 'ChatController@last');
 });
