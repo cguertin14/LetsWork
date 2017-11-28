@@ -6,11 +6,17 @@ use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         return view('chat.index');
     }
 
+    /**
+     * @param Request $request
+     */
     public function save(Request $request)
     {
         \App\Message::create([
@@ -20,6 +26,9 @@ class ChatController extends Controller
         ]);
     }
 
+    /**
+     * @return mixed
+     */
     public function last()
     {
         $allm = \App\Message::where('sender_id', '=', Auth::id())->orWhere('receiver_id', '=', Auth::id())->with(['sender:id,name,email', 'receiver:id,name,email'])->get();
