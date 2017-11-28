@@ -5,39 +5,44 @@
         body {
             background-color: #5d5d5d;
         }
+        .footer {
+            position: relative;
+        }
     </style>
 @endsection
 
 @section('content')
 
-    <table style="width: 100%;">
-        <tbody>
-            <tr>
-                <td style="vertical-align: middle">
-                    <div class="pull-left">
-                        <h1 class="page-title">Appliquer sur une offre d'emploi</h1>
-                    </div>
-                </td>
-                <td>
-                    @if (\Illuminate\Support\Facades\Auth::user()->cv)
-                    <div class="pull-right" style="margin-top: 10px">
-                    {!! Form::open(['method' => 'POST','action' => ['JobOfferController@apply',$joboffer->slug]]) !!}
-                        <div class="col-md-12">
-                            <div class="col-md-6">
-                            {!! Form::submit('Appliquer',['class' => 'btn purplebtn','style' => 'width:200px']); !!}
-                            </div>
-                            <div class="col-md-6">
-                            <a id="cancel" href="{{URL::previous()}}" class="btn btn-warning" style="font-size: 17px;width:200px">Annuler</a>
+    <div class="page-title-header">
+        <table  style="width: 100%;">
+            <tbody>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <div class="pull-left">
+                            <h1 class="page-title">Appliquer sur une offre d'emploi</h1>
+                        </div>
+                    </td>
+                    <td style="vertical-align: middle">
+                        @if (\Illuminate\Support\Facades\Auth::user()->cv)
+                        <div class="pull-right" style="margin-top: 13px">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    {!! Form::open(['method' => 'POST','action' => ['JobOfferController@apply',$joboffer->slug]]) !!}
+                                    {!! Form::submit('Appliquer',['class' => 'btn purplebtn','style' => 'width:200px']); !!}
+                                    {!! Form::close() !!}
+                                </div>
+                                <div class="col-md-6">
+                                    <a id="cancel" href="{{ URL::previous() }}" class="btn btn-warning" style="font-size: 17px;width:200px">Annuler</a>
+                                </div>
                             </div>
                         </div>
-                    {!! Form::close() !!}
-                    </div>
-                    @endif
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <hr class="separator">
+                        @endif
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr class="separator">
+    </div>
 
     <div class="col-md-12">
         <div class="row layout">
@@ -88,7 +93,7 @@
                                                             <td>
                                                                 {!! Form::open(['method' => 'POST','action' => 'JobOfferController@lettre','id' => 'create_letter','files' => true]) !!}
                                                                 <div class="form-group pull-right">
-                                                                    {!! Form::button('Choisir le fichier PDF...',['id' => 'uploadbtn','class' => 'btn purplebtn']) !!}
+                                                                    {!! Form::button('Choisir le fichier PDF...',['id' => 'uploadbtn','class' => 'btn purplebtn','style' => 'margin-top:13px']) !!}
                                                                     {!! Form::file('file',['style' => 'display:none;','id' => 'uploader','accept' => 'application/pdf','name' => 'file']); !!}
                                                                     {!! Form::submit('',['id' => 'submit','class' => 'btn purplebtn','onclick' => 'return CheckFile();','style' => 'display:none;']) !!}
                                                                 </div>
@@ -119,7 +124,7 @@
     <script>
         $(document).ready(function () {
             @if(!\Illuminate\Support\Facades\Auth::user()->cv)
-                    alert('Vous devez déposez votre cv en ligne pour pouvoir postuler sur un emploi!');
+                alert('Vous devez déposez votre cv en ligne pour pouvoir postuler sur un emploi!');
             @endif
             sendLetter();
             $("#uploadbtn").click(function () {

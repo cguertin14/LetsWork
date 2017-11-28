@@ -1,6 +1,5 @@
 function PlacerHoraire(){
 	var previousWidth = 0;
-	var isManager = 'undefined';
 	var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
 	var transitionsSupported = ( $('.csstransitions').length > 0 );
 	//if browser does not support transitions - use a different event to trigger them
@@ -279,49 +278,19 @@ function PlacerHoraire(){
 		this.modal.attr('data-event', event.parent().attr('data-event'));
 
 		//update event content
-		/*this.modalBody.find('.event-info').load(event.parent().attr('data-content')+' .event-info > *', function(data){
-			//once the event content has been loaded
-			self.element.addClass('content-loaded');
-		});*/
-
-		if (isManager === 'undefined') {
-            $.ajax({
-                method: 'GET',
-                url: '/isauthmanager',
-                success: function (data) {
-                    if (data) {
-                    	isManager = true;
-                        $.ajax({
-                            method: 'GET',
-                            url: '/schedule/' + event.parent().attr('data-slug') + '/edit',
-                            success: function (view) {
-                                self.modalBody.find('.event-info').html(view);
-                            }
-                        });
-                    } else {
-                        isManager = false;
-                        self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
-                    }
-                }
-            }).done(function (data) {
-                self.element.addClass('content-loaded');
-                self.element.addClass('modal-is-open');
-            });
+		if (location.href.includes('http://letswork.dev/schedule/editing')) {
+			$.ajax({
+				method: 'GET',
+				url: '/schedule/' + event.parent().attr('data-slug') + '/edit',
+				success: function (view) {
+					self.modalBody.find('.event-info').html(view);
+				}
+			});
 		} else {
-			if (isManager) {
-                $.ajax({
-                    method: 'GET',
-                    url: '/schedule/' + event.parent().attr('data-slug') + '/edit',
-                    success: function (view) {
-                        self.modalBody.find('.event-info').html(view);
-                    }
-                });
-			} else {
-                self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
-			}
-            self.element.addClass('content-loaded');
-            self.element.addClass('modal-is-open');
+			self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
 		}
+		self.element.addClass('content-loaded');
+		self.element.addClass('modal-is-open');
 
         /*self.modalBody.find('.event-info').html('<div style="color: black;font-size: 110%;">' + event.parent().attr('data-content') + '</div>');
         self.element.addClass('content-loaded');

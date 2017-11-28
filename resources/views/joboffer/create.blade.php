@@ -12,8 +12,10 @@
 
     @include('include.tinyeditor')
 
-    <h1 class="page-title">Créer une offre d'emploi</h1>
-    <hr class="separator">
+    <div  style="width:85%;margin-left: auto;margin-right: auto">
+        <h1 class="page-title">Créer une offre d'emploi</h1>
+        <hr class="separator">
+    </div>
 
     <div class="col-md-12">
         {!! Form::open(['method' => 'POST','action' => 'JobOfferController@store']) !!}

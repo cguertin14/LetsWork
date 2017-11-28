@@ -89,13 +89,18 @@
     .modal-backdrop {
         background-color: rgba(255,255,255,0.5);
     }
+    .footer {
+        position: relative;
+    }
 </style>
 @endsection
 
 @section('content')
 
-<h1 class="page-title text-center">Modifier le calendrier</h1>
-<hr class="separator">
+    <div  style="width:85%;margin-left: auto;margin-right: auto">
+        <h1 class="page-title">Modifier le calendrier</h1>
+        <hr class="separator">
+    </div>
 
 <div class="modal fade" id="createScheduleModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div class="modal fade" id="createEventModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
@@ -209,9 +214,10 @@
                                 lastDayOfTheWeek = new Date(curr.setDate(last)).getDay();
 
                             // Get date from event ending date
-                            var eventEndingDay = new Date(dateEnd[0]).getDay() + 1;
+                            var eventEndingDate = new Date(dateEnd[0]);
+                            var eventEndingDay = eventEndingDate.getDay() + 1;
                             for (var newDay = self.getDateFromDayInCurrentCalendarDate(day).getDay() + 1; newDay <= lastDayOfTheWeek; ++newDay) {
-                               if (newDay < eventEndingDay) {
+                               if (self.getDateFromDayInCurrentCalendarDate(self.getStringDayFromNumberDay(newDay)) < eventEndingDate) {
                                    newEvent.end = '23:59';
                                    var nextDay = self.getStringDayFromNumberDay(newDay);
                                    if (newEvents[nextDay] === undefined) newEvents[nextDay] = [];

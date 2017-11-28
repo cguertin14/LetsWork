@@ -29,4 +29,9 @@ class Skill extends Model
     public function specialroles() {
         return $this->belongsToMany('App\SpecialRole')->using('App\SkillSpecialRole')->withTimestamps();
     }
+
+    public function company()
+    {
+        return $this->belongsTo('App\Company');
+    }
 }

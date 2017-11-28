@@ -6,6 +6,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Kyslik\ColumnSortable\Sortable;
 
 class JobOffer extends Model
 {

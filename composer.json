@@ -8,12 +8,14 @@
         "php": ">=5.6.4",
         "cviebrock/eloquent-sluggable": "^4.0",
         "guzzlehttp/guzzle": "^6.3",
+        "kyslik/column-sortable": "^5.5",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4",
         "phpmailer/phpmailer": "^6.0",
         "predis/predis": "^1.1",
-        "twbs/bootstrap": "4.0.0-beta"
+        "twbs/bootstrap": "4.0.0-beta",
+        "yajra/laravel-datatables-oracle": "~8.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

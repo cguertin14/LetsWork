@@ -10,18 +10,33 @@
         @yield('fonts')
         <link href="{{asset('css/libs.css')}}" rel="stylesheet">
         <link href="{{asset('css/app.css')}}" rel="stylesheet">
+        <style>
+            .footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                /* Set the fixed height of the footer here */
+                height: 60px;
+                line-height: 60px; /* Vertically center the text there */
+                background-color: #696969;
+            }
+        </style>
         @yield('styles')
         @yield('headerscript')
     </head>
     <body>
         @yield('contenu')
+
+        {{--<!-- Site footer -->--}}
+        <footer class="footer">
+            <div class="pull-right" style="margin-right: 2em">
+                <span style="color: white;font-family: Ubuntu,sans-serif;font-weight: 500">© Confidentialité | LetsWork 2017 - Tous droits réservés</span>
+            </div>
+        </footer>
+
         <script src="{{asset('js/libs.js')}}"></script>
         @include('include.selectcompany')
         @include('include.dropdown')
         @yield('scriptsm')
-        {{--<!-- Site footer -->--}}
-        {{--<footer class="footer">--}}
-            {{--<p>&copy; Company 2017</p>--}}
-        {{--</footer>--}}
     </body>
 </html>

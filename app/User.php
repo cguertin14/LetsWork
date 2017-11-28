@@ -32,14 +32,14 @@ class User extends Authenticatable {
 		'slug', 'cv',
 	];
 
-	/**
-	 * The attributes that should be hidden for arrays.
-	 *
-	 * @var array
-	 */
-	protected $hidden = [
-		'password', 'remember_token',
-	];
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token','cv'
+    ];
 
 	public function getFullNameAttribute() {
 		return $this->first_name . " " . $this->last_name;

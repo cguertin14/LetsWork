@@ -12,11 +12,13 @@
 
     @include('include.tinyeditor')
 
-    <h1 class="page-title">Créer une compétence</h1>
-    <hr class="separator">
-    <div class="col-md-12">
+    <div  style="width:85%;margin-left: auto;margin-right: auto">
+        <h1 class="page-title">Créer une compétence</h1>
+        <hr class="separator">
+    </div>
+    <div class="centre custom-table custom-container" style="padding: 5px;margin-bottom: 20px;">
         {!! Form::open(['method' => 'POST','action' => 'SkillController@store']) !!}
-        <div class="row layout">
+        <div class="layout" style="margin: 2em">
             <div class="centre">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -34,7 +36,7 @@
             </div>
         </div>
 
-        <div class="row layout">
+        <div class="layout row" style="margin: 2em">
             <div class="centre">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -46,7 +48,7 @@
 
         <br>
 
-        <div class="row layout">
+        <div class="layout row">
             <div class="centre">
                 <div class="col-md-12">
                     <div class="form-group">

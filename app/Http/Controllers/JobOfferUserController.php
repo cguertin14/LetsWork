@@ -5,17 +5,21 @@ namespace App\Http\Controllers;
 use App\Company;
 use App\JobOffer;
 use App\JobOfferUser;
+use App\Tools\Collection;
 use App\Tools\Helper;
+use App\User;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Route;
 
-class JobOfferUserController extends Controller
+class JobOfferUserController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -24,17 +28,41 @@ class JobOfferUserController extends Controller
      */
     public function index()
     {
+        if (self::CCompany() == null)
+            return redirect('/');
         Carbon::setLocale('fr');
-        $jobofferusers = [];
-        $jobOffers = JobOffer::where('company_id',session('CurrentCompany')->id)->get();
-        foreach ($jobOffers as $joboffer) {
-            if ($joboffer->users) {
-                foreach ($joboffer->users as $user)
-                    array_push($jobofferusers,$user->pivot);
+        if (Session::has('sortJobOfferUsers')) {
+            $sesh = session('sortJobOfferUsers');
+            if ($sesh['column'] === 'fullname') {
+                $jobofferusers = (new Collection($this->getJobOfferUsersSortedByName($sesh['order'])))->reject(function ($item) {
+                    return is_null($item);
+                })->paginate(10);
+            } else if ($sesh['column'] === 'poste') {
+                $jobofferusers = (new Collection($this->getJobOfferUsersSortedByPoste($sesh['order'])))->reject(function ($item) {
+                    return is_null($item);
+                })->paginate(10);
+            } else {
+                $jobofferusers = (new Collection($this->getJobOfferUsers()))->sortBy($sesh['column'],$sesh['order'] === 'ASC' ? SORT_ASC : SORT_DESC,$sesh['order'] === 'ASC' ? false : true)->reject(function ($item) {
+                    return is_null($item);
+                })->paginate(10);
             }
+        } else {
+            $jobofferusers = (new Collection($this->getJobOfferUsers()))->reject(function ($item) {
+                return is_null($item);
+            })->paginate(10);
+            $sesh = [];
         }
-        $jobofferusers = new LengthAwarePaginator($jobofferusers,count($jobofferusers),10,1);
-        return view('jobofferuser.index',compact('jobofferusers'));
+        return view('jobofferuser.index',compact('jobofferusers','sesh'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sort(Request $request)
+    {
+        session(['sortJobOfferUsers' => $request->all()]);
+        return redirect()->action('JobOfferUserController@index');
     }
 
     /**
@@ -45,7 +73,7 @@ class JobOfferUserController extends Controller
      */
     public function show($id)
     {
-        $jobofferuser = Helper::getJobOfferUserById($id);
+        $jobofferuser = $this->getJobOfferUserById($id);
         return view('jobofferuser.show',compact('jobofferuser'));
     }
 
@@ -58,7 +86,7 @@ class JobOfferUserController extends Controller
 
     public function accept($id)
     {
-        $jobofferuser = Helper::getJobOfferUserById($id);
+        $jobofferuser = $this->getJobOfferUserById($id);
         session(['jobofferuser' => $jobofferuser]);
         $data = ['jobofferuser' => $jobofferuser];
 
@@ -87,7 +115,7 @@ class JobOfferUserController extends Controller
 
     public function refuse($id)
     {
-        $jobofferuser = Helper::getJobOfferUserById($id);
+        $jobofferuser = $this->getJobOfferUserById($id);
         session(['jobofferuser' => $jobofferuser]);
         $data = ['jobofferuser' => $jobofferuser];
 
@@ -115,7 +143,7 @@ class JobOfferUserController extends Controller
 
     public function interview($id)
     {
-        $jobofferuser = Helper::getJobOfferUserById($id);
+        $jobofferuser = $this->getJobOfferUserById($id);
         session(['jobofferuser' => $jobofferuser]);
         $data = ['jobofferuser' => $jobofferuser];
 

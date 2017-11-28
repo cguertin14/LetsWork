@@ -5,17 +5,22 @@
         body {
             background-color: #5d5d5d;
         }
+        .footer {
+            position: relative;
+        }
     </style>
 @endsection
 
 @section('content')
 
     @include('include.tinyeditor')
-
-    <h1 class="page-title">Demande d'absence</h1>
-    <hr style="border-top: 1px solid #474747">
-    <div class="col-md-12">
+    <div  style="width:85%;margin-left: auto;margin-right: auto">
+        <h1 class="page-title">Demande d'absence</h1>
+        <hr style="border-top: 1px solid #474747">
+    </div>
+    <div class="centre custom-table custom-container" style="padding: 5px;margin-bottom: 20px;">
         {!! Form::open(['method' => 'POST','action' => 'AbsenceController@store']) !!}
+        <div style="margin: 2em">
             <div class="row layout">
                 <div class="centre">
                     <div class="col-md-6">
@@ -45,37 +50,39 @@
             </div>
 
             <br>
-            <br>
 
             <div class="row layout">
-                <div class="form-group text-center centre">
-                    {!! Form::label('reason', 'Raison de l\'absence', ['class' => 'section-title']); !!}
-                    {!! Form::textarea('reason', null, ['class' => 'form-control']); !!}
+                <div class="col-md-12">
+                    <div class="form-group text-center centre">
+                        {!! Form::label('reason', 'Raison de l\'absence', ['class' => 'section-title']); !!}
+                        {!! Form::textarea('reason', null, ['class' => 'form-control']); !!}
+                    </div>
                 </div>
             </div>
 
             <div class="row layout">
-                <div class="centre">
-                    <div class="form-group">
+                <div class="col-md-12">
+                    <div class="form-group centre">
                         {!! Form::submit('Soumettre',['class' => 'btn purplebtn']) !!}
                     </div>
                 </div>
             </div>
 
-        {!! Form::close() !!}
+            {!! Form::close() !!}
 
-        <div class="row layout">
-            <div class="centre">
-                @include('include.errors')
-            </div>
-
-            @if (\Illuminate\Support\Facades\Session::has('errorAbsence'))
-                <div class="row centre">
-                    <div class="alert alert-danger">
-                        {{session('errorAbsence')}}
-                    </div>
+            <div class="row layout">
+                <div class="centre">
+                    @include('include.errors')
                 </div>
-            @endif
+
+                @if (\Illuminate\Support\Facades\Session::has('errorAbsence'))
+                    <div class="row centre">
+                        <div class="alert alert-danger">
+                            {{session('errorAbsence')}}
+                        </div>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 
