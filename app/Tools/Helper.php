@@ -349,4 +349,29 @@ trait Helper
                 })->first();
             })->unique();
     }
+	
+	public static function getWeekDays() {//copy
+		return [
+			'Lundi',
+			'Mardi',
+			'Mercredi',
+			'Jeudi',
+			'Vendredi',
+		];
+	}
+	
+	public static function setLogedRedisUsers() {
+		$json = [];
+		try {
+			$redis = new \Predis\Client('localhost:6379');
+			foreach (\App\Session::connectedUsers() as $session) {
+				array_push($json, ['email' => $session->user->email,
+					'name' => $session->user->name,
+				]);
+			}
+			$redis->set('OnlineUsers', \GuzzleHttp\json_encode($json));
+		} catch (Exception $e) {
+			die($e->getMessage());
+		}
+	}
 }
