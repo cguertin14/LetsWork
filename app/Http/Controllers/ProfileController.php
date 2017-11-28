@@ -64,9 +64,9 @@ class ProfileController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function photo() {
+    public function photo($slug) {
         // return image as base64
-        return response()->json(['photo' => Auth::user()->photo]);
+        return response()->json(['photo' => User::findBySlugOrFail($slug)->photo]);
     }
 
     /**

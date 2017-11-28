@@ -28,7 +28,7 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        $currentEmployee = session('CurrentCompany')->employees->where('user_id',Auth::user()->id)->first();
+        $currentEmployee = Helper::CCompany()->employees()->where('user_id',Auth::user()->id)->first();
         $employeeSchedules = $currentEmployee->schedule_elements;
         return view('schedule.index',compact('employeeSchedules'));
     }
@@ -43,8 +43,7 @@ class ScheduleController extends Controller
         // Retourne la view à mettre ensuite dans le modal
         // Donc l'appeler en javascript => ajax,
         // et la mettre dedans le modal ensuite
-        $specialRoles = SpecialRole::where('company_id',session('CurrentCompany')->id)
-                                    ->get()
+        $specialRoles = SpecialRole::where('company_id',Helper::CCompany()->id)
                                     ->pluck('name','id');
         return view('schedule.create',compact('specialRoles'));
     }
@@ -57,10 +56,9 @@ class ScheduleController extends Controller
         // Retourne la view à mettre ensuite dans le modal
         // Donc l'appeler en javascript => ajax,
         // et la mettre dedans le modal ensuite
-        $specialRoles = SpecialRole::where('company_id',session('CurrentCompany')->id)
-                                     ->get()
+        $specialRoles = SpecialRole::where('company_id',Helper::CCompany()->id)
                                      ->pluck('name','id');
-        $schedules = session('CurrentCompany')->schedules->pluck('name','id');
+        $schedules    = Helper::CCompany()->schedules()->pluck('name','id');
         return view('schedule.createelement',compact('specialRoles','schedules'));
     }
 
@@ -104,7 +102,7 @@ class ScheduleController extends Controller
         $data['begin'] = Carbon::createFromFormat('Y-d-m H:i:s',$data['begin']);
         $data['end'] = Carbon::createFromFormat('Y-d-m H:i:s',$data['end']);
 
-        $schedule = session('CurrentCompany')->schedules()->create($data);
+        $schedule = Helper::CCompany()->schedules()->create($data);
         // Change return statement
         return response()->json($schedule);
     }
@@ -153,12 +151,10 @@ class ScheduleController extends Controller
      */
     public function edit($slug)
     {
-        $scheduleelement = ScheduleElement::findBySlugOrFail($slug);
-        $specialRoles    = SpecialRole::where('company_id',session('CurrentCompany')->id)
-                                        ->get()
-                                        ->pluck('name','id');//$scheduleelement->specialroles->pluck('name','id');
-        $schedules = session('CurrentCompany')->schedules->pluck('name','id');
-        $companyEmployees = session('CurrentCompany')->employees()->get();
+        $scheduleelement    = ScheduleElement::findBySlugOrFail($slug);
+        $specialRoles       = SpecialRole::where('company_id',Helper::CCompany()->id)->pluck('name','id');
+        $schedules          = Helper::CCompany()->schedules()->pluck('name','id');
+        $companyEmployees   = Helper::CCompany()->employees()->get();
         $availableEmployees = [];
 
         $employees = $scheduleelement->employees()->get()->map(function ($employee) {
@@ -182,7 +178,9 @@ class ScheduleController extends Controller
      */
     public function editing()
     {
-        $schedules = session('CurrentCompany')->schedules->pluck('name','slug');
+        if (Helper::CCompany() === null)
+            return redirect('/');
+        $schedules = Helper::CCompany()->schedules()->pluck('name','slug');
         return view('schedule.editing',compact('schedules'));
     }
 
@@ -287,7 +285,7 @@ class ScheduleController extends Controller
 
         foreach ($request->users as $userID)
             array_push($employees,Employee::where('user_id',$userID)->first());
-        foreach ($scheduleelement->employees as $employee)
+        foreach ($scheduleelement->employees()->get() as $employee)
             array_push($realEmployees,Employee::findOrFail($employee->id));
 
         $employeesToAttach = array_diff($employees,$realEmployees);
@@ -312,48 +310,6 @@ class ScheduleController extends Controller
     }
 
     //<editor-fold desc="Get Schedule elements in JSON Structure">
-    /**
-     *  Get schedule elements from this week's schedule
-     *  and return them as JSON to the client.
-     *  @return \Illuminate\Http\Response
-     */
-    public function thisweek()
-    {
-        Carbon::setWeekStartsAt(Carbon::SUNDAY);
-        Carbon::setWeekEndsAt(Carbon::SATURDAY);
-
-        $days     = Helper::getDays();
-        $data     = Helper::getWeekDaysJson();
-        $schedule = Helper::getCurrentSchedule();
-
-        // Get schedule elements
-        $scheduleElements = $schedule->scheduleelements()->get();
-        // Get elements before today.
-        $thisWeekElements = $scheduleElements->where('begin','>=',Carbon::now()->startOfWeek())
-                                             ->where('end','<=',Carbon::now()->endOfWeek());
-        if (count($thisWeekElements) > 0) {
-            // Put data in array.
-            $weekEvents = $data->first();
-            foreach ($data->first() as $day => $events) {
-                // Get le data pour chaque jour et ensuite le mettre dans $weekEvents
-                foreach ($thisWeekElements as $element) {
-                    if ($element->begin >= Carbon::now()->startOfWeek() && $element->end <= Carbon::now()->endOfWeek()) {
-                        if ($days[Carbon::createFromFormat('Y-m-d H:i:s',$element->begin)->dayOfWeek] == $day)
-                        {
-                            $test = $element;
-                            $test['begin'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['begin'])->toTimeString())->toTimeString(),0,5);
-                            $test['end'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['end'])->toTimeString())->toTimeString(),0,5);
-                            array_push($weekEvents[$day], $test);
-                        }
-                    }
-                }
-            }
-            $data->put('weekevents',$weekEvents);
-        }
-        // Return data as JSON.
-        return response()->json($data);
-    }
-
     /**
      * Get week events of whatever week and return them to the client.
      * @param string $datebegin -> as 'Y-m-d'
@@ -381,11 +337,26 @@ class ScheduleController extends Controller
                 // Get le data pour chaque jour et ensuite le mettre dans $weekEvents
                 foreach ($weekElements as $element) {
                     if ($element->begin >= $dateCarbon->startOfWeek() && $element->end <= $dateCarbon->endOfWeek()) {
-                        if ($days[Carbon::createFromFormat('Y-m-d H:i:s',$element->begin)->dayOfWeek] == $day)
-                        {
+                        if ($days[Carbon::parse($element->begin)->dayOfWeek] == $day) {
                             $test = $element;
-                            $test['begin'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['begin'])->toTimeString())->toTimeString(),0,5);
-                            $test['end'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['end'])->toTimeString())->toTimeString(),0,5);
+                            if (Carbon::createFromFormat('Y-m-d H:i:s',$test['end'])->toTimeString() == '00:00:00'){ // OU BEGIN
+                                $test['begin'] = Carbon::createFromFormat('Y-m-d H:i:s',$test['begin'])->addDay(1);
+                                if(Carbon::createFromFormat('Y-m-d H:i:s',$test['end'])->day != Carbon::createFromFormat('Y-m-d H:i:s',$test['begin'])->day) {
+                                    $test['begin'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['begin'])->toTimeString())->toTimeString(),0,5);
+                                    $test['end'] = substr(Carbon::createFromFormat('Y-m-d H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['end'])->toDateTimeString())->toDateTimeString(),0,16);
+                                } else {
+                                    $test['begin'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['begin'])->toTimeString())->toTimeString(),0,5);
+                                    $test['end'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['end'])->toTimeString())->toTimeString(),0,5);
+                                }
+                            } else {
+                                if(Carbon::createFromFormat('Y-m-d H:i:s',$test['end'])->day != Carbon::createFromFormat('Y-m-d H:i:s',$test['begin'])->day) {
+                                    $test['begin'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['begin'])->toTimeString())->toTimeString(),0,5);
+                                    $test['end'] = substr(Carbon::createFromFormat('Y-m-d H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['end'])->toDateTimeString())->toDateTimeString(),0,16);
+                                } else {
+                                    $test['begin'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['begin'])->toTimeString())->toTimeString(),0,5);
+                                    $test['end'] = substr(Carbon::createFromFormat('H:i:s',Carbon::createFromFormat('Y-m-d H:i:s',$test['end'])->toTimeString())->toTimeString(),0,5);
+                                }
+                            }
                             array_push($weekEvents[$day], $test);
                         }
                     }

@@ -1,4 +1,5 @@
-function placerhoraire(){
+function PlacerHoraire(){
+	var previousWidth = 0;
 	var isManager = 'undefined';
 	var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
 	var transitionsSupported = ( $('.csstransitions').length > 0 );
@@ -59,6 +60,7 @@ function placerhoraire(){
 			this.checkEventModal('desktop');
 			this.element.removeClass('loading');
 		} else {
+            this.placeEvents();
 			this.element.removeClass('loading');
 		}
 	};
@@ -67,8 +69,9 @@ function placerhoraire(){
 		var self = this;
 
 		this.singleEvents.each(function() {
+            var size = self.singleEvents.length > 2 ? '0.7em' : '1em';
 			//create the .event-date element for each event
-			var durationLabel = '<span class="event-date">'+$(this).data('start')+' - '+$(this).data('end')+'</span>';
+			var durationLabel = '<span class="event-date" style="overflow: hidden;font-size:' + size +'">'+$(this).data('start')+' - '+$(this).data('end')+'</span>';
 			$(this).children('a').prepend($(durationLabel));
 
 			//detect click on the event and open the modal
@@ -92,8 +95,8 @@ function placerhoraire(){
                 url: $(this).attr('action'),
                 data: $(this).serialize(),
                 success: function (data) {
-                    /////// RENDU ICI.
                     self.closeModal(self.eventsGroup.find('.selected-event'));
+                    self.placeEvents();
                 },
                 error: function (errors) {
                     formErrors(errors,$(this));
@@ -109,6 +112,7 @@ function placerhoraire(){
                 data: $(this).serialize(),
                 success: function (data) {
                     self.closeModal(self.eventsGroup.find('.selected-event'));
+                    self.placeEvents();
                 },
                 error: function (errors) {
                     formErrors(errors,$(this));
@@ -119,27 +123,146 @@ function placerhoraire(){
 		this.element.on('click', '.cover-layer', function(event){
 			if( !self.animating && self.element.hasClass('modal-is-open') ) {
 				self.closeModal(self.eventsGroup.find('.selected-event'));
+                self.placeEvents();
                 $('#calendarPicker').show();
             }
 		});
 	};
 
 	SchedulePlan.prototype.placeEvents = function() {
-		var self = this;
-		this.singleEvents.each(function eachSingleEvent(){
-			//place each event in the grid -> need to set top position and height
-			var start = getScheduleTimestamp($(this).attr('data-start')),
-				duration = getScheduleTimestamp($(this).attr('data-end')) - start;
+		/*
+		 *	Special Algorithm to place events without overlapping.
+		 */
+		var self = this,
+			timeslots = [],
+			events = [], event,
+		    i = 0, j = 0, eventsLength = 0,
+			mq = this.mq();
 
-			var eventTop = self.eventSlotHeight*(start - self.timelineStart)/self.timelineUnitDuration,
-				eventHeight = self.eventSlotHeight*duration/self.timelineUnitDuration;
+        // Step 1: Initialize timeslots.
+        for (i=0; i<1440; i++) {
+            timeslots[i] = [];
+        }
 
-			$(this).css({
-				top: (eventTop -1) +'px',
-				height: (eventHeight+1)+'px'
-			});
-		});
+		this.eventsGroup.each(function () {
+			events = [];
+			var singleevents = $(this).find('.single-event');
+			if (singleevents.length > 0) {
+				singleevents.sort(function (a, b) { return - ( parseInt(a.dataset.id) - parseInt(b.dataset.id) ) });
+				i = 0;
+				singleevents.each(function () {
+                    var start = getScheduleTimestamp($(this).attr('data-start')),
+		 			    end = getScheduleTimestamp($(this).attr('data-end'));
 
+                    events.push({ id: i, start: start, end: end});
+                    ++i;
+                });
+
+				// From here, we have our list of events of the current day that we can work with.
+				eventsLength = events.length;
+				//events.sort(function (a, b) {return a.id - b.id;});
+                // Step 2: Arrange the events by timeslot.
+                for (i = 0; i < eventsLength; i++) {
+                    event = events[i];
+
+                    // Safety first.
+                    if (event.start > event.end) {
+                        var temp = event.start;
+                        event.start = event.end;
+                        event.end = temp;
+                    }
+
+                    for (j=event.start; j<event.end; j++) {
+                        timeslots[j].push(event.id);
+                    }
+                }
+
+                // Step 3: Get each event it's horizontal position,
+                //         and figure out the max number of conflicts it has.
+                var eventIsUndefined = false;
+                for (i=0; i<1440; i++) {
+                    var next_hindex = 0;
+                    var timeslotLength = timeslots[i].length;
+
+                    // If there's at least one event in the timeslot,
+                    // we know how many events we will have going across for that slot.
+                    if (timeslotLength > 0) {
+
+                        // Store the greatest concurrent event count (cevc) for each event.
+                        for (j=0; j<timeslotLength; j++) {
+                            event = events[timeslots[i][j]];
+                            if (event === undefined){
+                                event = events[timeslots[i][j]-1];
+                                eventIsUndefined = true;
+							} else {
+                                eventIsUndefined = false;
+							}
+
+                            if (event.cevc === undefined || !event.cevc || event.cevc < timeslotLength) {
+                                if (!eventIsUndefined) {
+                                    event.cevc = timeslotLength;
+                                }
+
+                                // Now is also a good time to coordinate horizontal ordering.
+                                // If this is our first conflict, start at the current index.
+                                if (!event.hindex) {
+                                    event.hindex = next_hindex;
+
+                                    // We also want to boost the index,
+                                    // so that whoever we conflict with doesn't get the same one.
+                                    next_hindex++;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Step 4: Calculate event coordinates and dimensions,
+                // and generate DOM.
+                var colWidth = $(singleevents[0]).parent().width(),
+					previousCevc = undefined;
+                for (i=0;i<eventsLength;++i) {
+                    event = events[i];
+
+                    // Height and y-coordinate are already known.
+					var duration = event.end - event.start;
+                    event.pxh = self.eventSlotHeight*duration/self.timelineUnitDuration;
+                    event.pxy = self.eventSlotHeight*(event.start - self.timelineStart)/self.timelineUnitDuration;
+
+                    // Width is based on calendar current day column width and the cevc.
+                    previousCevc = event.cevc === eventsLength ? event.cevc : eventsLength;
+                    event.pxw = colWidth / previousCevc; // event.cevc;
+
+
+                    // Height uses the same calendar/cevc figure,
+                    // multiplied by the horizontal index to prevent overlap.
+                    event.pxx = event.hindex * event.pxw;
+
+                    // Now, the easy part.
+                    if (mq == 'desktop') {
+                    	singleevents[i].style.width = event.pxw + "px";
+                        singleevents[i].style.height = event.pxh + "px";
+                        singleevents[i].style.top = event.pxy + "px";
+                        singleevents[i].style.left = event.pxx + "px";
+                    } else {
+                        $(singleevents[i]).css('width','');
+                        $(singleevents[i]).css('left','');
+                        $(singleevents[i]).css('top','');
+                        $(singleevents[i]).css('height','');
+					}
+                    /*else {
+                        if (self.timelineStart.toString() === NaN.toString()) {
+                            self.timelineStart = 0;
+                            self.timelineUnitDuration = 30;
+                        }
+                        var eventTop = self.eventSlotHeight*(event.start - self.timelineStart)/self.timelineUnitDuration,
+                            eventHeight = self.eventSlotHeight*duration/self.timelineUnitDuration;
+                        singleevents[i].style.height = (eventHeight-1);
+                        singleevents[i].style.top = (eventTop-1) + "px";
+                    }*/
+                }
+            }
+        });
 		this.element.removeClass('loading');
 	};
 
@@ -149,6 +272,8 @@ function placerhoraire(){
 		this.animating = true;
 
 		//update event name and time
+		previousWidth = $(event).parent().width();
+		$(event).parent().css('width','');
 		this.modalHeader.find('.event-name').text(event.find('.event-name').text());
 		this.modalHeader.find('.event-date').text(event.find('.event-date').text());
 		this.modal.attr('data-event', event.parent().attr('data-event'));
@@ -282,6 +407,7 @@ function placerhoraire(){
 
 		this.animating = true;
 
+        event.animate({width: previousWidth},700);
 		if( mq == 'mobile' ) {
 			this.element.removeClass('modal-is-open');
 			this.modal.one(transitionEnd, function(){
@@ -350,9 +476,8 @@ function placerhoraire(){
 
 		if( mq == 'mobile' ) {
 			//reset modal style on mobile
-			$('.cover-layer')[0].style.zIndex = 0;
+			$('.cover-layer')[0].style.zIndex = 88888;
 			self.modal.add(self.modalHeader).add(self.modalHeaderBg).add(self.modalBody).add(self.modalBodyBg).attr('style', '');
-			//self.modal.attr('style','z-index:99999');
 			self.modal.removeClass('no-transition');
 			self.animating = false;
             self.modal.css('z-index',99999);
@@ -414,17 +539,16 @@ function placerhoraire(){
 		}
 	};
 
-	function load()
-	{
+	function load() {
+		var schedules = $('.cd-schedule');
+		var objSchedulesPlan = [],
+			windowResize = false;
 
-	var schedules = $('.cd-schedule');
-	var objSchedulesPlan = [],
-		windowResize = false;
-
-	if( schedules.length > 0 ) {
-		schedules.each(function(e){
-			//create SchedulePlan objects
-			objSchedulesPlan.push(new SchedulePlan($(this)));
+		if( schedules.length > 0 ) {
+            schedules.each(function (e) {
+                //create SchedulePlan objects
+                objSchedulesPlan.push(new SchedulePlan($(this)));
+            });
             if ($('.single-event').length > 0) {
                 var top = $($(".single-event")[Math.floor(Math.random() * $(".single-event").length)]).offset().top;
                 $('#loading').modal('hide');
@@ -436,31 +560,31 @@ function placerhoraire(){
                     scrollTop: 0
                 }, 500);
             }
+        }
+
+		$(window).on('resize', function(){
+			if( !windowResize ) {
+				windowResize = true;
+				(!window.requestAnimationFrame) ? setTimeout(checkResize) : window.requestAnimationFrame(checkResize);
+			}
 		});
-	}
 
-	$(window).on('resize', function(){
-		if( !windowResize ) {
-			windowResize = true;
-			(!window.requestAnimationFrame) ? setTimeout(checkResize) : window.requestAnimationFrame(checkResize);
-		}
-	});
+		$(window).keyup(function(event) {
+			if (event.keyCode == 27) {
+				objSchedulesPlan.forEach(function(element){
+					element.closeModal(element.eventsGroup.find('.selected-event'));
+				});
+			}
+		});
 
-	$(window).keyup(function(event) {
-		if (event.keyCode == 27) {
+		function checkResize(){
 			objSchedulesPlan.forEach(function(element){
-				element.closeModal(element.eventsGroup.find('.selected-event'));
+				element.scheduleReset();
 			});
+			windowResize = false;
 		}
-	});
-
-	function checkResize(){
-		objSchedulesPlan.forEach(function(element){
-			element.scheduleReset();
-		});
-		windowResize = false;
 	}
-}
+
 	function getScheduleTimestamp(time) {
 		//accepts hh:mm format - convert hh:mm to timestamp
 		time = time.replace(/ /g,'');
@@ -479,5 +603,5 @@ function placerhoraire(){
 		});
 	}
 
-	return {load:load};
+    return { load: load};
 }

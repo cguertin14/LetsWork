@@ -38,10 +38,10 @@ Route::group(['middleware' => 'auth'], function () {
     /* Profile Routes */
     Route::get('/profile/{slug}', 'ProfileController@view')->name('profile.view');
     Route::get('/profile/{slug}/edit', 'ProfileController@edit')->name('profile.edit');
-    Route::patch('/profile/{slug}/update', 'ProfileController@update')->name('profile.update');
-    Route::patch('/profile/uploadphoto', 'ProfileController@uploadphoto')->name('profile.uploadphoto');
-    Route::get('/profilephoto', 'ProfileController@photo')->name('profile.photo');
-    Route::delete('/profile/{slug}/delete', 'ProfileController@deleteuser')->name('profile.delete');
+	Route::patch('/profile/{slug}/update', 'ProfileController@update')->name('profile.update');
+	Route::patch('/profile/uploadphoto', 'ProfileController@uploadphoto')->name('profile.uploadphoto');
+	Route::get('/profile/{slug}/photo', 'ProfileController@photo')->name('profile.photo');
+	Route::delete('/profile/{slug}/delete', 'ProfileController@deleteuser')->name('profile.delete');
 
     /* Company Routes */
     Route::post('/company/{slug}/select', 'CompanyController@select')->name('company.select');
@@ -74,14 +74,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/jobofferuser/{id}/interview', 'JobOfferUserController@interview')->name('jobofferuser.interview'); //->middleware('manager');
     Route::delete('/jobofferuser/{id}/refuse', 'JobOfferUserController@refuse')->name('jobofferuser.refuse');
 
-    /* Schedule Routes */
-    Route::get('/schedule/thisweek', 'ScheduleController@thisweek')->name('schedule.thisweek');
-    Route::get('/schedule/week/{datebegin}', 'ScheduleController@week')->name('schedule.week');
-    Route::get('/schedule/scheduleelement', 'ScheduleController@createelement')->name('schedule.createelement');
-    Route::post('/schedule/scheduleelement', 'ScheduleController@storeelement')->name('schedule.storeelement');
-    Route::get('/schedule/editing', 'ScheduleController@editing')->name('schedule.editing'); //->middleware('manager');
-    Route::get('/schedule/employees/{specialrole}', 'ScheduleController@getEmployees')->name('schedule.employees');
-    Route::resource('/schedule', 'ScheduleController');
+	/* Schedule Routes */
+	Route::get('/schedule/week/{datebegin}', 'ScheduleController@week')->name('schedule.week');
+	Route::get('/schedule/scheduleelement', 'ScheduleController@createelement')->name('schedule.createelement');
+	Route::post('/schedule/scheduleelement', 'ScheduleController@storeelement')->name('schedule.storeelement');
+	Route::get('/schedule/editing', 'ScheduleController@editing')->name('schedule.editing');//->middleware('manager');
+	Route::get('/schedule/employees/{specialrole}', 'ScheduleController@getEmployees')->name('schedule.employees');
+	Route::resource('/schedule', 'ScheduleController');
 
     /* Punch Routes */
     Route::post('/punch', 'PunchController@add');

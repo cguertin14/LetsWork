@@ -89,8 +89,8 @@
 
 @section('scripts')
     <script>
-        @if(\Illuminate\Support\Facades\Auth::user()->photo)
-        setUserProfilePic('{{route('profile.photo')}}');
+        @if($user->photo)
+        setUserProfilePic('{{route('profile.photo',$user->slug)}}');
         @else
         $('#image').attr('src','{{asset('image/default-profile.png')}}');
         @endif
@@ -104,7 +104,7 @@
                 this.addFile(file);
             },
             queuecomplete: function () {
-                setUserProfilePic('{{route('profile.photo')}}');
+                setUserProfilePic('{{route('profile.photo',$user->slug)}}');
             }
         });
     </script>

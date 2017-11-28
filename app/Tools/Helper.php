@@ -15,11 +15,16 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-abstract class Helper {
-	public static function CCompany() {
-		//\session(['CurrentCompany' => User::all()->random()->companies()->get()->random()]);
-		return session('CurrentCompany');
-	}
+abstract class Helper
+{
+    /**
+     * @return Company
+     */
+    public static function CCompany()
+    {
+        //\session(['CurrentCompany' => User::all()->random()->companies()->get()->random()]);
+        return session('CurrentCompany');
+    }
 
 	public static function CEmployee() {
 		return self::CCompany()->employees->where('user_id', Auth::user()->id)->get(0);
@@ -57,6 +62,14 @@ abstract class Helper {
 		return $month_fr[$carbon->month - 1];
 	}
 
+    public static function CRoles()
+    {
+        $rolea = [];
+        foreach (self::CEmployee()->specialroles()->get() as $specialrole)
+            foreach ($specialrole->roles()->get() as $role)
+                array_push($rolea, $role->content);
+        return $rolea;
+    }
 	public static function getlastyearmonth($today) {
 		$months = [];
 		for ($i = 0; $i < 12; $i++) {
@@ -87,6 +100,19 @@ abstract class Helper {
 		return false;
 	}
 
+    public static function getJobOfferUserById($id)
+    {
+        $jobofferuser = null;
+        $jobOffers = JobOffer::where('company_id',self::CCompany()->id)->get();
+        foreach ($jobOffers as $joboffer) {
+            if ($joboffer->users) {
+                foreach ($joboffer->users as $user)
+                    if ($user->pivot->id == $id)
+                        $jobofferuser = $user->pivot;
+            }
+        }
+        return $jobofferuser;
+    }
 	public static function CIsManager() {
 		if (in_array("Manager", self::CRoles())) {
 			return true;
@@ -143,10 +169,36 @@ abstract class Helper {
 		return false;
 	}
 
+    public static function getWeekDays()
+    {
+        return [
+            'Dimanche',
+            'Lundi',
+            'Mardi',
+            'Mercredi',
+            'Jeudi',
+            'Vendredi',
+            'Samedi'
+        ];
+    }
 	public static function punchMessage($bool) {
 		return !$bool ? "Commencer à travailler" : "Terminer de travailler";
 	}
 
+    public static function getWeekDaysJson()
+    {
+        return collect([
+            'weekevents' => [
+                'Dimanche' => [],
+                'Lundi' => [],
+                'Mardi' => [],
+                'Mercredi' => [],
+                'Jeudi' => [],
+                'Vendredi' => [],
+                'Samedi' => [],
+            ]
+        ]);
+    }
 	public static function getlastweek($today) {
 		$lastweek = [];
 		$i = 5;
