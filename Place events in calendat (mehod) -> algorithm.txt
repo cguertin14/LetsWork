@@ -1,7 +1,0 @@
-Navigate from date of event to last day of week:
-
-  1.  Get day of event begin -- DONE
-  2.  Get last day of week -- DONE
-  3.  Get ending date of event -- DONE
-  4.  Start from day of event begin to day of end of week in a for loop
-  5.  Check if current date (in loop) is before event ending date
