@@ -35,6 +35,7 @@ class CompanyController extends BaseController {
 	}
 
     /**
+     * Data to fill company page.
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
