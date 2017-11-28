@@ -49,7 +49,7 @@
             </div>
         </div>
         <br>
-        {!! Form::open(['method' => 'POST','action' => 'CompanyController@store']) !!}
+        {!! Form::open(['method' => 'POST','action' => 'CompanyController@store','novalidate']) !!}
         <div class="row layout" style="margin: 2em">
             <div class="centre">
                 <div class="row">
@@ -123,12 +123,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        {!! Form::close() !!}
 
-        <div class="row layout">
-            <div class="centre">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group">
@@ -138,6 +133,8 @@
                 </div>
             </div>
         </div>
+        {!! Form::close() !!}
+
     </div>
 @endsection
 
