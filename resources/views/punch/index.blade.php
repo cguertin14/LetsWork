@@ -47,10 +47,10 @@
                         @foreach($punches as $punch)
                             <tr style="cursor:default;" class="@if ($i % 2 == 0 ) section-index-2 @else section-index @endif">
                                 @php(\Carbon\Carbon::setLocale('fr'))
-                                <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin)->toDateTimeString()}}</td>
-                                <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->dateend)->toDateTimeString()}}</td>
+                                <td>{{\Carbon\Carbon::parse($punch->datebegin)->toDateTimeString()}}</td>
+                                <td>{{\Carbon\Carbon::parse($punch->dateend)->toDateTimeString()}}</td>
                                 @if($punch->dateend)
-                                    <td>{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->dateend)->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)}}</td>
+                                    <td>{{\Carbon\Carbon::parse($punch->dateend)->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)}}</td>
                                 @else
                                     <td>Période de travail non terminée</td>
                                 @endif
