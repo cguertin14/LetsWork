@@ -128,6 +128,6 @@ Route::post('/savemessages', function (Request $request) {
 });
 
 Route::get('/lastmessages', function () {
-    $allm = \App\Message::where('sender_id', '=', Auth::id())->orWhere('receiver_id', '=', Auth::id())->with(['sender', 'receiver'])->get();
+    $allm = \App\Message::where('sender_id', '=', Auth::id())->orWhere('receiver_id', '=', Auth::id())->with(['sender:id,name,email', 'receiver:id,name,email'])->get();
     return  $allm->toJson();
 });

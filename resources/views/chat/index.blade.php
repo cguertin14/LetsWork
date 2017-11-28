@@ -119,18 +119,25 @@
                                 user: this.currentuser,
                                 message: this.message
                             });
+                            this.message = '';
                         }
                         else {
-                            var message = {
-                                hash: this.rooms[this.currentroom].hash,
-                                message: this.message,
-                                sender: this.currentuser,
-                                receiver: this.rooms[this.currentroom].user
-                            };
-                            socket.emit('roomchat', message);
-                            this.savemessage(message);
+                            if (this.rooms[this.currentroom].hash == null) {
+                                this.reco(this.currentroom);
+                            }
+                            else {
+
+                                var message = {
+                                    hash: this.rooms[this.currentroom].hash,
+                                    message: this.message,
+                                    sender: this.currentuser,
+                                    receiver: this.rooms[this.currentroom].user
+                                };
+                                socket.emit('roomchat', message);
+                                this.savemessage(message);
+                                this.message = '';
+                            }
                         }
-                        this.message = '';
                     }
                     e.preventDefault();
                 },
@@ -159,6 +166,12 @@
                         this.currentroom = user.name;
                     }
                 },
+                reco: function (roomname) {
+                    socket.emit('reco', {
+                        receiver: this.rooms[roomname].user,
+                        sender: this.currentuser
+                    });
+                },
                 setroom: function (room) {
                     $.when(this.currentroom = room).then(function () {
                         $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
@@ -176,31 +189,47 @@
                     return this.rooms[room].seen ? "" : "red";
                 },
                 loadlastmessages: function () {
+                    var app = this;
                     $.ajax({
                         method: 'GET',
                         url: '/lastmessages',
-                        success:function (data) {
-                            console.log(data);
-                            data.forEach(function (e) {
-                                if(e.sender_id==this.myid)
-                                {
-                                    app.rooms[e.receiver_name] = {};
-                                    app.rooms[e.receiver_name]['messages'] = [];
-                                    app.rooms[e.receiver_name]['hash'] = '';
-                                    app.rooms[e.receiver_name]['user'] = {email:e.receiver_email,name:e.receiver_name};
-                                    app.rooms[e.receiver_name]['seen'] = true;
-                                    app.rooms[e.receiver_name]['messages'].push({user: {email:e.receiver_email,name:e.receiver_name}, message: e.content});
+                        success: function (data) {
+                            JSON.parse(data).forEach(function (e) {
+                                if (e.sender.id == app.myid) {
+                                    if (app.rooms[e.receiver.name] == null) {
+                                        app.rooms[e.receiver.name] = {};
+                                        app.rooms[e.receiver.name]['messages'] = [];
+                                        app.rooms[e.receiver.name]['hash'] = null;
+                                        app.rooms[e.receiver.name]['user'] = {
+                                            email: e.receiver.email,
+                                            name: e.receiver.name
+                                        };
+                                        app.rooms[e.receiver.name]['seen'] = true;
+                                    }
+                                    app.rooms[e.receiver.name]['messages'].push({
+                                        user: {
+                                            email: e.sender.email,
+                                            name: e.sender.name
+                                        }, message: e.content
+                                    });
                                 }
-                                if(e.receiver_id==this.myid)
-                                {
-                                    app.rooms[e.sender_name] = {};
-                                    app.rooms[e.sender_name]['messages'] = [];
-                                    app.rooms[e.sender_name]['hash'] = '';
-                                    app.rooms[e.sender_name]['user'] = {email:e.sender_email,name:e.sender_name};
-                                    app.rooms[e.sender_name]['seen'] = true;
-                                    app.rooms[e.sender_name]['messages'].push({user: {email:e.sender_email,name:e.sender_name}, message: e.content});
+                                if (e.receiver.id == app.myid) {
+                                    if (app.rooms[e.sender.name] == null) {
+                                        app.rooms[e.sender.name] = {};
+                                        app.rooms[e.sender.name]['messages'] = [];
+                                        app.rooms[e.sender.name]['hash'] = null;
+                                        app.rooms[e.sender.name]['user'] = {email: e.sender.email, name: e.sender.name};
+                                        app.rooms[e.sender.name]['seen'] = true;
+                                    }
+                                    app.rooms[e.sender.name]['messages'].push({
+                                        user: {
+                                            email: e.sender.email,
+                                            name: e.sender.name
+                                        }, message: e.content
+                                    });
                                 }
                             });
+                            app.$forceUpdate();
                         }
                     });
                 }
@@ -286,6 +315,22 @@
                     app.currentroom = data.receiver.name;
                 }.bind(this));
 
+                socket.on('reco.' + app.currentuser.email, function (data) {
+                    app.rooms[data.receiver.name].hash = data.hash;
+                    socket.on('roomchat.' + data.hash, function (data2) {
+                        $.when(app.rooms[data.receiver.name]['messages'].push({
+                            user: data2.sender,
+                            message: data2.message
+                        }))
+                            .then(function () {
+                                $.when(app.$forceUpdate()).then(function () {
+                                    $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+                                });
+                            });
+                        if (data.receiver.name != app.currentroom)
+                            app.rooms[data.receiver.name]['seen'] = false;
+                    }.bind(app));
+                }.bind(this));
                 this.getuserlist();
                 this.loadlastmessages();
             }

@@ -14,7 +14,7 @@ function newHash() {
     return token; //Will return a 32 bit "hash"
 }
 
-http.listen(3000, function() {
+http.listen(3000, function () {
     console.log('Listening on Port 3000');
 });
 
@@ -42,12 +42,12 @@ function createChatRoom(data) {
     ChatRooms[hash] = {};
     ChatRooms[hash].users = [];
     ChatRooms[hash].users.push(data.sender);
+    ChatRooms[hash].hash = hash;
     io.emit('roomchat.' + data.sender.email, {
         hash: hash,
         receiver: data.receivers[0]
     });
-    addUserToChatRoom(data.sender, hash);
-    data.receivers.forEach(function(receiver) {
+    data.receivers.forEach(function (receiver) {
         io.emit('roomchat.invite.' + receiver.email, {
             email: receiver.email,
             hash: hash,
@@ -74,7 +74,43 @@ function roominvite(data) {
     io.emit('roomchat.invite.' + data.email, data);
 }
 
-io.on('connection', function(socket) {
+function reco(data) {
+    var rep={};
+    var chatroom=null;
+    Object.keys(ChatRooms).forEach(function (c) {
+        var sender = false;
+        var receiver = false;
+        ChatRooms[c].users.forEach(function (u) {
+            if (u.email == data.receiver.email) {
+                receiver = true;
+            }
+            if (u.email == data.sender.email) {
+                sender = true;
+            }
+        });
+        if (sender && receiver) {
+            chatroom = ChatRooms[c];
+        }
+    });
+    if(chatroom!=null)
+    {
+        rep['hash']=chatroom.hash;
+        rep['receiver']=data.receiver;
+    }
+    else {
+        let hash = newHash();
+        ChatRooms[hash] = {};
+        ChatRooms[hash].users = [];
+        ChatRooms[hash].users.push(data.sender);
+        ChatRooms[hash].users.push(data.receiver);
+        ChatRooms[hash].hash = hash;
+        rep['hash']=hash;
+        rep['receiver']=data.receiver;
+    }
+    io.emit('reco.' + data.sender.email, rep);
+}
+
+io.on('connection', function (socket) {
     socket.on('globalchat.users.get', getOnlineUsers);
     socket.on('globalchat', echoback);
     socket.on('roomchat.create', createChatRoom);
@@ -82,13 +118,15 @@ io.on('connection', function(socket) {
     socket.on('roomchat', roomMessage);
     socket.on('roomchat.out', removeUserFromChatRoom);
     socket.on('roomchat.invite.*', roominvite);
+    socket.on('reco', reco);
 });
 
-sub.subscribe('__keyevent@0__:set', function(err, count) {});
+sub.subscribe('__keyevent@0__:set', function (err, count) {
+});
 
-sub.on('message', function(channel, message) {
+sub.on('message', function (channel, message) {
     if (message == 'OnlineUsers') {
-        redis.get('OnlineUsers', function(err, result) {
+        redis.get('OnlineUsers', function (err, result) {
             io.emit('globalchat.users', result);
             OnlineUsers = result;
         });
