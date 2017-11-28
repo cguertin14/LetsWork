@@ -29,6 +29,9 @@ Route::post('/joboffer/lettre', 'JobOfferController@lettre')->name('joboffer.let
 
 /* Company Routes */
 Route::resource('company', 'CompanyController');
+Route::get('/cpage', 'CompanyController@cpage')->name('company.cpage');
+Route::post('/company/{slug}/sort','CompanyController@sort')->name('company.sort');
+Route::post('/company/sort','CompanyController@sortCompanies')->name('company.sortCompanies');
 
 /* Auth Routes */
 Auth::routes();
@@ -72,6 +75,7 @@ Route::group(['middleware' => 'auth'], function () {
 	/* JobOffer Routes (suite...) */
 	Route::post('/joboffer/{slug}/apply', 'JobOfferController@apply')->name('joboffer.apply');
     Route::post('/joboffers/sort','JobOfferController@sort')->name('joboffer.sort');
+    Route::post('/joboffers/unsort','JobOfferController@unsort')->name('joboffer.unsort');
 
 	/* JobOfferUser Routes */
 	Route::get('/jobofferuser', 'JobOfferUserController@index')->name('jobofferuser.index');

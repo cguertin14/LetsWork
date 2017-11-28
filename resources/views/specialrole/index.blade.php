@@ -10,8 +10,10 @@
 
 @section('content')
 
-    <h1 class="page-title">Tous les postes</h1>
-    <hr style="border-top: 1px solid #474747">
+    <div class="page-title-header">
+        <h1 class="page-title">Tous les postes</h1>
+        <hr style="border-top: 1px solid #474747">
+    </div>
 
     <div class="layout">
         <div id="container" class="col-md-12">

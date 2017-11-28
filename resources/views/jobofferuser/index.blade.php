@@ -10,11 +10,13 @@
 
 @section('content')
 
-    <h1 class="page-title">Toutes les demandes d'emplois</h1>
-    <hr class="separator">
+    <div  style="width:85%;margin-left: auto;margin-right: auto">
+        <h1 class="page-title">Toutes les demandes d'emplois</h1>
+        <hr class="separator">
+    </div>
 
     <div class="col-md-12">
-        <div class="row layout">
+        <div class="row">
             @if (count($jobofferusers) > 0)
             <div class="centre custom-container" style="margin-bottom: 2em !important;">
                 <table id="table" class="table custom-table" style="margin: 0px !important">
@@ -29,13 +31,13 @@
                     @if($jobofferusers)
                         @php($i = 0)
                         @foreach($jobofferusers as $jobofferuser)
-                            <tr data-toggle="collapse" data-target="#accordion{{$jobofferuser->id}}" class="accordion-toggle @if ($i % 2 == 0 ) section-index-2 @else section-index @endif">
+                            <tr data-toggle="collapse" data-target="#accordion{{$jobofferuser->id}}" class="accordion-toggle section-index">
                                 <td>{{$jobofferuser->user->name}}</td>
                                 <td>{{$jobofferuser->joboffer->specialrole->name}}</td>
                                 <td>{{$jobofferuser->created_at->diffForHumans()}}</td>
                             </tr>
                             <tr>
-                                <td colspan="4" class="hiddenRow">
+                                <td colspan="3" class="hiddenRow">
                                     <div class="accordion-body collapse"  id="accordion{{$jobofferuser->id}}">
                                         <div style="height: 60px;vertical-align: middle;margin-top: 20px" class="col-md-12">
                                             <a class="btn purplebtn pull-right" href="{{route('jobofferuser.show',$jobofferuser->id)}}">

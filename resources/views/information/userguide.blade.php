@@ -2,6 +2,36 @@
 
 @section('styles')
 <style>
+    .footer {
+        position: relative;
+    }
+    .caption > a {
+        font-family: 'Ubuntu',sans-serif;
+        font-weight: 600;
+    }
+
+    .caption > .border {
+        font-family: 'Ubuntu',sans-serif;
+        font-weight: 600;
+    }
+    .headerText > h3 {
+        font-family: 'Montserrat',sans-serif;
+        font-weight: 600;
+    }
+
+    .headerText > h3 > small {
+        font-family: 'Montserrat',sans-serif;
+        font-weight: 700;
+    }
+
+    .headerText > h2 {
+        font-family: 'Montserrat',sans-serif;
+    }
+
+    .headerText > p {
+        font-size: 1.2em;
+        font-family: 'Ubuntu',sans-serif;
+    }
     .fa {
         padding: 20px !important;
         font-size: 30px !important;
@@ -195,7 +225,7 @@
         </div>
     </div>
 
-    <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+    <div class="headerText" style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
         <h3 style="text-align:center;">Page d'accueil</h3>
         <br>
         <p>Depuis la page d'accueil, vous pouvez accéder facilement à la recherche d'entreprises ainsi qu'à la création d'entreprises.  Cela vous permet de commencer à utiliser Let’s Work le plus vite possible.  Vous avez aussi accès à l'aide à l’utilisateur par l'onglet "À propos" situé en haut à droite de la fenêtre.  Les options d'inscription et de connexion ont aussi un onglet dans la barre du haut.</p>
@@ -204,7 +234,7 @@
     <div class="bgimg-1"></div>
 
     <div style="position:relative;">
-        <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
+        <div class="headerText" style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
             <h3 style="text-align:center;color: #ffffff;">Page de bienvenue</h3>
             <br>
             <p>Depuis la page de bienvenue du site web Let’s Work, vous avez accès à l'intégralité des fonctionnalités offertes par Let’s Work.
@@ -215,7 +245,7 @@
 
     <div class="bgimg-2"></div>
 
-    <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+    <div class="headerText" style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
         <h3 style="text-align:center;">Création d'entreprise</h3>
         <br>
         <p class="text-center">Étant un utilisateur de Let’s Work, vous avez le privilège de vous créer un compte de gestion d'entreprise d'où vous pourrez gérer toutes les futures interactions que vous aurez avec vos employés.</p>
@@ -224,7 +254,7 @@
     <div class="bgimg-3"></div>
 
     <div style="position:relative;">
-        <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
+        <div class="headerText" style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
             <h3 style="text-align:center;color: #ffffff;">Création de poste</h3>
             <br>
             <p>Ici, vous pourrez créer un poste à partir des compétences que vous aurez préalablement créées.  Ce poste peut être associé à un certain rôle de l'entreprise pour permettre aux futurs gestionnaires de votre entreprise d'accéder à différentes parties du site web, ce qui facilite la gestion des employés.</p>
@@ -233,7 +263,7 @@
 
     <div class="bgimg-4"></div>
 
-    <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+    <div class="headerText" style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
         <h3 style="text-align:center;">Création d'offre d'emploi</h3>
         <br>
         <p class="text-center">Après avoir créé le poste qu'un employé occupera, vous pourrez créer une offre d'emploi reliée à celui-ci.</p>
@@ -242,7 +272,7 @@
     <div class="bgimg-5"></div>
 
     <div style="position:relative;">
-        <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
+        <div class="headerText" style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
             <h3 style="text-align:center;color: #ffffff;">Demandes d'emploi</h3>
             <br>
             <p class="text-center">Lorsqu'un individu applique sur une des offres d'emploi, vous pourrez le voir dans la fenêtre des demandes d'emploi.  Vous pourrez voir le C.V. ainsi que les coordonnées de l'individu en question pour pouvoir facilement le rejoindre.</p>
@@ -251,7 +281,7 @@
 
     <div class="bgimg-6"></div>
 
-    <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+    <div class="headerText" style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
         <h3 style="text-align:center;">Dépôt du curriculum vitae</h3>
         <br>
         <p class="text-center">Vous pouvez facilement déposer votre C.V. sur le site web pour le transmettre aux entreprises de votre choix.  Le C.V. est à tout moment interchangeable.</p>
@@ -260,7 +290,7 @@
     <div class="bgimg-7"></div>
 
     <div style="position:relative;">
-        <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
+        <div class="headerText" style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
             <h3 style="text-align:center;color: #ffffff;">Donner ses Disponibilités</h3>
             <br>
             <p class="text-center">Lorsque vous serez engagé(e) dans une entreprise, n’oubliez pas de transmettre vos disponibilités de travail pour que votre patron puisse savoir quand vous pourrez travailler.</p>
@@ -269,7 +299,7 @@
 
     <div class="bgimg-8"></div>
 
-    <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+    <div class="headerText" style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
         <h3 style="text-align:center;">Périodes de travail</h3>
         <br>
         <p class="text-center">Vous pouvez ici voir combien d'heures vous avez travaillées durant la dernière semaine, le dernier mois ou la dernière année.  Toutes les périodes de travail sont aussi visibles clairement.</p>
@@ -278,7 +308,7 @@
     <div class="bgimg-9"></div>
 
     <div style="position:relative;">
-        <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
+        <div class="headerText" style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
             <h3 style="text-align:center;color: #ffffff;">Système de 'punch'</h3>
             <br>
             <p class="text-center">Vous pouvez facilement commencer votre chiffre de travail par l'onglet, "Mon Travail", situé dans la barre de menu horizontale.</p>
@@ -287,7 +317,7 @@
 
     <div class="bgimg-10"></div>
 
-    <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+    <div class="headerText" style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
         <h3 style="text-align:center;">Modifier le profil</h3>
         <br>
         <p class="text-center">Vous pouvez mettre une photo à votre profil pour permettre une meilleure reconnaissance lors des interactions sur le site web.  Par exemple, sur le chat et sur les nouvelles d'entreprises.</p>
@@ -296,7 +326,7 @@
     <div class="bgimg-11"></div>
 
     <div style="position:relative;">
-        <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
+        <div class="headerText" style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
             <h3 style="text-align:center;color: #ffffff;">Appliquer sur une offre d'emploi</h3>
             <br>
             <p class="text-center">Vous pouvez facilement appliquer sur une offre d'emploi si vous avez fourni votre CV.</p>
@@ -305,7 +335,7 @@
 
     <div class="bgimg-12"></div>
 
-    <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+    <div class="headerText" style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
         <h3 style="text-align:center;">Inscription</h3>
         <br>
         <p class="text-center">Il est très simple de s'inscrire en quelques secondes sur LetsWork</p>
@@ -314,7 +344,7 @@
     <div class="bgimg-13"></div>
 
     <div style="position:relative;">
-        <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
+        <div class="headerText" style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
             <h3 style="text-align:center;color: #ffffff;">Connexion</h3>
             <br>
             <p class="text-center">En entrant votre adresse courriel reliée à votre compte ainsi que votre mot de passe, vous pouvez facilement vous connecter à LetsWork.</p>
@@ -323,7 +353,7 @@
 
     <div class="bgimg-14"></div>
 
-    <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+    <div class="headerText" style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
         <h3 style="text-align:center;">Voir les offres d'emploi</h3>
         <br>
         <p class="text-center">En tant qu'utilisateur, il est très simple pour vous de voir les offres d'emploi.</p>
@@ -332,7 +362,7 @@
     <div class="bgimg-15"></div>
 
     <div style="position:relative;">
-        <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
+        <div class="headerText" style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
             <h3 style="text-align:center;color: #ffffff;">Voir les compagnies</h3>
             <br>
             <p class="text-center">Pour n'importe quel utilisateur, il est très simple de voir les compagnies présentes sur le site.</p>
@@ -341,7 +371,7 @@
 
     <div class="bgimg-16"></div>
 
-    <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+    <div class="headerText" style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
         <h3 style="text-align:center;">Voir les postes (Compagnie)</h3>
         <br>
         <p class="text-center">En tant que Compagnie, vous êtes en mesure de pouvoir consulter les postes de votre entreprise.</p>
@@ -350,7 +380,7 @@
     <div class="bgimg-17"></div>
 
     <div style="position:relative;">
-        <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
+        <div class="headerText" style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
             <h3 style="text-align:center;color: #ffffff;">Voir les disponibilités</h3>
             <br>
             <p class="text-center">En tant qu'employé d'une entreprise, vous pouvez voir les disponibilités que vous avez données.</p>
@@ -359,7 +389,7 @@
 
     <div class="bgimg-18"></div>
 
-    <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+    <div class="headerText" style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
         <h3 style="text-align:center;">Se déconnecter</h3>
         <br>
         <p class="text-center">En cliquant sur l'onglet de votre profil de la barre du haut, vous pouvez modifier votre profil ou vous déconnecter facilement.</p>
@@ -368,15 +398,15 @@
     <div class="bgimg-19"></div>
 
     <div style="position:relative;">
-        <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
+        <div class="headerText" style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
             <h3 style="text-align:center;color: #ffffff;">Fin</h3>
             <br>
-            <p class="text-center">Voilà! C'était la documentation de LetsWork. Si vous avez besoin de plus de détails, n'hésitez pas à nous écrire au <a href="mailto:support@letswork.com">support@letswork.com</a>.</p>
+            <p class="text-center">Voilà! C'était la documentation de LetsWork. Si vous avez besoin de plus de détails, n'hésitez pas à nous écrire au <a style="text-decoration: none; color: #9171d6 !important" href="mailto:support@letswork.com">support@letswork.com</a>.</p>
         </div>
     </div>
 
     <div class="header-img">
-        <div class="caption">
+        <div class="caption headerText">
             <a href="{{route('information.aboutus')}}" style="text-decoration: none"><span class="fa fa-arrow-left"></span>Revenir à la page À Propos</a>
                 <br>
                 <br>

@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Session;
 
 class PunchController extends BaseController
 {
@@ -19,7 +20,7 @@ class PunchController extends BaseController
      */
     public function add()
     {
-        $lastpunch = self::CEmployee()->punches()->where([['dateend', null], ['company_id', $this->CCompany()->id]])->get();
+        $lastpunch = self::CEmployee()->punches()->where([['dateend', null], ['company_id', self::CCompany()->id]])->get();
         if ($lastpunch->count() > 0) {
             $lastpunch->first()->dateend = Carbon::now();
             $lastpunch->first()->update();
@@ -27,23 +28,46 @@ class PunchController extends BaseController
         } else {
             Punch::create([
                 "datebegin" => Carbon::now(),
-                "employee_id" => $this->CEmployee()->id,
-                "company_id" => $this->CCompany()->id,
+                "employee_id" => self::CEmployee()->id,
+                "company_id" => self::CCompany()->id,
             ]);
             return 1;
         }
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
-        $punches = $this->CEmployee()->punches()->where("company_id", $this->CCompany()->id)->paginate(5);
-        return view("punch.index", compact('punches'));
+        //session()->forget('sortPunches');
+        if (Session::has('sortPunches')) {
+            $sesh = session('sortPunches');
+            if ($sesh['column'] === 'duration') {
+                $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(10);
+            } else {
+                $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'],$sesh['order'])->paginate(10);
+            }
+        } else {
+            $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->paginate(5);
+            $sesh = [];
+        }
+        return view("punch.index", compact('punches','sesh'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sort(Request $request)
+    {
+        session(['sortPunches' => $request->all()]);
+        return redirect()->action('PunchController@index');
     }
 
     public function lastweek()
     {
         $moyenne=[];
-
         $data = [
             "labels" => $this->getlastweek(Carbon::today()),
             "datasets" =>

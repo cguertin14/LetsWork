@@ -130,7 +130,7 @@ trait Helper
     public function getJobOfferUserById($id)
     {
         $jobofferuser = null;
-        $jobOffers = $this->CCompany()->joboffers()->get();
+        $jobOffers = self::CCompany()->joboffers()->get();
         foreach ($jobOffers as $joboffer) {
             if ($joboffer->users) {
                 foreach ($joboffer->users as $user)
@@ -163,7 +163,7 @@ trait Helper
         return !$bool ? "Commencer à travailler" : "Terminer de travailler";
     }
 
-    public static function getlastweek($today)
+    public static function getlastweek(Carbon $today)
     {
         $lastweek=[];
         $i=5;
@@ -180,7 +180,7 @@ trait Helper
         return $lastweek;
     }
 
-    public function getlastweekdates($today)
+    public function getlastweekdates(Carbon $today)
     {
         $lastweek=[];
         $i=5;
@@ -197,7 +197,7 @@ trait Helper
         return $lastweek;
     }
 
-    public function getDaySum($day)
+    public function getDaySum(Carbon $day)
     {
         //$punches=$this->CEmployee()->punches()->where([['datebegin','>=',new Carbon($day)],['datebegin','<=',new Carbon($day->tomorrow())],['company_id',$this->CCompany()->id]])->get();
         $punches=$this->CEmployee()->punches()->whereBetween('datebegin',[new Carbon($day),new Carbon($day->addDay())])->where('company_id',$this->CCompany()->id)->get();
@@ -221,7 +221,7 @@ trait Helper
         return $averages;
     }
 
-    public function getLast4WeekDates($today)
+    public function getLast4WeekDates(Carbon $today)
     {
         $s4Week=[];
         $i=5*4;
@@ -242,7 +242,7 @@ trait Helper
         // var_dump($s4weeksums);
         return $s4Week;
     }
-    public function getLastYearsDates($today)
+    public function getLastYearsDates(Carbon $today)
     {
         $years=[];
         $i=5*4*12;
@@ -302,7 +302,7 @@ trait Helper
      */
     public function getCurrentSchedule()
     {
-        return $this->CCompany()->schedules()
+        return self::CCompany()->schedules()
                                ->where('begin', '<=', Carbon::now())
                                ->where('end'  , '>=', Carbon::now())
                                ->first();

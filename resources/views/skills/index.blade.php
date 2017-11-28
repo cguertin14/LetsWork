@@ -10,40 +10,42 @@
 
 @section('content')
 
-    <h1 class="page-title">Toutes les compétences</h1>
-    <hr class="separator">
+    <div  style="width:85%;margin-left: auto;margin-right: auto">
+        <h1 class="page-title">Toutes les compétences</h1>
+        <hr class="separator">
+    </div>
 
     <div class="layout">
         <div class="col-md-12">
             @if (count($skills) > 0)
                 <div class="centre custom-container">
-                <table id="table" class="table custom-table" style="margin: 0px !important;">
-                    <thead>
-                    <tr class="section-title">
-                        <th>Nom <span id="nameSort" v-on:click="sortName()" class="sort"></span></th>
-                        <th>Description <span id="descriptionSort" v-on:click="sortDescription()" class="sort"></span></th>
-                    </tr>
-                    </thead>
-                    <tbody class="section">
-                    @if($skills)
-                        @php($i = 0)
-                        @foreach($skills as $skill)
-                            <tr class="clickable-section @if ($i % 2 == 0 ) section-index-2 @else section-index @endif" data-href="{{route('skill.edit',$skill->slug)}}">
-                                <td>{{$skill->name}}</td>
-                                <td>{{$skill->description}}</td>
-                            </tr>
-                            @php(++$i)
-                        @endforeach
-                    @endif
-                    </tbody>
-                </table>
+                    <table id="table" class="table custom-table" style="margin: 0px !important;">
+                        <thead>
+                        <tr class="section-title">
+                            <th>Nom <span id="nameSort" v-on:click="sortName()" class="sort"></span></th>
+                            <th>Description <span id="descriptionSort" v-on:click="sortDescription()" class="sort"></span></th>
+                        </tr>
+                        </thead>
+                        <tbody class="section">
+                        @if($skills)
+                            @php($i = 0)
+                            @foreach($skills as $skill)
+                                <tr class="clickable-section @if ($i % 2 == 0 ) section-index-2 @else section-index @endif" data-href="{{route('skill.edit',$skill->slug)}}">
+                                    <td>{{$skill->name}}</td>
+                                    <td>{{$skill->description}}</td>
+                                </tr>
+                                @php(++$i)
+                            @endforeach
+                        @endif
+                        </tbody>
+                    </table>
 
-                <div class="row">
-                    <div class="text-center">
-                        {{$skills->render('pagination.paginate')}}
+                    <div class="row">
+                        <div class="text-center">
+                            {{$skills->render('pagination.paginate')}}
+                        </div>
                     </div>
                 </div>
-            </div>
             @else
                 @component('components.nothing')
                     @slot('message')

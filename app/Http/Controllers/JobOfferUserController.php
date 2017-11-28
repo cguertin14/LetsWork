@@ -34,14 +34,22 @@ class JobOfferUserController extends BaseController
         if (Session::has('sortJobOfferUsers')) {
             $sesh = session('sortJobOfferUsers');
             if ($sesh['column'] === 'fullname') {
-                $jobofferusers = (new Collection($this->getJobOfferUsersSortedByName($sesh['order'])))->paginate(10);
+                $jobofferusers = (new Collection($this->getJobOfferUsersSortedByName($sesh['order'])))->reject(function ($item) {
+                    return is_null($item);
+                })->paginate(10);
             } else if ($sesh['column'] === 'poste') {
-                $jobofferusers = (new Collection($this->getJobOfferUsersSortedByPoste($sesh['order'])))->paginate(10);
+                $jobofferusers = (new Collection($this->getJobOfferUsersSortedByPoste($sesh['order'])))->reject(function ($item) {
+                    return is_null($item);
+                })->paginate(10);
             } else {
-                $jobofferusers = (new Collection($this->getJobOfferUsers()))->sortBy($sesh['column'],$sesh['order'] === 'ASC' ? SORT_ASC : SORT_DESC,$sesh['order'] === 'ASC' ? false : true)->paginate(10);
+                $jobofferusers = (new Collection($this->getJobOfferUsers()))->sortBy($sesh['column'],$sesh['order'] === 'ASC' ? SORT_ASC : SORT_DESC,$sesh['order'] === 'ASC' ? false : true)->reject(function ($item) {
+                    return is_null($item);
+                })->paginate(10);
             }
         } else {
-            $jobofferusers = (new Collection($this->getJobOfferUsers()))->paginate(10);
+            $jobofferusers = (new Collection($this->getJobOfferUsers()))->reject(function ($item) {
+                return is_null($item);
+            })->paginate(10);
             $sesh = [];
         }
         return view('jobofferuser.index',compact('jobofferusers','sesh'));

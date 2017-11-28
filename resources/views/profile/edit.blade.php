@@ -8,6 +8,15 @@
         .dropzone {
             background-color: #c9c9c9 !important;
         }
+        .employee > p {
+            font-family: 'Montserrat',sans-serif;
+        }
+        .form-group > label {
+            font-family: 'Montserrat',sans-serif;
+        }
+        .footer {
+            position: relative;
+        }
     </style>
 @endsection
 
@@ -22,29 +31,33 @@
                 <p>{{ $user->fullname }}</p>
             </div>
             <br>
-            <div class="col-md-12">
-                <div class="centre">
-                    {!! Form::open(['method' => 'PATCH', 'action' => 'ProfileController@uploadphoto', 'class' => 'dropzone','id' => 'files']) !!}
-                    <div class="text-center">
-                        <div class="row dz-default dz-message">
-                            <img src="{{asset('image/purple_plus.png')}}" width="10%" height="10%" alt="">
-                        </div>
-                        <div class="row dz-default dz-message">
-                            <strong>Changer la photo de profil</strong>
+        </div>
+        <div class="col-md-12">
+            <div class="centre custom-table custom-container" style="padding: 5px;margin-bottom: 20px;">
+                <div class="row" style="margin: 2em">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            {!! Form::open(['method' => 'PATCH', 'action' => 'ProfileController@uploadphoto', 'class' => 'dropzone','id' => 'files']) !!}
+                            <div class="text-center">
+                                <div class="row dz-default dz-message">
+                                    <img src="{{asset('image/purple_plus.png')}}" width="10%" height="10%" alt="">
+                                </div>
+                                <div class="row dz-default dz-message">
+                                    <strong style="font-family: 'Montserrat',sans-serif">Changer la photo de profil</strong>
+                                </div>
+                            </div>
+                            {!! Form::close() !!}
                         </div>
                     </div>
-                    {!! Form::close() !!}
+                    <br>
+                    <br>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-12" style="margin-top: 5%;">
-            <div class="centre">
                 {!! Form::model($user,['method' => 'PATCH', 'action' => ['ProfileController@update', $user->slug]])!!}
-                    <div class="row">
+                    <div class="row" style="margin: 2em">
                         <div class="col-md-6">
                             <div class="form-group">
                                 {!! Form::label('first_name', 'Prénom', ['class' => 'section-title']) !!}
-                                {!! Form::text('first_name', null, ['class' => 'form-control']) !!}
+                                {!! Form::text('first_name', null, ['class' => 'form-control','placeholder' => 'Prénom'] ) !!}
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -55,7 +68,7 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row"  style="margin: 2em">
                         <div class="col-md-6">
                             <div class="form-group">
                                 {!! Form::label('email', 'Adresse Courriel', ['class' => 'section-title']) !!}
@@ -70,15 +83,19 @@
                         </div>
                     </div>
 
-                    <div>
-                        {!! Form::submit('Modifier le profil', ['class' => 'btn purplebtn pull-left']) !!}
+                    <div class="row"  style="margin: 2em">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                {!! Form::submit('Modifier le profil', ['class' => 'btn purplebtn pull-left']) !!}
+                                {!! Form::close() !!}
+
+                                {!! Form::open(['method' => 'DELETE','action' => ['ProfileController@deleteuser',$user->slug]]) !!}
+                                {!! Form::submit('Supprimer le profil', ['class' => 'btn btn-danger pull-right confirm_action','c_m_text' => 'Voulez-vous vraiment supprimer cet élément?', 'style' => 'font-size: 17px !important;']) !!}
+                                {!! Form::close() !!}
+                            </div>
+                        </div>
                     </div>
 
-                {!! Form::close() !!}
-
-                {!! Form::open(['method' => 'DELETE','action' => ['ProfileController@deleteuser',$user->slug]]) !!}
-                        {!! Form::submit('Supprimer le profil', ['class' => 'btn btn-danger pull-right confirm_action','c_m_text' => 'Voulez-vous vraiment supprimer cet élément?', 'style' => 'font-size: 17px !important;']) !!}
-                {!! Form::close() !!}
             </div>
         </div>
     </div>

@@ -23,24 +23,8 @@ class BaseController extends Controller
     use Helper;
 
     /**
+     * Sort method to allow Controllers to sort their data.
      * @param Request $request
      */
     public function sort(Request $request) {}
-
-    /**
-     * @param $perPage
-     * @param null $total
-     * @param null $page
-     * @param string $pageName
-     * @return LengthAwarePaginator
-     */
-    public function paginate( $perPage, $total = null, $page = null, $pageName = 'page' )
-    {
-        $page = $page ?: LengthAwarePaginator::resolveCurrentPage( $pageName );
-
-        return new LengthAwarePaginator( $this->forPage( $page, $perPage ), $total ?: $this->count(), $perPage, $page, [
-            'path' => LengthAwarePaginator::resolveCurrentPath(),
-            'pageName' => $pageName,
-        ]);
-    }
 }

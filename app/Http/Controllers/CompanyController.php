@@ -11,9 +11,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-class CompanyController extends Controller {
+class CompanyController extends BaseController {
+    /**
+     * CompanyController constructor.
+     */
 	public function __construct() {
-		$this->middleware('auth', ['except' => ['index', 'show']]);
+		$this->middleware('auth', ['except' => ['index', 'show','cpage','sort','sortCompanies']]);
 	}
 	/**
 	 * Display a listing of the resource.
@@ -21,9 +24,41 @@ class CompanyController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		$compagnies = Company::all();
-		return view("company.index", compact('compagnies'));
+		if (Session::has('sortCompanies')) {
+            $sesh = session('sortCompanies');
+            $compagnies = Company::orderBy($sesh['column'],$sesh['order'])->get();
+        } else {
+            $compagnies = Company::all();
+		    $sesh = [];
+        }
+		return view("company.index", compact('compagnies','sesh'));
 	}
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function cpage(Request $request) {
+        $page = $request->input('page');
+        $name = $request->input('name');
+        if (Session::has('sortCompanies')) {
+            $sesh = session('sortCompanies');
+            $data = Company::orderBy($sesh['column'],$sesh['order'])
+                            ->where('description','like', "%". $name ."%")
+                            ->orWhere('name', 'like',"%". $name ."%")
+                            ->forPage($page, 5)
+                            ->get();
+        } else {
+            $data = Company::where('description','like', "%". $name ."%")
+                            ->orWhere('name', 'like',"%". $name ."%")
+                            ->forPage($page, 5)
+                            ->get();
+        }
+        return response()->json([
+            'data' => $data,
+            'canloadmore' => $data->count() > 0]
+        );
+    }
 
 	/**
 	 * Show the form for creating a new resource.
@@ -38,12 +73,10 @@ class CompanyController extends Controller {
 		return view('company.create', compact('companyTypes'));
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request $request
-	 * @return \Illuminate\Http\Response
-	 */
+    /**
+     * @param CreateCompanyRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
 	public function store(CreateCompanyRequest $request) {
 		$data = $request->all();
         $data['user_id'] = Auth::user()->id;
@@ -54,7 +87,7 @@ class CompanyController extends Controller {
 
 		$company = Company::create($data);
         session(['CurrentCompany' => $company]);
-		$employee = $company->employees()->create(['user_id' => Auth::user()->id]);
+		$company->employees()->create(['user_id' => Auth::user()->id]);
 
 		$request->session()->forget('CompanyPhoto');
 		return redirect('/');
@@ -63,39 +96,60 @@ class CompanyController extends Controller {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  string $name
+	 * @param  string $slug
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show($name) {
-		$data = Company::all()->where('name', '=', $name)->first();
+	public function show($slug) {
+		$data = Company::findBySlugOrFail($slug);
 		if ($data == null) {
 			return redirect("company/index");
 		}
-		$joboffers = $data->joboffers;
-		return view('company.show', compact(['data', 'joboffers']));
+		if (Session::has('sortCompany')) {
+		    $sesh = session('sortCompany');
+            $joboffers = $data->joboffers()->orderBy($sesh['column'],$sesh['order'])->paginate(5);
+        } else {
+            $joboffers = $data->joboffers()->paginate(5);
+            $sesh = [];
+        }
+		return view('company.show', compact(['data', 'joboffers','sesh']));
 	}
 
-	/**
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+	public function sort(Request $request)
+    {
+        session(['sortCompany' => $request->all()]);
+        return redirect()->action(
+            'CompanyController@show',['slug' => $request->get('slug')]
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sortCompanies(Request $request)
+    {
+        session(['sortCompanies' => $request->all()]);
+        return redirect()->action('CompanyController@index');
+    }
+
+    /**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  string $name
+	 * @param  string $slug
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit($name) {
-		$data = Company::all()->where('name', '=', $name)->first();
-		if ($data == null) {
-			return redirect()->back();
-		}
+	public function edit($slug) {
+		$data = Company::findBySlugOrFail($slug);
 
-		if ($data['user_id'] != Auth::id()) /////// Auth::id() ??? --> Auth::user()->id
-		{
-			return redirect()->back();
-		}
-
-		$companyTypes = array();
+		$companyTypes = [];
 		foreach (CompanyType::all() as $item) {
-			$companyTypes[$item['id']] = $item['content'];
+			$companyTypes[$item->id] = $item->content;
 		}
+
 		return view('company.edit2', compact(['data', 'companyTypes']));
 	}
 

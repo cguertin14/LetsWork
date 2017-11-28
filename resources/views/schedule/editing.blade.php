@@ -89,13 +89,18 @@
     .modal-backdrop {
         background-color: rgba(255,255,255,0.5);
     }
+    .footer {
+        position: relative;
+    }
 </style>
 @endsection
 
 @section('content')
 
-<h1 class="page-title text-center">Modifier le calendrier</h1>
-<hr class="separator">
+    <div  style="width:85%;margin-left: auto;margin-right: auto">
+        <h1 class="page-title">Modifier le calendrier</h1>
+        <hr class="separator">
+    </div>
 
 <div class="modal fade" id="createScheduleModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div class="modal fade" id="createEventModal" tabindex="-1" role="dialog" aria-hidden="true"></div>

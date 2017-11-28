@@ -1,0 +1,2 @@
+1- if session contains 'namesSorted' or 'citiesSorted' add to session stuff
+2- else build session normally

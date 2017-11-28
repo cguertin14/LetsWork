@@ -8,13 +8,18 @@
         .list-group-item {
             background-color: #8c8c8c !important;
         }
+        .footer {
+            position: relative;
+        }
     </style>
 @endsection
 
 @section('content')
 
-    <h1 class="page-title">Toutes les offres d'emplois</h1>
-    <hr class="separator">
+    <div  style="width:85%;margin-left: auto;margin-right: auto">
+        <h1 class="page-title">Toutes les offres d'emplois</h1>
+        <hr class="separator">
+    </div>
 
     <div class="col-md-12">
         <div class="row layout">
@@ -73,7 +78,15 @@
                                 </div>
                                 {!! Form::close() !!}
                             </td>
-                            <td id="space" @if (! array_key_exists('cities',$sesh) && ! array_key_exists('names',$sesh)) style="display: none" @endif></td>
+                            <td id="space" @if (! array_key_exists('cities',$sesh) && ! array_key_exists('names',$sesh)) style="display: none" @endif>
+                                @if (array_key_exists('cities',$sesh) || array_key_exists('names',$sesh))
+                                {!! Form::open(['method' => 'POST','action' => 'JobOfferController@unsort']) !!}
+                                <div class="form-group" style="margin: 0">
+                                    {!! Form::submit('Réinitialiser',['class' => 'btn btn-danger pull-right','style' => 'font-size:17px !important']) !!}
+                                </div>
+                                {!! Form::close() !!}
+                                @endif
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -251,7 +264,7 @@
                     $('#sortRow').stop().slideUp(1200);
                 },
                 showCities: function() {
-                    $('#space').toggle();
+                    $('#space').fadeIn();
                     // Show new Select with cities in it
                     if ($('#sortRow').is(':visible')) {
                         if ($('#names').is(':visible')) {
@@ -273,7 +286,7 @@
                     }
                 },
                 showCompanies: function () {
-                    $('#space').toggle();
+                    $('#space').fadeIn();
                     // Show new Select with companies in it
                     if ($('#sortRow').is(':visible')) {
                         if ($('#cities').is(':visible')) {
@@ -312,13 +325,13 @@
                     @if (array_key_exists('order',$sesh))
                         @if (count($sesh) > 0)
                             let order = '{{$sesh['order']}}';
-                            @if ($sesh['column'] === 'name')
+                            @if ($sesh['column'] === 'names,name' || $sesh['column'] === 'name' || $sesh['column'] === 'cities,name')
                                 $('#titleSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
-                            @elseif ($sesh['column'] === 'companyName')
+                            @elseif (strpos($sesh['column'],'companyName') !== false)
                                 $('#companySort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
-                            @elseif ($sesh['column'] === 'companyCity')
+                            @elseif (strpos($sesh['column'],'companyCity') !== false)
                                 $('#citySort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
-                            @elseif ($sesh['column'] === 'created_at')
+                            @elseif (strpos($sesh['column'],'created_at') !== false)
                                 $('#publicationSort').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
                             @endif
                         @endif
@@ -375,12 +388,6 @@
             },
             created: function () {
                 this.init();
-            },
-            updated: function () {
-
-            },
-            mounted: function () {
-
             }
         });
     </script>

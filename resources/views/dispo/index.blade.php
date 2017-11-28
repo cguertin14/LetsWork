@@ -13,13 +13,15 @@
 @endsection
 
 @section('content')
-    <h1 class="title-absence white">Liste de mes disponibilités</h1>
-    <hr class="separator">
+    <div  style="width:85%;margin-left: auto;margin-right: auto">
+        <h1 class="page-title">Liste de mes disponibilités</h1>
+        <hr class="separator">
+    </div>
     <div class="col-md-12">
         <div class="row layout">
             @if (count($dispos) > 0)
             <div class="centre custom-container">
-                <table id="table" class="table custom-table">
+                <table id="table" class="table custom-table" style="margin: 0">
                     <thead>
                     <tr class="section-title">
                         <th>Date de début <span v-on:click="sortBegin()" id="beginSort" class="sort"></span></th>
@@ -32,7 +34,7 @@
                     @foreach($dispos as $dispo)
                         @php($begin=\Carbon\Carbon::parse($dispo->begin))
                         @php($end=\Carbon\Carbon::parse($dispo->end))
-                        <tr class="@if ($i % 2 == 0 ) section-index-2 @else section-index @endif">
+                        <tr class="@if ($i % 2 == 0 ) section-index-2 @else section-index @endif" style="cursor: default">
                             <td>{{\App\Tools\Helper::Day($begin)." à ".$begin->hour.":".$begin->minute.":".$begin->second}}</td>
                             <td>{{\App\Tools\Helper::Day($end)." à ".$end->hour.":".$end->minute.":".$end->second}}</td>
                             <td>
@@ -66,6 +68,7 @@
 @endsection
 
 @section('scripts')
+    @if (count($dispos) > 0)
     <script>
         new Vue({
             el: '#table',
@@ -123,4 +126,5 @@
             }
         });
     </script>
+    @endif
 @endsection
