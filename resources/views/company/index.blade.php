@@ -3,7 +3,7 @@
 @section('styles')
     <style>
         .ele {
-            height: 20em;
+            height: 15em;
         }
         [v-cloak] {
             display: none;
@@ -26,8 +26,8 @@
         </div>
         <br>
         <div class="row">
-            <div class="ele col-md-4" v-for="c in company" style="background-color: #e6e6e6">
-                <a v-bind:href="'company/'+c.name" class="btn btn-primary purplebtn" role="button" style="width: 100%">@{{
+            <div class="col-md-4" v-for="c in company" style="background-color: #e6e6e6; overflow: hidden;padding-top:1em;;">
+                <a v-bind:href="'company/'+c.name" class="btn btn-primary purplebtn" role="button" style="width: 100%;">@{{
                     c.name }}</a>
                 <description :desc="c.description"></description>
             </div>
@@ -43,7 +43,7 @@
     <script>
         Vue.component("description", {
             props: ["desc"],
-            template: "<p v-html='desc'></p>"
+            template: "<p v-html='desc' class='ele' style='padding:1em;margin-bottom:2em;overflow: hidden;'></p>"
         });
 
         new Vue({

@@ -13,6 +13,7 @@
 
 /* Other Routes */
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -34,44 +35,44 @@ Route::resource('company', 'CompanyController');
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
-	/* Profile Routes */
-	Route::get('/profile/{slug}', 'ProfileController@view')->name('profile.view');
+    /* Profile Routes */
+    Route::get('/profile/{slug}', 'ProfileController@view')->name('profile.view');
     Route::get('/profile/{slug}/edit', 'ProfileController@edit')->name('profile.edit');
 	Route::patch('/profile/{slug}/update', 'ProfileController@update')->name('profile.update');
 	Route::patch('/profile/uploadphoto', 'ProfileController@uploadphoto')->name('profile.uploadphoto');
 	Route::get('/profile/{slug}/photo', 'ProfileController@photo')->name('profile.photo');
 	Route::delete('/profile/{slug}/delete', 'ProfileController@deleteuser')->name('profile.delete');
 
-	/* Company Routes */
-	Route::post('/company/{slug}/select', 'CompanyController@select')->name('company.select');
-	Route::post('/company/uploadphoto', 'CompanyController@uploadphoto')->name('company.uploadphoto');
+    /* Company Routes */
+    Route::post('/company/{slug}/select', 'CompanyController@select')->name('company.select');
+    Route::post('/company/uploadphoto', 'CompanyController@uploadphoto')->name('company.uploadphoto');
 
-	/* Absence Routes */
-	Route::resource('absence', 'AbsenceController');
+    /* Absence Routes */
+    Route::resource('absence', 'AbsenceController');
 
-	/* Special Roles Routes */
-	Route::resource('specialrole', 'SpecialRoleController');
+    /* Special Roles Routes */
+    Route::resource('specialrole', 'SpecialRoleController');
 
-	/* Dispo Routes */
-	Route::resource('dispo', 'DispoController');
+    /* Dispo Routes */
+    Route::resource('dispo', 'DispoController');
 
-	/* Skills Routes */
-	Route::resource('skill', 'SkillController');
+    /* Skills Routes */
+    Route::resource('skill', 'SkillController');
 
-	/* Cv Routes */
-	Route::get('/cv/create', 'CvController@create')->name('cv.create');
-	Route::get('/cv', 'CvController@getAuthCv')->name('cv.get');
-	Route::post('/cv/store', 'CvController@store')->name('cv.store');
+    /* Cv Routes */
+    Route::get('/cv/create', 'CvController@create')->name('cv.create');
+    Route::get('/cv', 'CvController@getAuthCv')->name('cv.get');
+    Route::post('/cv/store', 'CvController@store')->name('cv.store');
 
-	/* JobOffer Routes (suite...) */
-	Route::post('/joboffer/{slug}/apply', 'JobOfferController@apply')->name('joboffer.apply');
+    /* JobOffer Routes (suite...) */
+    Route::post('/joboffer/{slug}/apply', 'JobOfferController@apply')->name('joboffer.apply');
 
-	/* JobOfferUser Routes */
-	Route::get('/jobofferuser', 'JobOfferUserController@index')->name('jobofferuser.index');
-	Route::get('/jobofferuser/{id}', 'JobOfferUserController@show')->name('jobofferuser.show');
-	Route::post('/jobofferuser/{id}/accept', 'JobOfferUserController@accept')->name('jobofferuser.accept');//->middleware('manager');
-	Route::post('/jobofferuser/{id}/interview', 'JobOfferUserController@interview')->name('jobofferuser.interview');//->middleware('manager');
-	Route::delete('/jobofferuser/{id}/refuse', 'JobOfferUserController@refuse')->name('jobofferuser.refuse');
+    /* JobOfferUser Routes */
+    Route::get('/jobofferuser', 'JobOfferUserController@index')->name('jobofferuser.index');
+    Route::get('/jobofferuser/{id}', 'JobOfferUserController@show')->name('jobofferuser.show');
+    Route::post('/jobofferuser/{id}/accept', 'JobOfferUserController@accept')->name('jobofferuser.accept'); //->middleware('manager');
+    Route::post('/jobofferuser/{id}/interview', 'JobOfferUserController@interview')->name('jobofferuser.interview'); //->middleware('manager');
+    Route::delete('/jobofferuser/{id}/refuse', 'JobOfferUserController@refuse')->name('jobofferuser.refuse');
 
 	/* Schedule Routes */
 	Route::get('/schedule/week/{datebegin}', 'ScheduleController@week')->name('schedule.week');
@@ -81,24 +82,51 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/schedule/employees/{specialrole}', 'ScheduleController@getEmployees')->name('schedule.employees');
 	Route::resource('/schedule', 'ScheduleController');
 
-	/* Punch Routes */
-	Route::post('/punch', 'PunchController@add');
-	Route::get('/punches', 'PunchController@index')->name('punch');
-	Route::get('/punches/lastweek', 'PunchController@lastweek');
-	Route::get('/punches/lastmouth', 'PunchController@lastmouth');
-	Route::get('/punches/lastyear', 'PunchController@lastyear');
+    /* Punch Routes */
+    Route::post('/punch', 'PunchController@add');
+    Route::get('/punches', 'PunchController@index')->name('punch');
+    Route::get('/punches/lastweek', 'PunchController@lastweek');
+    Route::get('/punches/lastmouth', 'PunchController@lastmouth');
+    Route::get('/punches/lastyear', 'PunchController@lastyear');
 
-	/* Other Routes */
-	Route::get('/isauthmanager', 'OtherController@userIsManager');
+    /* Other Routes */
+    Route::get('/isauthmanager', 'OtherController@userIsManager');
 });
 
 Route::get('/fire', function () {
-	// this fires the event
-	event(new App\Events\ChatEvent());
-	return "event fired";
+    // this fires the event
+    event(new App\Events\ChatEvent());
+    return "event fired";
 });
 
+Route::get('/chat', function () {
+    // this checks for the event
+    return view('chat.index');
+})->name('chat');
+
 Route::get('/test', function () {
-	// this checks for the event
-	return view('chat.index');
+    $json = [];
+    try {
+        $redis = new \Predis\Client('localhost:6379');
+        foreach (\App\Session::connectedUsers() as $session) {
+            array_push($json, $session->user->email);
+        }
+        $redis->set('OnlineUsers', \GuzzleHttp\json_encode($json));
+    } catch (Exception $e) {
+        die($e->getMessage());
+    }
+    return \GuzzleHttp\json_encode($json);
+});
+
+Route::post('/savemessages', function (Request $request) {
+    \App\Message::create([
+        'sender_id' => \App\User::where('email', '=', $request->input('message.sender.email'))->first()->id,
+        'receiver_id' => \App\User::where('email', '=', $request->input('message.receiver.email'))->first()->id,
+        'content' => $request->input('message.message'),
+    ]);
+});
+
+Route::get('/lastmessages', function () {
+    $allm = \App\Message::where('sender_id', '=', Auth::id())->orWhere('receiver_id', '=', Auth::id())->with(['sender:id,name,email', 'receiver:id,name,email'])->get();
+    return  $allm->toJson();
 });
