@@ -48,9 +48,25 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:users',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:7|max:30|regex:/^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{7,30}$.*$/|confirmed',
+            'password_confirmation' => 'required|min:7|max:30'
+        ], [
+            'name.required' => 'Le nom d\'usager est nécessaire.',
+            'email.required' => 'L\'adresse email est nécessaire.',
+            'password.required' => 'Le mot de passe est nécessaire.',
+            'password_confirmation.required' => 'Le mot de passe de confirmation est nécessaire.',
+            'name.max' => 'Le nom d\'usager peut contenir un maximum de 255 caractères.',
+            'email.max' => 'L\'adresse email peut contenir un maximum de 255 caractères.',
+            'password.max' => 'Le mot de passe peut contenir un maximum de 255 caractères.',
+            'password_confirmation.max' => 'Le mot de passe de confirmation peut contenir un maximum de 255 caractères.',
+            'name.unique' => 'Le nom d\'usager est déjà pris.',
+            'email.unique' => 'L\'adresse courriel est déjà prise.',
+            'password.min' => 'Le mot de passe doit contenir au minimum 7 caractères.',
+            'password_confirmation.min' => 'Le mot de passe doit contenir au minimum 7 caractères.',
+            'password.regex' => 'Le mot de passe doit contenir une majuscule, 7 caractères au minimum et maximum 30 caractères.',
+            'password.confirmed' => 'Le mot de passe de confirmation doit être identique au mot de passe.'
         ]);
     }
 

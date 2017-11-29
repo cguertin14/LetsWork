@@ -62,7 +62,7 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             {!! Form::label('telephone', 'Téléphone',['class' => 'section-title']) !!}
-                            {!! Form::text('telephone', null, ['class' => 'form-control','placeholder' => 'Téléphone','required']) !!}
+                            {!! Form::text('telephone', null, ['class' => 'form-control phone-number','placeholder' => 'Téléphone','required']) !!}
                         </div>
                     </div>
                 </div>
