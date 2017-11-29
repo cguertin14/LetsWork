@@ -219,7 +219,7 @@
                         <a href="mailto:charlesguertin@live.ca" class="fa fa-envelope"></a>
                         <br>
                         <br>
-                        <p>Je suis un jeune développeur de 19 ans passionné d'informatique. J'adore apprendre de nouvelles technologies, utiliser des environnements de travail rapides, travailler en temps réel (Client/Serveur). Travailler en équipe et bien communiquer est une priorité pour moi, car sinon, un projet ne peut pas avoir de succès. Mon but principal est de toujours me dépasser afin d'être le meilleur développeur possible.</p>
+                        <p>Je suis un jeune développeur passionné d'informatique. J'adore apprendre de nouvelles technologies, utiliser des environnements de travail rapides, travailler en temps réel (Client/Serveur). Travailler en équipe et bien communiquer est une priorité pour moi, car sinon, un projet ne peut pas avoir de succès. Mon but principal est de toujours me dépasser afin d'être le meilleur développeur possible.</p>
                     </div>
                     <div class="col-lg-4 col-sm-6 text-center mb-4 headerText" style="margin: 0 auto;">
                         <img class="rounded-circle img-fluid d-block mx-auto"  height="300" width="300"  src="{{asset('image/ludo.jpg')}}" alt="">
@@ -230,7 +230,7 @@
                         <a href="mailto:ludovic.lachance@gmail.com" class="fa fa-envelope"></a>
                         <br>
                         <br>
-                        <p>Ludovic Lachance. 21 ans. Étudiant en informatique depuis 3 ans, j'ai appris à maîtriser plusieurs languages me permettant d'imbriquer dans un projet plusieurs parties écrites avec des techniques différentes communiquantes de façon asynchrome en temps réel. J'adore l'informatique, car ça me permet de comprendre le monde qui m'entoure de façons plus précises.</p>
+                        <p>Ludovic Lachance. Étudiant en informatique depuis 3 ans, j'ai appris à maîtriser plusieurs languages me permettant d'imbriquer dans un projet plusieurs parties écrites avec des techniques différentes communiquantes de façon asynchrome en temps réel. J'adore l'informatique, car ça me permet de comprendre le monde qui m'entoure de façons plus précises.</p>
                     </div>
                     <div class="col-lg-4 col-sm-6 text-center mb-4 headerText" style="margin: 0 auto;">
                         <img class="rounded-circle img-fluid d-block mx-auto"  height="300" width="300" src="{{asset('image/phil.jpg')}}" alt="">
