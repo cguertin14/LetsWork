@@ -16,7 +16,9 @@ class CheckHighRanked
      */
     public function handle($request, Closure $next)
     {
-        if (Helper::CIsHighRanked()) {
+        if (Helper::CCompany() == null) {
+            return redirect('/');
+        } else if (Helper::CIsHighRanked()) {
             return $next($request);
         } else {
             return redirect()->back();

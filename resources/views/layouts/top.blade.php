@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="viewport" content="width=device-width" />
         <link rel="icon" href="{{asset('image/lw.png')}}" type="image/png">
 
         <title>LetsWork @yield('title')</title>
@@ -12,6 +13,7 @@
         <link href="{{asset('css/app.css')}}" rel="stylesheet">
         <style>
             .footer {
+                visibility: hidden;
                 position: absolute;
                 bottom: 0;
                 width: 100%;
@@ -29,7 +31,7 @@
 
         {{--<!-- Site footer -->--}}
         <footer class="footer">
-            <div class="pull-right" style="margin-right: 2em">
+            <div class="text-center">
                 <span style="color: white;font-family: Ubuntu,sans-serif;font-weight: 500">© Confidentialité | LetsWork 2017 - Tous droits réservés</span>
             </div>
         </footer>

@@ -17,9 +17,9 @@ class CompanyController extends BaseController {
      * CompanyController constructor.
      */
 	public function __construct() {
-		$this->middleware('auth', ['except' => ['index', 'show','cpage','sort','sortCompanies']]);
+		$this->middleware('auth', ['except' => ['index', 'show','cpage','names','sort','sortCompanies']]);
 	}
-	/**
+	/**X
 	 * Display a listing of the resource.
 	 *
 	 * @return \Illuminate\Http\Response
@@ -48,18 +48,26 @@ class CompanyController extends BaseController {
             $data = Company::orderBy($sesh['column'],$sesh['order'])
                             ->where('description','like', "%". $name ."%")
                             ->orWhere('name', 'like',"%". $name ."%")
-                            ->forPage($page, 5)
+                            ->forPage($page, 4)
                             ->get();
         } else {
             $data = Company::where('description','like', "%". $name ."%")
                             ->orWhere('name', 'like',"%". $name ."%")
-                            ->forPage($page, 5)
+                            ->forPage($page, 4)
                             ->get();
         }
         return response()->json([
             'data' => $data,
             'canloadmore' => $data->count() > 0]
         );
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function names()
+    {
+        return response()->json(Company::pluck('name'));
     }
 
 	/**

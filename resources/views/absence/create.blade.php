@@ -94,12 +94,12 @@
         $(function () {
             $('#datetimepicker1').datetimepicker({
                 defaultDate: new Date(),
-                format: 'YYYY-DD-MM HH:mm:ss',
+                format: 'YYYY-MM-DD HH:mm:ss',
                 locale: 'fr-ca'
             });
             $('#datetimepicker2').datetimepicker({
                 defaultDate: new Date(),
-                format: 'YYYY-DD-MM HH:mm:ss',
+                format: 'YYYY-MM-DD HH:mm:ss',
                 locale: 'fr-ca'
             });
         });

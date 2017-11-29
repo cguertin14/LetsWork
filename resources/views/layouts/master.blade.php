@@ -18,7 +18,9 @@
             <div class="navbar-right" style="margin-right: 20px">
                 @if(Auth::check() && Session::has('CurrentCompany'))
                     <ul class="nav navbar-nav" style="margin-right: 10px">
+                        @if (\App\Tools\Helper::CIsEmployee())
                         <li><a href="{{route('chat')}}" style="color: white"><span class="fa fa-comments" aria-hidden="true" style="color: white"></span> Messagerie</a></li>
+                        @endif
                         <li><a href="{{route('information.aboutus')}}" style="color: white"><span class="glyphicon glyphicon-question-sign" style="color: white"></span> À Propos</a></li>
                         <li>
                             <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-expanded="false" style="color: white"><span class="fa fa-globe" style="color: white"></span> Mon travail</a>
@@ -140,13 +142,28 @@
                                     @endif
                                 </ul>
                             </li>
-                            <li><a href="{{route('absence.create')}}">Demande d'absence</a></li>
+                            <li>
+                                @if (\App\Tools\Helper::CIsHighRanked())
+                                    <a id="dropdown8Title" href="#">Absences <span id="img8" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
+                                    <ul id="dropdown8" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
+                                        <li><a href="{{route('absence.index')}}">Voir tout</a></li>
+                                        <li><a href="{{route('absence.create')}}">Créer</a></li>
+                                    </ul>
+                                @else
+                                    <a href="{{route('absence.create')}}">Demande d'absence</a>
+                                @endif
+                            </li>
                             @if (Illuminate\Support\Facades\Auth::user()->isOwner())
                                 <li><a href="{{route('jobofferuser.index')}}">Demandes d'emploi</a></li>
                             @endif
                         @endif
                         <li><a href="{{route('cv.create')}}">Dépôt du CV</a></li>
                         <li><a href="{{route('information.aboutus')}}">À Propos</a></li>
+                        <li style="bottom: 0;position: fixed;background-color: rgba(255, 255, 255, 0.04);line-height: 60px;width: 300px;">
+                            <div class="text-center">
+                                <span style="color: white;font-family: Ubuntu,sans-serif;font-weight: 500">© Confidentialité | LetsWork 2017</span>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -28,6 +28,7 @@ Route::get('/termsofservice', 'OtherController@termsofservice')->name('informati
 Route::resource('/joboffer', 'JobOfferController');
 
 /* Company Routes */
+Route::get('/company/names','CompanyController@names')->name('company.names');
 Route::resource('company', 'CompanyController');
 Route::get('/cpage', 'CompanyController@cpage')->name('company.cpage');
 Route::post('/company/{slug}/sort','CompanyController@sort')->name('company.sort');
@@ -50,7 +51,8 @@ Route::group(['middleware' => 'auth'], function () use ($resources) {
     Route::post('/company/uploadphoto', 'CompanyController@uploadphoto')->name('company.uploadphoto');
 
     /* Absence Routes */
-    Route::resource('absence', 'AbsenceController',['only' => ['create']])->middleware('employee');
+    Route::resource('absence', 'AbsenceController',['only' => ['update','create','store','destroy','index']])->middleware('employee');
+    Route::post('/absence/sort','AbsenceController@sort')->name('absence.sort');
 
 	/* Special Roles Routes */
 	Route::resource('specialrole', 'SpecialRoleController',$resources)->middleware('employee');

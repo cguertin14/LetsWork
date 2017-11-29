@@ -26,7 +26,17 @@
         }
 
         .boxsize {
-            width: 75%;
+            width: auto;
+            max-width: 70%;
+            height: auto;
+            margin-bottom: .2em;
+            padding-right: .3em;
+            padding-left: .3em;
+            border-radius: .7em;
+        }
+
+        .boxsize2 {
+            width: 100%;
             height: auto;
             margin-bottom: .2em;
             padding-right: .3em;
@@ -58,6 +68,8 @@
 
         .item {
             cursor: pointer;
+            font-family: Ubuntu,sans-serif;
+            font-size: 1.3em;
         }
 
         .red {
@@ -75,17 +87,25 @@
         [v-cloak] {
             display: none;
         }
+        .header-col{
+            font-family: Montserrat,sans-serif;
+            font-size: 1.7em;
+        }
+
+        .footer {
+            visibility: hidden;
+        }
 
     </style>
 @endsection
 
 @section('content')
-    <div id="chat" class="col-md-12" style="height: 35em;" v-cloak>
+    <div id="chat" class="col-md-12" style="height: 55em;" v-cloak>
         <div id="rooms" class="col-md-3" style="height: 100%;">
-            <h4 style="color: white; text-align: center;">Conversations</h4>
+            <h4 class="header-col" style="color: white; text-align: center;">Conversations</h4>
             <div class="parent" style="height: 100%;">
                 <div class="list-group child">
-                    <div class="list-group-item item" v-bind:class="seen(room)" v-for="room in Object.keys(rooms)"
+                    <div class="list-group-item item content" v-bind:class="seen(room)" v-for="room in Object.keys(rooms)"
                          v-bind:data-room="room" v-on:click="setroom(room)">@{{room}}
                     </div>
                 </div>
@@ -96,9 +116,10 @@
                 <div class="parent" style="height: 100%; margin-left: 2%;">
                     <div id="chatbox" class="list-group child row">
                         <div class="col-md-12" v-for="mess in currentmessages" v-bind:data-user="mess.user.name">
-                            <div v-bind:class="iscurrentuser(mess.user)" class="username"> @{{mess.user.name}}</div>
+                            <div v-bind:class="iscurrentuserName(mess.user)" style="font-family: Ubuntu,sans-serif;font-weight: 700" class="username"> @{{mess.user.name}}</div>
+                            <br>
                             <div v-bind:class="iscurrentuser(mess.user)">
-                                <p class="text">@{{mess.message}}</p>
+                                <p class="text" style="font-family: Ubuntu,sans-serif">@{{mess.message}}</p>
                             </div>
                         </div>
                     </div>
@@ -107,7 +128,7 @@
             <div class="row">
                 <hr style="color: white;width: 100%">
             </div>
-            <div class="row input-group input-group-lg" style="margin: 2em;margin-top: 0em;">
+            <div class="row input-group input-group-lg" style="margin: 2em;">
                 <input class="form-control input-lg" placeholder="Envoyer un message..." style="width: 100%" type="text"
                        v-model="message" v-on:keydown.enter="send">
                 <span class="input-group-btn">
@@ -116,7 +137,7 @@
             </div>
         </div>
         <div class="col-md-3" style="height: 100%;">
-            <h4 style="color: white; text-align: center;">Utilisateurs Connectés</h4>
+            <h4 class="header-col" style="color: white; text-align: center;">Utilisateurs Connectés</h4>
             <div class="parent" style="height: 100%;">
                 <div class="list-group child">
                     <div class="list-group-item item" v-bind:class="isnull(user)" v-for="user in allotherusers()" v-bind:data-user="user.email"
@@ -179,6 +200,9 @@
                     else {
                         return [{email: null, name: "Aucun autre utilisateur n'est connecté"}];
                     }
+                },
+                iscurrentuserName: function (user) {
+                    return this.currentuser.email === user.email ? "boxsize2 currentuser pull-right" : "boxsize2 otheruser pull-left";
                 },
                 iscurrentuser: function (user) {
                     return this.currentuser.email === user.email ? "boxsize currentuser pull-right" : "boxsize otheruser pull-left";

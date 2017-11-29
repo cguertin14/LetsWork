@@ -82,6 +82,7 @@
             font-family: Ubuntu,sans-serif;
         }
         .footer {
+            visibility: visible;
             background: rgba(255, 255, 255, 0.04);
         }
     </style>
