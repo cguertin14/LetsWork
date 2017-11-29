@@ -16,6 +16,14 @@ use Illuminate\Support\Facades\Session;
 class DispoController extends BaseController
 {
     /**
+     * DispoController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('employee');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -27,12 +35,12 @@ class DispoController extends BaseController
         if (Session::has('sortDispo')) {
             // Sort data...
             $sesh = session('sortDispo');
-            $dispos = $this->CAvailability()->get()->first()->availabilityelements()->orderBy($sesh['column'],$sesh['order'])->paginate(10);
+            $dispos = self::CAvailability()->first()->availabilityelements()->orderBy($sesh['column'],$sesh['order'])->paginate(10);
         } else {
-            if ($this->CAvailability()->count() <= 0) {
+            if (self::CAvailability()->count() <= 0) {
                 $dispos = [];
             } else {
-                $dispos = $this->CAvailability()->get()->first()->availabilityelements()->paginate(10);
+                $dispos = self::CAvailability()->first()->availabilityelements()->paginate(10);
             }
             $sesh = [];
         }
@@ -70,7 +78,7 @@ class DispoController extends BaseController
 
         $company = self::CCompany();
         $employee = self::CEmployee();
-        $availabilitys = $this->CAvailability();
+        $availabilitys = self::CAvailability();
         if ($availabilitys->count() <= 0) {
             $availability = $employee->availabilities()->create([
                 'company_id' => $company->id

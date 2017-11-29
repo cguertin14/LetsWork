@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 class ChatController extends Controller
 {
     /**
+     * ChatController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('employee');
+    }
+
+    /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()

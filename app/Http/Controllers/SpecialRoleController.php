@@ -16,6 +16,13 @@ use Illuminate\Support\Facades\Session;
 class SpecialRoleController extends BaseController
 {
     /**
+     * SpecialRoleController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('highranked',['only' => ['create','edit','destroy','store','update']]);
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -73,17 +80,6 @@ class SpecialRoleController extends BaseController
             $specialRole->skills()->attach($skill);
 
         return redirect('/specialrole');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**

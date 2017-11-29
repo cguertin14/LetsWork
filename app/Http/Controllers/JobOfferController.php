@@ -25,6 +25,7 @@ class JobOfferController extends BaseController
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('highranked',['only' => ['create','edit','update','store','destroy']]);
     }
 
     /**
@@ -300,7 +301,7 @@ class JobOfferController extends BaseController
         $data = $request->except(['_token','_method']);
         $data['company_id'] = $this->CCompany()->id;
         JobOffer::create($data);
-        return redirect('/joboffer');
+        return redirect()->action('JobOfferController@index');
     }
 
     /**
@@ -338,7 +339,7 @@ class JobOfferController extends BaseController
     public function update(ModifyJobOfferRequest $request, $slug)
     {
         JobOffer::findBySlugOrFail($slug)->update($request->all());
-        return redirect('/joboffer');
+        return redirect()->action('JobOfferController@index');
     }
 
     /**
@@ -350,9 +351,14 @@ class JobOfferController extends BaseController
     public function destroy($slug)
     {
         JobOffer::findBySlugOrFail($slug)->delete();
-        return redirect('/joboffer');
+        return redirect()->action('JobOfferController@index');
     }
 
+    /**
+     * @param Request $request
+     * @param $slug
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function apply(Request $request, $slug)
     {
         $joboffer = JobOffer::findBySlugOrFail($slug);
@@ -363,9 +369,13 @@ class JobOfferController extends BaseController
             $joboffer->users()->attach($data,['letter' => session('letter')]);
         else
             $joboffer->users()->attach($data);
-        return redirect('/joboffer');
+        return redirect()->action('JobOfferController@index');
     }
 
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function lettre(Request $request)
     {
         //$data = $request->except(['_token']);

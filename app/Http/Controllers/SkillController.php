@@ -15,6 +15,14 @@ use Illuminate\Support\Facades\Session;
 class SkillController extends BaseController
 {
     /**
+     * SkillController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('highranked',['only' => ['create','edit','destroy','store','update']]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -65,17 +73,6 @@ class SkillController extends BaseController
         $data['company_id'] = $this->CCompany()->id;
         Skill::create($data);
         return redirect('/skill');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $slug
-     * @return \Illuminate\Http\Response
-     */
-    public function show($slug)
-    {
-        
     }
 
     /**
