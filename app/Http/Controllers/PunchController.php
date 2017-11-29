@@ -67,7 +67,6 @@ class PunchController extends BaseController
 
     public function lastweek()
     {
-        $moyenne=[];
         $data = [
             "labels" => $this->getlastweek(Carbon::today()),
             "datasets" =>
@@ -93,10 +92,10 @@ class PunchController extends BaseController
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => [
-                    $this->makeSum($today,5,0),
-                    $this->makeSum($today,5,1),
-                    $this->makeSum($today,5,2),
-                    $this->makeSum($today,5,3)],
+                    $this->makeSum($today,7,0),
+                    $this->makeSum($today,7,1),
+                    $this->makeSum($today,7,2),
+                    $this->makeSum($today,7,3)],
                 ]
             ]
         ];
@@ -114,18 +113,18 @@ class PunchController extends BaseController
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => [
-                        $this->makeSum($today,20,0),
-                        $this->makeSum($today,20,1),
-                        $this->makeSum($today,20,2),
-                        $this->makeSum($today,20,3),
-                        $this->makeSum($today,20,4),
-                        $this->makeSum($today,20,5),
-                        $this->makeSum($today,20,6),
-                        $this->makeSum($today,20,7),
-                        $this->makeSum($today,20,8),
-                        $this->makeSum($today,20,9),
-                        $this->makeSum($today,20,10),
-                        $this->makeSum($today,20,11)],
+                        $this->makeSum($today,28,0),
+                        $this->makeSum($today,28,1),
+                        $this->makeSum($today,28,2),
+                        $this->makeSum($today,28,3),
+                        $this->makeSum($today,28,4),
+                        $this->makeSum($today,28,5),
+                        $this->makeSum($today,28,6),
+                        $this->makeSum($today,28,7),
+                        $this->makeSum($today,28,8),
+                        $this->makeSum($today,28,9),
+                        $this->makeSum($today,28,10),
+                        $this->makeSum($today,28,11)],
                 ]
             ]
         ];
