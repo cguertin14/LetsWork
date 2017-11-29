@@ -65,6 +65,13 @@
             color: white;
         }
 
+        .yellow {
+            text-align: center;
+            background-color: #552AD6;
+            color: white;
+            font-style: italic;
+        }
+
         [v-cloak] {
             display: none;
         }
@@ -112,7 +119,7 @@
             <h4 style="color: white; text-align: center;">Utilisateurs Connectés</h4>
             <div class="parent" style="height: 100%;">
                 <div class="list-group child">
-                    <div class="list-group-item item" v-for="user in allotherusers()" v-bind:data-user="user.email"
+                    <div class="list-group-item item" v-bind:class="isnull(user)" v-for="user in allotherusers()" v-bind:data-user="user.email"
                          v-on:click="cchatroom(user)">@{{user.name}}
                     </div>
                 </div>
@@ -213,6 +220,9 @@
                 },
                 seen: function (room) {
                     return this.rooms[room].seen ? "" : "red";
+                },
+                isnull:function (user) {
+                    return user.email!=null ? "" : "yellow";
                 },
                 loadlastmessages: function () {
                     var app = this;
