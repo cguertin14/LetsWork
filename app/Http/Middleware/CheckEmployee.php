@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Tools\Helper;
 use Closure;
 
 class CheckEmployee
@@ -15,10 +16,10 @@ class CheckEmployee
      */
     public function handle($request, Closure $next)
     {
-        if (\App\Tools\Helper::CIsEmployee()) {
+        if (Helper::CIsEmployee()) {
             return $next($request);
         } else {
-            return redirect('/');
+            return redirect()->back();
         }
     }
 }

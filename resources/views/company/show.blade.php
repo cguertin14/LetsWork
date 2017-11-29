@@ -99,8 +99,9 @@
                 </table>
             </div>
             <br>
+            @if(count($joboffers)>0)
             <div class="centre custom-container" style="margin-bottom: 2em">
-                <table id="table" class="table custom-table" style="margin: 0px !important">
+                    <table id="table" class="table custom-table" style="margin: 0px !important">
                     <thead>
                         <tr class="section-title">
                             <th>Offres d'emplois <span id="offersSort" v-on:click="sortOffers()" class="sort"></span></th>
@@ -110,26 +111,24 @@
                         </tr>
                     </thead>
                     <tbody class="section">
-                        @if(count($joboffers)>0)
-                            @php($i = 0)
-                            @foreach($joboffers as $joboffer)
-                                <tr class="clickable-section @if ($i % 2 == 0 ) section-index-2 @else section-index @endif" data-href="@if($data['user_id'] == \Illuminate\Support\Facades\Auth::id()) {{route('joboffer.edit',$joboffer->slug)}} @else {{route('joboffer.show',$joboffer->slug)}} @endif">
-                                    <td>
+                        @php($i = 0)
+                        @foreach($joboffers as $joboffer)
+                            <tr class="clickable-section @if ($i % 2 == 0 ) section-index-2 @else section-index @endif" data-href="@if($data['user_id'] == \Illuminate\Support\Facades\Auth::id()) {{route('joboffer.edit',$joboffer->slug)}} @else {{route('joboffer.show',$joboffer->slug)}} @endif">
+                                <td>
+                                    <div class="col-sm-8 col-md-12">
                                         <div class="col-sm-8 col-md-12">
-                                            <div class="col-sm-8 col-md-12">
-                                                <div>{{$joboffer->job_count}}</div>
-                                            </div>
+                                            <div>{{$joboffer->job_count}}</div>
                                         </div>
-                                    </td>
-                                    <td>{{$joboffer->name}}</td>
-                                    <td>{{$joboffer->description}} </td>
-                                    <td>
-                                        <a v-on:click="connect()"  href="@if($data['user_id'] == \Illuminate\Support\Facades\Auth::id()) {{route('joboffer.edit',$joboffer->slug)}} @else {{route('joboffer.show',$joboffer->slug)}} @endif" class="btn @if (\Illuminate\Support\Facades\Auth::check() && $data['user_id'] == \Illuminate\Support\Facades\Auth::id()) btn-warning @elseif(\Illuminate\Support\Facades\Auth::check()) purplebtn @else btn-danger @endif pull-right">@if($data['user_id'] == \Illuminate\Support\Facades\Auth::id()) Modifier l'offre d'emploi @else Voir l'offre d'emploi @endif</a>
-                                    </td>
-                                </tr>
-                            @php(++$i)
-                            @endforeach
-                        @endif
+                                    </div>
+                                </td>
+                                <td>{{$joboffer->name}}</td>
+                                <td>{{$joboffer->description}} </td>
+                                <td>
+                                    <a v-on:click="connect()"  href="@if($data['user_id'] == \Illuminate\Support\Facades\Auth::id()) {{route('joboffer.edit',$joboffer->slug)}} @else {{route('joboffer.show',$joboffer->slug)}} @endif" class="btn @if (\Illuminate\Support\Facades\Auth::check() && $data['user_id'] == \Illuminate\Support\Facades\Auth::id()) btn-warning @elseif(\Illuminate\Support\Facades\Auth::check()) purplebtn @else btn-danger @endif pull-right">@if($data['user_id'] == \Illuminate\Support\Facades\Auth::id()) Modifier l'offre d'emploi @else Voir l'offre d'emploi @endif</a>
+                                </td>
+                            </tr>
+                        @php(++$i)
+                        @endforeach
                     </tbody>
                 </table>
 
@@ -137,6 +136,13 @@
                     {{$joboffers->render('pagination.paginate')}}
                 </div>
             </div>
+            @else
+                @component('components.nothing')
+                    @slot('message')
+                        Il n'y a pas d'offres d'emplois pour cette entreprise
+                    @endslot
+                @endcomponent
+            @endif
         </div>
     </div>
 @endsection
@@ -145,6 +151,9 @@
     <script>
         @if($data['photo'])
             $('#image').attr('src',"data:image/png;base64," +'{{$data['photo']}}');
+        @endif
+        @if(count($joboffers) == 0)
+        $('.footer').css('position','absolute');
         @endif
         new Vue({
            el: '#table',

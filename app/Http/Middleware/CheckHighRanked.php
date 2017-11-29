@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use App\Tools\Helper;
 use Closure;
 
-class CheckCEO
+class CheckHighRanked
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class CheckCEO
      */
     public function handle($request, Closure $next)
     {
-        if (Helper::CIsCEO()) {
+        if (Helper::CIsHighRanked()) {
             return $next($request);
         } else {
             return redirect()->back();

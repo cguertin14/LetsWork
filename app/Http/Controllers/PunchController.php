@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\Session;
 
 class PunchController extends BaseController
 {
+    /**
+     * PunchController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('employee');
+    }
 
     /**
      * Show the form for creating a new resource.

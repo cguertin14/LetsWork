@@ -22,6 +22,14 @@ use Illuminate\Support\Facades\Route;
 class JobOfferUserController extends BaseController
 {
     /**
+     * JobOfferUserController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('highranked');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
