@@ -40,27 +40,11 @@
             color: #ffffff;
         }
 
-        @media (max-width: 767px) {
-            .jumbotron .purplebtn {
-                font-size: 10px !important;
-                min-width: 10px !important;
-            }
-            .footer {
-                position: relative;
-            }
+        @if (\Illuminate\Support\Facades\Auth::guest())
+        .footer {
+            visibility: visible;
         }
-
-        @media (max-width: 1900px) {
-            .footer {
-                position: absolute;
-            }
-        }
-
-        @media (max-width: 1700px) {
-            .footer {
-                position: relative;
-            }
-        }
+        @endif
     </style>
 @endsection
 
@@ -123,19 +107,4 @@
         </div>
 
     @endif
-@endsection
-
-@section('scripts')
-<script>
-    if (window.matchMedia('(max-width: 767px)').matches) {
-        $('#bigbtn')[0].style.setProperty('font-size','13px','important');
-    }
-    $(window).on('resize', function() {
-        if (window.matchMedia('(max-width: 767px)').matches) {
-            $('#bigbtn')[0].style.setProperty('font-size','13px','important');
-        } else {
-            $('#bigbtn')[0].style.setProperty('font-size','20px','important');
-        }
-    });
-</script>
 @endsection

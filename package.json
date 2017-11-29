@@ -18,16 +18,16 @@
     "lodash": "^4.17.4",
     "node-sass": "^4.7.2",
     "pdfjs-dist": "^1.10.97",
-    "vue": "^2.5.8"
+    "vue": "^2.5.9"
   },
   "dependencies": {
     "@material/form-field": "^0.2.17",
     "express": "^4.16.2",
     "inputmask": "^3.3.11",
     "ioredis": "^3.2.1",
-    "jsdom": "^11.4.0",
+    "jsdom": "^11.5.1",
     "moment": "^2.19.2",
-    "npm": "^5.5.1",
+    "npm": "^5.6.0",
     "socket.io": "^2.0.4",
     "superagent": "^3.8.1"
   }

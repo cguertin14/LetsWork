@@ -1,5 +1,6 @@
 <?php
 
+use App\Role;
 use Illuminate\Database\Seeder;
 
 class SpecialRoleSeeder extends Seeder
@@ -20,7 +21,7 @@ class SpecialRoleSeeder extends Seeder
                     'description'=>$faker->unique()->sentence(),
                     'slug' => $faker->slug()
                 ]);
-                $specialRole->roles()->attach(\App\Role::all()->random());
+                $specialRole->roles()->attach(Role::all()->where('content','<>','Administrator'));
                 $specialRole->skills()->attach($skill);
                 $specialRole->employees()->attach($company->employees()->get()->random());
             }

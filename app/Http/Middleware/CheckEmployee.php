@@ -16,7 +16,9 @@ class CheckEmployee
      */
     public function handle($request, Closure $next)
     {
-        if (Helper::CIsEmployee()) {
+        if (Helper::CCompany() == null) {
+            return redirect('/');
+        } else if (Helper::CIsEmployee()) {
             return $next($request);
         } else {
             return redirect()->back();

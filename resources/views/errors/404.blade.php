@@ -82,6 +82,7 @@
             font-family: Ubuntu,sans-serif;
         }
         .footer {
+            visibility: visible;
             background: rgba(255, 255, 255, 0.04);
         }
     </style>
@@ -96,7 +97,7 @@
             <!---728x90--->
             <h1>Oups, page introuvable</h1>
             <p>Il y a beaucoup de raison pourquoi cette page est<span class="error"> <a
-                            href="https://en.wikipedia.org/wiki/HTTP_404" target="_blank" style="text-decoration: none;color;">404</a></span>.<br>
+                            href="http://pixar.wikia.com/wiki/Mike_Wazowski" target="_blank" style="text-decoration: none;color;">404</a></span>.<br>
                 <span>Ne perdez pas trop votre temps à apprécier son look.</span></p>
             <!---728x90--->
             <br>

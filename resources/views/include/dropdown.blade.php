@@ -23,6 +23,9 @@
     dropdown("#dropdown5","#dropdown5Title",50,"#img5");
     dropdown("#dropdown6","#dropdown6Title",@if(\Illuminate\Support\Facades\Auth::user()->isOwner()) 100 @else 50 @endif,"#img6");
     dropdown("#dropdown7","#dropdown7Title",100,"#img7");
+    @if (\App\Tools\Helper::CIsHighRanked())
+    dropdown("#dropdown8","#dropdown8Title",100,"#img8");
+    @endif
 
 </script>
 @endif

@@ -17,6 +17,7 @@
             position: absolute;
             top: 0;
             bottom: 0;
+            margin-bottom: 0;
             left: 0;
             right: 0;
             overflow-y: scroll;
@@ -25,7 +26,17 @@
         }
 
         .boxsize {
-            width: 75%;
+            width: auto;
+            max-width: 70%;
+            height: auto;
+            margin-bottom: .2em;
+            padding-right: .3em;
+            padding-left: .3em;
+            border-radius: .7em;
+        }
+
+        .boxsize2 {
+            width: 100%;
             height: auto;
             margin-bottom: .2em;
             padding-right: .3em;
@@ -57,47 +68,79 @@
 
         .item {
             cursor: pointer;
+            font-family: Ubuntu,sans-serif;
+            font-size: 1.3em;
         }
 
         .red {
-            background-color: red;
+            background-color: #552AD6;
+            color: white;
+        }
+
+        .yellow {
+            text-align: center;
+            background-color: #552AD6;
+            color: white;
+            font-style: italic;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+        .header-col{
+            font-family: Montserrat,sans-serif;
+            font-size: 1.7em;
+        }
+
+        .footer {
+            visibility: hidden;
         }
 
     </style>
 @endsection
 
 @section('content')
-    <div id="chat" style="height: 35em;">
+    <div id="chat" class="col-md-12" style="height: 55em;" v-cloak>
         <div id="rooms" class="col-md-3" style="height: 100%;">
-            <h4 style="color: white; text-align: center;">Conversations</h4>
+            <h4 class="header-col" style="color: white; text-align: center;">Conversations</h4>
             <div class="parent" style="height: 100%;">
                 <div class="list-group child">
-                    <div class="list-group-item item" v-bind:class="seen(room)" v-for="room in Object.keys(rooms)"
+                    <div class="list-group-item item content" v-bind:class="seen(room)" v-for="room in Object.keys(rooms)"
                          v-bind:data-room="room" v-on:click="setroom(room)">@{{room}}
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6" style="height: 100%;border: 2px solid white;border-radius: 1em">
-            <div class="parent" style="height: 100%;">
-                <div id="chatbox" class="list-group child row">
-                    <div class="col-md-12" v-for="mess in currentmessages" v-bind:data-user="mess.user.name">
-                        <div v-bind:class="iscurrentuser(mess.user)" class="username"> @{{mess.user.name}}</div>
-                        <div v-bind:class="iscurrentuser(mess.user)">
-                            <p class="text">@{{mess.message}}</p>
+        <div class="col-md-6" style="height: 100%;border: 2px solid white;border-radius: 1em;background-color: gray">
+            <div class="row" style="height: 77%">
+                <div class="parent" style="height: 100%; margin-left: 2%;">
+                    <div id="chatbox" class="list-group child row">
+                        <div class="col-md-12" v-for="mess in currentmessages" v-bind:data-user="mess.user.name">
+                            <div v-bind:class="iscurrentuserName(mess.user)" style="font-family: Ubuntu,sans-serif;font-weight: 700" class="username"> @{{mess.user.name}}</div>
+                            <br>
+                            <div v-bind:class="iscurrentuser(mess.user)">
+                                <p class="text" style="font-family: Ubuntu,sans-serif">@{{mess.message}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <input class="form-control" placeholder="Envoyer un message..." style="width: 100%" type="text"
-                   v-model="message" v-on:keydown.enter="send">
-            <!-- <button class="" v-on:click="send">Envoyer</button> -->
+            <div class="row">
+                <hr style="color: white;width: 100%">
+            </div>
+            <div class="row input-group input-group-lg" style="margin: 2em;">
+                <input class="form-control input-lg" placeholder="Envoyer un message..." style="width: 100%" type="text"
+                       v-model="message" v-on:keydown.enter="send">
+                <span class="input-group-btn">
+                    <button class="btn purplebtn" v-on:click="send">Envoyer</button>
+                </span>
+            </div>
         </div>
         <div class="col-md-3" style="height: 100%;">
-            <h4 style="color: white; text-align: center;">Utilisateurs Connectés</h4>
+            <h4 class="header-col" style="color: white; text-align: center;">Utilisateurs Connectés</h4>
             <div class="parent" style="height: 100%;">
                 <div class="list-group child">
-                    <div class="list-group-item item" v-for="user in allotherusers()" v-bind:data-user="user.email"
+                    <div class="list-group-item item" v-bind:class="isnull(user)" v-for="user in allotherusers()" v-bind:data-user="user.email"
                          v-on:click="cchatroom(user)">@{{user.name}}
                     </div>
                 </div>
@@ -148,22 +191,33 @@
                 },
                 allotherusers: function () {
                     var cuser = this.currentuser;
-                    return this.allusersonline.filter(function (x) {
+                    var all = this.allusersonline.filter(function (x) {
                         return x.email !== cuser.email;
                     });
+                    if (all.length > 0) {
+                        return all;
+                    }
+                    else {
+                        return [{email: null, name: "Aucun autre utilisateur n'est connecté"}];
+                    }
+                },
+                iscurrentuserName: function (user) {
+                    return this.currentuser.email === user.email ? "boxsize2 currentuser pull-right" : "boxsize2 otheruser pull-left";
                 },
                 iscurrentuser: function (user) {
                     return this.currentuser.email === user.email ? "boxsize currentuser pull-right" : "boxsize otheruser pull-left";
                 },
                 cchatroom: function (user) {
-                    if (this.rooms[user.name] == null) {
-                        socket.emit("roomchat.create", {
-                            sender: this.currentuser,
-                            receivers: [user]
-                        });
-                    }
-                    else {
-                        this.currentroom = user.name;
+                    if (user.email != null) {
+                        if (this.rooms[user.name] == null) {
+                            socket.emit("roomchat.create", {
+                                sender: this.currentuser,
+                                receivers: [user]
+                            });
+                        }
+                        else {
+                            this.setroom(user.name);
+                        }
                     }
                 },
                 reco: function (roomname) {
@@ -177,6 +231,9 @@
                         $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
                     });
                     this.rooms[this.currentroom]['seen'] = true;
+                    if (this.rooms[this.currentroom].hash == null) {
+                        this.reco(this.currentroom);
+                    }
                 },
                 savemessage: function (message) {
                     $.ajax({
@@ -187,6 +244,9 @@
                 },
                 seen: function (room) {
                     return this.rooms[room].seen ? "" : "red";
+                },
+                isnull:function (user) {
+                    return user.email!=null ? "" : "yellow";
                 },
                 loadlastmessages: function () {
                     var app = this;

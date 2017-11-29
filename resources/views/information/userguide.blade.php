@@ -4,6 +4,7 @@
 <style>
     .footer {
         position: relative;
+        visibility: visible;
     }
     .caption > a {
         font-family: 'Ubuntu',sans-serif;

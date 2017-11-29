@@ -6,16 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-class OtherController extends Controller
+class OtherController extends BaseController
 {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function homepage()
     {
-        if(Auth::check() && !Session::has('CurrentCompany'))
-        {            
-            $companies = Auth::user()->companies;
+        if (Auth::check() && !Session::has('CurrentCompany')) {
+            $companies = Auth::user()->companies()->get();
             if($companies->count() == 1)
                 session(['CurrentCompany' => $companies->first()]);
         }

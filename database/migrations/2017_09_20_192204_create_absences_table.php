@@ -18,6 +18,7 @@ class CreateAbsencesTable extends Migration
             $table->integer('employee_id')->unsigned()->index();
             $table->boolean('approved')->default(0);
             $table->text('reason');
+            $table->string('slug')->unique();
             $table->dateTime('begin');
             $table->dateTime('end');
             $table->timestamps();

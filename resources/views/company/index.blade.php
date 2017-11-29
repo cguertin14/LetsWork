@@ -42,7 +42,7 @@
                             <br>
                             <div class="form-group col-md-6" style="width: 100%;">
                                 <div class="input-group input-group-lg">
-                                    <input v-on:keyup="textChanged" style="width: 100% !important;" placeholder="Rechercher une entreprise..." autofocus required id="schbox" class="form-control input-lg" type="text" v-model="text">
+                                    <input style="width: 100% !important;" placeholder="Rechercher une entreprise..." autofocus required id="schbox" class="form-control input-lg" type="text" v-model="text">
                                     <span class="input-group-btn">
                                         <input type="button" id="rechercher" class="btn purplebtn" v-on:click="rechercher" style="margin-bottom: 5px" value="Rechercher">
                                     </span>
@@ -125,22 +125,26 @@
                         var target = this;
                         return target.split(search).join(replacement);
                     };
-                    let autocompletes = '{{$compagnies->pluck('name')}}';
-                    autocompletes = autocompletes.replaceAll('&quot;','');
-                    autocompletes = autocompletes.replaceAll('[','');
-                    autocompletes = autocompletes.replaceAll(']','');
-                    autocompletes = autocompletes.split(',');
 
+                    var autocompletes = [];
                     let self = this;
-                    $('#schbox').typeahead({
-                        hint: true,
-                        highlight: true,
-                        minLength: 1
-                    }, {
-                        name: 'companies',
-                        source: substringMatcher(autocompletes),
-                    }).on('typeahead:selected', function (obj, datum) {
-                        self.text = datum;
+                    $.ajax({
+                        url: '{{route('company.names')}}',
+                        method: 'GET',
+                        success: function (data) {
+                            autocompletes = data;
+                            $('#schbox').typeahead({
+                                hint: true,
+                                highlight: true,
+                                minLength: 1
+                            }, {
+                                name: 'companies',
+                                source: substringMatcher(autocompletes),
+                            }).on('typeahead:selected', function (obj, datum) {
+                                self.text = datum;
+                            });
+                            $('#schbox').focus();
+                        }
                     });
                 },
                 init: function () {
@@ -156,15 +160,6 @@
                             @endif
                         @endif
                     @endif
-                },
-                textChanged: function (e) {
-                    if (e.keyCode === 13) {
-                        if (this.text === '') {
-                            this.reset();
-                        } else {
-                            this.rechercher();
-                        }
-                    }
                 },
                 sortName: function () {
                     const order = $('#nameSort').css('background-image') === this.sortNormal ? 'ASC' :
@@ -215,7 +210,9 @@
                     let app=  this;
                     $.getJSON("/cpage", {page: this.number, name: this.text}, function (data) {
                         app.canloadmore = data.canloadmore;
-                        app.appendtogrid(data.data);
+                        if (app.canloadmore) {
+                            app.appendtogrid(data.data);
+                        }
                     });
                 }
             },
@@ -228,9 +225,7 @@
                     }
                 }
             },
-            updated: function () {
-                $('.footer').css('position',this.company.length > 3 ? 'relative' : 'absolute')
-            },
+            updated: function () {},
             mounted: function () {
                 this.init();
                 this.load();

@@ -63,13 +63,13 @@ trait Helper
     public static function Day($carbon)
     {
         $daysofweek_fr = [
-            "Samedi",
             "Dimanche",
             "Lundi",
             "Mardi",
             "Mercredi",
             "Jeudi",
-            "Vendredi"
+            "Vendredi",
+            "Samedi"
         ];
         return $daysofweek_fr[$carbon->dayOfWeek];
     }
@@ -94,8 +94,8 @@ trait Helper
     public static function CRoles()
     {
         return self::CEmployee()->specialroles()->get()->map(function(SpecialRole $specialrole) {
-            return $specialrole->roles()->pluck('content')->first();
-        })->unique()->toArray();
+            return $specialrole->roles()->pluck('content');
+        })->unique()->first()->toArray();
     }
 
     /**
@@ -103,7 +103,7 @@ trait Helper
      */
     public static function CIsHighRanked()
     {
-        return self::CIsCEO()  || self::CIsManager() || self::IsAdmin();
+        return self::CIsCEO() || self::CIsManager() || self::IsAdmin();
     }
 
     public static function CIsCEO()
@@ -176,14 +176,11 @@ trait Helper
     public static function getlastweek(Carbon $today)
     {
         $lastweek=[];
-        $i=5;
+        $i=7;
         while($i>0)
         {
-            if(self::Day($today)!='Dimanche' && self::Day($today)!='Samedi')
-            {
-                array_push($lastweek,self::Day($today));
-                --$i;
-            }
+            array_push($lastweek,self::Day($today));
+            --$i;
             $today=$today->subDays(1);
         }
         $lastweek=array_reverse($lastweek);
@@ -193,14 +190,11 @@ trait Helper
     public function getlastweekdates(Carbon $today)
     {
         $lastweek=[];
-        $i=5;
+        $i=7;
         while($i>0)
         {
-            if($this->Day($today)!='Dimanche' && $this->Day($today)!='Samedi')
-            {
-                array_push($lastweek,new Carbon($today));
-                --$i;
-            }
+            array_push($lastweek,new Carbon($today));
+            --$i;
             $today=$today->subDays(1);
         }
         $lastweek=array_reverse($lastweek);
@@ -234,14 +228,11 @@ trait Helper
     public function getLast4WeekDates(Carbon $today)
     {
         $s4Week=[];
-        $i=5*4;
+        $i=7*4;
         while($i>0)
         {
-            if($this->Day($today)!='Dimanche' && $this->Day($today)!='Samedi')
-            {
-                array_push($s4Week,new Carbon($today));
-                --$i;
-            }
+            array_push($s4Week,new Carbon($today));
+            --$i;
             $today=$today->subDays(1);
         }
         $s4Week=array_reverse($s4Week);
@@ -255,14 +246,11 @@ trait Helper
     public function getLastYearsDates(Carbon $today)
     {
         $years=[];
-        $i=5*4*12;
+        $i=7*4*12;
         while($i>0)
         {
-            if($this->Day($today)!='Dimanche' && $this->Day($today)!='Samedi')
-            {
-                array_push($years,new Carbon($today));
-                --$i;
-            }
+            array_push($years,new Carbon($today));
+            --$i;
             $today=$today->subDays(1);
         }
         $years=array_reverse($years);
