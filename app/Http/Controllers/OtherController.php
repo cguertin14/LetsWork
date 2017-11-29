@@ -15,7 +15,7 @@ class OtherController extends BaseController
     {
         if (Auth::check() && !Session::has('CurrentCompany')) {
             $companies = Auth::user()->companies()->get();
-            if($companies->count() == 1)
+            if($companies->count() > 0)
                 session(['CurrentCompany' => $companies->first()]);
         }
         return view('homepage.content');
