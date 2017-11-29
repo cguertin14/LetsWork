@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+$resources = ['only' => ['create','edit','destroy','store','update','index']];
+
 Route::get('/', 'OtherController@homepage')->name('homepage.content');
 Route::get('/aboutus', 'OtherController@aboutus')->name('information.aboutus');
 Route::get('/userguide', 'OtherController@userguide')->name('information.userguide');
@@ -24,9 +26,6 @@ Route::get('/termsofservice', 'OtherController@termsofservice')->name('informati
 
 /* JobOffer Routes */
 Route::resource('/joboffer', 'JobOfferController');
-
-/* JobOffer Letter Route */
-Route::post('/joboffer/lettre', 'JobOfferController@lettre')->name('joboffer.lettre');
 
 /* Company Routes */
 Route::resource('company', 'CompanyController');
@@ -37,7 +36,7 @@ Route::post('/company/sort','CompanyController@sortCompanies')->name('company.so
 /* Auth Routes */
 Auth::routes();
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth'], function () use ($resources) {
     /* Profile Routes */
     Route::get('/profile/{slug}', 'ProfileController@view')->name('profile.view');
     Route::get('/profile/{slug}/edit', 'ProfileController@edit')->name('profile.edit');
@@ -51,11 +50,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/company/uploadphoto', 'CompanyController@uploadphoto')->name('company.uploadphoto');
 
     /* Absence Routes */
-    Route::resource('absence', 'AbsenceController');
+    Route::resource('absence', 'AbsenceController',['only' => ['create']])->middleware('employee');
 
 	/* Special Roles Routes */
-	Route::resource('specialrole', 'SpecialRoleController');
-    Route::post('/specialroles/sort','SpecialRoleController@sort')->name('specialroles.sort');
+	Route::resource('specialrole', 'SpecialRoleController',$resources)->middleware('employee');
+    Route::post('/specialroles/sort','SpecialRoleController@sort')->name('specialroles.sort')->middleware('employee');
 
 	/* Dispo Routes */
 	Route::get('/dispo','DispoController@index')->name('dispo.index');
@@ -65,8 +64,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/dispo/sort','DispoController@sort')->name('dispo.sort');
 
 	/* Skills Routes */
-	Route::resource('skill', 'SkillController');
-    Route::post('/skills/sort','SkillController@sort')->name('skills.sort');
+	Route::resource('skill', 'SkillController',$resources)->middleware('employee');
+    Route::post('/skills/sort','SkillController@sort')->name('skills.sort')->middleware('employee');
 
     /* Cv Routes */
     Route::get('/cv/create', 'CvController@create')->name('cv.create');
@@ -74,25 +73,26 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/cv/store', 'CvController@store')->name('cv.store');
 
 	/* JobOffer Routes (suite...) */
+    Route::post('/joboffer/lettre', 'JobOfferController@lettre')->name('joboffer.lettre');
 	Route::post('/joboffer/{slug}/apply', 'JobOfferController@apply')->name('joboffer.apply');
     Route::post('/joboffers/sort','JobOfferController@sort')->name('joboffer.sort');
     Route::post('/joboffers/unsort','JobOfferController@unsort')->name('joboffer.unsort');
 
-	/* JobOfferUser Routes */
+	/* JobOfferUser Routes -> USING HIGH RANKED MIDDLEWARE  */
 	Route::get('/jobofferuser', 'JobOfferUserController@index')->name('jobofferuser.index');
 	Route::get('/jobofferuser/{id}', 'JobOfferUserController@show')->name('jobofferuser.show');
-	Route::post('/jobofferuser/{id}/accept', 'JobOfferUserController@accept')->name('jobofferuser.accept');//->middleware('manager');
-	Route::post('/jobofferuser/{id}/interview', 'JobOfferUserController@interview')->name('jobofferuser.interview');//->middleware('manager');
+	Route::post('/jobofferuser/{id}/accept', 'JobOfferUserController@accept')->name('jobofferuser.accept');
+	Route::post('/jobofferuser/{id}/interview', 'JobOfferUserController@interview')->name('jobofferuser.interview');
 	Route::delete('/jobofferuser/{id}/refuse', 'JobOfferUserController@refuse')->name('jobofferuser.refuse');
     Route::post('/jobofferuser/sort','JobOfferUserController@sort')->name('jobofferuser.sort');
 
-	/* Schedule Routes */
+	/* Schedule Routes -> USING EMPLOYEE MIDDLEWARE */
 	Route::get('/schedule/week/{datebegin}', 'ScheduleController@week')->name('schedule.week');
 	Route::get('/schedule/scheduleelement', 'ScheduleController@createelement')->name('schedule.createelement');
 	Route::post('/schedule/scheduleelement', 'ScheduleController@storeelement')->name('schedule.storeelement');
-	Route::get('/schedule/editing', 'ScheduleController@editing')->name('schedule.editing');//->middleware('manager');
+	Route::get('/schedule/editing', 'ScheduleController@editing')->name('schedule.editing');
 	Route::get('/schedule/employees/{specialrole}', 'ScheduleController@getEmployees')->name('schedule.employees');
-	Route::resource('/schedule', 'ScheduleController');
+	Route::resource('/schedule', 'ScheduleController',$resources);
 
 	/* Punch Routes */
 	Route::post('/punch', 'PunchController@add');
@@ -103,7 +103,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/punches/sort','PunchController@sort')->name('punches.sort');
 
     /* Other Routes */
-    Route::get('/isauthmanager', 'OtherController@userIsManager');
+    Route::get('/isauthmanager', 'OtherController@userIsManager')->middleware('employee');
 
     //Chat Routes
     Route::get('/chat', 'ChatController@index')->name('chat');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Tools\Helper;
 use Closure;
 
 class CheckManager
@@ -15,7 +16,7 @@ class CheckManager
      */
     public function handle($request, Closure $next)
     {
-        if (\App\Tools\Helper::CIsManager()) {
+        if (Helper::CIsManager()) {
             return $next($request);
         } else {
             return redirect()->back();

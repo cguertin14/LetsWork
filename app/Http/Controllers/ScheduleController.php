@@ -20,6 +20,14 @@ use function MongoDB\BSON\toJSON;
 
 class ScheduleController extends BaseController
 {
+    /**
+     * ScheduleController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('employee');
+        $this->middleware('highranked',['only' => ['editing','create','createelement','storeelement','store','destroy','edit']]);
+    }
 
     /**
      *
@@ -138,20 +146,10 @@ class ScheduleController extends BaseController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  string  $slug
-     */
-    public function show($slug)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      *
-     * @param  string  $slug
+     * @param  string  $slugt
      *
      * @return \Illuminate\Http\Response
      *
@@ -164,7 +162,7 @@ class ScheduleController extends BaseController
         $companyEmployees   = self::CCompany()->employees()->get();
         $availableEmployees = [];
 
-        $employees = $scheduleelement->employees()->get()->map(function ($employee) {
+        $employees = $scheduleelement->employees()->get()->map(function (Employee $employee) {
             return $employee->user;
         });
 
@@ -187,8 +185,7 @@ class ScheduleController extends BaseController
      */
     public function editing()
     {
-        if (self::CCompany() === null)
-            return redirect('/');
+        if (self::CCompany() === null) return redirect('/');
         $schedules = self::CCompany()->schedules()->pluck('name','slug');
         return view('schedule.editing',compact('schedules'));
     }

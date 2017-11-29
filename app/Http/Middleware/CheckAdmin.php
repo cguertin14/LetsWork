@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Tools\Helper;
 use Closure;
 
 class CheckAdmin
@@ -15,10 +16,10 @@ class CheckAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (\App\Tools\Helper::IsAdmin()) {
+        if (Helper::IsAdmin()) {
             return $next($request);
         } else {
-            return redirect('/');
+            return redirect()->back();
         }
     }
 }
