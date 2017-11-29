@@ -15,7 +15,7 @@ class EmployeeSpecialRoleSeeder extends Seeder
         $employees = \App\Employee::all();
         foreach ($employees as $employee) {
             foreach ($employee->companies as $company) {
-                $specialroles = \App\SpecialRole::where('company_id',$company->id)->get();
+                $specialroles = $company->specialroles()->get();
                 if (!$specialroles->isEmpty())
                     $employee->specialroles()->attach($specialroles->random());
             }

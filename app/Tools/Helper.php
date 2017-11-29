@@ -15,6 +15,7 @@ use App\Company;
 use App\Employee;
 use App\JobOffer;
 use App\Punch;
+use App\SpecialRole;
 use App\User;
 use Carbon\Carbon;
 use function foo\func;
@@ -42,7 +43,7 @@ trait Helper
     }
 
     /**
-     * @return array
+     * @return array|Collection
      */
     public function CAvailability()
     {
@@ -55,7 +56,7 @@ trait Helper
         $availabilitys = Availability::where([
             ['employee_id', '=', $employee->id],
             ['company_id', '=', $company->id]
-        ]);
+        ])->get();
         return $availabilitys;
     }
 
@@ -90,39 +91,48 @@ trait Helper
         return $months;
     }
 
-    public function CRoles()
+    public static function CRoles()
     {
-        $rolea = [];
-        foreach ($this->CEmployee()->specialroles()->get() as $specialrole)
-            foreach ($specialrole->roles()->get() as $role)
-                array_push($rolea, $role->content);
-        return $rolea;
+        return self::CEmployee()->specialroles()->get()->map(function(SpecialRole $specialrole) {
+            return $specialrole->roles()->pluck('content');
+        })->unique()->first()->toArray();
     }
 
-    public function CIsCEO()
+    /**
+     * @return bool
+     */
+    public static function CIsHighRanked()
     {
-        if (in_array("Owner", $this->CRoles()))
+        return self::CIsCEO() || self::CIsManager() || self::IsAdmin();
+    }
+
+    public static function CIsCEO()
+    {
+        if (in_array("Owner", self::CRoles()))
             return true;
         return false;
     }
 
-    public function CIsManager()
+    /**
+     * @return bool
+     */
+    public static function CIsManager()
     {
-        if (in_array("Manager", $this->CRoles()))
+        if (in_array("Manager", self::CRoles()))
             return true;
         return false;
     }
 
-    public function CIsEmployee()
+    public static function CIsEmployee()
     {
-        if (in_array("Employee", $this->CRoles()))
+        if (in_array("Employee", self::CRoles()))
             return true;
         return false;
     }
 
-    public function IsAdmin()
+    public static function IsAdmin()
     {
-        if (in_array("Administrator", $this->CRoles()))
+        if (in_array("Administrator", self::CRoles()))
             return true;
         return false;
     }

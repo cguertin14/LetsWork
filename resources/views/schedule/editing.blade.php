@@ -295,7 +295,9 @@
                     url: '/schedule/week/' + date,
                     success: function (data) {
                         // Sort data to place events that last for 2 days or more
-                        self.sort(data);
+                        if (data.length > 0) {
+                            self.sort(data);
+                        }
                         modal.modal('hide');
                     }
                 });
