@@ -7,6 +7,7 @@ use App\CompanyType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCompanyRequest;
 use App\Http\Requests\ModifyCompanyRequest;
+use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -88,7 +89,14 @@ class CompanyController extends BaseController {
 
 		$company = Company::create($data);
         session(['CurrentCompany' => $company]);
-		$company->employees()->create(['user_id' => Auth::user()->id]);
+
+        $employee = $company->employees()->create(['user_id' => Auth::user()->id]);
+        $specialrole = $employee->specialroles()->create([
+            'name' => 'Owner',
+            'description' => 'Fondateur de l\'entreprise',
+            'company_id' => $company->id
+        ]);
+        $specialrole->roles()->attach(Role::all()->where('content','<>','Administrator'));
 
 		$request->session()->forget('CompanyPhoto');
 		return redirect('/');

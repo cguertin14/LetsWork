@@ -149,7 +149,7 @@ class ScheduleController extends BaseController
      * Show the form for editing the specified resource.
      *
      *
-     * @param  string  $slugt
+     * @param  string  $slug
      *
      * @return \Illuminate\Http\Response
      *
@@ -332,6 +332,9 @@ class ScheduleController extends BaseController
         $days       = $this->getDays();
         $data       = $this->getWeekDaysJson();
         $schedule   = $this->getCurrentSchedule();
+
+        if ($schedule == null)
+            return response()->json(null);
 
         // Get schedule elements from this week
         $weekElements = $schedule->scheduleelements()

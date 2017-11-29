@@ -94,8 +94,8 @@ trait Helper
     public static function CRoles()
     {
         return self::CEmployee()->specialroles()->get()->map(function(SpecialRole $specialrole) {
-            return $specialrole->roles()->pluck('content')->first();
-        })->unique()->toArray();
+            return $specialrole->roles()->pluck('content');
+        })->unique()->first()->toArray();
     }
 
     /**
@@ -103,7 +103,7 @@ trait Helper
      */
     public static function CIsHighRanked()
     {
-        return self::CIsCEO()  || self::CIsManager() || self::IsAdmin();
+        return self::CIsCEO() || self::CIsManager() || self::IsAdmin();
     }
 
     public static function CIsCEO()
