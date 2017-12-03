@@ -329,9 +329,15 @@
                         url: '/schedule/week/' + date,
                         success: function (data) {
                             // Sort data to place events that last for 2 days or more
-                            if (data.length > 0) {
-                                self.sort(data);
+                            let canBeDone = false;
+                            for (var k in data.weekevents) {
+                                if (data.weekevents[k].length > 0) {
+                                    canBeDone = true;
+                                    break;
+                                }
                             }
+                            if (canBeDone)
+                                self.sort(data);
                             modal.modal('hide');
                         }
                     });

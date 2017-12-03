@@ -299,7 +299,7 @@ class JobOfferController extends BaseController
     public function store(CreateJobOfferRequest $request)
     {
         $data = $request->except(['_token','_method']);
-        $data['company_id'] = $this->CCompany()->id;
+        $data['company_id'] = self::CCompany()->id;
         JobOffer::create($data);
         return redirect()->action('JobOfferController@index');
     }

@@ -111,7 +111,3 @@ Route::group(['middleware' => 'auth'], function () use ($resources) {
 	Route::post('/savemessages', 'ChatController@save');
 	Route::get('/lastmessages', 'ChatController@last');
 });
-
-Route::get('/test', function () {
-	return \App\Company::all()->random()->owner->employees()->get()->first();
-});

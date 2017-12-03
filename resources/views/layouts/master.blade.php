@@ -142,17 +142,15 @@
                                     @endif
                                 </ul>
                             </li>
+                            @if (count(\Illuminate\Support\Facades\Auth::user()->companies()->get()->toArray()) > 0)
                             <li>
-                                @if (\App\Tools\Helper::CIsHighRanked())
-                                    <a id="dropdown8Title" href="#">Absences <span id="img8" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
-                                    <ul id="dropdown8" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
-                                        <li><a href="{{route('absence.index')}}">Voir tout</a></li>
-                                        <li><a href="{{route('absence.create')}}">Créer</a></li>
-                                    </ul>
-                                @else
-                                    <a href="{{route('absence.create')}}">Demande d'absence</a>
-                                @endif
+                                <a id="dropdown8Title" href="#">Absences <span id="img8" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
+                                <ul id="dropdown8" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
+                                    <li><a href="{{route('absence.index')}}">Voir tout</a></li>
+                                    <li><a href="{{route('absence.create')}}">Créer</a></li>
+                                </ul>
                             </li>
+                            @endif
                             @if (Illuminate\Support\Facades\Auth::user()->isOwner())
                                 <li><a href="{{route('jobofferuser.index')}}">Demandes d'emploi</a></li>
                             @endif

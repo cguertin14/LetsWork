@@ -17,9 +17,9 @@
         <hr class="separator">
     </div>
 
-    <div class="col-md-12">
+    <div class="centre custom-table custom-container" style="padding: 5px;margin-bottom: 20px;">
         {!! Form::open(['method' => 'POST','action' => 'JobOfferController@store']) !!}
-        <div class="row layout">
+        <div class="layout" style="margin: 2em">
             <div class="centre">
                 <div class="col-md-12">
                     <div class="form-group">

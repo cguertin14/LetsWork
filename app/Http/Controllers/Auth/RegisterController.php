@@ -65,7 +65,7 @@ class RegisterController extends Controller
             'email.unique' => 'L\'adresse courriel est déjà prise.',
             'password.min' => 'Le mot de passe doit contenir au minimum 7 caractères.',
             'password_confirmation.min' => 'Le mot de passe doit contenir au minimum 7 caractères.',
-            'password.regex' => 'Le mot de passe doit contenir une majuscule, 7 caractères au minimum et maximum 30 caractères.',
+            'password.regex' => 'Le mot de passe doit contenir une majuscule, 7 caractères au minimum et 30 caractères au maximum.',
             'password.confirmed' => 'Le mot de passe de confirmation doit être identique au mot de passe.'
         ]);
     }

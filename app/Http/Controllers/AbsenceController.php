@@ -34,25 +34,50 @@ class AbsenceController extends BaseController
         if (Session::has('sortAbsences')) {
             $sesh = session('sortAbsences');
             if ($sesh['column'] === 'employee') {
-                $absences = (new Collection(self::CCompany()->employees()->join('users', 'employees.user_id', '=', 'users.id')->orderBy('users.name', $sesh['order'])->get()
-                ->map(function (Employee $employee) use ($sesh) {
-                    return $employee->absences()->get();
-                })->filter(function ($element) {
-                    return $element != null && count($element) > 0;
-                })->first()))->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
+                if (self::CIsHighRanked()) {
+                    $absences = (new Collection(self::CCompany()->employees()->join('users', 'employees.user_id', '=', 'users.id')->orderBy('users.name', $sesh['order'])->get()
+                    ->map(function (Employee $employee) use ($sesh) {
+                        return $employee->absences()->get();
+                    })->filter(function ($element) {
+                        return $element != null && count($element) > 0;
+                    })->first()))->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
+                } else if (self::CIsEmployee()) {
+                    $absences = (new Collection(self::CCompany()->employees()->join('users', 'employees.user_id', '=', 'users.id')->where('users.id',Auth::id())->orderBy('users.name', $sesh['order'])->get()
+                    ->map(function (Employee $employee) use ($sesh) {
+                        return $employee->absences()->get();
+                    })->filter(function ($element) {
+                        return $element != null && count($element) > 0;
+                    })->first()))->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
+                }
             } else {
-                $absences = (new Collection(self::CCompany()->employees()->get()->map(function (Employee $employee) use ($sesh) {
-                    return $employee->absences()->orderBy($sesh['column'], $sesh['order'])->get();
-                })->first()->filter(function ($element) {
+                if (self::CIsHighRanked()) {
+                    $absences = (new Collection(self::CCompany()->employees()->get()->map(function (Employee $employee) use ($sesh) {
+                        return $employee->absences()->orderBy($sesh['column'], $sesh['order'])->get();
+                    })->first()->filter(function ($element) {
+                        return $element != null;
+                    })))->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
+                } else {
+                    $absences = (new Collection(self::CCompany()->employees()->where('user_id',Auth::id())->get()->map(function (Employee $employee) use ($sesh) {
+                        return $employee->absences()->orderBy($sesh['column'], $sesh['order'])->get();
+                    })->first()->filter(function ($element) {
+                        return $element != null;
+                    })))->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
+                }
+            }
+        } else {
+            if (self::CIsHighRanked()) {
+                $absences = (new Collection(self::CCompany()->employees()->get()->map(function(Employee $employee) {
+                    return $employee->absences()->get();
+                })->first()->filter(function($element) {
+                    return $element != null;
+                })))->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
+            } else if (self::CIsEmployee()) {
+                $absences = (new Collection(self::CCompany()->employees()->get()->where('user_id',Auth::id())->map(function(Employee $employee) {
+                    return $employee->absences()->get();
+                })->first()->filter(function($element) {
                     return $element != null;
                 })))->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
             }
-        } else {
-            $absences = (new Collection(self::CCompany()->employees()->get()->map(function(Employee $employee) {
-                return $employee->absences()->get();
-            })->first()->filter(function($element) {
-                return $element != null;
-            })))->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
             $sesh = [];
         }
         return view('absence.index',compact('sesh','absences'));
