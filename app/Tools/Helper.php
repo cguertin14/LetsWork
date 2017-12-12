@@ -22,6 +22,7 @@ use function foo\func;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use PhpParser\Node\Stmt\Catch_;
 
 trait Helper
 {
@@ -30,7 +31,7 @@ trait Helper
      */
     public static function CCompany()
     {
-        //\session(['CurrentCompany' => User::all()->random()->companies()->get()->random()]);
+        //session(['CurrentCompany' => User::all()->random()->companies()->get()->random()]);
         return session('CurrentCompany');
     }
 
@@ -108,9 +109,7 @@ trait Helper
 
     public static function CIsCEO()
     {
-        if (in_array("Owner", self::CRoles()))
-            return true;
-        return false;
+        return in_array("Owner", self::CRoles());
     }
 
     /**
@@ -118,23 +117,17 @@ trait Helper
      */
     public static function CIsManager()
     {
-        if (in_array("Manager", self::CRoles()))
-            return true;
-        return false;
+        return in_array("Manager", self::CRoles());
     }
 
     public static function CIsEmployee()
     {
-        if (in_array("Employee", self::CRoles()))
-            return true;
-        return false;
+        return in_array("Employee", self::CRoles());
     }
 
     public static function IsAdmin()
     {
-        if (in_array("Administrator", self::CRoles()))
-            return true;
-        return false;
+        return in_array("Administrator", self::CRoles());
     }
 
     public function getJobOfferUserById($id)
@@ -175,51 +168,141 @@ trait Helper
 
     public static function getlastweek(Carbon $today)
     {
-        $lastweek=[];
-        $i=7;
-        while($i>0)
-        {
+        $lastweek = [];
+        $i = 7;
+        while($i > 0) {
             array_push($lastweek,self::Day($today));
             --$i;
-            $today=$today->subDays(1);
+            $today = $today->subDays(1);
         }
-        $lastweek=array_reverse($lastweek);
+        $lastweek = array_reverse($lastweek);
         return $lastweek;
+    }
+
+    public function getLastTwoWeeks(Carbon $today)
+    {
+        $lastTwoWeeks = [];
+        for ($i = 14; $i > 0; --$i) {
+            array_push($lastTwoWeeks,self::Day($today));
+            $today->subDay(1);
+        }
+        return array_reverse($lastTwoWeeks);
     }
 
     public function getlastweekdates(Carbon $today)
     {
-        $lastweek=[];
-        $i=7;
-        while($i>0)
+        $lastweek = [];
+        $i = 7;
+        while($i > 0)
         {
             array_push($lastweek,new Carbon($today));
             --$i;
-            $today=$today->subDays(1);
+            $today = $today->subDays(1);
         }
-        $lastweek=array_reverse($lastweek);
+        $lastweek = array_reverse($lastweek);
         return $lastweek;
     }
 
     public function getDaySum(Carbon $day)
     {
-        //$punches=$this->CEmployee()->punches()->where([['datebegin','>=',new Carbon($day)],['datebegin','<=',new Carbon($day->tomorrow())],['company_id',$this->CCompany()->id]])->get();
-        $punches=$this->CEmployee()->punches()->whereBetween('datebegin',[new Carbon($day),new Carbon($day->addDay())])->where('company_id',$this->CCompany()->id)->get();
-        $average=0;
-        foreach ($punches as $punch)
-        {
-            $average+= Carbon::parse($punch->dateend)->diffInSeconds(Carbon::parse($punch->datebegin));
+        $punches = self::CEmployee()->punches()->whereBetween('datebegin',[new Carbon($day),new Carbon($day->addDay())])->where('company_id',self::CCompany()->id)->get();
+        $average = 0;
+        foreach ($punches as $punch) {
+            $average += Carbon::parse($punch->dateend)->diffInSeconds(Carbon::parse($punch->datebegin));
         }
-        $average=$average;
-        return $average/60/60;
+        return $average / 60 / 60;
     }
 
-    public function getLastWeekSum($today)
+    public function getEmployeesDaySum(Carbon $day)
     {
-        $week=$this->getlastweekdates($today);
-        $averages=[];
-        foreach ($week as $day)
-        {
+        $punches = self::CCompany()->punches()->whereBetween('datebegin',[new Carbon($day),new Carbon($day->addDay())])->get();
+        $average = 0;
+        foreach ($punches as $punch) {
+            $average += Carbon::parse($punch->dateend)->diffInSeconds(Carbon::parse($punch->datebegin));
+        }
+        return $average / 60 / 60;
+    }
+
+    public function getLastWeekSum(Carbon $today)
+    {
+        $week = $this->getlastweekdates($today);
+        $averages = [];
+        foreach ($week as $day) {
+            array_push($averages,round($this->getDaySum($day),2));
+        }
+        return $averages;
+    }
+
+    public function getDaySumByEmployee(Employee $employee, Carbon $day) {
+        $punches = $employee->punches()->whereBetween('datebegin',[new Carbon($day),new Carbon($day->addDay())])->where('company_id',self::CCompany()->id)->get();
+        $average = 0;
+        foreach ($punches as $punch) {
+            $average += Carbon::parse($punch->dateend)->diffInSeconds(Carbon::parse($punch->datebegin));
+        }
+        return $average / 60 / 60;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCompanyEmployeesTwoWeekTimes()
+    {
+        $toReturn = new Collection();
+        $previous = null;
+        $averages = new Collection();
+        $employees = self::CCompany()->employees()->get();
+        $twoWeeks = $this->getLastTwoWeeksDates(Carbon::today());
+        foreach ($employees as $employee) {
+            foreach ($twoWeeks as $day) {
+                $averages->add(round($this->getDaySumByEmployee($employee,$day),2));
+            }
+            if ($previous != null) {
+                do {
+                    $color = self::rand_color();
+                } while ($color == $previous);
+            } else {
+                $color = self::rand_color();
+            }
+            //$canAdd = false;
+            //foreach ($averages as $average) {
+                //if ($average > 0) {
+                  //  $canAdd = true;
+                //    break;
+              //  }
+            //}
+            //if ($canAdd) {
+                $toReturn->add([
+                    "label" => "Heures de " . $employee->user->fullname,
+                    "backgroundColor" => $color,
+                    "borderColor" => $color,
+                    "data" => $averages,
+                ]);
+            //}
+            $averages = new Collection();
+            $previous = $color;
+        }
+        return $toReturn->toArray();
+    }
+
+    public function getLastTwoWeeksDates(Carbon $today)
+    {
+        $lastTwoWeeksDates = [];
+        for ($i = 14; $i > 0; --$i) {
+            array_push($lastTwoWeeksDates,new Carbon($today));
+            $today = $today->subDays(1);
+        }
+        return array_reverse($lastTwoWeeksDates);
+    }
+
+    public static function rand_color() {
+        return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+    }
+
+    public function getLastTwoWeeksSum(Carbon $today)
+    {
+        $week = $this->getLastTwoWeeksDates($today);
+        $averages = [];
+        foreach ($week as $day) {
             array_push($averages,round($this->getDaySum($day),2));
         }
         return $averages;
@@ -227,41 +310,36 @@ trait Helper
 
     public function getLast4WeekDates(Carbon $today)
     {
-        $s4Week=[];
-        $i=7*4;
-        while($i>0)
+        $s4Week = [];
+        $i = 7 * 4;
+        while($i > 0)
         {
             array_push($s4Week,new Carbon($today));
             --$i;
-            $today=$today->subDays(1);
+            $today = $today->subDays(1);
         }
-        $s4Week=array_reverse($s4Week);
-        // $s4weeksums=[];
-        // foreach ($s4Week as $key) {
-        //     array_push($s4weeksums,$this->getDaySum($key));
-        // }
-        // var_dump($s4weeksums);
+        $s4Week = array_reverse($s4Week);
         return $s4Week;
     }
     public function getLastYearsDates(Carbon $today)
     {
-        $years=[];
-        $i=7*4*12;
-        while($i>0)
+        $years = [];
+        $i = 7 * 4 * 12;
+        while($i > 0)
         {
             array_push($years,new Carbon($today));
             --$i;
-            $today=$today->subDays(1);
+            $today = $today->subDays(1);
         }
-        $years=array_reverse($years);
+        $years = array_reverse($years);
         return $years;
     }
 
     public function makeSum($array,$first_n,$n)
     {
-        $sum=0;
-        $nn=$first_n*$n;
-        for ($i=0+$nn; $i < $first_n+$nn ; $i++) {
+        $sum = 0;
+        $nn = $first_n*$n;
+        for ($i = 0 + $nn; $i < $first_n + $nn ; $i++) {
             $sum+=$this->getDaySum($array[$i]);
         }
         return round($sum,2);
@@ -314,7 +392,7 @@ trait Helper
         return self::CCompany()->joboffers()->get()
             ->map(function(JobOffer $joboffer) {
                 return $joboffer->users()->get()->map(function (User $user) {
-                    return $user->pivot;
+                    if ($user->pivot->accepted != 1) return $user->pivot;
                 })->first();
             })->unique();
     }
@@ -325,12 +403,21 @@ trait Helper
      */
     public function getJobOfferUsersSortedByName($order)
     {
-        return self::CCompany()->joboffers()->get()
-            ->map(function(JobOffer $joboffer) use ($order) {
-                return $joboffer->users()->orderBy('name',$order)->get()->map(function (User $user) {
-                    return $user->pivot;
-                })->first();
-            })->unique();
+        if ($order == 'ASC') {
+            return self::CCompany()->joboffers()->get()
+                ->map(function(JobOffer $joboffer) use ($order) {
+                    return $joboffer->users()->get()->sortBy(function ($user) { return $user->fullname; })->map(function (User $user) {
+                        if ($user->pivot->accepted != 1) return $user->pivot;
+                    })->first();
+                })->unique();
+        } else {
+            return self::CCompany()->joboffers()->get()
+                ->map(function(JobOffer $joboffer) use ($order) {
+                    return $joboffer->users()->get()->sortByDesc(function ($user) { return $user->fullname; })->map(function (User $user) {
+                        if ($user->pivot->accepted != 1) return $user->pivot;
+                    })->first();
+                })->unique();
+        }
     }
 
     /**
@@ -343,6 +430,7 @@ trait Helper
             ->get()
             ->map(function(JobOffer $joboffer) {
                 return $joboffer->users()->get()->map(function (User $user) {
+                    if ($user->pivot->accepted != 1) return $user->pivot;
                     return $user->pivot;
                 })->first();
             })->unique();
@@ -372,4 +460,12 @@ trait Helper
 			die($e->getMessage());
 		}
 	}
+
+    /**
+     * @return mixed
+     */
+	public function getCompaniesOfEmployee()
+    {
+        return Auth::user()->employees()->get()->map(function ($employee) { return $employee->companies()->get()->unique(); })->first();
+    }
 }

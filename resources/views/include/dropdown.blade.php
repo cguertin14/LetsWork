@@ -23,8 +23,9 @@
     dropdown("#dropdown5","#dropdown5Title",50,"#img5");
     dropdown("#dropdown6","#dropdown6Title",@if(\Illuminate\Support\Facades\Auth::user()->isOwner()) 100 @else 50 @endif,"#img6");
     dropdown("#dropdown7","#dropdown7Title",100,"#img7");
-    @if (count(\Illuminate\Support\Facades\Auth::user()->companies()->get()->toArray()) > 0)
+    @if (\Illuminate\Support\Facades\Auth::user()->employees()->get()->map(function ($employee) { return $employee->companies()->get(); })->first() != null)
         dropdown("#dropdown8","#dropdown8Title",100,"#img8");
+        dropdown("#dropdownMyJob","#dropdownMyJobTitle",@if (\App\Tools\Helper::CIsHighRanked()) 350 @else 150 @endif,"#imgMyJob")
     @endif
 
 </script>

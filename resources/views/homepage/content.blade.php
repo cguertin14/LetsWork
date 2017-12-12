@@ -37,6 +37,16 @@
             text-align: justify;
         }
 
+        .col-lg-6 > h2 {
+            font-family: 'Montserrat',sans-serif;
+        }
+        .col-lg-6 > p {
+            font-family: 'Ubuntu',sans-serif;
+            font-size: 1.2em;
+            line-height: 1.7em;
+            text-align: justify;
+        }
+
         .centre h1, p,h2,a {
             color: #ffffff;
         }

@@ -55,4 +55,8 @@ class Company extends Model {
 	public function specialroles() {
 		return $this->hasMany('App\SpecialRole');
 	}
+
+	public function punches() {
+	    return $this->hasMany('App\Punch');
+    }
 }

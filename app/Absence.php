@@ -21,7 +21,7 @@ class Absence extends Model
     }
 
     protected $fillable = [
-      'begin','end','employee_id','reason'
+      'begin','end','employee_id','reason','slug','approved'
     ];
     public function employee() {
         return $this->belongsTo('App\Employee');

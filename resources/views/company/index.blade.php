@@ -77,6 +77,13 @@
                     </tr>
                 </tbody>
             </table>
+            <div v-if="company.length == 0">
+                @component('components.nothing')
+                    @slot('message')
+                        Il n'y a pas d'offres d'emplois pour cette entreprise
+                    @endslot
+                @endcomponent
+            </div>
             <button class="btn purplebtn col-md-offset-5" v-on:click="load" v-if="canloadmore" style="margin-top: 2em;margin-bottom: 2em">Plus de résultats...</button>
             <button class="btn btn-danger col-md-offset-5" disabled v-if="!canloadmore" style="margin-top: 2em;margin-bottom: 2em">Il n'y a plus de résultat.</button>
         </div>
@@ -93,9 +100,9 @@
                 number: 0,
                 company: [],
                 canloadmore:true,
-                sortNormal:  'url("http://letswork.dev/image/sort.png")',
-                sortUp:      'url("http://letswork.dev/image/sortup.png")',
-                sortDown:    'url("http://letswork.dev/image/sortdown.png")'
+                sortNormal:  'url("{{env('APP_URL')}}/image/sort.png")',
+                sortUp:      'url("{{env('APP_URL')}}/image/sortup.png")',
+                sortDown:    'url("{{env('APP_URL')}}/image/sortdown.png")'
             },
             methods: {
                 setTypeAhead: function () {

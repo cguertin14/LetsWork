@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
+    /**
+     * @var array
+     */
     protected $fillable = [
         'user_id'
     ];
@@ -39,7 +42,7 @@ class Employee extends Model
     }
 
     public function user() {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User','user_id');
     }
 
     public function scheduleelements() {

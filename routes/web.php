@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 $resources = ['only' => ['create', 'edit', 'destroy', 'store', 'update', 'index']];
 
+/* Basic Routes */
 Route::get('/', 'OtherController@homepage')->name('homepage.content');
 Route::get('/aboutus', 'OtherController@aboutus')->name('information.aboutus');
 Route::get('/userguide', 'OtherController@userguide')->name('information.userguide');
@@ -98,10 +99,17 @@ Route::group(['middleware' => 'auth'], function () use ($resources) {
 	/* Punch Routes */
 	Route::post('/punch', 'PunchController@add');
 	Route::get('/punches', 'PunchController@index')->name('punch');
+    Route::get('/punches/employees', 'PunchController@employees')->name('punch.employees');
 	Route::get('/punches/lastweek', 'PunchController@lastweek');
-	Route::get('/punches/lastmouth', 'PunchController@lastmouth');
+    Route::get('/punches/lastweek/employees', 'PunchController@lastWeekEmployees')->name('punches.lastweekemployees');
+    Route::get('/punches/lasttwoweeks', 'PunchController@lastTwoWeeks');
+    Route::get('/punches/lasttwoweeks/employees', 'PunchController@lastTwoWeeksEmployees')->name('punches.lasttwoweeksemployees');
+	Route::get('/punches/lastmonth', 'PunchController@lastmonth');
+    Route::get('/punches/lastmonth/employees', 'PunchController@lastMonthEmployees')->name('punches.lastmonthemployees');
 	Route::get('/punches/lastyear', 'PunchController@lastyear');
+    Route::get('/punches/lastyear/employees', 'PunchController@lastYearEmployees')->name('punches.lastyearemployees');
 	Route::post('/punches/sort', 'PunchController@sort')->name('punches.sort');
+    Route::post('/punches/sort/employees', 'PunchController@sortEmployees')->name('punches.sortEmployees');
 
 	/* Other Routes */
 	Route::get('/isauthmanager', 'OtherController@userIsManager')->middleware('employee');

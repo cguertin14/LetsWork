@@ -32,7 +32,7 @@
                         @php($i = 0)
                         @foreach($jobofferusers as $jobofferuser)
                             <tr data-toggle="collapse" data-target="#accordion{{$jobofferuser->id}}" class="accordion-toggle section-index">
-                                <td>{{$jobofferuser->user->name}}</td>
+                                <td>{{$jobofferuser->user->fullname}}</td>
                                 <td>{{$jobofferuser->joboffer->specialrole->name}}</td>
                                 <td>{{$jobofferuser->created_at->diffForHumans()}}</td>
                             </tr>
@@ -77,9 +77,9 @@
         new Vue({
             el: '#table',
             data: {
-                sortNormal:  'url("http://letswork.dev/image/sort.png")',
-                sortUp:      'url("http://letswork.dev/image/sortup.png")',
-                sortDown:    'url("http://letswork.dev/image/sortdown.png")'
+                sortNormal:  'url("{{env('APP_URL')}}/image/sort.png")',
+                sortUp:      'url("{{env('APP_URL')}}/image/sortup.png")',
+                sortDown:    'url("{{env('APP_URL')}}/image/sortdown.png")'
             },
             computed: {},
             methods: {

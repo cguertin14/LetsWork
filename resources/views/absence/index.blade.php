@@ -34,7 +34,7 @@
                                 \Carbon\Carbon::setLocale('fr');
                             @endphp
                             @foreach($absences as $absence)
-                                <tr data-toggle="collapse" data-target="#accordion{{$absence->id}}" class="accordion-toggle section-index" @if ($absence->approved == 1) style="background-color: #552AD6" @else style="background-color: #24817A"  @endif>
+                                <tr data-toggle="collapse" data-target="#accordion{{$absence->id}}" class="accordion-toggle section-index" @if ($absence->approved == 1) style="background-color: #552AD6"  @else style="background-color: #24817A" @endif>
                                     <td>{{$absence->employee->user->name}}</td>
                                     <td>{{\Carbon\Carbon::parse($absence->begin)->diffForHumans()}}, {{\Carbon\Carbon::parse($absence->begin)->toDateTimeString()}}</td>
                                     <td>{{\Carbon\Carbon::parse($absence->end)->diffForHumans()}}, {{\Carbon\Carbon::parse($absence->end)->toDateTimeString()}}</td>
@@ -62,9 +62,9 @@
                                                     @else
                                                         <div class="form-group pull-left">
                                                             @if ($absence->approved == 0)
-                                                                <button disabled class="btn purplebtn">Cette absence a été approuvée</button>
-                                                            @else
                                                                 <button disabled class="btn btn-success" style="background-color:#24817A!important">Cette absence n'a pas encore été approuvée</button>
+                                                            @else
+                                                                <button disabled class="btn purplebtn">Cette absence a été approuvée</button>
                                                             @endif
                                                         </div>
                                                     @endif
@@ -103,9 +103,9 @@
         new Vue({
             el: '#table',
             data: {
-                sortNormal:  'url("http://letswork.dev/image/sort.png")',
-                sortUp:      'url("http://letswork.dev/image/sortup.png")',
-                sortDown:    'url("http://letswork.dev/image/sortdown.png")'
+                sortNormal:  'url("http://{{env('APP_URL')}}/image/sort.png")',
+                sortUp:      'url("http://{{env('APP_URL')}}/image/sortup.png")',
+                sortDown:    'url("http://{{env('APP_URL')}}/image/sortdown.png")'
             },
             computed: {},
             methods: {

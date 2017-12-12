@@ -20,7 +20,7 @@ class AbsenceController extends BaseController
      */
     public function __construct()
     {
-        $this->middleware('highranked',['only' => ['update','destroy','index']]);
+        $this->middleware('highranked',['only' => ['update','destroy']]);
     }
 
     /**
@@ -30,53 +30,52 @@ class AbsenceController extends BaseController
      */
     public function index()
     {
-        //\session()->forget('sortAbsences');
         if (Session::has('sortAbsences')) {
             $sesh = session('sortAbsences');
             if ($sesh['column'] === 'employee') {
                 if (self::CIsHighRanked()) {
                     $absences = (new Collection(self::CCompany()->employees()->join('users', 'employees.user_id', '=', 'users.id')->orderBy('users.name', $sesh['order'])->get()
                     ->map(function (Employee $employee) use ($sesh) {
-                        return $employee->absences()->get();
+                        return $employee->absences()->get()->first();
                     })->filter(function ($element) {
                         return $element != null && count($element) > 0;
-                    })->first()))->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
+                    })))->unique()->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
                 } else if (self::CIsEmployee()) {
                     $absences = (new Collection(self::CCompany()->employees()->join('users', 'employees.user_id', '=', 'users.id')->where('users.id',Auth::id())->orderBy('users.name', $sesh['order'])->get()
                     ->map(function (Employee $employee) use ($sesh) {
-                        return $employee->absences()->get();
+                        return $employee->absences()->get()->first();
                     })->filter(function ($element) {
                         return $element != null && count($element) > 0;
-                    })->first()))->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
+                    })))->unique()->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
                 }
             } else {
                 if (self::CIsHighRanked()) {
                     $absences = (new Collection(self::CCompany()->employees()->get()->map(function (Employee $employee) use ($sesh) {
-                        return $employee->absences()->orderBy($sesh['column'], $sesh['order'])->get();
-                    })->first()->filter(function ($element) {
+                        return $employee->absences()->orderBy($sesh['column'], $sesh['order'])->get()->first();
+                    })->filter(function ($element) {
                         return $element != null;
-                    })))->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
+                    })))->unique()->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
                 } else {
                     $absences = (new Collection(self::CCompany()->employees()->where('user_id',Auth::id())->get()->map(function (Employee $employee) use ($sesh) {
-                        return $employee->absences()->orderBy($sesh['column'], $sesh['order'])->get();
-                    })->first()->filter(function ($element) {
+                        return $employee->absences()->orderBy($sesh['column'], $sesh['order'])->get()->first();
+                    })->filter(function ($element) {
                         return $element != null;
-                    })))->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
+                    })))->unique()->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
                 }
             }
         } else {
             if (self::CIsHighRanked()) {
                 $absences = (new Collection(self::CCompany()->employees()->get()->map(function(Employee $employee) {
-                    return $employee->absences()->get();
-                })->first()->filter(function($element) {
+                    return $employee->absences()->get()->first();
+                })->filter(function($element) {
                     return $element != null;
-                })))->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
+                })))->unique()->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
             } else if (self::CIsEmployee()) {
                 $absences = (new Collection(self::CCompany()->employees()->get()->where('user_id',Auth::id())->map(function(Employee $employee) {
-                    return $employee->absences()->get();
-                })->first()->filter(function($element) {
+                    return $employee->absences()->get()->first();
+                })->filter(function($element) {
                     return $element != null;
-                })))->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
+                })))->unique()->where('end','>',Carbon::now()->toDateTimeString())->paginate(10);
             }
             $sesh = [];
         }
@@ -118,13 +117,7 @@ class AbsenceController extends BaseController
     public function store(CreateAbsenceRequest $request)
     {
         $data = $request->except('_token');
-        $employees = [];
-
-        foreach(Auth::user()->companies as $company)
-            array_push($employees,$company->employees);
-        foreach($employees as $employee)
-            if ($employee->get(0)->user_id == Auth::user()->id)
-                $data['employee_id'] = $employee->get(0)->id;
+        $data['employee_id'] = self::CEmployee()->id;
 
         $datebegin = Carbon::parse($data['begin']);
         $dateend = Carbon::parse($data['end']);

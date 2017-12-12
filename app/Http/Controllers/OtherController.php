@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -15,8 +16,15 @@ class OtherController extends BaseController
     {
         if (Auth::check() && !Session::has('CurrentCompany')) {
             $companies = Auth::user()->companies()->get();
-            if($companies->count() > 0)
+            if($companies->count() > 0) {
                 session(['CurrentCompany' => $companies->first()]);
+            }
+            else {
+                $companies = Auth::user()->employees()->get()->map(function ($employee) { return $employee->companies()->get()->unique(); })->first();
+                if($companies != null && $companies->count() > 0) {
+                    session(['CurrentCompany' => $companies->first()]);
+                }
+            }
         }
         return view('homepage.content');
     }
