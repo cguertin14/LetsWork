@@ -17,13 +17,15 @@
 @endsection
 
 @section('contenu')
-    <h1 class="title">Bonjour {{$jobofferuser->user->fullname}},</h1>
+    <h2 class="title">Bonjour {{$jobofferuser->user->fullname}},</h2>
+    <br>
     <div class="col-md-6">
         <p class="message">
-            Nous avons pris le temps d'analyser votre demande d'emploi et nous avons finalement décidé que vous n'aurez pas la chance de faire parti de notre équipe.
+            Nous avons pris le temps d'analyser votre demande d'emploi pour le poste de <b>{{$jobofferuser->joboffer->specialrole->name}}</b> et nous avons finalement décidé que vous n'aurez pas la chance de faire parti de notre équipe.
         </p>
         <p class="message">Merci et à bientôt!</p>
         <p class="message">L'équipe de <b>{{$jobofferuser->joboffer->company->name}}</b></p>
+        <p class="message">{{$jobofferuser->joboffer->company->telephone}}</p>
     </div>
 
 @endsection

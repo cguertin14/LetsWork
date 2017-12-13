@@ -27,44 +27,46 @@
 @section('content')
     <div id="app">
         <div class="page-title-header">
-            <h1 class="page-title">Mes périodes de travail</h1>
+            <h1 class="page-title">@if(\App\Tools\Helper::CIsHighRanked()) Heures de mes employés @else Mes périodes de travail @endif</h1>
             <hr class="separator">
         </div>
         <div class="col-md-12">
             <div class="row layout">
                 @if (count($punches) > 0)
-                <div class="centre custom-container">
-                    <table class="table custom-table"style="margin: 0px !important;">
-                        <thead>
-                        <tr class="section-title">
-                            <th>Début <span id="sortDateDebut" v-on:click="sortDateDebut()" class="sort"></span></th>
-                            <th>Fin <span id="sortDateFin" v-on:click="sortDateFin()" class="sort"></span></th>
-                            <th>Durée <span id="sortDuration" v-on:click="sortDuration()" class="sort"></span></th>
-                        </tr>
-                        </thead>
-                        <tbody class="section">
-                        @php($i = 0)
-                        @foreach($punches as $punch)
-                            <tr style="cursor:default;" class="@if ($i % 2 == 0 ) section-index-2 @else section-index @endif">
-                                @php(\Carbon\Carbon::setLocale('fr'))
-                                <td>{{\Carbon\Carbon::parse($punch->datebegin)->toDateTimeString()}}</td>
-                                <td>{{\Carbon\Carbon::parse($punch->dateend)->toDateTimeString()}}</td>
-                                @if($punch->dateend)
-                                    <td>{{\Carbon\Carbon::parse($punch->dateend)->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)}}</td>
-                                @else
-                                    <td>Période de travail non terminée</td>
-                                @endif
+                    <div class="centre custom-container">
+                        <table class="table custom-table"style="margin: 0px !important;">
+                            <thead>
+                            <tr class="section-title">
+                                <th>Employé <span id="sortEmployee" v-on:click="sortEmployee()" class="sort"></span></th>
+                                <th>Début <span id="sortDateDebut" v-on:click="sortDateDebut()" class="sort"></span></th>
+                                <th>Fin <span id="sortDateFin" v-on:click="sortDateFin()" class="sort"></span></th>
+                                <th>Durée <span id="sortDuration" v-on:click="sortDuration()" class="sort"></span></th>
                             </tr>
-                            @php(++$i)
-                        @endforeach
-                        </tbody>
-                    </table>
-                    <div class="row">
-                        <div class="text-center">
-                            {{$punches->render('pagination.paginate')}}
+                            </thead>
+                            <tbody class="section">
+                            @php($i = 0)
+                            @foreach($punches as $punch)
+                                <tr style="cursor:default;" class="@if ($i % 2 == 0 ) section-index-2 @else section-index @endif">
+                                    @php(\Carbon\Carbon::setLocale('fr'))
+                                    <td>{{$punch->employee->user->fullname}}</td>
+                                    <td>{{\Carbon\Carbon::parse($punch->datebegin)->toDateTimeString()}}</td>
+                                    <td>{{\Carbon\Carbon::parse($punch->dateend)->toDateTimeString()}}</td>
+                                    @if($punch->dateend)
+                                        <td>{{\Carbon\Carbon::parse($punch->dateend)->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)}}</td>
+                                    @else
+                                        <td>Période de travail non terminée</td>
+                                    @endif
+                                </tr>
+                                @php(++$i)
+                            @endforeach
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="text-center">
+                                {{$punches->render('pagination.paginate')}}
+                            </div>
                         </div>
                     </div>
-                </div>
                 @else
                     @component('components.nothing')
                         @slot('message')
@@ -124,7 +126,7 @@
                             },
                             title:{
                                 display:true,
-                                text: 'Mes heures travaillées'
+                                text: @if(\App\Tools\Helper::CIsHighRanked()) 'Heures travaillées par mes employés' @else 'Mes heures travaillées' @endif
                             },
                             scales: {
                                 yAxes: [
@@ -171,6 +173,8 @@
                         let order = '{{$sesh['order']}}';
                         @if (strpos($sesh['column'],'datebegin') !== false)
                             $('#sortDateDebut').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
+                        @elseif(strpos($sesh['column'],'username') !== false)
+                            $('#sortEmployee').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
                         @elseif (strpos($sesh['column'],'dateend') !== false)
                             $('#sortDateFin').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
                         @elseif (strpos($sesh['column'],'duration') !== false)
@@ -178,13 +182,25 @@
                         @endif
                     @endif
                 },
+                sortEmployee: function() {
+                    const order = $('#sortEmployee').css('background-image') === this.sortNormal ? 'ASC' :
+                                 ($('#sortEmployee').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                    $.ajax({
+                        method: 'POST',
+                        url: '{{route('punches.sortEmployees')}}',
+                        data: { column: 'username', order: order, _token: '{{csrf_token()}}' },
+                        success: function () {
+                            location.reload();
+                        }
+                    });
+                },
                 sortDateDebut: function () {
                     // TODO
                     const order = $('#sortDateDebut').css('background-image') === this.sortNormal ? 'ASC' :
                                  ($('#sortDateDebut').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
                     $.ajax({
                         method: 'POST',
-                        url: '{{route('punches.sort')}}',
+                        url: '{{route('punches.sortEmployees')}}',
                         data: { column: 'datebegin', order: order, _token: '{{csrf_token()}}' },
                         success: function () {
                             location.reload();
@@ -197,7 +213,7 @@
                                  ($('#sortDateFin').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
                     $.ajax({
                         method: 'POST',
-                        url: '{{route('punches.sort')}}',
+                        url: '{{route('punches.sortEmployees')}}',
                         data: { column: 'dateend', order: order, _token: '{{csrf_token()}}' },
                         success: function () {
                             location.reload();
@@ -210,7 +226,7 @@
                                  ($('#sortDuration').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
                     $.ajax({
                         method: 'POST',
-                        url: '{{route('punches.sort')}}',
+                        url: '{{route('punches.sortEmployees')}}',
                         data: { column: 'duration', order: order, _token: '{{csrf_token()}}' },
                         success: function () {
                             location.reload();
@@ -218,22 +234,22 @@
                     });
                 },
                 loadweek: function () {
-                    $.getJSON('/punches/lastweek',function (data) {
+                    $.getJSON('/punches/lastweek/employees',function (data) {
                         app.chartdata = data;
                     });
                 },
                 loadtwoweeks: function() {
-                    $.getJSON('/punches/lasttwoweeks',function (data) {
+                    $.getJSON('/punches/lasttwoweeks/employees',function (data) {
                         app.chartdata = data;
                     });
                 },
                 loadmonth: function () {
-                    $.getJSON('/punches/lastmonth',function (data) {
+                    $.getJSON('/punches/lastmonth/employees',function (data) {
                         app.chartdata = data;
                     });
                 },
                 loadyear: function () {
-                    $.getJSON('/punches/lastyear',function (data) {
+                    $.getJSON('/punches/lastyear/employees',function (data) {
                         app.chartdata = data;
                     });
                 }

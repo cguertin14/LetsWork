@@ -125,7 +125,7 @@ class CompanyController extends BaseController {
 		    $sesh = session('sortCompany');
             $joboffers = $data->joboffers()->orderBy($sesh['column'],$sesh['order'])->paginate(5);
         } else {
-            $joboffers = $data->joboffers()->paginate(5);
+            $joboffers = $data->joboffers()->orderBy('created_at','DESC')->paginate(5);
             $sesh = [];
         }
 		return view('company.show', compact(['data', 'joboffers','sesh']));

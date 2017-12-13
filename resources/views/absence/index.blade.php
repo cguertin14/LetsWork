@@ -11,7 +11,7 @@
 @section('content')
 
     <div class="page-title-header">
-        <h1 class="page-title">Toutes les demandes d'absences</h1>
+        <h1 class="page-title">@if (\App\Tools\Helper::CIsHighRanked()) Toutes les demandes d'absences @else Toutes mes demandes d'absence @endif</h1>
         <hr class="separator">
     </div>
 
@@ -34,7 +34,7 @@
                                 \Carbon\Carbon::setLocale('fr');
                             @endphp
                             @foreach($absences as $absence)
-                                <tr data-toggle="collapse" data-target="#accordion{{$absence->id}}" class="accordion-toggle section-index" @if ($absence->approved == 1) style="background-color: #552AD6" @else style="background-color: #24817A"  @endif>
+                                <tr data-toggle="collapse" data-target="#accordion{{$absence->id}}" class="accordion-toggle section-index" @if ($absence->approved == 1) style="background-color: #552AD6"  @else style="background-color: #24817A" @endif>
                                     <td>{{$absence->employee->user->name}}</td>
                                     <td>{{\Carbon\Carbon::parse($absence->begin)->diffForHumans()}}, {{\Carbon\Carbon::parse($absence->begin)->toDateTimeString()}}</td>
                                     <td>{{\Carbon\Carbon::parse($absence->end)->diffForHumans()}}, {{\Carbon\Carbon::parse($absence->end)->toDateTimeString()}}</td>
@@ -48,15 +48,25 @@
                                                     <p style="font-size: 1.2em;color: white">{{$absence->reason}}</p>
                                                 </div>
                                                 <div class="row" style="padding: 1em">
-                                                    @if ($absence->approved == 0)
-                                                        {!! Form::open(['method' => 'PATCH','action' => ['AbsenceController@update',$absence->slug]]) !!}
-                                                        <div class="form-group pull-left">
-                                                            {!! Form::hidden('approved',1) !!}
-                                                            {!! Form::submit('Approuver',['class' => 'btn btn-success','style' => 'background-color:#24817A!important']) !!}
-                                                        </div>
-                                                        {!! Form::close() !!}
+                                                    @if (\App\Tools\Helper::CIsHighRanked())
+                                                        @if ($absence->approved == 0)
+                                                            {!! Form::open(['method' => 'PATCH','action' => ['AbsenceController@update',$absence->slug]]) !!}
+                                                            <div class="form-group pull-left">
+                                                                {!! Form::hidden('approved',1) !!}
+                                                                {!! Form::submit('Approuver',['class' => 'btn btn-success','style' => 'background-color:#24817A!important']) !!}
+                                                            </div>
+                                                            {!! Form::close() !!}
+                                                        @else
+                                                            <button disabled class="btn purplebtn">Cette absence a été approuvée</button>
+                                                        @endif
                                                     @else
-                                                        <button disabled class="btn purplebtn">Cette absence a été approuvée</button>
+                                                        <div class="form-group pull-left">
+                                                            @if ($absence->approved == 0)
+                                                                <button disabled class="btn btn-success" style="background-color:#24817A!important">Cette absence n'a pas encore été approuvée</button>
+                                                            @else
+                                                                <button disabled class="btn purplebtn">Cette absence a été approuvée</button>
+                                                            @endif
+                                                        </div>
                                                     @endif
                                                 </div>
                                             </div>
@@ -93,9 +103,9 @@
         new Vue({
             el: '#table',
             data: {
-                sortNormal:  'url("http://letswork.dev/image/sort.png")',
-                sortUp:      'url("http://letswork.dev/image/sortup.png")',
-                sortDown:    'url("http://letswork.dev/image/sortdown.png")'
+                sortNormal:  'url("http://{{env('APP_URL')}}/image/sort.png")',
+                sortUp:      'url("http://{{env('APP_URL')}}/image/sortup.png")',
+                sortDown:    'url("http://{{env('APP_URL')}}/image/sortdown.png")'
             },
             computed: {},
             methods: {

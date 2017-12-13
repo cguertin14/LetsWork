@@ -38,7 +38,7 @@ class SchedulesSeeder extends Seeder
             $max_epoch = strtotime(Carbon::createFromFormat('Y-m-d H:i:s',$schedule->begin)->addDays(2));
             $rand_epoch = rand($min_epoch, $max_epoch);
             $begin = date('Y-m-d H:i:s', $rand_epoch);
-            $end = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $begin)->addDays(6);//addHours($faker->numberBetween(1, 8));
+            $end = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $begin)->addDays(2);//addHours($faker->numberBetween(1, 8));
 
             $scheduleElement = $schedule->scheduleelements()->create([
                 'begin' => $begin,

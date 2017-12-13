@@ -95,22 +95,26 @@ class JobOfferUserController extends BaseController
     public function accept($id)
     {
         $jobofferuser = $this->getJobOfferUserById($id);
-        session(['jobofferuser' => $jobofferuser]);
         $data = ['jobofferuser' => $jobofferuser];
 
-        $employee = $jobofferuser->user->employees()->create(['user_id' => $jobofferuser->user->id]);
+        $employee = $jobofferuser->user->employees()->create();
+        $jobofferuser->joboffer->specialrole->employees()->attach($employee);
+        $jobofferuser->joboffer->company->employees()->attach($employee);
         $employee->companies()->attach($jobofferuser->joboffer->company);
+
+        $jobofferuser->accepted = 1;
+        $jobofferuser->save();
+        //$jobofferuser->delete();
 
         // Send email then update entry in database
         try {
-            Mail::send('jobofferuser.accept', $data,function ($message){
-                $message->from('support@letswork.dev',session('jobofferuser')->joboffer->company->name);
-                $message->to(session('jobofferuser')->user->email,session('jobofferuser')->user->name)
-                        ->subject(session('jobofferuser')->joboffer->specialrole->name);
+            Mail::send('jobofferuser.accept', $data,function ($message) use ($jobofferuser) {
+                $message->from('support@letswork.dev',$jobofferuser->joboffer->company->name);
+                $message->to($jobofferuser->user->email,$jobofferuser->user->name)
+                        ->subject($jobofferuser->joboffer->specialrole->name);
             });
         } catch (ClientException $e) {}
 
-        session()->forget('jobofferuser');
         return redirect('/jobofferuser');
     }
 
@@ -124,21 +128,19 @@ class JobOfferUserController extends BaseController
     public function refuse($id)
     {
         $jobofferuser = $this->getJobOfferUserById($id);
-        session(['jobofferuser' => $jobofferuser]);
         $data = ['jobofferuser' => $jobofferuser];
 
         // Send email then delete entry in database
         try {
-            Mail::send('jobofferuser.refuse', $data,function ($message){
-                $message->from('support@letswork.dev',session('jobofferuser')->joboffer->company->name);
-                $message->to(session('jobofferuser')->user->email,session('jobofferuser')->user->name)
-                        ->subject(session('jobofferuser')->joboffer->specialrole->name);
+            Mail::send('jobofferuser.refuse', $data,function ($message) use ($jobofferuser) {
+                $message->from('support@letswork.dev',$jobofferuser->joboffer->company->name);
+                $message->to($jobofferuser->user->email,$jobofferuser->user->name)
+                        ->subject($jobofferuser->joboffer->specialrole->name);
             });
         } catch (ClientException $e) {}
 
         $jobofferuser->delete();
 
-        session()->forget('jobofferuser');
         return redirect('/jobofferuser');
     }
 
@@ -152,7 +154,6 @@ class JobOfferUserController extends BaseController
     public function interview($id)
     {
         $jobofferuser = $this->getJobOfferUserById($id);
-        session(['jobofferuser' => $jobofferuser]);
         $data = ['jobofferuser' => $jobofferuser];
 
         $jobofferuser->interview = 1;
@@ -160,14 +161,13 @@ class JobOfferUserController extends BaseController
 
         // Send email then update entry in database
         try {
-            Mail::send('jobofferuser.interview', $data,function ($message){
-                $message->from('support@letswork.dev',session('jobofferuser')->joboffer->company->name);
-                $message->to(session('jobofferuser')->user->email,session('jobofferuser')->user->name)
-                        ->subject(session('jobofferuser')->joboffer->specialrole->name);
+            Mail::send('jobofferuser.interview', $data,function ($message) use ($jobofferuser) {
+                $message->from('support@letswork.dev',$jobofferuser->joboffer->company->name);
+                $message->to($jobofferuser->user->email,$jobofferuser->user->name)
+                        ->subject($jobofferuser->joboffer->specialrole->name);
             });
         } catch (ClientException $e) {}
 
-        session()->forget('jobofferuser');
         return redirect('/jobofferuser');
     }
 }

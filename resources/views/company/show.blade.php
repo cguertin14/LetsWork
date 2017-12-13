@@ -18,7 +18,7 @@
     <div>
         <div class="row">
             <div class="col-md-12 text-center">
-                <img id="image" width="200px" height="200px" src="{{asset('image/default-profile.png')}}" style="border-radius: 50%">
+                <img id="image" width="200px" height="200px" src="{{asset('image/default-profile.png')}}" style="border-radius: 50%; border: 1px solid white">
             </div>
             <div class="col-md-12">
                 <h3 style="font-size:2.5em;text-align: center;font-family: Montserrat,sans-serif;color: white">{{$data['name']}}</h3>
@@ -158,9 +158,9 @@
         new Vue({
            el: '#table',
            data: {
-               sortNormal:  'url("http://letswork.dev/image/sort.png")',
-               sortUp:      'url("http://letswork.dev/image/sortup.png")',
-               sortDown:    'url("http://letswork.dev/image/sortdown.png")'
+               sortNormal:  'url("{{env('APP_URL')}}/image/sort.png")',
+               sortUp:      'url("{{env('APP_URL')}}/image/sortup.png")',
+               sortDown:    'url("{{env('APP_URL')}}/image/sortdown.png")'
            },
            methods: {
                connect: function () {

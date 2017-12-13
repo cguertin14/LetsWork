@@ -16,7 +16,9 @@ class CheckManager
      */
     public function handle($request, Closure $next)
     {
-        if (Helper::CIsManager()) {
+        if (Helper::CCompany() == null) {
+            return redirect('/');
+        } else if (Helper::CIsManager()) {
             return $next($request);
         } else {
             return redirect()->back();

@@ -30,8 +30,6 @@ class DispoController extends BaseController
      */
     public function index()
     {
-        if (self::CCompany() == null)
-            return redirect('/');
         if (Session::has('sortDispo')) {
             // Sort data...
             $sesh = session('sortDispo');

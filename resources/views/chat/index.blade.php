@@ -28,6 +28,7 @@
         .boxsize {
             width: auto;
             max-width: 70%;
+            font-size: 1.2em;
             height: auto;
             margin-bottom: .2em;
             padding-right: .3em;
@@ -37,6 +38,7 @@
 
         .boxsize2 {
             width: 100%;
+            font-size: 1.2em;
             height: auto;
             margin-bottom: .2em;
             padding-right: .3em;
@@ -48,6 +50,7 @@
             vertical-align: middle;
             padding: .3em;
             margin: 0px;
+            font-size: 1.1em;
         }
 
         .username {
@@ -111,7 +114,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6" style="height: 100%;border: 2px solid white;border-radius: 1em;background-color: gray">
+        <div class="col-md-6" style="height: 100%;border: 2px solid white;border-radius: 1em;background-color: gray;margin-top:3.3em">
             <div class="row" style="height: 77%">
                 <div class="parent" style="height: 100%; margin-left: 2%;">
                     <div id="chatbox" class="list-group child row">

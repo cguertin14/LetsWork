@@ -34,6 +34,17 @@
         .col-lg-4 > p {
             font-family: 'Ubuntu',sans-serif;
             font-size: 1.2em;
+            text-align: justify;
+        }
+
+        .col-lg-6 > h2 {
+            font-family: 'Montserrat',sans-serif;
+        }
+        .col-lg-6 > p {
+            font-family: 'Ubuntu',sans-serif;
+            font-size: 1.2em;
+            line-height: 1.7em;
+            text-align: justify;
         }
 
         .centre h1, p,h2,a {
@@ -86,21 +97,34 @@
 
                 <!-- Example row of columns -->
                 <div class="row">
-                    <div class="col-lg-4"  style="overflow: hidden">
-                        <h2>Curriculum Vitae</h2>
-                        <p>Pour trouver un emploi, il est primordial pour un candidat faire un curriculum vitae pour se vanter. Déposez votre CV et magasinez les emplois disponibles.</p>
-                        <p><a class="btn purplebtn" href="{{route('cv.create')}}" role="button">Déposer mon cv &raquo;</a></p>
-                    </div>
-                    <div class="col-lg-4" style="overflow: hidden">
-                        <h2>Calendrier</h2>
-                        <p>En tant qu'employé, que vous soyez un caissier ou un directeur, il va de soi qu'il est essentiel pour vous de visualiser votre calendrier ou même de le modifier.</p>
-                        <p><a class="btn purplebtn" href="@if(\Illuminate\Support\Facades\Auth::user()->isOwner()) {{route('schedule.editing')}} @else {{route('schedule.index')}} @endif" role="button">@if(\Illuminate\Support\Facades\Auth::user()->isOwner()) Modifier le calendrier @else Visualiser le calendrier @endif &raquo;</a></p>
-                    </div>
-                    <div class="col-lg-4"  style="overflow: hidden">
-                        <h2>À propos</h2>
-                        <p>LetsWork est une entreprise offrant ses services pour vous faciliter la vie que ce soit pour la recherche d'emploi, la gestion d'employés et bien plus. Pour en savoir plus, nous vous avons préparé une section du site pour vous parler de nous.</p>
-                        <p><a class="btn purplebtn" href="{{route('information.aboutus')}}" role="button">À propos &raquo;</a></p>
-                    </div>
+                    @if (\App\Tools\Helper::CCompany() != null)
+                        <div class="col-lg-4"  style="overflow: hidden">
+                            <h2>Curriculum Vitae</h2>
+                            <p>Pour trouver un emploi, il est primordial pour un candidat faire un curriculum vitae pour se vanter. Déposez votre CV et magasinez les emplois disponibles.</p>
+                            <p><a class="btn purplebtn" href="{{route('cv.create')}}" role="button">Déposer mon cv &raquo;</a></p>
+                        </div>
+                        <div class="col-lg-4" style="overflow: hidden">
+                            <h2>Calendrier</h2>
+                            <p>En tant qu'employé, que vous soyez un caissier ou un directeur, il va de soi qu'il est essentiel pour vous de visualiser votre calendrier ou même de le modifier.</p>
+                            <p><a class="btn purplebtn" href="@if(\Illuminate\Support\Facades\Auth::user()->isOwner()) {{route('schedule.editing')}} @else {{route('schedule.index')}} @endif" role="button">@if(\Illuminate\Support\Facades\Auth::user()->isOwner()) Modifier le calendrier @else Visualiser le calendrier @endif &raquo;</a></p>
+                        </div>
+                        <div class="col-lg-4"  style="overflow: hidden">
+                            <h2>À propos</h2>
+                            <p>LetsWork est une entreprise offrant ses services pour vous faciliter la vie que ce soit pour la recherche d'emploi, la gestion d'employés et bien plus. Pour en savoir plus, nous vous avons préparé une section du site pour vous parler de nous.</p>
+                            <p><a class="btn purplebtn" href="{{route('information.aboutus')}}" role="button">À propos &raquo;</a></p>
+                        </div>
+                    @else
+                        <div class="col-lg-6"  style="overflow: hidden">
+                            <h2>Curriculum Vitae</h2>
+                            <p>Pour trouver un emploi, il est primordial pour un candidat faire un curriculum vitae pour se vanter. Déposez votre CV et magasinez les emplois disponibles.</p>
+                            <p><a class="btn purplebtn" href="{{route('cv.create')}}" role="button">Déposer mon cv &raquo;</a></p>
+                        </div>
+                        <div class="col-lg-6"  style="overflow: hidden">
+                            <h2>À propos</h2>
+                            <p>LetsWork est une entreprise offrant ses services pour vous faciliter la vie que ce soit pour la recherche d'emploi, la gestion d'employés et bien plus. Pour en savoir plus, nous vous avons préparé une section du site pour vous parler de nous.</p>
+                            <p><a class="btn purplebtn" href="{{route('information.aboutus')}}" role="button">À propos &raquo;</a></p>
+                        </div>
+                    @endif
                 </div>
 
             </div> <!-- /container -->

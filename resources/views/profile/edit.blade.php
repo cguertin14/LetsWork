@@ -24,8 +24,8 @@
     <div class="row layout">
         <div class="col-md-12 text-center">
             <br>
-            <div style="width:100%; height:70%">
-                <img id="image" width="200px" height="200px" src="{{asset('image/default-profile.png')}}" style="border-radius: 50%">
+            <div style="width:100%; height:70%;">
+                <img id="image" width="200px" height="200px" src="{{asset('image/default-profile.png')}}" style="border-radius: 50%; border: 1px solid white">
             </div>
             <div class="employee">
                 <p>{{ $user->fullname }}</p>

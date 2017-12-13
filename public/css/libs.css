@@ -4910,7 +4910,7 @@ Main Components
 }
 
 .sidenav a {
-    padding: 8px 8px 8px 32px;
+    padding: 6px 6px 8px 26px;
     text-decoration: none !important;
     font-size: 23px;
     color: #ffffff !important;
@@ -4918,6 +4918,11 @@ Main Components
     font-weight: 800;
     display: block;
     transition: 0.3s;
+}
+
+.sidenav a:focus {
+    outline-width: 0;
+    outline: none
 }
 
 .sidenav a:hover {

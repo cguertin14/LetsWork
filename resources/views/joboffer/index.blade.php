@@ -314,9 +314,9 @@
         new Vue({
             el: '#table',
             data: {
-                sortNormal:  'url("http://letswork.dev/image/sort.png")',
-                sortUp:      'url("http://letswork.dev/image/sortup.png")',
-                sortDown:    'url("http://letswork.dev/image/sortdown.png")'
+                sortNormal:  'url("{{env('APP_URL')}}/image/sort.png")',
+                sortUp:      'url("{{env('APP_URL')}}/image/sortup.png")',
+                sortDown:    'url("{{env('APP_URL')}}/image/sortdown.png")'
             },
             computed: {},
             methods: {

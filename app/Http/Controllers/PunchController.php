@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Punch;
+use App\Tools\Collection;
 use App\Tools\Helper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ class PunchController extends BaseController
     public function __construct()
     {
         $this->middleware('employee');
+        $this->middleware('highranked',['only' => ['employees','sortEmployees','lastWeekEmployees','lastMonthEmployees','lastTwoWeeksEmployees','lastYearEmployees']]);
     }
 
     /**
@@ -53,13 +55,42 @@ class PunchController extends BaseController
             if ($sesh['column'] === 'duration') {
                 $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(10);
             } else {
-                $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'],$sesh['order'])->paginate(10);
+                $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(10);
             }
         } else {
             $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->paginate(5);
             $sesh = [];
         }
         return view("punch.index", compact('punches','sesh'));
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function employees()
+    {
+        if (Session::has('sortPunchesEmployees')) {
+            $sesh = session('sortPunchesEmployees');
+            if ($sesh['column'] === 'duration') {
+                $punches = self::CCompany()->punches()->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(10);
+            } else if ($sesh['column'] === 'username') {
+                if ($sesh['order'] == 'ASC') {
+                    $punches = (new Collection(self::CCompany()->punches()->get()))->sortBy(function (Punch $punch) {
+                        return $punch->employee->user->fullname;
+                    })->paginate(5);
+                } else {
+                    $punches = (new Collection(self::CCompany()->punches()->get()))->sortByDesc(function (Punch $punch) {
+                        return $punch->employee->user->fullname;
+                    })->paginate(5);
+                }
+            } else {
+                $punches = self::CCompany()->punches()->orderBy($sesh['column'], $sesh['order'])->paginate(10);
+            }
+        } else {
+            $punches = self::CCompany()->punches()->paginate(5);
+            $sesh = [];
+        }
+        return view('punch.employees',compact('punches','sesh'));
     }
 
     /**
@@ -72,13 +103,26 @@ class PunchController extends BaseController
         return redirect()->action('PunchController@index');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sortEmployees(Request $request)
+    {
+        session(['sortPunchesEmployees' => $request->all()]);
+        return redirect()->action('PunchController@employees');
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function lastweek()
     {
         $data = [
             "labels" => $this->getlastweek(Carbon::today()),
-            "datasets" =>
-                [[
-                    "label" => "La somme des heures travaillées",
+            "datasets" => [
+                [
+                    "label" => self::CIsHighRanked() ? "Les heures travaillées par employé" : "La somme des heures travaillées",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => $this->getLastWeekSum(Carbon::today()),
@@ -88,34 +132,85 @@ class PunchController extends BaseController
         return response()->json($data);
     }
 
-    public function lastmouth()
+    public function lastWeekEmployees()
     {
-        $today=$this->getLast4WeekDates(Carbon::today());
+
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function lastTwoWeeks()
+    {
         $data = [
-            "labels" => ["1ère semaine", "2ième semaine", "3ième semaine", "4ième semaine"],
-            "datasets" =>
-                [[
+            "labels" => $this->getLastTwoWeeks(Carbon::today()),
+            "datasets" => [
+                [
                     "label" => "La somme des heures travaillées",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
-                    "data" => [
-                    $this->makeSum($today,7,0),
-                    $this->makeSum($today,7,1),
-                    $this->makeSum($today,7,2),
-                    $this->makeSum($today,7,3)],
+                    "data" => $this->getLastTwoWeeksSum(Carbon::today()),
                 ]
             ]
         ];
         return response()->json($data);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function lastTwoWeeksEmployees()
+    {
+        $data = [
+            "labels" => $this->getLastTwoWeeks(Carbon::today()),
+            "datasets" => $this->getCompanyEmployeesTwoWeekTimes()
+        ];
+        return response()->json($data);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function lastmonth()
+    {
+        $today=$this->getLast4WeekDates(Carbon::today());
+        $data = [
+            "labels" => ["1ère semaine", "2ième semaine", "3ième semaine", "4ième semaine"],
+            "datasets" => [
+                [
+                    "label" => "La somme des heures travaillées",
+                    "backgroundColor" => '#552AD6',
+                    "borderColor" => '#552AD6',
+                    "data" => [
+                        $this->makeSum($today,7,0),
+                        $this->makeSum($today,7,1),
+                        $this->makeSum($today,7,2),
+                        $this->makeSum($today,7,3)
+                    ],
+                ]
+            ]
+        ];
+        return response()->json($data);
+    }
+
+    /**
+     *
+     */
+    public function lastMonthEmployees()
+    {
+
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function lastyear()
     {
         $today=$this->getLastYearsDates(Carbon::today());
         $data = [
             "labels" => $this->getlastyearmonth(Carbon::today()),
-            "datasets" =>
-                [[
+            "datasets" => [
+                [
                     "label" => "La somme des heures travaillées",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
@@ -136,5 +231,13 @@ class PunchController extends BaseController
             ]
         ];
         return response()->json($data);
+    }
+
+    /**
+     *
+     */
+    public function lastYearEmployees()
+    {
+
     }
 }
