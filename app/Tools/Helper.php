@@ -203,9 +203,9 @@ trait Helper
         return $lastweek;
     }
 
-    public function getDaySum(Carbon $day)
+    public function getDaySum(Carbon $day,Employee $employee)
     {
-        $punches = self::CEmployee()->punches()->whereBetween('datebegin',[new Carbon($day),new Carbon($day->addDay())])->where('company_id',self::CCompany()->id)->get();
+        $punches = $employee->punches()->whereBetween('datebegin',[new Carbon($day),new Carbon($day->addDay())])->where('company_id',self::CCompany()->id)->get();
         $average = 0;
         foreach ($punches as $punch) {
             $average += Carbon::parse($punch->dateend)->diffInSeconds(Carbon::parse($punch->datebegin));
@@ -223,12 +223,12 @@ trait Helper
         return $average / 60 / 60;
     }
 
-    public function getLastWeekSum(Carbon $today)
+    public function getLastWeekSum(Carbon $today,Employee $employee)
     {
         $week = $this->getlastweekdates($today);
         $averages = [];
         foreach ($week as $day) {
-            array_push($averages,round($this->getDaySum($day),2));
+            array_push($averages,round($this->getDaySum($day,$employee),2));
         }
         return $averages;
     }
@@ -240,48 +240,6 @@ trait Helper
             $average += Carbon::parse($punch->dateend)->diffInSeconds(Carbon::parse($punch->datebegin));
         }
         return $average / 60 / 60;
-    }
-
-    /**
-     * @return array
-     */
-    public function getCompanyEmployeesTwoWeekTimes()
-    {
-        $toReturn = new Collection();
-        $previous = null;
-        $averages = new Collection();
-        $employees = self::CCompany()->employees()->get();
-        $twoWeeks = $this->getLastTwoWeeksDates(Carbon::today());
-        foreach ($employees as $employee) {
-            foreach ($twoWeeks as $day) {
-                $averages->add(round($this->getDaySumByEmployee($employee,$day),2));
-            }
-            if ($previous != null) {
-                do {
-                    $color = self::rand_color();
-                } while ($color == $previous);
-            } else {
-                $color = self::rand_color();
-            }
-            //$canAdd = false;
-            //foreach ($averages as $average) {
-                //if ($average > 0) {
-                  //  $canAdd = true;
-                //    break;
-              //  }
-            //}
-            //if ($canAdd) {
-                $toReturn->add([
-                    "label" => "Heures de " . $employee->user->fullname,
-                    "backgroundColor" => $color,
-                    "borderColor" => $color,
-                    "data" => $averages,
-                ]);
-            //}
-            $averages = new Collection();
-            $previous = $color;
-        }
-        return $toReturn->toArray();
     }
 
     public function getLastTwoWeeksDates(Carbon $today)
@@ -298,12 +256,12 @@ trait Helper
         return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
     }
 
-    public function getLastTwoWeeksSum(Carbon $today)
+    public function getLastTwoWeeksSum(Carbon $today,Employee $employee)
     {
         $week = $this->getLastTwoWeeksDates($today);
         $averages = [];
         foreach ($week as $day) {
-            array_push($averages,round($this->getDaySum($day),2));
+            array_push($averages,round($this->getDaySum($day,$employee),2));
         }
         return $averages;
     }
@@ -335,12 +293,12 @@ trait Helper
         return $years;
     }
 
-    public function makeSum($array,$first_n,$n)
+    public function makeSum(Employee $employee,$array,$first_n,$n)
     {
         $sum = 0;
         $nn = $first_n*$n;
         for ($i = 0 + $nn; $i < $first_n + $nn ; $i++) {
-            $sum+=$this->getDaySum($array[$i]);
+            $sum+=$this->getDaySum($array[$i],$employee);
         }
         return round($sum,2);
     }

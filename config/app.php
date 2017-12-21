@@ -178,6 +178,8 @@ return [
 		// App\Providers\BroadcastServiceProvider::class,
 		App\Providers\EventServiceProvider::class,
 		App\Providers\RouteServiceProvider::class,
+        SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class
         //React\ReactServiceProvider::class,
 
 	],
@@ -230,7 +232,9 @@ return [
 		'View' => Illuminate\Support\Facades\View::class,
 		'Form' => Collective\Html\FormFacade::class,
 		'Html' => Collective\Html\HtmlFacade::class,
-        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Facebook' => SammyK\LaravelFacebookSdk\FacebookFacade::class,
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
 	],
 
 ];

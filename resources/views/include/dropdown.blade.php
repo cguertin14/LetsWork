@@ -25,7 +25,9 @@
     dropdown("#dropdown7","#dropdown7Title",100,"#img7");
     @if (\Illuminate\Support\Facades\Auth::user()->employees()->get()->map(function ($employee) { return $employee->companies()->get(); })->first() != null)
         dropdown("#dropdown8","#dropdown8Title",100,"#img8");
-        dropdown("#dropdownMyJob","#dropdownMyJobTitle",@if (\App\Tools\Helper::CIsHighRanked()) 350 @else 150 @endif,"#imgMyJob")
+        @if (\App\Tools\Helper::CCompany() != null)
+            dropdown("#dropdownMyJob","#dropdownMyJobTitle",@if (\App\Tools\Helper::CIsHighRanked()) 350 @else 150 @endif,"#imgMyJob")
+        @endif
     @endif
 
 </script>

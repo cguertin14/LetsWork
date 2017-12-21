@@ -124,7 +124,8 @@
     <script>
         $(document).ready(function () {
             @if(!\Illuminate\Support\Facades\Auth::user()->cv)
-                alert('Vous devez déposez votre cv en ligne pour pouvoir postuler sur un emploi!');
+                alert('Vous devez déposer votre cv en ligne pour pouvoir postuler sur un emploi!');
+                window.location.href = '{{route('cv.create')}}';
             @endif
             sendLetter();
             $("#uploadbtn").click(function () {

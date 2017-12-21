@@ -216,5 +216,5 @@
             });
         })
     </script>
-    @yield("scripts")
+    @yield('scripts')
 @endsection

@@ -36,6 +36,7 @@ Route::post('/company/sort', 'CompanyController@sortCompanies')->name('company.s
 
 /* Auth Routes */
 Auth::routes();
+Route::post('/login/facebook','FacebookAuthController@login')->name('facebook_login');
 
 Route::group(['middleware' => 'auth'], function () use ($resources) {
 	/* Profile Routes */
@@ -100,21 +101,22 @@ Route::group(['middleware' => 'auth'], function () use ($resources) {
 	Route::post('/punch', 'PunchController@add');
 	Route::get('/punches', 'PunchController@index')->name('punch');
     Route::get('/punches/employees', 'PunchController@employees')->name('punch.employees');
-	Route::get('/punches/lastweek', 'PunchController@lastweek');
-    Route::get('/punches/lastweek/employees', 'PunchController@lastWeekEmployees')->name('punches.lastweekemployees');
-    Route::get('/punches/lasttwoweeks', 'PunchController@lastTwoWeeks');
-    Route::get('/punches/lasttwoweeks/employees', 'PunchController@lastTwoWeeksEmployees')->name('punches.lasttwoweeksemployees');
-	Route::get('/punches/lastmonth', 'PunchController@lastmonth');
-    Route::get('/punches/lastmonth/employees', 'PunchController@lastMonthEmployees')->name('punches.lastmonthemployees');
-	Route::get('/punches/lastyear', 'PunchController@lastyear');
-    Route::get('/punches/lastyear/employees', 'PunchController@lastYearEmployees')->name('punches.lastyearemployees');
+	Route::get('/punches/lastweek/{id}', 'PunchController@lastweek');
+    Route::get('/punches/lasttwoweeks/{id}', 'PunchController@lastTwoWeeks');
+	Route::get('/punches/lastmonth/{id}', 'PunchController@lastmonth');
+	Route::get('/punches/lastyear/{id}', 'PunchController@lastyear');
 	Route::post('/punches/sort', 'PunchController@sort')->name('punches.sort');
+	Route::get('/punches/employees/names','PunchController@employeesNames')->name('punches.employees');
+    Route::get('/punches/sort/employees/{name}', 'PunchController@sortEmployeesByName')->name('punches.sortEmployeesByName');
+    Route::get('/punches/employees/index','PunchController@employeesIndex')->name('punches.employeesIndex');
+    Route::get('/punches/employee/{id}','PunchController@employee')->name('punches.employee');
     Route::post('/punches/sort/employees', 'PunchController@sortEmployees')->name('punches.sortEmployees');
+    Route::post('/punches/sort/employee', 'PunchController@sortEmployee')->name('punches.sortEmployee');
 
 	/* Other Routes */
 	Route::get('/isauthmanager', 'OtherController@userIsManager')->middleware('employee');
 
-	//Chat Routes
+	/* Chat Routes*/
 	Route::get('/chat', 'ChatController@index')->name('chat');
 	Route::post('/savemessages', 'ChatController@save');
 	Route::get('/lastmessages', 'ChatController@last');

@@ -68,7 +68,46 @@
                         </div>
                     </div>
                 </div>
+                <div class="text-center">
+                    <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('scriptsm')
+    <script>
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/fr_CA/sdk.js#xfbml=1&version=v2.11&appId=905290879647809';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '905290879647809',
+                cookie     : true,
+                autoLogAppEvents : true,
+                status     : true,
+                xfbml      : true,
+                version    : 'v2.9'
+            });
+
+            FB.AppEvents.logPageView();
+
+            FB.Event.subscribe('auth.login', function(response) {
+                // do something with response
+                $.ajax({
+                    method: 'POST',
+                    url: '{{route('facebook_login')}}',
+                    success: function (data) {
+                        window.location.href = data.url;
+                    }
+                });
+            });
+        };
+    </script>
 @endsection

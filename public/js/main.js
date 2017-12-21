@@ -278,7 +278,7 @@ function PlacerHoraire(){
 		this.modal.attr('data-event', event.parent().attr('data-event'));
 
 		//update event content
-		if (location.href.includes('http://letswork.dev/schedule/editing')) {
+		if (location.href.includes('http://letswork.test/schedule/editing')) {
 			$.ajax({
 				method: 'GET',
 				url: '/schedule/' + event.parent().attr('data-slug') + '/edit',

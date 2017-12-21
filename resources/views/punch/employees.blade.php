@@ -10,16 +10,46 @@
             background-color: white;
         }
 
-        .white {
-            color: #ffffff;
-        }
-
         [v-cloak] {
             display: none;
         }
 
-        .footer {
-            position: relative;
+        .form-control {
+            border-top-left-radius: 4px !important;
+            border-bottom-left-radius: 4px !important;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            height: 400px;
+            background-color: #ddd;
+            border-radius: 0.4em;
+            text-align: center;
+            font-family: 'Ubuntu', sans-serif;
+        }
+
+        .title {
+            color: grey;
+            font-size: 18px;
+        }
+
+        .card > button {
+            border: none;
+            outline: 0;
+            display: inline-block;
+            padding: 8px;
+            color: white;
+            background-color: #552AD6;
+            border-radius: 0.3em;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        img.profile-image {
+            height: 150px;
+            width: 150px;
         }
     </style>
 @endsection
@@ -27,45 +57,65 @@
 @section('content')
     <div id="app">
         <div class="page-title-header">
-            <h1 class="page-title">@if(\App\Tools\Helper::CIsHighRanked()) Heures de mes employés @else Mes périodes de travail @endif</h1>
+            <h1 class="page-title">Heures de mes employés</h1>
             <hr class="separator">
         </div>
+
+        @if (count($punches) > 0)
+            <div class="col-md-12">
+                <div class="row layout">
+                    <div class="centre custom-container">
+                        <table class="table custom-table" style="margin: 0 !important;" id="headerTable">
+                            <thead>
+                                <tr class="section-title">
+                                    <th>Rechercher par Employé</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="2">
+                                        <br>
+                                        <div class="form-group col-md-12" style="width: 100%;">
+                                            <div class="input-group input-group-lg">
+                                                <input style="width: 100% !important;" placeholder="Rechercher un employé..." autofocus required id="schbox" class="form-control input-lg" type="text" v-model="text">
+                                                <span class="input-group-btn">
+                                                    <input type="button" id="rechercher" class="btn purplebtn" v-on:click="searchEmployees" style="margin-bottom: 5px" value="Rechercher">
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td v-if="text != ''">
+                                        <br>
+                                        <div class="form-group pull-right">
+                                            <button id="reset" class="btn btn-danger" v-on:click="reset">Réinitialiser</button>
+                                        </div>
+                                    </td>
+                                    <td v-else>
+                                        <br>
+                                        <div class="form-group pull-right">
+                                            <button class="btn purplebtn" v-on:click="scrolldown">Voir les heures</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br>
+            </div>
+        @endif
+
+        <div class="col-md-12">
+            @include('punch.employees_grid')
+        </div>
+
         <div class="col-md-12">
             <div class="row layout">
                 @if (count($punches) > 0)
                     <div class="centre custom-container">
-                        <table class="table custom-table"style="margin: 0px !important;">
-                            <thead>
-                            <tr class="section-title">
-                                <th>Employé <span id="sortEmployee" v-on:click="sortEmployee()" class="sort"></span></th>
-                                <th>Début <span id="sortDateDebut" v-on:click="sortDateDebut()" class="sort"></span></th>
-                                <th>Fin <span id="sortDateFin" v-on:click="sortDateFin()" class="sort"></span></th>
-                                <th>Durée <span id="sortDuration" v-on:click="sortDuration()" class="sort"></span></th>
-                            </tr>
-                            </thead>
-                            <tbody class="section">
-                            @php($i = 0)
-                            @foreach($punches as $punch)
-                                <tr style="cursor:default;" class="@if ($i % 2 == 0 ) section-index-2 @else section-index @endif">
-                                    @php(\Carbon\Carbon::setLocale('fr'))
-                                    <td>{{$punch->employee->user->fullname}}</td>
-                                    <td>{{\Carbon\Carbon::parse($punch->datebegin)->toDateTimeString()}}</td>
-                                    <td>{{\Carbon\Carbon::parse($punch->dateend)->toDateTimeString()}}</td>
-                                    @if($punch->dateend)
-                                        <td>{{\Carbon\Carbon::parse($punch->dateend)->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)}}</td>
-                                    @else
-                                        <td>Période de travail non terminée</td>
-                                    @endif
-                                </tr>
-                                @php(++$i)
-                            @endforeach
-                            </tbody>
-                        </table>
-                        <div class="row">
-                            <div class="text-center">
-                                {{$punches->render('pagination.paginate')}}
-                            </div>
-                        </div>
+                        @include('punch.employees_table')
                     </div>
                 @else
                     @component('components.nothing')
@@ -77,98 +127,20 @@
                 <br>
             </div>
         </div>
-
-        <div class="col-md-12" id="chart">
-            <div class="row layout">
-                <div class="centre custom-container custom-table" style="padding: 1em;margin-bottom: 2em">
-                    <div class="text-center">
-                        <h2 class="row page-title">Trier par</h2>
-                        <br>
-                        <button class="btn purplebtn" v-on:click="loadweek" style="margin-right: 1em">Semaine</button>
-                        <button class="btn purplebtn" v-on:click="loadtwoweeks" style="margin-right: 1em">Deux Semaines</button>
-                        <button class="btn purplebtn" v-on:click="loadmonth">Mois</button>
-                        <button class="btn purplebtn" v-on:click="loadyear" style="margin-left: 1em">Année</button>
-                    </div>
-                    <br>
-                    <chart :chartdata="chartdata"></chart>
-                </div>
-            </div>
-        </div>
     </div>
 @endsection
 
 @section('scripts')
     <script>
-        Vue.component('chart', {
-            props: ['chartdata'],
-            data: function () {
-                return {
-                    isRecreated: false
-                };
-            },
-            template: '<canvas id="chartid" v-cloak></canvas>',
-            methods: {
-                load: function () {
-                    $('#chartid').replaceWith($('<canvas id="chartid" v-cloak></canvas>'));
-                    var ctx = document.getElementById('chartid').getContext('2d');
-                    var chart = new Chart(ctx, {
-                        // The type of chart we want to create
-                        type: 'bar',
-
-                        // The data for our dataset
-                        data: this.chartdata,
-
-                        // Configuration options go here
-                        options: {
-                            responsive: true,
-                            legend: {
-                                position: 'top',
-                            },
-                            title:{
-                                display:true,
-                                text: @if(\App\Tools\Helper::CIsHighRanked()) 'Heures travaillées par mes employés' @else 'Mes heures travaillées' @endif
-                            },
-                            scales: {
-                                yAxes: [
-                                    {
-                                        ticks: {
-                                            // Include a h sign in the ticks
-                                            callback: function (value, index, values) {
-                                                return value.toFixed(2) + 'h';
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    });
-                }
-            },
-            watch: {
-                chartdata: function (newVal) { // watch it
-                    this.chartdata = newVal;
-                    this.load();
-                    if (this.isRecreated)
-                        $("html, body").animate({ scrollTop: $("#chart").offset().top - 65 }, 1000);
-                    this.isRecreated = true;
-                }
-            },
-            mounted: function () {
-                this.load();
-            }
-        });
-
-        var app = new Vue({
-            el: '#app',
+        new Vue({
+            el: '#employeesTable',
             data: {
-                chartdata: null,
                 sortNormal:  'url("{{env('APP_URL')}}/image/sort.png")',
                 sortUp:      'url("{{env('APP_URL')}}/image/sortup.png")',
                 sortDown:    'url("{{env('APP_URL')}}/image/sortdown.png")'
             },
             methods: {
-                init: function () {
-                    // Place correct images for sorting in header columns
+                init: function() {
                     @if (count($sesh) > 0)
                         let order = '{{$sesh['order']}}';
                         @if (strpos($sesh['column'],'datebegin') !== false)
@@ -184,7 +156,7 @@
                 },
                 sortEmployee: function() {
                     const order = $('#sortEmployee').css('background-image') === this.sortNormal ? 'ASC' :
-                                 ($('#sortEmployee').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                        ($('#sortEmployee').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
                     $.ajax({
                         method: 'POST',
                         url: '{{route('punches.sortEmployees')}}',
@@ -197,7 +169,7 @@
                 sortDateDebut: function () {
                     // TODO
                     const order = $('#sortDateDebut').css('background-image') === this.sortNormal ? 'ASC' :
-                                 ($('#sortDateDebut').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                        ($('#sortDateDebut').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
                     $.ajax({
                         method: 'POST',
                         url: '{{route('punches.sortEmployees')}}',
@@ -210,7 +182,7 @@
                 sortDateFin: function () {
                     // TODO
                     const order = $('#sortDateFin').css('background-image') === this.sortNormal ? 'ASC' :
-                                 ($('#sortDateFin').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                        ($('#sortDateFin').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
                     $.ajax({
                         method: 'POST',
                         url: '{{route('punches.sortEmployees')}}',
@@ -223,7 +195,7 @@
                 sortDuration: function () {
                     // TODO
                     const order = $('#sortDuration').css('background-image') === this.sortNormal ? 'ASC' :
-                                 ($('#sortDuration').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
+                        ($('#sortDuration').css('background-image') === this.sortUp ? 'DESC' : 'ASC');
                     $.ajax({
                         method: 'POST',
                         url: '{{route('punches.sortEmployees')}}',
@@ -233,30 +205,165 @@
                         }
                     });
                 },
-                loadweek: function () {
-                    $.getJSON('/punches/lastweek/employees',function (data) {
-                        app.chartdata = data;
+            },
+            mounted: function () {
+                this.init();
+            }
+        });
+
+        new Vue({
+            el: '#headerTable',
+            data: {
+                text: ''
+            },
+            methods: {
+                resize: function() {
+                    const mq = window.matchMedia( "screen and (min-width: 1100px)" ),
+                        mq2 = window.matchMedia( "screen and (min-width: 767px)" ),
+                        mq3 = window.matchMedia( "screen and (min-width: 850px)" );
+                    if (mq.matches) {
+                        $('.profile-image').css({
+                            height: '150px',
+                            width: '150px'
+                        });
+
+                        $('.fullname').css({
+                            fontSize: '2em'
+                        });
+
+                        $('.col-sm-4:nth-child(2n), .col-sm-4:nth-child(3n)').css({
+                            marginTop: '0em'
+                        })
+                    } else {
+                        $('.profile-image').css({
+                            height: '100px',
+                            width: '100px'
+                        });
+
+                        $('.fullname').css({
+                            fontSize: '1.5em'
+                        });
+                    }
+
+                    if (!mq2.matches) {
+                        $('.profile-image').css({
+                            height: '150px',
+                            width: '150px'
+                        });
+
+                        $('.fullname').css({
+                            fontSize: '2em'
+                        });
+
+                        $('.col-sm-4:nth-child(2n), .col-sm-4:nth-child(3n)').css({
+                            marginTop: '1em'
+                        })
+                    } else if (!mq3.matches) {
+                        $('.profile-image').css({
+                            height: '70px',
+                            width: '70px'
+                        });
+
+                        $('.fullname').css({
+                            fontSize: '1.1em'
+                        });
+                    }
+                },
+                scrolldown: function() {
+                    $("html, body").animate({ scrollTop: $("#employeesTable").offset().top }, 2000)
+                },
+                init: function () {
+                  // MEDIA QUERIES.
+                  this.resize();
+                  let self = this;
+                  $(window).resize(function() { self.resize(); });
+                  this.setTypeAhead();
+                },
+                setTypeAhead: function() {
+                    var substringMatcher = function(strs) {
+                        return function findMatches(q, cb) {
+                            var matches, substringRegex;
+
+                            // an array that will be populated with substring matches
+                            matches = [];
+
+                            // regex used to determine if a string contains the substring `q`
+                            substrRegex = new RegExp(q, 'i');
+
+                            // iterate through the pool of strings and for any string that
+                            // contains the substring `q`, add it to the `matches` array
+                            $.each(strs, function(i, str) {
+                                if (substrRegex.test(str)) {
+                                    matches.push(str);
+                                }
+                            });
+
+                            cb(matches);
+                        };
+                    };
+                    // AutoComplete for search input
+                    String.prototype.replaceAll = function(search, replacement) {
+                        var target = this;
+                        return target.split(search).join(replacement);
+                    };
+
+                    var autocompletes = [];
+                    let self = this;
+                    $.ajax({
+                        url: '{{route('punches.employees')}}',
+                        method: 'GET',
+                        success: function (data) {
+                            autocompletes = data.employees;
+                            $('#schbox').typeahead({
+                                hint: true,
+                                highlight: true,
+                                minLength: 1
+                            }, {
+                                name: 'employees',
+                                source: substringMatcher(autocompletes),
+                            }).on('typeahead:selected', function (obj, datum) {
+                                self.text = datum;
+                            });
+                            $('#schbox').focus();
+                        }
                     });
                 },
-                loadtwoweeks: function() {
-                    $.getJSON('/punches/lasttwoweeks/employees',function (data) {
-                        app.chartdata = data;
-                    });
+                searchEmployees: function () {
+                    let self = this;
+                    $.ajax({
+                        method: 'GET',
+                        url: '/punches/sort/employees/' + self.text,
+                        success: function (data) {
+                            $('#employeesGrid').replaceWith(data);
+                            self.resize();
+                        }
+                    })
                 },
-                loadmonth: function () {
-                    $.getJSON('/punches/lastmonth/employees',function (data) {
-                        app.chartdata = data;
+                reset: function () {
+                    this.text = '';
+                    let self = this;
+                    $.ajax({
+                        method: 'GET',
+                        url: '{{route('punches.employeesIndex')}}',
+                        success: function (data) {
+                            $('#employeesGrid').replaceWith(data);
+                            self.resize();
+                        }
                     });
-                },
-                loadyear: function () {
-                    $.getJSON('/punches/lastyear/employees',function (data) {
-                        app.chartdata = data;
-                    });
+                    $('#schbox').focus();
                 }
             },
-            created: function () {
+            watch:{
+                text: function () {
+                    if (this.text === '') {
+                        this.reset();
+                    } else {
+                        this.searchEmployees();
+                    }
+                }
+            },
+            mounted: function() {
                 this.init();
-                this.loadweek();
             }
         });
     </script>

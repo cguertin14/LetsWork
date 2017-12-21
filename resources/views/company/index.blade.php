@@ -34,11 +34,12 @@
                     <tr class="section-title">
                         <th>Rechercher</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
+                        <td colspan="2">
                             <br>
                             <div class="form-group col-md-6" style="width: 100%;">
                                 <div class="input-group input-group-lg">
@@ -60,30 +61,30 @@
             </table>
         </div>
         <br>
-        <div class="centre custom-container">
+        <div v-if="company.length == 0">
+            @component('components.nothing')
+                @slot('message')
+                    Aucune entreprise trouvée
+                @endslot
+            @endcomponent
+        </div>
+        <div v-else class="centre custom-container">
             <table class="table custom-table" style="margin: 0">
                 <thead>
-                    <tr class="section-title">
-                        <th>Nom <span id="nameSort" v-on:click="sortName()" class="sort"></span></th>
-                        <th>Description <span id="descriptionSort" v-on:click="sortDescription()" class="sort"></span></th>
-                        <th></th>
-                    </tr>
+                <tr class="section-title">
+                    <th>Nom <span id="nameSort" v-on:click="sortName()" class="sort"></span></th>
+                    <th>Description <span id="descriptionSort" v-on:click="sortDescription()" class="sort"></span></th>
+                    <th></th>
+                </tr>
                 </thead>
                 <tbody class="section">
-                    <tr v-for="(c,position) in company" class="clickable-section" v-bind:class="(position % 2 == 0 ? 'section-index-2' : 'section-index')" v-bind:data-href="'company/'+c.slug">
-                        <td>@{{ c.name }}</td>
-                        <td>@{{  (c.description.length > 10) ? c.description.substr(0,c.description.length / 4) + '...': c.description }}</td>
-                        <td><a v-bind:href="'company/'+c.slug" class="btn purplebtn pull-right" role="button" style="overflow:hidden;margin-right: 1em">Voir la compagnie</a></td>
-                    </tr>
+                <tr v-for="(c,position) in company" class="clickable-section" v-bind:class="(position % 2 == 0 ? 'section-index-2' : 'section-index')" v-bind:data-href="'company/'+c.slug">
+                    <td>@{{ c.name }}</td>
+                    <td>@{{  (c.description.length > 10) ? c.description.substr(0,c.description.length / 4) + '...': c.description }}</td>
+                    <td><a v-bind:href="'company/'+c.slug" class="btn purplebtn pull-right" role="button" style="overflow:hidden;margin-right: 1em">Voir la compagnie</a></td>
+                </tr>
                 </tbody>
             </table>
-            <div v-if="company.length == 0">
-                @component('components.nothing')
-                    @slot('message')
-                        Il n'y a pas d'offres d'emplois pour cette entreprise
-                    @endslot
-                @endcomponent
-            </div>
             <button class="btn purplebtn col-md-offset-5" v-on:click="load" v-if="canloadmore" style="margin-top: 2em;margin-bottom: 2em">Plus de résultats...</button>
             <button class="btn btn-danger col-md-offset-5" disabled v-if="!canloadmore" style="margin-top: 2em;margin-bottom: 2em">Il n'y a plus de résultat.</button>
         </div>
