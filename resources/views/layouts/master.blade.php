@@ -166,6 +166,7 @@
                                         </ul>
                                     </li>
                                     @if (\App\Tools\Helper::CIsHighRanked())
+                                        <li><a href="{{route('employees.index')}}">Mes Employés</a></li>
                                         <li><a href="{{route('jobofferuser.index')}}">Demandes d'emploi</a></li>
                                     @endif
                                 </ul>

@@ -12,7 +12,7 @@
                                     <h1 class="fullname" style="overflow: hidden;">{{$employee->user->fullname}}</h1>
                                     <p style="overflow: hidden;" class="title">{{$employee->specialroles()->get()->first()->name}}</p>
                                     <p>{{\App\Tools\Helper::CCompany()->name}}</p>
-                                    <a style="overflow: hidden;bottom: 0;position: absolute;left: 0;right: 0;margin-bottom: 1em;margin-right: 2em;margin-left: 2em" href="{{route('punches.employee',$employee->id)}}" class="btn purplebtn">Voir les heures</a>
+                                    <a style="overflow: hidden;bottom: 0;position: absolute;left: 0;right: 0;margin-bottom: 1em;margin-right: 2em;margin-left: 2em" href="{{route('employees.edit',$employee->id)}}" class="btn btn-warning">Modifier l'employé</a>
                                 </div>
                             </div>
                         @endforeach
@@ -29,7 +29,7 @@
         <div class="row layout">
             <div class="centre custom-container">
                 <div style="background-color:#707070;padding: 3em; text-align: center;font-size: 2em;color: white;font-family: 'Ubuntu', sans-serif;font-style: italic">
-                    Aucun employé n'a été trouvé
+                    Aucun employé trouvé
                 </div>
             </div>
         </div>

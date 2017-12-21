@@ -16,10 +16,11 @@
                         @php(\Carbon\Carbon::setLocale('fr'))
                         <td>{{$punch->employee->user->fullname}}</td>
                         <td>{{\Carbon\Carbon::parse($punch->datebegin)->toDateTimeString()}}</td>
-                        <td>{{\Carbon\Carbon::parse($punch->dateend)->toDateTimeString()}}</td>
                         @if($punch->dateend)
+                            <td>{{\Carbon\Carbon::parse($punch->dateend)->toDateTimeString()}}</td>
                             <td>{{\Carbon\Carbon::parse($punch->dateend)->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)}}</td>
                         @else
+                            <td>Période de travail non terminée</td>
                             <td>Période de travail non terminée</td>
                         @endif
                     </tr>

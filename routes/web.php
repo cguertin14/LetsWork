@@ -36,7 +36,7 @@ Route::post('/company/sort', 'CompanyController@sortCompanies')->name('company.s
 
 /* Auth Routes */
 Auth::routes();
-Route::post('/login/facebook','FacebookAuthController@login')->name('facebook_login');
+Route::post('/login/facebook','FacebookAuthController@login')->name('facebook_login')->middleware('guest');
 
 Route::group(['middleware' => 'auth'], function () use ($resources) {
 	/* Profile Routes */
@@ -120,4 +120,10 @@ Route::group(['middleware' => 'auth'], function () use ($resources) {
 	Route::get('/chat', 'ChatController@index')->name('chat');
 	Route::post('/savemessages', 'ChatController@save');
 	Route::get('/lastmessages', 'ChatController@last');
+
+	/* Employee Routes */
+	Route::get('/employees/names','EmployeeController@employeesNames')->name('employees.names');
+    Route::get('/employees/all','EmployeeController@employeesAll')->name('employees.employeesAll');
+    Route::get('/employees/sort/{keyword}','EmployeeController@sortEmployees')->name('employees.sort');
+	Route::resource('/employees','EmployeeController');
 });
