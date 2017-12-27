@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\FileType;
+use App\Http\Requests\ModifyUserRequest;
 use App\User;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -27,13 +28,39 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param ModifyUserRequest $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request)
+    public function update(ModifyUserRequest $request)
     {
+        $data = $request->all();
         $user = Auth::user();
-        $user->update($request->all());
+        $errors = false;
+        if ($user->email != $data['email']) {
+            if (User::query()->where('email',$data['email'])->exists()){
+                session()->flash('email_unique','L\'adresse courriel est déjà prise');
+                $errors = true;
+            } else {
+                $user->email = $data['email'];
+            }
+        } elseif ($user->phone_number != $data['phone_number']) {
+            if (User::query()->where('phone_number',$data['phone_number'])->exists()) {
+                session()->flash('phone_number_unique','Le numéro de téléphone est déjà pris');
+                $errors = true;
+            } else {
+                $user->phone_number = $data['phone_number'];
+            }
+        }
+
+        if ($errors) {
+            return redirect()->back();
+        }
+
+        // Update normal attributes
+        $user->last_name = $data['last_name'];
+        $user->first_name = $data['first_name'];
+        $user->save();
+
         return redirect('/');
     }
 

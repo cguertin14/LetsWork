@@ -69,7 +69,9 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <div onlogin="checkLoginState();" class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></div>
+                    {!! Form::open(['method' => 'POST', 'action' => 'FacebookAuthController@login', 'id' => 'FBForm']) !!}
+                        <div onlogin="checkLoginState();" class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></div>
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
@@ -82,14 +84,9 @@
             FB.getLoginStatus(function(response) {
                 if (response.status === 'connected') {
                     var accessToken = response.authResponse.accessToken;
-                    $.ajax({
-                        method: 'POST',
-                        url: '{{route('facebook_login')}}',
-                        data: { _token: '{{csrf_token()}}', access_token: accessToken},
-                        success: function (data) {
-                            window.location.href = data.url;
-                        }
-                    });
+                    let input = $('<input>').attr('type','hidden').attr('name','access_token').val(accessToken);
+                    $('#FBForm').append($(input));
+                    $('#FBForm').submit();
                 }
             });
         }

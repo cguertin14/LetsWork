@@ -132,7 +132,7 @@
                 <hr style="color: white;width: 100%">
             </div>
             <div class="row input-group input-group-lg" style="margin: 2em;">
-                <input class="form-control input-lg" placeholder="Envoyer un message..." style="width: 100%" type="text"
+                <input autofocus class="form-control input-lg" placeholder="Envoyer un message..." style="width: 100%" type="text"
                        v-model="message" v-on:keydown.enter="send">
                 <span class="input-group-btn">
                     <button class="btn purplebtn" v-on:click="send">Envoyer</button>

@@ -76,7 +76,7 @@
                 <br>
             </div>
         </div>
-
+        @if (count($punches) > 0)
         <div class="col-md-12" id="chart">
             <div class="row layout">
                 <div class="centre custom-container custom-table" style="padding: 1em;margin-bottom: 2em">
@@ -93,6 +93,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 @endsection
 
@@ -108,7 +109,7 @@
             template: '<canvas id="chartid" v-cloak></canvas>',
             methods: {
                 load: function () {
-                    $('#chartid').replaceWith($('<canvas id="chartid" v-cloak></canvas>'));
+                    $('#chartid').html($('<canvas id="chartid" v-cloak></canvas>'));
                     var ctx = document.getElementById('chartid').getContext('2d');
                     var chart = new Chart(ctx, {
                         // The type of chart we want to create

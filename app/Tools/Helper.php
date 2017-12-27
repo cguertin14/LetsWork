@@ -94,9 +94,13 @@ trait Helper
 
     public static function CRoles()
     {
-        return self::CEmployee()->specialroles()->get()->map(function(SpecialRole $specialrole) {
-            return $specialrole->roles()->pluck('content');
-        })->unique()->first()->toArray();
+        if (self::CEmployee() == null) {
+            return [];
+        } else {
+            return self::CEmployee()->specialroles()->get()->map(function(SpecialRole $specialrole) {
+                return $specialrole->roles()->pluck('content');
+            })->unique()->first()->toArray();
+        }
     }
 
     /**

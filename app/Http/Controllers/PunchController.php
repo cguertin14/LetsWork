@@ -79,25 +79,25 @@ class PunchController extends BaseController
         if (Session::has('sortPunchesEmployees')) {
             $sesh = session('sortPunchesEmployees');
             if ($sesh['column'] === 'duration') {
-                $punches = self::CCompany()->punches()->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(8);
+                $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(8);
             } else if ($sesh['column'] === 'username') {
                 if ($sesh['order'] == 'ASC') {
-                    $punches = (new Collection(self::CCompany()->punches()->get()))->sortBy(function (Punch $punch) {
+                    $punches = (new Collection(self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()))->sortBy(function (Punch $punch) {
                         return $punch->employee->user->fullname;
                     })->paginate(8);
                 } else {
-                    $punches = (new Collection(self::CCompany()->punches()->get()))->sortByDesc(function (Punch $punch) {
+                    $punches = (new Collection(self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()))->sortByDesc(function (Punch $punch) {
                         return $punch->employee->user->fullname;
                     })->paginate(8);
                 }
             } else {
-                $punches = self::CCompany()->punches()->orderBy($sesh['column'], $sesh['order'])->paginate(8);
+                $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(8);
             }
         } else {
-            $punches = self::CCompany()->punches()->paginate(8);
+            $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->paginate(8);
             $sesh = [];
         }
-        $employees = self::CCompany()->punches()->get()->map(function (Punch $punch) { return $punch->employee; })->unique();
+        $employees = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()->map(function (Punch $punch) { return $punch->employee; })->unique();
         return view('punch.employees',compact('punches','sesh','employees'));
     }
 
@@ -163,6 +163,7 @@ class PunchController extends BaseController
         $employees = self::CCompany()
             ->punches()
             ->get()
+            ->where('employee_id','<>',self::CEmployee()->id)
             ->map(function (Punch $punch) use ($name) {
                 return $punch->employee;
             })
@@ -187,7 +188,7 @@ class PunchController extends BaseController
      */
     public function employeesIndex()
     {
-        return $this->employeesGrid(self::CCompany()->punches()->get()->map(function (Punch $punch) { return $punch->employee; })->unique());
+        return $this->employeesGrid(self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()->map(function (Punch $punch) { return $punch->employee; })->unique());
     }
 
     /**
@@ -196,7 +197,7 @@ class PunchController extends BaseController
     public function employeesNames()
     {
         // Get employees fullnames and send them to the client.
-        return response()->json(['employees' => self::CCompany()->punches()->get()->map(function (Punch $punch) { return $punch->employee->user->fullname; })->unique()]);
+        return response()->json(['employees' => self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()->map(function (Punch $punch) { return $punch->employee->user->fullname; })->unique()]);
     }
 
     /**

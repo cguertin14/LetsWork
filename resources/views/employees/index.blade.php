@@ -6,6 +6,10 @@
             background-color: #5d5d5d;
         }
 
+        body.modal-open {
+            overflow: hidden;
+        }
+
         .form-control {
             border-top-left-radius: 4px !important;
             border-bottom-left-radius: 4px !important;
@@ -26,33 +30,33 @@
         }
 
         .card > button {
-            border: none;
-            outline: 0;
-            display: inline-block;
-            padding: 8px;
-            color: white;
-            background-color: #552AD6;
-            border-radius: 0.3em;
-            text-align: center;
-            cursor: pointer;
-            width: 100%;
-            font-size: 18px;
+
         }
 
         img.profile-image {
             height: 150px;
             width: 150px;
         }
+
+        .modal-backdrop {
+            background-color: rgba(255,255,255,0.5);
+        }
     </style>
 @endsection
 
 @section('content')
 
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true"></div>
+
     <div id="page">
         <div class="page-title-header">
-            <h1 class="page-title">Mes employés <a href="{{route('employees.create')}}" class="btn btn-success pull-right">Ajouter un employé</a></h1>
+            <h1 class="page-title">
+                Mes employés
+                <a v-if="users > 0" href="#" v-on:click="addEmployee" class="btn btn-success pull-right">Ajouter un employé</a>
+            </h1>
             <hr class="separator">
         </div>
+
         @if ($employees->count() > 0)
             <div class="col-md-12">
                 <div class="row layout">
@@ -104,7 +108,8 @@
         new Vue({
             el: '#page',
             data: {
-                text: ''
+                text: '',
+                users: {{$users->count()}}
             },
             methods: {
                 resize: function () {
@@ -189,6 +194,7 @@
 
                     var autocompletes = [];
                     let self = this;
+                    $('#schbox').typeahead('destroy');
                     $.ajax({
                         url: '{{route('employees.names')}}',
                         method: 'GET',
@@ -213,24 +219,126 @@
                     $.ajax({
                         method: 'GET',
                         url: '/employees/sort/' + self.text,
-                        success: function (data) {
-                            $('#employeesGrid').replaceWith(data);
-                            self.resize();
-                        }
-                    })
-                },
-                reset: function () {
-                    this.text = '';
-                    let self = this;
-                    $.ajax({
-                        method: 'GET',
-                        url: '{{route('employees.employeesAll')}}',
-                        success: function (data) {
-                            $('#employeesGrid').replaceWith(data);
+                        success: function (view) {
+                            //$('#employeesGrid').html(view);
+                            let newView = Vue.compile(view);
+                            new Vue({
+                                data: self.$data,
+                                render: newView.render,
+                                staticRenderFns: newView.staticRenderFns,
+                                methods: self.$options.methods
+                            }).$mount('#employeesGrid');
                             self.resize();
                         }
                     });
                     $('#schbox').focus();
+                },
+                reset: function () {
+                    this.text = '';
+                    let self = this;
+                    self.setTypeAhead();
+                    $.ajax({
+                        method: 'GET',
+                        url: '{{route('employees.employeesAll')}}',
+                        success: function (data) {
+                            self.$data.users = data.users;
+                            let newView = Vue.compile(data.view);
+                            new Vue({
+                                data: self.$data,
+                                render: newView.render,
+                                staticRenderFns: newView.staticRenderFns,
+                                methods: self.$options.methods
+                            }).$mount('#employeesGrid');
+                            self.resize();
+                        }
+                    });
+                    $('#schbox').focus();
+                },
+                addEmployee: function() {
+                    let self = this;
+                    $.ajax({
+                        method: 'GET',
+                        url: '{{route('employees.create')}}',
+                        success: function (view) {
+                            let modal = $('#modal');
+                            modal.html(view);
+                            modal.modal();
+                            modal.on('hidden.bs.modal', function () { $(this).empty(); });
+                            modal.find('#createBtn').click(function (event) {
+                                event.preventDefault();
+                                modal.find('#createForm').submit(function (event) {
+                                    $.ajax({
+                                        type: modal.find('#createForm').attr('method'),
+                                        url: modal.find('#createForm').attr('action'),
+                                        data: modal.find('#createForm').serialize(),
+                                        success: function(data) {
+                                            modal.modal('hide');
+                                            self.reset();
+                                        },
+                                        error: function (errors) {
+                                            formErrors(errors,modal);
+                                        }
+                                    });
+                                    event.preventDefault();
+                                    return false;
+                                });
+                                modal.find('#createForm').submit();
+                            });
+                        }
+                    })
+                },
+                editEmployee: function(id) {
+                    var self = this;
+                    $.ajax({
+                        method: 'GET',
+                        url: '/employees/'+id+'/edit',
+                        success: function (view) {
+                            let modal = $('#modal');
+                            modal.html(view);
+                            modal.modal();
+                            modal.on('hidden.bs.modal', function () { $(this).empty(); });
+                            modal.find('#editBtn').click(function (event) {
+                                event.preventDefault();
+                                modal.find('#editForm').submit(function (event) {
+                                    $.ajax({
+                                        type: modal.find('#editForm').attr('method'),
+                                        url: modal.find('#editForm').attr('action'),
+                                        data: modal.find('#editForm').serialize(),
+                                        success: function(data) {
+                                            modal.modal('hide');
+                                            self.reset();
+                                        },
+                                        error: function (errors) {
+                                            formErrors(errors,modal);
+                                        }
+                                    });
+                                    event.preventDefault();
+                                    return false;
+                                });
+                                modal.find('#editForm').submit();
+                            });
+                            modal.find('#deleteBtn').click(function (event) {
+                                event.preventDefault();
+                                modal.find('#deleteForm').submit(function (event) {
+                                    $.ajax({
+                                        type: modal.find('#deleteForm').attr('method'),
+                                        url: modal.find('#deleteForm').attr('action'),
+                                        data: modal.find('#deleteForm').serialize(),
+                                        success: function(data) {
+                                            modal.modal('hide');
+                                            self.reset();
+                                        },
+                                        error: function (errors) {
+                                            formErrors(errors,modal);
+                                        }
+                                    });
+                                    event.preventDefault();
+                                    return false;
+                                });
+                                modal.find('#deleteForm').submit();
+                            });
+                        }
+                    })
                 }
             },
             watch:{
@@ -243,8 +351,8 @@
                 }
             },
             mounted: function() {
-                // MEDIA QUERIES.
                 this.setTypeAhead();
+                // MEDIA QUERIES.
                 this.resize();
                 let self = this;
                 $(window).resize(function() { self.resize(); });

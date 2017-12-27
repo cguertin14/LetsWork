@@ -45,7 +45,7 @@ class FacebookAuthController extends Controller
         $me = $response->getGraphUser();
         if ($user = User::query()->where('facebook_id', $me['id'])->first()) {
             Auth::login($user);
-            return response()->json(['url' => env('APP_URL')]);
+            return redirect('/');
         } else {
             $user = User::query()->create([
                 'facebook_id' => $me['id'],
@@ -60,7 +60,7 @@ class FacebookAuthController extends Controller
             ]);
 
             Auth::login($user);
-            return response()->json(['url' => env('APP_URL')]);
+            return redirect('/');
         }
     }
 }

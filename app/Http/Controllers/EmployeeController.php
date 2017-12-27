@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\Http\Requests\CreateEmployeeRequest;
+use App\SpecialRole;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class EmployeeController extends BaseController
 {
@@ -22,8 +27,9 @@ class EmployeeController extends BaseController
      */
     public function index()
     {
-        $employees = self::CCompany()->employees()->get();
-        return view('employees.index',compact('employees'));
+        $users = User::query()->whereDoesntHave('employees')->whereDoesntHave('companies')->get();
+        $employees = self::CCompany()->employees()->where('user_id','<>',Auth::id())->get()->unique();
+        return view('employees.index',compact('employees','users'));
     }
 
     /**
@@ -32,7 +38,7 @@ class EmployeeController extends BaseController
     public function employeesNames()
     {
         return response()->json([
-            'employees' => self::CCompany()->employees()->get()->map(function ($employee) { return $employee->user->fullname; })
+            'employees' => self::CCompany()->employees()->where('user_id','<>',Auth::id())->get()->map(function ($employee) { return $employee->user->fullname; })->unique()
         ]);
     }
 
@@ -42,9 +48,9 @@ class EmployeeController extends BaseController
      */
     public function sortEmployees($keyword)
     {
-        $employees = self::CCompany()->employees()->get()->filter(function (Employee $employee) use ($keyword) {
+        $employees = self::CCompany()->employees()->where('user_id','<>',Auth::id())->get()->filter(function (Employee $employee) use ($keyword) {
             return stristr($employee->user->fullname,$keyword);
-        });
+        })->unique();
         return view('employees.employees_grid',compact('employees'))->render();
     }
 
@@ -53,8 +59,12 @@ class EmployeeController extends BaseController
      */
     public function employeesAll()
     {
-        $employees = self::CCompany()->employees()->get();
-        return view('employees.employees_grid',compact('employees'));
+        $employees = self::CCompany()->employees()->get()->where('user_id','<>',Auth::id())->unique();
+        $users = User::query()->whereDoesntHave('employees')->whereDoesntHave('companies')->get()->count();
+        return response()->json([
+            'view' => view('employees.employees_grid',compact('employees'))->render(),
+            'users' => $users
+        ]);
     }
 
     /**
@@ -64,29 +74,27 @@ class EmployeeController extends BaseController
      */
     public function create()
     {
-        // @todo
+        $users = User::query()->whereDoesntHave('employees')->whereDoesntHave('companies')->get()->pluck('fullname','slug');
+        $specialroles = self::CCompany()->specialroles()->pluck('name','slug');
+        return view('employees.create',compact('users','specialroles'));
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateEmployeeRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(CreateEmployeeRequest $request)
     {
-        // @todo
-    }
+        $payload = $request->only('user_slug','special_role_slug');
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        // @todo
+        $employee = User::findBySlugOrFail($payload['user_slug'])->employees()->create();
+        SpecialRole::findBySlugOrFail($payload['special_role_slug'])->employees()->attach($employee);
+        self::CCompany()->employees()->attach($employee);
+        $employee->companies()->attach(self::CCompany());
+
+        return response()->json([
+            'status' => 'Employee successfully created!'
+        ],201);
     }
 
     /**
@@ -97,19 +105,30 @@ class EmployeeController extends BaseController
      */
     public function edit($id)
     {
-        // @todo
+        $employee = Employee::query()->findOrFail($id);
+        $specialroles = self::CCompany()->specialroles()->pluck('name','slug');
+        $specialrole = $employee->specialroles()->first()->slug;
+        return view('employees.edit',compact('employee','specialroles','specialrole'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        // @todo
+        // Get employee
+        $employee = Employee::query()->findOrFail($id);
+
+        $payload = $request->only('special_role_slug');
+        $specialRole = SpecialRole::findBySlugOrFail($payload['special_role_slug']);
+        $employee->specialroles()->detach($employee->specialroles()->first());
+        $employee->specialroles()->attach($specialRole);
+
+        return response()->json([
+            'status' => 'Special role successfully updated'
+        ], 201);
     }
 
     /**
@@ -120,6 +139,9 @@ class EmployeeController extends BaseController
      */
     public function destroy($id)
     {
-        // @todo
+        Employee::query()->findOrFail($id)->delete();
+        return response()->json([
+            'status' => 'Employee successfully deleted!'
+        ], 201);
     }
 }

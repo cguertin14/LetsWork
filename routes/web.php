@@ -125,5 +125,5 @@ Route::group(['middleware' => 'auth'], function () use ($resources) {
 	Route::get('/employees/names','EmployeeController@employeesNames')->name('employees.names');
     Route::get('/employees/all','EmployeeController@employeesAll')->name('employees.employeesAll');
     Route::get('/employees/sort/{keyword}','EmployeeController@sortEmployees')->name('employees.sort');
-	Route::resource('/employees','EmployeeController');
+	Route::resource('/employees','EmployeeController',$resources);
 });
