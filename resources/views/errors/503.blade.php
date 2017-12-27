@@ -95,7 +95,8 @@
             <h3>LetsWork</h3>
             <hr>
             <!---728x90--->
-            <h1>Nous sommes en maintenance,</h1>
+            <h1 style="font-size: 3em">Nous effectuons de la maintenance.</h1>
+            <p>LetsWork sera en ligne sous peu!</p>
         </div>
     </div>
 
