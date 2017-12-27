@@ -1,7 +1,7 @@
 const { mix } = require('laravel-mix');
 
 mix.js('resources/assets/js/app.js', 'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css');
+   .sass('resources/assets/sass/app.scss', 'public/css');
 
 mix.styles([
     'resources/assets/css/fonts.css',
@@ -56,3 +56,7 @@ mix.scripts([
     'resources/assets/js/libs/typeahead.bundle.js',
     'resources/assets/js/libs/typeahead.jquery.js',
 ],'public/js/libs.js');
+
+mix.babel([
+    'resources/assets/js/schedule/main.js'
+], 'public/js/schedule.js');

@@ -5,67 +5,100 @@
         body {
             background-color: #5d5d5d;
         }
+        .employee > p {
+            font-family: 'Montserrat',sans-serif;
+        }
+        .information > .row > .col-md-6 > p, .information > .row > .col-md-6 > label, .information > p {
+            font-family: 'Montserrat',sans-serif;
+        }
+        .form-group > label {
+            font-family: 'Montserrat',sans-serif;
+        }
     </style>
 @endsection
 
 @section('content')
-    <div class="row layout">
-        <div class="col-md-12 text-center">
-            <br>
-            <div style="width:100%; height:70%">
-                <img id="image" width="200px" height="200px" src="{{asset('image/default-profile.png')}}" style="border-radius: 50%">
-            </div>
-            <div class="employee">
-                <p>{{ $user->fullname }}</p>
-            </div>
+    <div class="row" style="padding: 5em;margin-top: 5em">
+        <div class="col-md-4">
+            <img id="image" width="440px" height="500px" src="{{asset('image/default-profile.png')}}" style="border-radius: 5%; border: 0.8em solid #b9b9b9">
         </div>
-        <div class="col-md-12" style="margin-top: 5%;">
-            <div class="centre">
-                {!! Form::model($user)!!}
+        <div class="col-md-8" id="content">
+            <div class="col-md-12 information" style="margin-top: 2em">
+                <p style="font-weight: 900;font-size: 1.3em">Information Professionnelle</p>
+                <hr style="color: #ffffff;margin-top: -0.2em">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group">
-                            {!! Form::label('first_name', 'Prénom', ['class' => 'section-title']) !!}
-                            {!! Form::text('first_name', null, ['class' => 'form-control','disabled']) !!}
-                        </div>
+                        <label for="">Compagnie</label>
+                        <p>{{ \App\Tools\Helper::CCompany()->name }}</p>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group">
-                            {!! Form::label('last_name', 'Nom de famille', ['class' => 'section-title']) !!}
-                            {!! Form::text('last_name', null, ['class' => 'form-control','disabled']) !!}
-                        </div>
+                        <label for="">Poste</label>
+                        <p>{{ $user->employees()->first()->specialroles()->first()->name }}</p>
                     </div>
                 </div>
-
+            </div>
+            <div class="col-md-12 information" style="margin-top: 2em">
+                <p style="font-weight: 900;font-size: 1.3em">Information Personnelle</p>
+                <hr style="color: #ffffff;margin-top: -0.2em">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group">
-                            {!! Form::label('email', 'Adresse Courriel', ['class' => 'section-title']) !!}
-                            {!! Form::text('email', null, ['class' => 'form-control','disabled']) !!}
-                        </div>
+                        <label for="">Prénom</label>
+                        <p>{{ $user->first_name }}</p>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group">
-                            {!! Form::label('phone_number', 'Téléphone', ['class' => 'section-title']) !!}
-                            {!! Form::text('phone_number', null, ['class' => 'form-control phone-number','disabled']) !!}
-                        </div>
+                        <label for="">Nom</label>
+                        <p>{{ $user->last_name }}</p>
                     </div>
                 </div>
-                {!! Form::close() !!}
+                <div class="row">
+                    <div class="col-md-6" style="margin-top: 0.5em">
+                        <label for="">Téléphone</label>
+                        <p>{{ $user->phone_number ? $user->phone_number : 'Pas de numéro de téléphone'}}</p>
+                    </div>
+                    <div class="col-md-6" style="margin-top: 0.5em">
+                        <label for="">Adresse Courriel</label>
+                        <p><a href="mailto:{{ $user->email }}" style="text-decoration: none; color: inherit;">{{ $user->email }}</a></p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <br>
-    <br>
 
 @endsection
 
 @section('scripts')
     <script>
         @if($user->photo)
-        setUserProfilePic('{{route('profile.photo',$user->slug)}}');
+            setUserProfilePic('{{route('profile.photo',$user->slug)}}');
         @else
-        $('#image').attr('src','{{asset('image/default-profile.png')}}');
+            $('#image').attr('src','{{asset('image/default-profile.png')}}');
         @endif
+
+        $(function() {
+            function resize () {
+                const mq = window.matchMedia("screen and (min-width: 1850px)"),
+                      mq2 = window.matchMedia("screen and (min-width: 870px)"),
+                      mq3 = window.matchMedia("screen and (min-width: 767px)")  ;
+
+                if (mq.matches) {
+                    $('#content').addClass('col-md-8').removeClass('col-md-12');
+                } else {
+                    $('#content').addClass('col-md-12').removeClass('col-md-8');
+                }
+
+                if (mq2.matches) {
+                    $('#image').width(440);
+                } else {
+                    $('#image').width(330);
+                }
+
+                if (!mq3.matches) {
+                    $('#image').width(440);
+                }
+            }
+            $(window).resize(function() { resize(); });
+
+            resize();
+        });
     </script>
 @endsection

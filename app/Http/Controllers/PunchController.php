@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Employee;
 use App\Punch;
 use App\Tools\Collection;
 use App\Tools\Helper;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -19,7 +21,12 @@ class PunchController extends BaseController
     public function __construct()
     {
         $this->middleware('employee');
-        $this->middleware('highranked',['only' => ['employees','sortEmployees','lastWeekEmployees','lastMonthEmployees','lastTwoWeeksEmployees','lastYearEmployees']]);
+        $this->middleware('highranked',['only' => [
+                'employees','sortEmployees','lastWeekEmployees','lastMonthEmployees',
+                'lastTwoWeeksEmployees','lastYearEmployees','sortEmployeesByName',
+                'employeesNames','employee','employeesIndex'
+            ]
+        ]);
     }
 
     /**
@@ -72,25 +79,26 @@ class PunchController extends BaseController
         if (Session::has('sortPunchesEmployees')) {
             $sesh = session('sortPunchesEmployees');
             if ($sesh['column'] === 'duration') {
-                $punches = self::CCompany()->punches()->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(10);
+                $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(8);
             } else if ($sesh['column'] === 'username') {
                 if ($sesh['order'] == 'ASC') {
-                    $punches = (new Collection(self::CCompany()->punches()->get()))->sortBy(function (Punch $punch) {
+                    $punches = (new Collection(self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()))->sortBy(function (Punch $punch) {
                         return $punch->employee->user->fullname;
-                    })->paginate(5);
+                    })->paginate(8);
                 } else {
-                    $punches = (new Collection(self::CCompany()->punches()->get()))->sortByDesc(function (Punch $punch) {
+                    $punches = (new Collection(self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()))->sortByDesc(function (Punch $punch) {
                         return $punch->employee->user->fullname;
-                    })->paginate(5);
+                    })->paginate(8);
                 }
             } else {
-                $punches = self::CCompany()->punches()->orderBy($sesh['column'], $sesh['order'])->paginate(10);
+                $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(8);
             }
         } else {
-            $punches = self::CCompany()->punches()->paginate(5);
+            $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->paginate(8);
             $sesh = [];
         }
-        return view('punch.employees',compact('punches','sesh'));
+        $employees = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()->map(function (Punch $punch) { return $punch->employee; })->unique();
+        return view('punch.employees',compact('punches','sesh','employees'));
     }
 
     /**
@@ -114,42 +122,118 @@ class PunchController extends BaseController
     }
 
     /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sortEmployee(Request $request)
+    {
+        session(["sortPunchesEmployee{$request->input('employee_id')}" => $request->all()]);
+        return redirect()->action('PunchController@employee', [
+            'id' => $request->input('employee_id')
+        ]);
+    }
+
+    /**
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function employee($id)
+    {
+        $employee = self::CCompany()->employees()->findOrFail($id);
+        if (Session::has("sortPunchesEmployee{$employee->id}")) {
+            $sesh = session("sortPunchesEmployee{$employee->id}");
+            if ($sesh['column'] === 'duration') {
+                $punches = $employee->punches()->where("company_id", self::CCompany()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(10);
+            } else {
+                $punches = $employee->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(10);
+            }
+        } else {
+            $punches = $employee->punches()->paginate(8);
+            $sesh = [];
+        }
+        return view('punch.employee',compact('employee','punches','sesh'));
+    }
+
+    /**
+     * @param $name
+     * @return string
+     */
+    public function sortEmployeesByName($name)
+    {
+        $employees = self::CCompany()
+            ->punches()
+            ->get()
+            ->where('employee_id','<>',self::CEmployee()->id)
+            ->map(function (Punch $punch) use ($name) {
+                return $punch->employee;
+            })
+            ->unique()
+            ->filter(function (Employee $employee) use ($name) {
+                return stristr($employee->user->fullname,$name);
+            });
+        return $this->employeesGrid($employees);
+    }
+
+    /**
+     * @param $employees
+     * @return string
+     */
+    public function employeesGrid($employees)
+    {
+        return view('punch.employees_grid',compact('employees'))->render();
+    }
+
+    /**
+     * @return string
+     */
+    public function employeesIndex()
+    {
+        return $this->employeesGrid(self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()->map(function (Punch $punch) { return $punch->employee; })->unique());
+    }
+
+    /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function lastweek()
+    public function employeesNames()
     {
+        // Get employees fullnames and send them to the client.
+        return response()->json(['employees' => self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()->map(function (Punch $punch) { return $punch->employee->user->fullname; })->unique()]);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function lastweek($id)
+    {
+        $employee = Employee::query()->findOrFail($id);
         $data = [
             "labels" => $this->getlastweek(Carbon::today()),
             "datasets" => [
                 [
-                    "label" => self::CIsHighRanked() ? "Les heures travaillées par employé" : "La somme des heures travaillées",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} cette semaine",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
-                    "data" => $this->getLastWeekSum(Carbon::today()),
+                    "data" => $this->getLastWeekSum(Carbon::today(),$employee),
                 ]
             ]
         ];
         return response()->json($data);
     }
 
-    public function lastWeekEmployees()
-    {
-
-    }
-
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function lastTwoWeeks()
+    public function lastTwoWeeks($id)
     {
+        $employee = Employee::query()->findOrFail($id);
         $data = [
             "labels" => $this->getLastTwoWeeks(Carbon::today()),
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} au cours des 2 dernières semaines",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
-                    "data" => $this->getLastTwoWeeksSum(Carbon::today()),
+                    "data" => $this->getLastTwoWeeksSum(Carbon::today(),$employee),
                 ]
             ]
         ];
@@ -159,33 +243,22 @@ class PunchController extends BaseController
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function lastTwoWeeksEmployees()
+    public function lastmonth($id)
     {
-        $data = [
-            "labels" => $this->getLastTwoWeeks(Carbon::today()),
-            "datasets" => $this->getCompanyEmployeesTwoWeekTimes()
-        ];
-        return response()->json($data);
-    }
-
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function lastmonth()
-    {
-        $today=$this->getLast4WeekDates(Carbon::today());
+        $employee = Employee::query()->findOrFail($id);
+        $today = $this->getLast4WeekDates(Carbon::today());
         $data = [
             "labels" => ["1ère semaine", "2ième semaine", "3ième semaine", "4ième semaine"],
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce mois-ci",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => [
-                        $this->makeSum($today,7,0),
-                        $this->makeSum($today,7,1),
-                        $this->makeSum($today,7,2),
-                        $this->makeSum($today,7,3)
+                        $this->makeSum($employee,$today,7,0),
+                        $this->makeSum($employee,$today,7,1),
+                        $this->makeSum($employee,$today,7,2),
+                        $this->makeSum($employee,$today,7,3)
                     ],
                 ]
             ]
@@ -194,50 +267,35 @@ class PunchController extends BaseController
     }
 
     /**
-     *
-     */
-    public function lastMonthEmployees()
-    {
-
-    }
-
-    /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function lastyear()
+    public function lastyear($id)
     {
-        $today=$this->getLastYearsDates(Carbon::today());
+        $employee = Employee::query()->findOrFail($id);
+        $today = $this->getLastYearsDates(Carbon::today());
         $data = [
             "labels" => $this->getlastyearmonth(Carbon::today()),
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} cette année",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => [
-                        $this->makeSum($today,28,0),
-                        $this->makeSum($today,28,1),
-                        $this->makeSum($today,28,2),
-                        $this->makeSum($today,28,3),
-                        $this->makeSum($today,28,4),
-                        $this->makeSum($today,28,5),
-                        $this->makeSum($today,28,6),
-                        $this->makeSum($today,28,7),
-                        $this->makeSum($today,28,8),
-                        $this->makeSum($today,28,9),
-                        $this->makeSum($today,28,10),
-                        $this->makeSum($today,28,11)],
+                        $this->makeSum($employee,$today,28,0),
+                        $this->makeSum($employee,$today,28,1),
+                        $this->makeSum($employee,$today,28,2),
+                        $this->makeSum($employee,$today,28,3),
+                        $this->makeSum($employee,$today,28,4),
+                        $this->makeSum($employee,$today,28,5),
+                        $this->makeSum($employee,$today,28,6),
+                        $this->makeSum($employee,$today,28,7),
+                        $this->makeSum($employee,$today,28,8),
+                        $this->makeSum($employee,$today,28,9),
+                        $this->makeSum($employee,$today,28,10),
+                        $this->makeSum($employee,$today,28,11)],
                 ]
             ]
         ];
         return response()->json($data);
-    }
-
-    /**
-     *
-     */
-    public function lastYearEmployees()
-    {
-
     }
 }

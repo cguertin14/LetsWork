@@ -132,7 +132,7 @@
                 <hr style="color: white;width: 100%">
             </div>
             <div class="row input-group input-group-lg" style="margin: 2em;">
-                <input class="form-control input-lg" placeholder="Envoyer un message..." style="width: 100%" type="text"
+                <input autofocus class="form-control input-lg" placeholder="Envoyer un message..." style="width: 100%" type="text"
                        v-model="message" v-on:keydown.enter="send">
                 <span class="input-group-btn">
                     <button class="btn purplebtn" v-on:click="send">Envoyer</button>
@@ -312,7 +312,7 @@
                 rooms: {Entreprise: {messages: [], seen: true}},
                 currentroom: 'Entreprise',
                 messages: [],
-                myid:{{\Illuminate\Support\Facades\Auth::id()}},
+                myid: {{\Illuminate\Support\Facades\Auth::id()}},
                 allusersonline: [],
                 auth: @if(!\Illuminate\Support\Facades\Auth::guest()) {{'true'}} @else {{'false'}} @endif
             },
@@ -329,7 +329,7 @@
                 }.bind(this));
 
                 socket.on('globalchat.users', function (data) {
-                    this.allusersonline = $.parseJSON(data);
+                    this.allusersonline = data;
                 }.bind(this));
 
                 socket.on('roomchat.invite.' + app.currentuser.email, function (data) {

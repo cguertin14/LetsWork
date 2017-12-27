@@ -4,10 +4,10 @@
         $(title).click(function () {
             if ($(container).height() === 0) {
                 $(container).height(height);
-                $(image).css({'transform': 'rotate(-180deg)'});
+                $(image).css({'transform': 'rotate(-180deg)','transition-duration': '0.5s'});
             } else {
                 $(container).height(0);
-                $(image).css({'transform': 'rotate(0deg)'});
+                $(image).css({'transform': 'rotate(0deg)','transition-duration': '0.5s'});
             }
         });
     }
@@ -25,7 +25,9 @@
     dropdown("#dropdown7","#dropdown7Title",100,"#img7");
     @if (\Illuminate\Support\Facades\Auth::user()->employees()->get()->map(function ($employee) { return $employee->companies()->get(); })->first() != null)
         dropdown("#dropdown8","#dropdown8Title",100,"#img8");
-        dropdown("#dropdownMyJob","#dropdownMyJobTitle",@if (\App\Tools\Helper::CIsHighRanked()) 350 @else 150 @endif,"#imgMyJob")
+        @if (\App\Tools\Helper::CCompany() != null)
+            dropdown("#dropdownMyJob","#dropdownMyJobTitle",@if (\App\Tools\Helper::CIsHighRanked()) 350 @else 150 @endif,"#imgMyJob")
+        @endif
     @endif
 
 </script>

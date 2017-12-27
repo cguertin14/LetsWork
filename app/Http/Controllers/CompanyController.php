@@ -19,7 +19,7 @@ class CompanyController extends BaseController {
 	public function __construct() {
 		$this->middleware('auth', ['except' => ['index', 'show','cpage','names','sort','sortCompanies']]);
 	}
-	/**X
+	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return \Illuminate\Http\Response

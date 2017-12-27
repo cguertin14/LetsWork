@@ -18,7 +18,6 @@
 
 @section('contenu')
     <h2 class="title">Bonjour {{$jobofferuser->user->fullname}},</h2>
-    <br>
     <div class="col-md-6">
         <p class="message">
             Nous avons pris le temps d'analyser votre demande d'emploi pour le poste de <b>{{$jobofferuser->joboffer->specialrole->name}}</b> et nous avons finalement décidé que vous n'aurez pas la chance de faire parti de notre équipe.

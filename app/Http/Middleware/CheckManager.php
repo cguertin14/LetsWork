@@ -19,6 +19,7 @@ class CheckManager
         if (Helper::CCompany() == null) {
             return redirect('/');
         } else if (Helper::CIsManager()) {
+            Helper::verifyEmployeeStatus();
             return $next($request);
         } else {
             return redirect()->back();

@@ -19,6 +19,7 @@ class CheckHighRanked
         if (Helper::CCompany() == null) {
             return redirect('/');
         } else if (Helper::CIsHighRanked()) {
+            Helper::verifyEmployeeStatus();
             return $next($request);
         } else {
             return redirect()->back();
