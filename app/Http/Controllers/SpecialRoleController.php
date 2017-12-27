@@ -29,8 +29,6 @@ class SpecialRoleController extends BaseController
      */
     public function index()
     {
-        if (self::CCompany() == null)
-            return redirect('/');
         if (Session::has('sortSpecialRoles')) {
             $sesh = session('sortSpecialRoles');
             $specialRoles = self::CCompany()->specialroles()->orderBy($sesh['column'],$sesh['order'])->paginate(10);
@@ -58,8 +56,8 @@ class SpecialRoleController extends BaseController
      */
     public function create()
     {
-        $roles = Role::pluck('content','id')->all();
-        $skills = self::CCompany()->skills()->pluck('name','id')->all();
+        $roles = Role::query()->pluck('content','id');
+        $skills = self::CCompany()->skills()->pluck('name','id');
         return view('specialrole.create',compact('roles','skills'));
     }
 
@@ -71,8 +69,7 @@ class SpecialRoleController extends BaseController
     {
         // Création de rôle spécial
         $data = $request->except('_token');
-        $data['company_id'] = self::CCompany()->id;
-        $specialRole = SpecialRole::create($data);
+        $specialRole = self::CCompany()->specialroles()->create($data);
 
         foreach($request->roles as $role)
             $specialRole->roles()->attach($role);

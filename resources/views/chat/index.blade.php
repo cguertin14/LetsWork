@@ -312,7 +312,7 @@
                 rooms: {Entreprise: {messages: [], seen: true}},
                 currentroom: 'Entreprise',
                 messages: [],
-                myid:{{\Illuminate\Support\Facades\Auth::id()}},
+                myid: {{\Illuminate\Support\Facades\Auth::id()}},
                 allusersonline: [],
                 auth: @if(!\Illuminate\Support\Facades\Auth::guest()) {{'true'}} @else {{'false'}} @endif
             },
@@ -329,7 +329,7 @@
                 }.bind(this));
 
                 socket.on('globalchat.users', function (data) {
-                    this.allusersonline = $.parseJSON(data);
+                    this.allusersonline = data;
                 }.bind(this));
 
                 socket.on('roomchat.invite.' + app.currentuser.email, function (data) {

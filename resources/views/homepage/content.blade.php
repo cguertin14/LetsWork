@@ -50,12 +50,6 @@
         .centre h1, p,h2,a {
             color: #ffffff;
         }
-
-        @if (\Illuminate\Support\Facades\Auth::guest())
-        .footer {
-            visibility: visible;
-        }
-        @endif
     </style>
 @endsection
 
@@ -89,7 +83,7 @@
             <div class="centre" style="margin-bottom: 10px">
                 <!-- Jumbotron -->
                 <div class="jumbotron" style="margin-top: 10%">
-                    <h1 style="font-weight: 500">Bienvenue, {{\Illuminate\Support\Facades\Auth::user()->fullname}}</h1>
+                    <h1 class="welcome" style="font-weight: 500">Bienvenue, {{\Illuminate\Support\Facades\Auth::user()->fullname}}</h1>
                     <p class="lead">Toute l'équipe de LetsWork vous souhaite la bienvenue dans notre application web. Nous espérons que vous saurez vous l'approprier!</p>
                     <br>
                     <p><a id="bigbtn" class="btn btn-lg purplebtn" style="font-size: 20px!important;" href="{{route('company.index')}}" role="button">Voir les compagnies</a></p>
@@ -106,7 +100,7 @@
                         <div class="col-lg-4" style="overflow: hidden">
                             <h2>Calendrier</h2>
                             <p>En tant qu'employé, que vous soyez un caissier ou un directeur, il va de soi qu'il est essentiel pour vous de visualiser votre calendrier ou même de le modifier.</p>
-                            <p><a class="btn purplebtn" href="@if(\Illuminate\Support\Facades\Auth::user()->isOwner()) {{route('schedule.editing')}} @else {{route('schedule.index')}} @endif" role="button">@if(\Illuminate\Support\Facades\Auth::user()->isOwner()) Modifier le calendrier @else Visualiser le calendrier @endif &raquo;</a></p>
+                            <p><a class="btn purplebtn" href="@if(\App\Tools\Helper::CIsHighRanked()) {{route('schedule.editing')}} @else {{route('schedule.index')}} @endif" role="button">@if(\App\Tools\Helper::CIsHighRanked()) Modifier le calendrier @else Visualiser le calendrier @endif &raquo;</a></p>
                         </div>
                         <div class="col-lg-4"  style="overflow: hidden">
                             <h2>À propos</h2>
@@ -131,4 +125,46 @@
         </div>
 
     @endif
+@endsection
+
+@section('scripts')
+    <script>
+        function onChange() {
+            let mq = window.matchMedia("screen and (min-width: 985px)"),
+                mq2 = window.matchMedia("screen and (min-width: 805px)"),
+                mq3 = window.matchMedia("screen and (min-width: 912px)"),
+                mq4 = window.matchMedia("screen and (max-width: 767px)");
+            if (!mq.matches) {
+                $('.welcome').css({
+                   fontSize: '3em'
+                });
+            }
+
+            if (!mq2.matches) {
+                $('.welcome').css({
+                    fontSize: '2em'
+                });
+            } else {
+                $('.welcome').css({
+                    fontSize: '3em'
+                });
+            }
+
+            if (!mq3.matches) {
+                $('#bigbtn')[0].style.setProperty('font-size','16px','important');
+            } else {
+                $('#bigbtn')[0].style.setProperty('font-size','20px','important');
+            }
+
+            if (mq4.matches) {
+                $('#bigbtn')[0].style.setProperty('font-size','20px','important');
+            }
+        }
+
+        onChange();
+
+        $(window).resize(function () {
+            onChange();
+        });
+    </script>
 @endsection

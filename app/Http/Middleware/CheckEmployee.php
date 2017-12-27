@@ -19,6 +19,7 @@ class CheckEmployee
         if (Helper::CCompany() == null) {
             return redirect('/');
         } else if (Helper::CIsEmployee()) {
+            Helper::verifyEmployeeStatus();
             return $next($request);
         } else {
             return redirect()->back();

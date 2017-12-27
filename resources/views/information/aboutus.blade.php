@@ -210,7 +210,7 @@
             <!-- Team Members Row -->
             <div class="text-center">
                 <div class="row" style="width: 100%;">
-                    <div class="col-lg-4 col-sm-6 text-center mb-4 headerText" style="margin: 0 auto;">
+                    <div class="col-lg-6 col-sm-6 text-center mb-4 headerText" style="margin: 0 auto;">
                         <img class="rounded-circle img-fluid d-block mx-auto" height="300" width="300" src="{{asset('image/charles.jpg')}}" alt="">
                         <h3 style="color: #a5a4a4;font-weight: 800">Charles Guertin</h3>
                         <h3 style="margin: 0;"><small>Développeur Full-Stack</small></h3>
@@ -221,7 +221,7 @@
                         <br>
                         <p>Je suis un jeune développeur passionné d'informatique. J'adore apprendre de nouvelles technologies, utiliser des environnements de travail rapides, travailler en temps réel (Client/Serveur). Travailler en équipe et bien communiquer est une priorité pour moi, car sinon, un projet ne peut pas avoir de succès. Mon but principal est de toujours me dépasser afin d'être le meilleur développeur possible.</p>
                     </div>
-                    <div class="col-lg-4 col-sm-6 text-center mb-4 headerText" style="margin: 0 auto;">
+                    <div class="col-lg-6 col-sm-6 text-center mb-4 headerText" style="margin: 0 auto;">
                         <img class="rounded-circle img-fluid d-block mx-auto"  height="300" width="300"  src="{{asset('image/ludo.jpg')}}" alt="">
                         <h3 style="color: #a5a4a4;font-weight: 800">Ludovic Lachance</h3>
                         <h3 style="margin: 0;"><small>Développeur Full-Stack</small></h3>
@@ -231,17 +231,6 @@
                         <br>
                         <br>
                         <p>Ludovic Lachance. Étudiant en informatique depuis 3 ans, j'ai appris à maîtriser plusieurs languages me permettant d'imbriquer dans un projet plusieurs parties écrites avec des techniques différentes communiquantes de façon asynchrome en temps réel. J'adore l'informatique, car ça me permet de comprendre le monde qui m'entoure de façons plus précises.</p>
-                    </div>
-                    <div class="col-lg-4 col-sm-6 text-center mb-4 headerText" style="margin: 0 auto;">
-                        <img class="rounded-circle img-fluid d-block mx-auto"  height="300" width="300" src="{{asset('image/phil.jpg')}}" alt="">
-                        <h3 style="color: #a5a4a4;font-weight: 800">Philippe Simard</h3>
-                        <h3 style="margin: 0;"><small>Superviseur de projet</small></h3>
-                        <br>
-                        <a target="_blank" href="https://www.linkedin.com/in/philippesimard/" class="fa fa-linkedin"></a>
-                        <a href="mailto:Philippe.simard@clg.qc.ca" class="fa fa-envelope"></a>
-                        <br>
-                        <br>
-                        <p>En tant que superviseur de projet, Philippe est un excellent conseiller informatique qui suit le progrès et l'avancement du développement de LetsWork. En plus de nous donner de bonnes idées, M. Simard est un excellent coach qui nous permet toujours d'aller plus loin.</p>
                     </div>
                 </div>
             </div>

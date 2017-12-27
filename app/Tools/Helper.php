@@ -43,6 +43,30 @@ trait Helper
         return self::CCompany()->employees()->where('user_id', Auth::user()->id)->first();
     }
 
+    public static function verifyEmployeeStatus()
+    {
+        if (Auth::check() && !Session::has('CurrentCompany')) {
+            if (Auth::user()->employees()->get()->isEmpty()) {
+                session()->forget('CurrentCompany');
+            } else {
+                $companies = Auth::user()->companies()->get();
+                if($companies->count() > 0) {
+                    session(['CurrentCompany' => $companies->first()]);
+                }
+                else {
+                    $companies = Auth::user()->employees()->get()->map(function (Employee $employee) { return $employee->companies()->get()->unique(); })->first();
+                    if($companies != null && $companies->count() > 0) {
+                        session(['CurrentCompany' => $companies->first()]);
+                    }
+                }
+            }
+        } else if (Auth::check()) {
+            if (Auth::user()->employees()->get()->isEmpty()) {
+                session()->forget('CurrentCompany');
+            }
+        }
+    }
+
     /**
      * @return array|Collection
      */

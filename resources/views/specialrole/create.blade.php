@@ -65,9 +65,9 @@
             </div>
         {!! Form::close() !!}
 
-        <div class="row layout">
+        <div class="row layout" style="margin: 2em">
             <div class="centre">
-                <div class="col-md-12">
+                <div class="col-md-12" style="margin-top: 1em;">
                     <div class="form-group">
                         @include('include.errors')
                     </div>

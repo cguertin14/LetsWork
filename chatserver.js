@@ -75,8 +75,8 @@ function roominvite(data) {
 }
 
 function reco(data) {
-    var rep={};
-    var chatroom=null;
+    var rep = {};
+    var chatroom = null;
     Object.keys(ChatRooms).forEach(function (c) {
         var sender = false;
         var receiver = false;
@@ -92,12 +92,11 @@ function reco(data) {
             chatroom = ChatRooms[c];
         }
     });
-    if(chatroom!=null)
-    {
-        rep['hash']=chatroom.hash;
-        rep['receiver']=data.receiver;
-    }
-    else {
+
+    if (chatroom != null) {
+        rep['hash'] = chatroom.hash;
+        rep['receiver'] = data.receiver;
+    } else {
         let hash = newHash();
         ChatRooms[hash] = {};
         ChatRooms[hash].users = [];

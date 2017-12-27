@@ -8,13 +8,6 @@ $(document).ready(function ($) {
     $(".clickable-section").click(function() {
         window.location = $(this).data("href");
     });
-
-    Array.prototype.chunk = function ( n ) {
-        if ( !this.length ) {
-            return [];
-        }
-        return [ this.slice( 0, n ) ].concat( this.slice(n).chunk(n) );
-    };
 });
 
 function setUserProfilePic(route) {

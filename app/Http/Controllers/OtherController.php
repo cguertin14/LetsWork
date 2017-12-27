@@ -14,26 +14,7 @@ class OtherController extends BaseController
      */
     public function homepage()
     {
-        if (Auth::check() && !Session::has('CurrentCompany')) {
-            if (Auth::user()->employees()->get()->isEmpty() || Auth::user()->companies()->get()->isEmpty()) {
-                session()->forget('CurrentCompany');
-            } else {
-                $companies = Auth::user()->companies()->get();
-                if($companies->count() > 0) {
-                    session(['CurrentCompany' => $companies->first()]);
-                }
-                else {
-                    $companies = Auth::user()->employees()->get()->map(function ($employee) { return $employee->companies()->get()->unique(); })->first();
-                    if($companies != null && $companies->count() > 0) {
-                        session(['CurrentCompany' => $companies->first()]);
-                    }
-                }
-            }
-        } else if (Auth::check()) {
-            if (Auth::user()->employees()->get()->isEmpty() || Auth::user()->companies()->get()->isEmpty()) {
-                session()->forget('CurrentCompany');
-            }
-        }
+        self::verifyEmployeeStatus();
         return view('homepage.content');
     }
 
