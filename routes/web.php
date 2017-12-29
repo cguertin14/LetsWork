@@ -21,8 +21,8 @@ $resources = ['only' => ['create', 'edit', 'destroy', 'store', 'update', 'index'
 /* Basic Routes */
 Route::get('/', 'OtherController@homepage')->name('homepage.content');
 Route::get('/aboutus', 'OtherController@aboutus')->name('information.aboutus');
-Route::get('/userguide', 'OtherController@userguide')->name('information.userguide');
-Route::get('/termsofservice', 'OtherController@termsofservice')->name('information.termsofservice');
+//Route::get('/userguide', 'OtherController@userguide')->name('information.userguide');
+//Route::get('/termsofservice', 'OtherController@termsofservice')->name('information.termsofservice');
 
 /* JobOffer Routes */
 Route::resource('/joboffer', 'JobOfferController');

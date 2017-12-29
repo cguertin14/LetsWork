@@ -150,38 +150,6 @@
         <p style="text-align: justify">Notre projet est une application web destinée aux entreprises et aux particuliers voulant un ou des employés. Notre application fournit à ces derniers des outils permettant de gérer l’embauche et la gestion d’employés (incluant le système d’absences, de congés, de paies, de consultation d’horaires, de fabrication d’horaires, et bien plus). Les employeurs utilisant notre application pourront créer une page de promotion pour leurs entreprises où figureront leurs offres d’emplois. Les visiteurs parcourant ces pages auront la possibilité d’appliquer directement en ligne sans se connecter, en remplissant un formulaire. L’employeur recevra dans son centre de notifications la demande d'emploi et pourra choisir s’il l’accepte ou pas. Le visiteur recevra, suivant la réponse de l’employeur, une réponse par email lui offrant de se créer un compte pour continuer sa demande d’emploi. De plus, notre application web peut être utilisée pour la recherche d'emploi et pour simplement travailler plus facilement, donc pour un employé ou un simple utilisateur.</p>
     </div>
 
-    <div class="bgimg-2"></div>
-
-    <div style="position:relative;">
-        <div  class="headerText"  style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
-            <h3 style="text-align:center;color: #ffffff;">Quelles sont les technologies que nous utilisons?</h3>
-            <br>
-            <p class="text-center">LetsWork est écrit en PHP à l’aide du framework Laravel 5.5 (ou plus récent), avec l’aide d’une base de données MySql et d’outils tels que JavaScript 5, jQuery, Vue.js, CSS 3, HTML 5, Laravel Blade, NodeJS, etc.</p>
-            <p class="text-center">Nos développeurs utilisent les dernières technologies sur le marché afin d'obtenir une rapidité optimale et de toujours innover.</p>
-            <br>
-            <br>
-            <div class="row">
-                <div class="text-center">
-                    <img src="{{asset('image/nodejs.png')}}" alt="" width="400" height="250">
-                    <img src="{{asset('image/jquery.png')}}" alt="" width="250" height="250">
-                    <img src="{{asset('image/js.png')}}" alt="" width="250" height="250">
-                    <img src="{{asset('image/CSS3.png')}}" alt="" width="200" height="250">
-                    <img src="{{asset('image/html5.png')}}" alt="" width="200" height="250">
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="text-center">
-                    <img src="{{asset('image/laravel.png')}}" alt="" width="350" height="200">
-                    <img src="{{asset('image/php.png')}}" alt="" width="350" height="200" style="margin-left: 2em;">
-                    <img src="{{asset('image/mysql.png')}}" alt="" width="350" height="250" style="margin-left: 3em;">
-                    <img src="{{asset('image/blade.png')}}" alt="" width="370" height="200">
-                    <img src="{{asset('image/vue.png')}}" alt="" width="350" height="350">
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="bgimg-3"></div>
 
     <div style="position:relative;">
@@ -244,8 +212,8 @@
                 <br>
                 <br>
                 <br>
-                <a href="{{route('information.userguide')}}" style="text-decoration: none">Guide de l'utilisateur<span class="fa fa-arrow-right"></span></a>
-                <br>
+                {{--<a href="{{route('information.userguide')}}" style="text-decoration: none">Guide de l'utilisateur<span class="fa fa-arrow-right"></span></a>--}}
+                {{--<br>--}}
                 <a href="{{route('homepage.content')}}" style="text-decoration: none"><span class="fa fa-arrow-left"></span>Revenir à l'accueil</a>
             </div>
         </div>
