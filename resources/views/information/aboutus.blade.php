@@ -178,7 +178,7 @@
             <!-- Team Members Row -->
             <div class="text-center">
                 <div class="row" style="width: 100%;">
-                    <div class="col-lg-6 col-sm-6 text-center mb-4 headerText" style="margin: 0 auto;">
+                    <div class="col-lg-6 col-sm-6 text-center mb-4 headerText">
                         <img class="rounded-circle img-fluid d-block mx-auto" height="300" width="300" src="{{asset('image/charles.jpg')}}" alt="">
                         <h3 style="color: #a5a4a4;font-weight: 800">Charles Guertin</h3>
                         <h3 style="margin: 0;"><small>Développeur Full-Stack</small></h3>
@@ -219,4 +219,27 @@
         </div>
     </div>
 
+@endsection
+
+@section('scriptsm')
+    <script>
+        // Media queries
+        $(document).ready(function () {
+            let sizes = function () {
+                if (window.matchMedia('(max-width: 510px)').matches) {
+                    Array.from($('.col-lg-6 > .rounded-circle')).forEach(function (element) {
+                        element.style.setProperty('margin-left','-3em','important');
+                    });
+                } else {
+                    Array.from($('.col-lg-6 > .rounded-circle')).forEach(function (element) {
+                       element.style.setProperty('margin-left','0em','important');
+                    });
+                }
+            };
+            sizes();
+            $(window).resize(function() {
+                sizes();
+            });
+        });
+    </script>
 @endsection
