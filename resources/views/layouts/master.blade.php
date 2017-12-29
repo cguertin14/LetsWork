@@ -11,7 +11,7 @@
 @section('contenu')
     <nav class="navbar navbar-default navbar-theme navbar-fixed-top navbar-toggleable-md bg-faded" style="margin-bottom: 0">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarNavDropdown">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only" style="border-color: white">Toggle navigation</span>
                 <span class="icon-bar" style="background-color: white; border-color: white"></span>
                 <span class="icon-bar" style="background-color: white; border-color: white"></span>
