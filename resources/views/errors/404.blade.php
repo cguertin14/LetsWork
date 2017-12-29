@@ -43,7 +43,7 @@
             margin-top:15px;
             line-height:1.6em;
         }
-        .main  span.error > a{
+        .main  span.error {
             color:#48C8D3;
             font-size:18px;
         }
@@ -95,10 +95,10 @@
             <h3>LetsWork</h3>
             <hr>
             <!---728x90--->
-            <h1>Oups, page introuvable</h1>
-            <p>Il y a beaucoup de raison pourquoi cette page est<span class="error">
-                <a href="http://pixar.wikia.com/wiki/Mike_Wazowski" target="_blank" style="text-decoration: none;color;">404</a></span>.<br>
-                <span>Ne perdez pas trop votre temps à apprécier son look.</span>
+            <h1 class="title">Oups, page introuvable</h1>
+            <p>Il y a beaucoup de raison pourquoi cette page est
+                <span class="error">404</span>.<br>
+                <span>Ne perdez pas trop de temps ici!</span>
             </p>
             <!---728x90--->
             <br>
@@ -114,21 +114,49 @@
     <script>
         // Media queries
         $(document).ready(function () {
-            var sizes = function () {
+            let sizes = function () {
+                let matches = false;
                 if (window.matchMedia('(max-width: 767px)').matches) {
                     $('.wrap')[0].style.setProperty('width','600px','important');
-                } else if (window.matchMedia('(max-width: 1060px)').matches) {
+                    $('.title').css({
+                        fontSize: '4em'
+                    });
+                    matches = true;
+                } if (window.matchMedia('(max-width: 1060px)').matches) {
                     $('.wrap')[0].style.setProperty('width','800px','important');
-                } else if (window.matchMedia('(max-width: 820px)').matches) {
+                    $('.title').css({
+                        fontSize: '4em'
+                    });
+                    matches = true;
+                } if (window.matchMedia('(max-width: 820px)').matches) {
                     $('.wrap')[0].style.setProperty('width','600px','important');
-                } else if (window.matchMedia('(max-width: 620px)').matches) {
+                    $('.title').css({
+                        fontSize: '4em'
+                    });
+                    matches = true;
+                } if (window.matchMedia('(max-width: 750px)').matches) {
+                    $('.wrap')[0].style.setProperty('width','500px','important');
+                    $('.title').css({
+                        fontSize: '4em'
+                    });
+                    matches = true;
+                } if (window.matchMedia('(max-width: 667px)').matches) {
                     $('.wrap')[0].style.setProperty('width','350px','important');
-                } else {
+                    $('.title').css({
+                        fontSize: '3.2em'
+                    });
+                    matches = true;
+                }
+
+                if (!matches) {
                     $('.wrap')[0].style.setProperty('width','1000px','important');
+                    $('.title').css({
+                        fontSize: '2.7em'
+                    });
                 }
             };
             sizes();
-            $(window).on('resize', function() {
+            $(window).resize(function() {
                 sizes();
             });
         });
