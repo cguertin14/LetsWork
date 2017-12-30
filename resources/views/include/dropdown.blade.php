@@ -17,7 +17,7 @@
         $height = 0;
         $jobs = \Illuminate\Support\Facades\Auth::user()->employees()->get()->map(function (\App\Employee $employee) { return $employee->companies()->get()->unique(); })->first()->merge(\Illuminate\Support\Facades\Auth::user()->companies()->get())->unique()
     @endphp
-    @if ($jobs != null && $jobs->count() > 0)
+    @if ($jobs != null && $jobs->count() > 1)
         @foreach($jobs as $company)
             @if ($company->slug !== \App\Tools\Helper::CCompany()->slug)
                 @php($height+=50)
@@ -30,7 +30,7 @@
     dropdown("#dropdown5","#dropdown5Title",50,"#img5");
     dropdown("#dropdown6","#dropdown6Title",@if(\Illuminate\Support\Facades\Auth::user()->isOwner()) 100 @else 50 @endif,"#img6");
     dropdown("#dropdown7","#dropdown7Title",100,"#img7");
-    @if (\Illuminate\Support\Facades\Auth::user()->employees()->get()->map(function ($employee) { return $employee->companies()->get(); })->first() != null)
+    @if ($jobs != null)
         dropdown("#dropdown8","#dropdown8Title",100,"#img8");
         @if (\App\Tools\Helper::CCompany() != null)
             dropdown("#dropdownMyJob","#dropdownMyJobTitle",@if (\App\Tools\Helper::CIsHighRanked()) 350 @else 150 @endif,"#imgMyJob")
