@@ -11,6 +11,7 @@ use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Config;
 
 class CompanyController extends BaseController {
     /**
@@ -95,6 +96,7 @@ class CompanyController extends BaseController {
 			$data['photo'] = $request->session()->get('CompanyPhoto');
 		}
 
+		$data['pays'] = Config::get('countries')[$data['pays']];
 		$company = Company::create($data);
         session(['CurrentCompany' => $company]);
 
@@ -186,6 +188,7 @@ class CompanyController extends BaseController {
 	 */
 	public function update(ModifyCompanyRequest $request, $id) {
 		$data = $request->all();
+        $data['pays'] = Config::get('countries')[$data['pays']];
 		if ($data['user_id'] != Auth::id()) {
 			return redirect()->back();
 		}
