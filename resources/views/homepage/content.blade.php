@@ -150,6 +150,7 @@
                 });
             }
 
+            @if (\Illuminate\Support\Facades\Auth::check())
             if (!mq3.matches) {
                 $('#bigbtn')[0].style.setProperty('font-size','16px','important');
             } else {
@@ -159,6 +160,7 @@
             if (mq4.matches) {
                 $('#bigbtn')[0].style.setProperty('font-size','20px','important');
             }
+            @endif
         }
 
         onChange();
