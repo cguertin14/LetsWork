@@ -115,6 +115,9 @@
                                 @foreach(\Illuminate\Support\Facades\Auth::user()->companies()->get() as $company)
                                     <li onclick="selectCompany('{{$company->slug}}')"><a href="#">@if(strlen($company->name) > 15){{ substr($company->name,0,15) . '..'}} @else{{$company->name}} @endif</a></li>
                                 @endforeach
+                                @foreach($jobs as $company)
+                                    <li onclick="selectCompany('{{$company->slug}}')"><a href="#">@if(strlen($company->name) > 15){{ substr($company->name,0,15) . '..'}} @else{{$company->name}} @endif</a></li>
+                                @endforeach
                             </ul>
                         </li>
                         @elseif($jobs != null && $jobs->count() > 0)
