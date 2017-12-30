@@ -107,11 +107,21 @@
                                 @endif
                             </ul>
                         </li>
-                        @if(count(Illuminate\Support\Facades\Auth::user()->companies()->get()) > 1)
+                        @php($jobs = \Illuminate\Support\Facades\Auth::user()->employees()->get()->map(function (\App\Employee $employee) { return $employee->companies()->get()->unique(); })->first())
+                        @if(Illuminate\Support\Facades\Auth::user()->companies()->get()->count() > 1)
                         <li>
                             <a id="dropdown2Title" href="#">@if (!Session::has('CurrentCompany')) Choisir un emploi @else Changer d'emploi @endif<span id="img2" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
                             <ul id="dropdown2" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
                                 @foreach(\Illuminate\Support\Facades\Auth::user()->companies()->get() as $company)
+                                    <li onclick="selectCompany('{{$company->slug}}')"><a href="#">@if(strlen($company->name) > 15){{ substr($company->name,0,15) . '..'}} @else{{$company->name}} @endif</a></li>
+                                @endforeach
+                            </ul>
+                        </li>
+                        @elseif($jobs != null && $jobs->count() > 0)
+                        <li>
+                            <a id="dropdown2Title" href="#">@if (!Session::has('CurrentCompany')) Choisir un emploi @else Changer d'emploi @endif<span id="img2" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
+                            <ul id="dropdown2" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
+                                @foreach($jobs as $company)
                                     <li onclick="selectCompany('{{$company->slug}}')"><a href="#">@if(strlen($company->name) > 15){{ substr($company->name,0,15) . '..'}} @else{{$company->name}} @endif</a></li>
                                 @endforeach
                             </ul>
@@ -176,7 +186,7 @@
                         <li><a href="{{route('information.aboutus')}}">À Propos</a></li>
                         <li style="bottom: 0;position: fixed;background-color: rgba(255, 255, 255, 0.04);line-height: 60px;width: 300px;">
                             <div class="text-center">
-                                <span style="color: white;font-family: Ubuntu,sans-serif;font-weight: 500">© Confidentialité | LetsWork 2017</span>
+                                <span style="color: white;font-family: Ubuntu,sans-serif;font-weight: 500">© Confidentialité | LetsWork 2018</span>
                             </div>
                         </li>
                     </ul>

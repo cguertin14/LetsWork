@@ -32,7 +32,7 @@
         {{--<!-- Site footer -->--}}
         <footer class="footer">
             <div class="text-center">
-                <span style="color: white;font-family: Ubuntu,sans-serif;font-weight: 500">© Confidentialité | LetsWork 2017 - Tous droits réservés</span>
+                <span style="color: white;font-family: Ubuntu,sans-serif;font-weight: 500">© Confidentialité | LetsWork 2018 - Tous droits réservés</span>
             </div>
         </footer>
 
