@@ -15,24 +15,15 @@
     dropdown("#dropdown1","#dropdown1Title",100,"#img1");
     @php
         $height = 0;
-        $jobs = \Illuminate\Support\Facades\Auth::user()->employees()->get()->map(function (\App\Employee $employee) { return $employee->companies()->get()->unique(); })->first();
+        $jobs = \Illuminate\Support\Facades\Auth::user()->employees()->get()->map(function (\App\Employee $employee) { return $employee->companies()->get()->unique(); })->first()->merge(\Illuminate\Support\Facades\Auth::user()->companies()->get())->unique()
     @endphp
-    @foreach(\Illuminate\Support\Facades\Auth::user()->companies()->get() as $company)
-        @if ($company->slug !== \App\Tools\Helper::CCompany()->slug)
-            @php($height+=50)
-        @endif
-    @endforeach
-    @foreach($jobs as $company)
-        @php($canGo = true)
-        @foreach(\Illuminate\Support\Facades\Auth::user()->companies()->get() as $company2)
-            @if ($company2->slug === $company->slug)
-                @php($canGo = false)
+    @if ($jobs != null && $jobs->count() > 0)
+        @foreach($jobs as $company)
+            @if ($company->slug !== \App\Tools\Helper::CCompany()->slug)
+                @php($height+=50)
             @endif
         @endforeach
-        @if ($canGo)
-            @php($height+=50)
-        @endif
-    @endforeach
+    @endif
     dropdown("#dropdown2","#dropdown2Title",{{$height}},"#img2");
     dropdown("#dropdown3","#dropdown3Title",100,"#img3");
     dropdown("#dropdown4","#dropdown4Title",100,"#img4");
