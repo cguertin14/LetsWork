@@ -113,14 +113,14 @@
                             <a id="dropdown2Title" href="#">@if (!Session::has('CurrentCompany')) Choisir un emploi @else Changer d'emploi @endif<span id="img2" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
                             <ul id="dropdown2" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
                                 @foreach(\Illuminate\Support\Facades\Auth::user()->companies()->get() as $company)
-                                    @if ($company->name != \App\Tools\Helper::CCompany()->name)
+                                    @if ($company->slug !== \App\Tools\Helper::CCompany()->slug)
                                         <li onclick="selectCompany('{{$company->slug}}')"><a href="#">@if(strlen($company->name) > 15){{ substr($company->name,0,15) . '..'}} @else{{$company->name}} @endif</a></li>
                                     @endif
                                 @endforeach
                                 @foreach($jobs as $company)
                                     @php($canGo = true)
                                     @foreach(\Illuminate\Support\Facades\Auth::user()->companies()->get() as $company2)
-                                        @if ($company2->name == $company->name)
+                                        @if ($company2->slug === $company->slug)
                                             @php($canGo = false)
                                         @endif
                                     @endforeach

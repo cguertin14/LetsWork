@@ -18,14 +18,14 @@
         $jobs = \Illuminate\Support\Facades\Auth::user()->employees()->get()->map(function (\App\Employee $employee) { return $employee->companies()->get()->unique(); })->first();
     @endphp
     @foreach(\Illuminate\Support\Facades\Auth::user()->companies()->get() as $company)
-        @if ($company->name != \App\Tools\Helper::CCompany()->name)
+        @if ($company->slug !== \App\Tools\Helper::CCompany()->slug)
             @php($height+=50)
         @endif
     @endforeach
     @foreach($jobs as $company)
         @php($canGo = true)
         @foreach(\Illuminate\Support\Facades\Auth::user()->companies()->get() as $company2)
-            @if ($company2->name == $company->name)
+            @if ($company2->slug === $company->slug)
                 @php($canGo = false)
             @endif
         @endforeach
