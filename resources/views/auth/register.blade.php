@@ -131,14 +131,14 @@
 @section('scriptsm')
     <script>
         function checkLoginState() {
-            FB.getLoginStatus(function(response) {
+            FB.login(function(response) {
                 if (response.status === 'connected') {
                     var accessToken = response.authResponse.accessToken;
                     let input = $('<input>').attr('type','hidden').attr('name','access_token').val(accessToken);
                     $('#FBForm').append($(input));
                     $('#FBForm').submit();
                 }
-            });
+            }, {scope:'email'});
         }
         (function(d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
