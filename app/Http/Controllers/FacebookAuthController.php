@@ -7,6 +7,7 @@ use App\User;
 use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
+use Facebook\FacebookResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
@@ -35,7 +36,7 @@ class FacebookAuthController extends Controller
         ]);
 
         try {
-            $response = $fb->get('/me?fields=id,first_name,last_name,picture.width(400).height(400),gender', $payload['access_token']);
+            $response = $fb->get('/me?fields=id,first_name,last_name,email,picture.width(400).height(400),gender', $payload['access_token']);
         } catch (FacebookResponseException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
         } catch (FacebookSDKException $e) {
@@ -43,6 +44,8 @@ class FacebookAuthController extends Controller
         }
 
         $me = $response->getGraphUser();
+        $userFacebook = $fb->get("/{$me->getId()}?fields=email", $payload['access_token']);
+        
         if ($user = User::query()->where('facebook_id', $me['id'])->first()) {
             Auth::login($user);
             return redirect('/');
@@ -52,7 +55,7 @@ class FacebookAuthController extends Controller
                 'first_name' => $me['first_name'],
                 'last_name' => $me['last_name'],
                 'name' => strtolower(trim($me['first_name'] . $me['last_name'])),
-                'email' => $me['email'],
+                'email' => $userFacebook->getGraphUser()['email'],
             ]);
 
             $user->photo()->create([
