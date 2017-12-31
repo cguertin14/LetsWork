@@ -35,7 +35,7 @@ class FacebookAuthController extends Controller
         ]);
 
         try {
-            $response = $fb->get('/me?fields=id,first_name,last_name,email,picture.width(400).height(400),gender', $payload['access_token']);
+            $response = $fb->get('/me?fields=id,first_name,last_name,picture.width(400).height(400),gender', $payload['access_token']);
         } catch (FacebookResponseException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
         } catch (FacebookSDKException $e) {
