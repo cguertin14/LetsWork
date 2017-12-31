@@ -5,10 +5,10 @@
         body {
             background-color: #5d5d5d;
         }
-        .dropzone {
-            background-color: #c9c9c9 !important;
-        }
         .employee > p {
+            font-family: 'Montserrat',sans-serif;
+        }
+        .information > .row > .col-md-6 > p, .information > .row > .col-md-6 > label, .information > p {
             font-family: 'Montserrat',sans-serif;
         }
         .form-group > label {
