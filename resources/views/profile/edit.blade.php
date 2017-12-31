@@ -97,10 +97,6 @@
                 <div class="form-group">
                     {!! Form::submit('Modifier le profil', ['class' => 'btn purplebtn pull-left']) !!}
                     {!! Form::close() !!}
-
-                    {!! Form::open(['method' => 'DELETE','action' => ['ProfileController@deleteuser',$user->slug]]) !!}
-                    {!! Form::submit('Supprimer le profil', ['class' => 'btn btn-danger pull-right confirm_action','c_m_text' => 'Voulez-vous vraiment supprimer votre profil?', 'style' => 'font-size: 17px !important;']) !!}
-                    {!! Form::close() !!}
                 </div>
             </div>
         </div>

@@ -9,6 +9,7 @@ use App\Http\Middleware\CheckHighRanked;
 use App\Http\Middleware\CheckManager;
 use App\Http\Middleware\Confirmation;
 use App\Http\Middleware\ConnectedUserOnly;
+use App\Http\Middleware\ProfileMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -69,5 +70,6 @@ class Kernel extends HttpKernel
         'employee' => CheckEmployee::class,
         'manager' => CheckManager::class,
         'highranked' => CheckHighRanked::class,
+        'profile' => ProfileMiddleware::class,
     ];
 }

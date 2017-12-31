@@ -35,9 +35,9 @@ class ModifyUserRequest extends FormRequest
     {
         return [
             'email.required' => 'L\'adresse courriel est nécessaire',
-            'phone_number.unique' => 'Le numéro de téléphone est nécessaire',
             'first_name.required' => 'Le prénom est nécessaire',
-            'last_name.required' => 'Le nom de famille est nécessaire'
+            'last_name.required' => 'Le nom de famille est nécessaire',
+            'phone_number.required' => 'Le numéro de téléphone est nécessaire'
         ];
     }
 }

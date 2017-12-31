@@ -29,11 +29,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="">Compagnie</label>
-                        <p>{{ \App\Tools\Helper::CCompany()->name }}</p>
+                        <p>{{ \App\Tools\Helper::CCompany() ? \App\Tools\Helper::CCompany()->name : 'Aucun emploi' }}</p>
                     </div>
                     <div class="col-md-6">
                         <label for="">Poste</label>
-                        <p>{{ $user->employees()->first()->specialroles()->first()->name }}</p>
+                        <p>{{ $user->employees()->first() ? $user->employees()->first()->specialroles()->first()->name : 'Aucun emploi' }}</p>
                     </div>
                 </div>
             </div>
