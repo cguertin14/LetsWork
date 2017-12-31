@@ -44,8 +44,7 @@ class FacebookAuthController extends Controller
         }
 
         $me = $response->getGraphUser();
-        $userFacebook = $fb->get("/{$me->getId()}?fields=email", $payload['access_token']);
-        
+
         if ($user = User::query()->where('facebook_id', $me['id'])->first()) {
             Auth::login($user);
             return redirect('/');
@@ -55,7 +54,7 @@ class FacebookAuthController extends Controller
                 'first_name' => $me['first_name'],
                 'last_name' => $me['last_name'],
                 'name' => strtolower(trim($me['first_name'] . $me['last_name'])),
-                'email' => $userFacebook->getGraphUser()['email'],
+                'email' => $me['email'],
             ]);
 
             $user->photo()->create([
