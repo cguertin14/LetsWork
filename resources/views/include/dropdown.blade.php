@@ -15,7 +15,8 @@
     dropdown("#dropdown1","#dropdown1Title",100,"#img1");
     @php
         $height = 0;
-        $jobs = \Illuminate\Support\Facades\Auth::user()->employees()->get()->map(function (\App\Employee $employee) { return $employee->companies()->get()->unique(); })->first()->merge(\Illuminate\Support\Facades\Auth::user()->companies()->get())->unique()
+        $jobs = \Illuminate\Support\Facades\Auth::user()->employees()->get()->map(function (\App\Employee $employee) { return $employee->companies()->get()->unique(); })->first();
+        if ($jobs != null) $jobs = $jobs->merge(\Illuminate\Support\Facades\Auth::user()->companies()->get())->unique();
     @endphp
     @if ($jobs != null && $jobs->count() > 1)
         @foreach($jobs as $company)

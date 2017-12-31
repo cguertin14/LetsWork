@@ -119,31 +119,31 @@
                 if (window.matchMedia('(max-width: 767px)').matches) {
                     $('.wrap')[0].style.setProperty('width','600px','important');
                     $('.title').css({
-                        fontSize: '4em'
+                        fontSize: '2.7em'
                     });
                     matches = true;
                 } if (window.matchMedia('(max-width: 1060px)').matches) {
                     $('.wrap')[0].style.setProperty('width','800px','important');
                     $('.title').css({
-                        fontSize: '4em'
+                        fontSize: '2.7em'
                     });
                     matches = true;
                 } if (window.matchMedia('(max-width: 820px)').matches) {
                     $('.wrap')[0].style.setProperty('width','600px','important');
                     $('.title').css({
-                        fontSize: '4em'
+                        fontSize: '2.7em'
                     });
                     matches = true;
                 } if (window.matchMedia('(max-width: 750px)').matches) {
                     $('.wrap')[0].style.setProperty('width','500px','important');
                     $('.title').css({
-                        fontSize: '4em'
+                        fontSize: '2.7em'
                     });
                     matches = true;
                 } if (window.matchMedia('(max-width: 667px)').matches) {
                     $('.wrap')[0].style.setProperty('width','350px','important');
                     $('.title').css({
-                        fontSize: '3.2em'
+                        fontSize: '2.7em'
                     });
                     matches = true;
                 }
