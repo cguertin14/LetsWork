@@ -20,7 +20,7 @@
 @section('content')
     <div class="row" style="padding: 5em;margin-top: 5em">
         <div class="col-md-4">
-            <img id="image" width="" height="" src="{{asset('image/default-profile.png')}}" style="border-radius: 5%; border: 0.8em solid #b9b9b9;cursor: pointer;width: auto;height: auto;max-height: 440px; max-width: 500px">
+            <img id="image" src="{{asset('image/default-profile.png')}}" style="border-radius: 5%; border: 0.8em solid #b9b9b9;cursor: pointer;width: auto;height: auto;max-height: 440px; max-width: 500px">
             <div style="display: none">
                 {!! Form::open(['method' => 'PATCH', 'action' => 'ProfileController@uploadphoto', 'class' => 'dropzone','id' => 'files']) !!}
                 <div class="text-center">

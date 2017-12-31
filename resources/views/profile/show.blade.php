@@ -20,7 +20,7 @@
 @section('content')
     <div class="row" style="padding: 5em;margin-top: 5em">
         <div class="col-md-4">
-            <img id="image" width="440px" height="500px" src="{{asset('image/default-profile.png')}}" style="border-radius: 5%; border: 0.8em solid #b9b9b9">
+            <img id="image" src="{{asset('image/default-profile.png')}}" style="border-radius: 5%; border: 0.8em solid #b9b9b9;cursor: pointer;width: auto;height: auto;max-height: 440px; max-width: 500px">
         </div>
         <div class="col-md-8" id="content">
             <div class="col-md-12 information" style="margin-top: 2em">
