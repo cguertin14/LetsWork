@@ -182,7 +182,7 @@
                         <li><a href="{{route('information.aboutus')}}">À Propos</a></li>
                         <li style="bottom: 0;position: fixed;background-color: rgba(255, 255, 255, 0.04);line-height: 60px;width: 300px;">
                             <div class="text-center">
-                                <span style="color: white;font-family: Ubuntu,sans-serif;font-weight: 500">© Confidentialité | LetsWork 2018</span>
+                                <span style="color: white;font-family: Ubuntu,sans-serif;font-weight: 500">Confidentialité | © LetsWork 2018</span>
                             </div>
                         </li>
                     </ul>
