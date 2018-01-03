@@ -149,7 +149,7 @@
                     this.chartdata = newVal;
                     this.load();
                     if (this.isRecreated)
-                        $("html, body").animate({ scrollTop: $("#chart").offset().top - 65 }, 500);
+                        $("html, body").animate({ scrollTop: $("#chart").offset().top - 65 }, 300);
                     this.isRecreated = true;
                 }
             },
