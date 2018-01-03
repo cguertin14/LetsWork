@@ -109,7 +109,7 @@
             template: '<canvas id="chartid" v-cloak></canvas>',
             methods: {
                 load: function () {
-                    $('<canvas id="chartid" v-cloak></canvas>').replaceAll($('#chartid'));
+                    //$('#chartid'); $('<canvas id="chartid" v-cloak></canvas>')
                     var ctx = document.getElementById('chartid').getContext('2d');
                     var chart = new Chart(ctx, {
                         // The type of chart we want to create
