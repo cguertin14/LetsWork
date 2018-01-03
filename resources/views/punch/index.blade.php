@@ -128,7 +128,7 @@
                                 },
                                 title:{
                                     display: true,
-                                    text: 'Les heures travaillées de {{$employee->user->fullname}}'
+                                    text: 'Mes heures travaillées'
                                 },
                                 scales: {
                                     yAxes: [
