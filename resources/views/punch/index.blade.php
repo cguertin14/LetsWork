@@ -109,12 +109,8 @@
             template: '<canvas id="chartid" v-cloak></canvas>',
             methods: {
                 load: function () {
-                    //$('#chartid'); $('<canvas id="chartid" v-cloak></canvas>')
-                    let canvas = document.getElementById('chartid');
-                    let ctx = canvas.getContext('2d');
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                    ctx = document.getElementById('chartid').getContext('2d');
+                    $('#chartid').destroy();
+                    let ctx = document.getElementById('chartid').getContext('2d');
                     new Chart(ctx, {
                         // The type of chart we want to create
                         type: 'bar',
