@@ -146,6 +146,7 @@
                         });
                     } else {
                         this.chart.data = this.chartdata;
+                        this.chart.update();
                     }
                 }
             },
