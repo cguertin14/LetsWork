@@ -147,7 +147,7 @@
                         });
                         ++this.counter;
                     } else {
-                        this.chart.config.data = this.chartdata;
+                        this.chart.data.datasets[0] = this.chartdata;
                         this.chart.update();
                     }
                 }
