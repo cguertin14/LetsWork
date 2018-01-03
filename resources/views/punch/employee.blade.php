@@ -114,7 +114,7 @@
             template: '<canvas id="chartid" v-cloak></canvas>',
             methods: {
                 load: function () {
-                    $('#chartid').empty();
+                    $('#chartid').replaceWith($('<canvas id="chartid" v-cloak></canvas>'));
                     var ctx = document.getElementById('chartid').getContext('2d');
                     var chart = new Chart(ctx, {
                         // The type of chart we want to create
@@ -130,7 +130,7 @@
                                 position: 'top',
                             },
                             title:{
-                                display:true,
+                                display: true,
                                 text: 'Les heures travaillées de {{$employee->user->fullname}}'
                             },
                             scales: {
