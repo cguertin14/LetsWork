@@ -103,18 +103,15 @@
             props: ['chartdata'],
             data: function () {
                 return {
-                    isRecreated: false,
-                    chart: null,
-                    counter: 0
+                    isRecreated: false
                 };
             },
             template: '<canvas id="chartid" v-cloak></canvas>',
             methods: {
                 load: function () {
-                    $('#chartid').replaceWith($('<canvas id="chartid" v-cloak></canvas>'));
+                    $('#chartid').replaceWith('<canvas id="chartid" v-cloak></canvas>');
                     let ctx = document.getElementById('chartid').getContext('2d');
-                    if (this.counter < 2) {
-                        this.chart = new Chart(ctx, {
+                    new Chart(ctx, {
                             // The type of chart we want to create
                             type: 'bar',
 
@@ -145,11 +142,6 @@
                                 }
                             }
                         });
-                        ++this.counter;
-                    } else {
-                        this.chart.data.datasets[0] = this.chartdata;
-                        this.chart.update();
-                    }
                 }
             },
             watch: {
