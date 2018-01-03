@@ -108,47 +108,50 @@
             props: ['chartdata'],
             data: function () {
                 return {
-                    isRecreated: false
+                    isRecreated: false,
+                    chart: null
                 };
             },
             template: '<canvas id="chartid" v-cloak></canvas>',
             methods: {
                 load: function () {
-                    let parent = $('#chartid').parent();
-                    $('#chartid').remove();
-                    parent.append($('<canvas id="chartid" v-cloak></canvas>'));
+                    $('#chartid').replaceWith($('<canvas id="chartid" v-cloak></canvas>'));
                     let ctx = document.getElementById('chartid').getContext('2d');
-                    new Chart(ctx, {
-                        // The type of chart we want to create
-                        type: 'bar',
+                    if (this.chart === null) {
+                        this.chart = new Chart(ctx, {
+                            // The type of chart we want to create
+                            type: 'bar',
 
-                        // The data for our dataset
-                        data: this.chartdata,
+                            // The data for our dataset
+                            data: this.chartdata,
 
-                        // Configuration options go here
-                        options: {
-                            responsive: true,
-                            legend: {
-                                position: 'top',
-                            },
-                            title:{
-                                display: true,
-                                text: 'Les heures travaillées de {{$employee->user->fullname}}'
-                            },
-                            scales: {
-                                yAxes: [
-                                    {
-                                        ticks: {
-                                            // Include a h sign in the ticks
-                                            callback: function (value, index, values) {
-                                                return value.toFixed(2) + 'h';
+                            // Configuration options go here
+                            options: {
+                                responsive: true,
+                                legend: {
+                                    position: 'top',
+                                },
+                                title:{
+                                    display: true,
+                                    text: 'Les heures travaillées de {{$employee->user->fullname}}'
+                                },
+                                scales: {
+                                    yAxes: [
+                                        {
+                                            ticks: {
+                                                // Include a h sign in the ticks
+                                                callback: function (value, index, values) {
+                                                    return value.toFixed(2) + 'h';
+                                                }
                                             }
                                         }
-                                    }
-                                ]
+                                    ]
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        this.chart.data = this.chartdata;
+                    }
                 }
             },
             watch: {
