@@ -114,6 +114,7 @@
             template: '<canvas id="chartid" v-cloak></canvas>',
             methods: {
                 load: function () {
+                    $('#chartid').replaceWith()
                     $('#chartid').html($('<canvas id="chartid" v-cloak></canvas>'));
                     var ctx = document.getElementById('chartid').getContext('2d');
                     var chart = new Chart(ctx, {
@@ -154,7 +155,7 @@
                     this.chartdata = newVal;
                     this.load();
                     if (this.isRecreated)
-                        $("html, body").animate({ scrollTop: $("#chart").offset().top - 65 }, 1000);
+                        $("html, body").animate({ scrollTop: $("#chart").offset().top - 65 }, 500);
                     this.isRecreated = true;
                 }
             },
