@@ -109,39 +109,39 @@
             template: '<canvas id="chartid" v-cloak></canvas>',
             methods: {
                 load: function () {
-                    $('#chartid').html($('<canvas id="chartid" v-cloak></canvas>'));
-                    var ctx = document.getElementById('chartid').getContext('2d');
-                    var chart = new Chart(ctx, {
-                        // The type of chart we want to create
-                        type: 'bar',
+                    $('#chartid').replaceWith('<canvas id="chartid" v-cloak></canvas>');
+                    let ctx = document.getElementById('chartid').getContext('2d');
+                    new Chart(ctx, {
+                            // The type of chart we want to create
+                            type: 'bar',
 
-                        // The data for our dataset
-                        data: this.chartdata,
+                            // The data for our dataset
+                            data: this.chartdata,
 
-                        // Configuration options go here
-                        options: {
-                            responsive: true,
-                            legend: {
-                                position: 'top',
-                            },
-                            title:{
-                                display:true,
-                                text: 'Mes heures travaillées'
-                            },
-                            scales: {
-                                yAxes: [
-                                    {
-                                        ticks: {
-                                            // Include a h sign in the ticks
-                                            callback: function (value, index, values) {
-                                                return value.toFixed(2) + 'h';
+                            // Configuration options go here
+                            options: {
+                                responsive: true,
+                                legend: {
+                                    position: 'top',
+                                },
+                                title:{
+                                    display: true,
+                                    text: 'Mes heures travaillées'
+                                },
+                                scales: {
+                                    yAxes: [
+                                        {
+                                            ticks: {
+                                                // Include a h sign in the ticks
+                                                callback: function (value, index, values) {
+                                                    return value.toFixed(2) + 'h';
+                                                }
                                             }
                                         }
-                                    }
-                                ]
+                                    ]
+                                }
                             }
-                        }
-                    });
+                        });
                 }
             },
             watch: {
