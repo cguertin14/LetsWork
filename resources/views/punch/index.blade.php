@@ -104,7 +104,8 @@
             data: function () {
                 return {
                     isRecreated: false,
-                    chart: null
+                    chart: null,
+                    counter: 0
                 };
             },
             template: '<canvas id="chartid" v-cloak></canvas>',
@@ -112,7 +113,7 @@
                 load: function () {
                     $('#chartid').replaceWith($('<canvas id="chartid" v-cloak></canvas>'));
                     let ctx = document.getElementById('chartid').getContext('2d');
-                    if (this.chart === null) {
+                    if (this.counter < 2) {
                         this.chart = new Chart(ctx, {
                             // The type of chart we want to create
                             type: 'bar',
@@ -144,6 +145,7 @@
                                 }
                             }
                         });
+                        ++this.counter;
                     } else {
                         this.chart.data = this.chartdata;
                         this.chart.update();
