@@ -209,7 +209,7 @@ class PunchController extends BaseController
             "labels" => $this->getlastweek(Carbon::today()),
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce jour là",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce jour-là",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => $this->getLastWeekSum(Carbon::today(),$employee),
@@ -229,7 +229,7 @@ class PunchController extends BaseController
             "labels" => $this->getLastTwoWeeks(Carbon::today()),
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce jour là",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce jour-là",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => $this->getLastTwoWeeksSum(Carbon::today(),$employee),
@@ -250,7 +250,7 @@ class PunchController extends BaseController
             "labels" => ["1ère semaine", "2ième semaine", "3ième semaine", "4ième semaine"],
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce mois là",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} cette semaine-là",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => [
@@ -276,7 +276,7 @@ class PunchController extends BaseController
             "labels" => $this->getlastyearmonth(Carbon::today()),
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce mois là",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce mois-là",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => [
