@@ -30,9 +30,7 @@ class PunchController extends BaseController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return int
      */
     public function add()
     {
@@ -42,10 +40,10 @@ class PunchController extends BaseController
             $lastpunch->first()->update();
             return 0;
         } else {
-            Punch::create([
-                "datebegin" => Carbon::now(),
-                "employee_id" => self::CEmployee()->id,
-                "company_id" => self::CCompany()->id,
+            Punch::query()->create([
+                'datebegin' => Carbon::now(),
+                'employee_id' => self::CEmployee()->id,
+                'company_id' => self::CCompany()->id,
             ]);
             return 1;
         }
@@ -201,6 +199,7 @@ class PunchController extends BaseController
     }
 
     /**
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function lastweek($id)
@@ -210,7 +209,7 @@ class PunchController extends BaseController
             "labels" => $this->getlastweek(Carbon::today()),
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées par {$employee->user->fullname} cette semaine",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce jour là",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => $this->getLastWeekSum(Carbon::today(),$employee),
@@ -230,7 +229,7 @@ class PunchController extends BaseController
             "labels" => $this->getLastTwoWeeks(Carbon::today()),
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées par {$employee->user->fullname} au cours des 2 dernières semaines",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce jour là",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => $this->getLastTwoWeeksSum(Carbon::today(),$employee),
@@ -251,7 +250,7 @@ class PunchController extends BaseController
             "labels" => ["1ère semaine", "2ième semaine", "3ième semaine", "4ième semaine"],
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce mois-ci",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce mois là",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => [
@@ -277,7 +276,7 @@ class PunchController extends BaseController
             "labels" => $this->getlastyearmonth(Carbon::today()),
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées par {$employee->user->fullname} cette année",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce mois là",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => [
