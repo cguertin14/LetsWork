@@ -113,7 +113,7 @@
                     let ctx = document.getElementById('chartid').getContext('2d');
                     new Chart(ctx, {
                             // The type of chart we want to create
-                            type: 'bar',
+                            type: 'line',
 
                             // The data for our dataset
                             data: this.chartdata,
