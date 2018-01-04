@@ -50,7 +50,7 @@
                                 <td>{{\Carbon\Carbon::parse($punch->datebegin)->toDateTimeString()}}</td>
                                 @if($punch->dateend)
                                     <td>{{\Carbon\Carbon::parse($punch->dateend)->toDateTimeString()}}</td>
-                                    <td>{{\Carbon\Carbon::parse($punch->dateend)->diffInHours()}} heures</td>
+                                    <td>{{\Carbon\Carbon::parse($punch->dateend)->diffInHours(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin))}} heures</td>
                                     {{--->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)--}}
                                 @else
                                     <td>Période de travail non terminée</td>
