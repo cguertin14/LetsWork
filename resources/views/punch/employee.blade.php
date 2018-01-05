@@ -54,7 +54,7 @@
                                     @php(\Carbon\Carbon::setLocale('fr'))
                                     <td>{{\Carbon\Carbon::parse($punch->datebegin)->toDateTimeString()}}</td>
                                     @if($punch->dateend)
-                                        <td>{{\Carbon\Carbon::parse($punch->dateend)->toDateTimeString()}}</td>
+                                        <td>{{\Carbon\Carbon::parse($punch->dateend)->toDateTimeString()}}</tdtent
                                         <td>{{\Carbon\Carbon::parse($punch->dateend)->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)}}</td>
                                     @else
                                         <td>Période de travail non terminée</td>
