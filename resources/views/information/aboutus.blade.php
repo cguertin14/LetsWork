@@ -144,10 +144,10 @@
         </div>
     </div>
 
-    <div class="headerText" style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
-        <h3 style="text-align:center;">Qu'est-ce que LetsWork?</h3>
+    <div class="headerText"  style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
+        <h3 style="text-align:center;color: #ffffff;">Qu'est-ce que LetsWork?</h3>
         <br>
-        <p style="text-align: justify">Notre projet est une application web destinée aux entreprises et aux particuliers voulant un ou des employés. Notre application fournit à ces derniers des outils permettant de gérer l’embauche et la gestion d’employés (incluant le système d’absences, de congés, de paies, de consultation d’horaires, de fabrication d’horaires, et bien plus). Les employeurs utilisant notre application pourront créer une page de promotion pour leurs entreprises où figureront leurs offres d’emplois. Les visiteurs parcourant ces pages auront la possibilité d’appliquer directement en ligne sans se connecter, en remplissant un formulaire. L’employeur recevra dans son centre de notifications la demande d'emploi et pourra choisir s’il l’accepte ou pas. Le visiteur recevra, suivant la réponse de l’employeur, une réponse par email lui offrant de se créer un compte pour continuer sa demande d’emploi. De plus, notre application web peut être utilisée pour la recherche d'emploi et pour simplement travailler plus facilement, donc pour un employé ou un simple utilisateur.</p>
+        <p style="text-align: justify;color: #ffffff;">Notre projet est une application web destinée aux entreprises et aux particuliers voulant un ou des employés. Notre application fournit à ces derniers des outils permettant de gérer l’embauche et la gestion d’employés (incluant le système d’absences, de congés, de paies, de consultation d’horaires, de fabrication d’horaires, et bien plus). Les employeurs utilisant notre application pourront créer une page de promotion pour leurs entreprises où figureront leurs offres d’emplois. Les visiteurs parcourant ces pages auront la possibilité d’appliquer directement en ligne sans se connecter, en remplissant un formulaire. L’employeur recevra dans son centre de notifications la demande d'emploi et pourra choisir s’il l’accepte ou pas. Le visiteur recevra, suivant la réponse de l’employeur, une réponse par email lui offrant de se créer un compte pour continuer sa demande d’emploi. De plus, notre application web peut être utilisée pour la recherche d'emploi et pour simplement travailler plus facilement, donc pour un employé ou un simple utilisateur.</p>
     </div>
 
     <div class="bgimg-3"></div>

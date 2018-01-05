@@ -54,8 +54,9 @@
                                     @php(\Carbon\Carbon::setLocale('fr'))
                                     <td>{{\Carbon\Carbon::parse($punch->datebegin)->toDateTimeString()}}</td>
                                     @if($punch->dateend)
-                                        <td>{{\Carbon\Carbon::parse($punch->dateend)->toDateTimeString()}}</tdtent
-                                        <td>{{\Carbon\Carbon::parse($punch->dateend)->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)}}</td>
+                                        <td>{{\Carbon\Carbon::parse($punch->dateend)->toDateTimeString()}}</td>
+                                        <td>{{round(\Carbon\Carbon::parse($punch->dateend)->diffInMinutes(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin)) / 60,2)}} heure(s)</td>
+                                        {{--->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)--}}
                                     @else
                                         <td>Période de travail non terminée</td>
                                         <td>Période de travail non terminée</td>
@@ -154,7 +155,7 @@
                     this.chartdata = newVal;
                     this.load();
                     if (this.isRecreated)
-                        $("html, body").animate({ scrollTop: $("#chart").offset().top - 65 }, 1000);
+                        $("html, body").animate({ scrollTop: $("#chart").offset().top - 65 }, 300);
                     this.isRecreated = true;
                 }
             },
