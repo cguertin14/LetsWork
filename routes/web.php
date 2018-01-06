@@ -117,9 +117,9 @@ Route::group(['middleware' => 'auth'], function () use ($resources) {
 	Route::get('/isauthmanager', 'OtherController@userIsManager')->middleware('employee');
 
 	/* Chat Routes*/
-	Route::get('/chat', 'ChatController@index')->name('chat');
-	Route::post('/savemessages', 'ChatController@save');
-	Route::get('/lastmessages', 'ChatController@last');
+	//Route::get('/chat', 'ChatController@index')->name('chat');
+	//Route::post('/savemessages', 'ChatController@save');
+	//Route::get('/lastmessages', 'ChatController@last');
 
 	/* Employee Routes */
 	Route::get('/employees/names','EmployeeController@employeesNames')->name('employees.names');

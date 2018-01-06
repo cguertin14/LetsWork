@@ -26,9 +26,9 @@
             <div class="navbar-right" style="margin-right: 20px">
                 @if(Auth::check() && Session::has('CurrentCompany'))
                     <ul class="nav navbar-nav" style="margin-right: 10px">
-                        @if (\App\Tools\Helper::CIsEmployee())
-                        <li><a href="{{route('chat')}}" style="color: white"><span class="fa fa-comments" aria-hidden="true" style="color: white"></span> Messagerie</a></li>
-                        @endif
+                        {{--@if (\App\Tools\Helper::CIsEmployee())--}}
+                        {{--<li><a href="{{route('chat')}}" style="color: white"><span class="fa fa-comments" aria-hidden="true" style="color: white"></span> Messagerie</a></li>--}}
+                        {{--@endif--}}
                         <li><a href="{{route('information.aboutus')}}" style="color: white"><span class="glyphicon glyphicon-question-sign" style="color: white"></span> À Propos</a></li>
                         <li>
                             <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-expanded="false" style="color: white"><span class="fa fa-globe" style="color: white"></span> Mon travail</a>
