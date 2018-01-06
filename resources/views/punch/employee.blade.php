@@ -85,7 +85,7 @@
         @if (count($punches) > 0)
         <div class="col-md-12" id="chart">
             <div class="row layout">
-                <div class="centre custom-container custom-table" style="padding: 1em;margin-bottom: 2em">
+                <div class="centre custom-container custom-table" style="padding: 1em;margin-bottom: 1em">
                     <div class="text-center">
                         <h2 class="row page-title">Trier par</h2>
                         <br>
