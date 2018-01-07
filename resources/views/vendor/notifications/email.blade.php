@@ -68,7 +68,7 @@
 @endsection
 
 @section('contenu')
-    <h1 style="font-weight:700; font-size: 35px; color:#552ad6;font-family: Montserrat,sans-serif">LetsWork</h1>
+    <h1 style="font-weight:700; font-size: 35px; color:#552ad6;font-family: Ubuntu,sans-serif">LetsWork</h1>
     <h2 class="title">Bonjour,</h2>
     <div class="col-md-6" >
         <p class="message">
@@ -80,6 +80,8 @@
         <a style="text-decoration: none" class="btn purplebtn" href="{{ $actionUrl }}" >Réinitialiser mon mot de passe.</a>
 
         <br>
+        <br>
+
         <p class="message">
             @foreach($outroLines as $lines)
                 {{ $lines }}
