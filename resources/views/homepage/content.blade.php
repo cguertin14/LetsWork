@@ -72,7 +72,7 @@
                                 </a>
                             </div>
                             <a href="/company/create" class="link" style="font-family: 'Montserrat',sans-serif;text-decoration: none !important;color:black!important;">ou créez votre propre entreprise</a>
-                        </>
+                        </div>
                     </div>
                 </div>
             </div>
