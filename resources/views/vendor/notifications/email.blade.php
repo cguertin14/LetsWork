@@ -23,6 +23,30 @@
             visibility: hidden;
             display: none;
         }
+
+        .purplebtn {
+            background-color: #552AD6 !important;
+            color: white;
+            font-size: 17px !important;
+            font-family: 'Montserrat',sans-serif;
+            font-weight: 900 !important;
+        }
+
+        .purplebtn:focus {
+            background-color: #552AD6 !important;
+            color: white !important;
+        }
+
+        .btn {
+            font-size: 17px !important;
+            font-family: 'Montserrat',sans-serif;
+            font-weight: 900 !important;
+        }
+
+        .purplebtn:hover {
+            color: #ffffff !important;
+            background-color:#4200D6 !important;
+        }
     </style>
 @endsection
 
