@@ -13,6 +13,10 @@
         body {
             background-color: white;
         }
+
+        .footer {
+            visibility: hidden;
+        }
     </style>
 @endsection
 
