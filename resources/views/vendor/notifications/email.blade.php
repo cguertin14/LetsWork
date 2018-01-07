@@ -22,7 +22,7 @@
     </style>
 @endsection
 
-@section('content')
+@section('contenu')
     <h1 style="font-weight:700; font-size: 35px; color:#552ad6;font-family: Montserrat,sans-serif">LetsWork</h1>
     <h2 class="title">Bonjour,</h2>
     <div class="col-md-6" >
