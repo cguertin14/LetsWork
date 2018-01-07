@@ -7,6 +7,10 @@
             color: #000000;
         }
 
+        body {
+            background-color: white;
+        }
+
         .message {
             color: #000000;
         }
@@ -32,8 +36,9 @@
             @endforeach
         </p>
 
-        <b><a style="text-decoration: none;margin-bottom: 15px;" class="btn purplebtn" href="{{ $actionUrl }}" >Réinitialiser mon mot de passe.</a></b>
+        <a style="text-decoration: none" class="btn purplebtn" href="{{ $actionUrl }}" >Réinitialiser mon mot de passe.</a>
 
+        <br>
         <p class="message">
             @foreach($outroLines as $lines)
                 {{ $lines }}
