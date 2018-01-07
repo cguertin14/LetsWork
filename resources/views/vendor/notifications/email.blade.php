@@ -14,6 +14,11 @@
         p, span, a {
             font-family: Ubuntu,sans-serif;
         }
+
+        .footer {
+            visibility: hidden;
+            display: none;
+        }
     </style>
 @endsection
 
