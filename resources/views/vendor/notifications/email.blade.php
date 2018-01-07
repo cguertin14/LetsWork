@@ -77,7 +77,7 @@
             @endforeach
         </p>
 
-        <a style="text-decoration: none" class="btn purplebtn" href="{{ $actionUrl }}" >Réinitialiser mon mot de passe.</a>
+        <a style="text-decoration: none" class="btn purplebtn" href="{{ $actionUrl }}" >Réinitialiser mon mot de passe</a>
 
         <br>
         <br>
