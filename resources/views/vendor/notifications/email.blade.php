@@ -15,7 +15,11 @@
         }
 
         .footer {
-            visibility: hidden;
+            background-color: transparent;
+        }
+
+        .footer > .text-center > span {
+            color: black;
         }
     </style>
 @endsection
