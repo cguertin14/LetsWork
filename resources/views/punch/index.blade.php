@@ -34,7 +34,7 @@
             <div class="row layout">
                 @if (count($punches) > 0)
                 <div class="centre custom-container">
-                    <table class="table custom-table"style="margin: 0px !important;">
+                    <table class="table custom-table" style="margin: 0px !important;">
                         <thead>
                         <tr class="section-title">
                             <th>Début <span id="sortDateDebut" v-on:click="sortDateDebut()" class="sort"></span></th>
@@ -79,8 +79,8 @@
         </div>
         @if (count($punches) > 0)
         <div class="col-md-12" id="chart">
-            <div class="row layout">
-                <div class="centre custom-container custom-table" style="padding: 1em;margin-bottom: 2em">
+            <div class="row layout" style="margin-bottom: -40px">
+                <div class="centre custom-container custom-table" style="padding: 1em;margin-bottom: 1em">
                     <div class="text-center">
                         <h2 class="row page-title">Trier par</h2>
                         <br>

@@ -63,7 +63,7 @@ class PunchController extends BaseController
                 $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(10);
             }
         } else {
-            $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->paginate(5);
+            $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->latest()->paginate(5);
             $sesh = [];
         }
         return view("punch.index", compact('punches','sesh'));
@@ -92,7 +92,7 @@ class PunchController extends BaseController
                 $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(8);
             }
         } else {
-            $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->paginate(8);
+            $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->latest()->paginate(8);
             $sesh = [];
         }
         $employees = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()->map(function (Punch $punch) { return $punch->employee; })->unique();

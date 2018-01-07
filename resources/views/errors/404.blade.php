@@ -95,7 +95,7 @@
             <h3>LetsWork</h3>
             <hr>
             <!---728x90--->
-            <h1 class="title">Oups, page introuvable</h1>
+            <h1 class="title" style="font-size: 2.7em;">Oups, page introuvable</h1>
             <p>Il y a beaucoup de raison pourquoi cette page est
                 <span class="error">404</span>.<br>
                 <span>Ne perdez pas trop de temps ici!</span>
