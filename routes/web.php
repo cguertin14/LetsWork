@@ -38,6 +38,10 @@ Route::post('/company/sort', 'CompanyController@sortCompanies')->name('company.s
 Auth::routes();
 Route::post('/login/facebook','FacebookAuthController@login')->name('facebook_login')->middleware('guest');
 
+/* UNAUTHENTICATED PUNCHES ROUTES. */
+Route::post('/punch/clockout', 'PunchController@clockOut')->name('clockOut');
+Route::post('/punch/ipad/{id}', 'PunchController@addIpad');
+
 Route::group(['middleware' => 'auth'], function () use ($resources) {
 	/* Profile Routes */
 	Route::get('/profile/{slug}', 'ProfileController@view')->name('profile.view');
@@ -98,9 +102,8 @@ Route::group(['middleware' => 'auth'], function () use ($resources) {
 	Route::resource('/schedule', 'ScheduleController', $resources);
 
 	/* Punch Routes */
+    Route::post('/punch', 'PunchController@add');
     Route::get('/punch/{id}', 'PunchController@getPunch')->name('getPunch');
-    Route::post('/punch/clockout', 'PunchController@clockOut')->name('clockOut');
-	Route::post('/punch', 'PunchController@add');
 	Route::get('/punches', 'PunchController@index')->name('punch');
     Route::get('/punches/employees', 'PunchController@employees')->name('punch.employees');
 	Route::get('/punches/lastweek/{id}', 'PunchController@lastweek');

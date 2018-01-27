@@ -21,7 +21,7 @@ class PunchController extends BaseController
      */
     public function __construct()
     {
-        $this->middleware('employee');
+        $this->middleware('employee',['except' => ['addIpad','']]);
         $this->middleware('highranked',['only' => [
                 'employees','sortEmployees','lastWeekEmployees','lastMonthEmployees',
                 'lastTwoWeeksEmployees','lastYearEmployees','sortEmployeesByName',
@@ -31,7 +31,7 @@ class PunchController extends BaseController
     }
 
     /**
-     * @return int
+     * @return \Illuminate\Http\JsonResponse
      */
     public function add()
     {
@@ -50,13 +50,37 @@ class PunchController extends BaseController
     }
 
     /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addIpad($id)
+    {
+        $employee = Employee::query()->findOrFail($id);
+        $lastpunch = $employee->punches()->where([['dateend', null], ['company_id', self::CCompany()->id]])->get();
+        if ($lastpunch->count() > 0) {
+            $lastpunch->first()->update(['dateend' => Carbon::now()]);
+            return response()->json(['status' => false]);
+        } else {
+            Punch::query()->create([
+                'datebegin' => Carbon::now(),
+                'employee_id' => $employee->id,
+                'company_id' => $employee->id,
+            ]);
+            return response()->json(['status' => true]);
+        }
+    }
+
+    /**
      * @param ClockOutRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function clockOut(ClockOutRequest $request)
     {
-        Punch::query()->latest()->first()->update(['task' => $request->input('task')]);
-        return response()->json(['status' => 'ok']);
+        if ($punches = Punch::query()->latest()) {
+            $punches->first()->update(['task' => $request->input('task')]);
+            return response()->json(['status' => 'ok']);
+        } else {
+            return response()->json(['error' => 'No punches.'],400);
+        }
     }
 
     /**
