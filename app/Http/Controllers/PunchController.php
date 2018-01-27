@@ -75,11 +75,21 @@ class PunchController extends BaseController
      */
     public function clockOut(ClockOutRequest $request)
     {
-        if ($punches = Punch::query()->latest()->get()) {
-            $punches->first()->update(['task' => $request->input('task')]);
-            return response()->json(['status' => 'ok']);
+        if ($employee = self::CEmployee()) {
+            if ($punches = $employee->punches()->latest()->get()) {
+                $punches->first()->update(['task' => $request->input('task')]);
+                return response()->json(['status' => 'ok']);
+            } else {
+                return response()->json(['error' => 'No punches.'],400);
+            }
         } else {
-            return response()->json(['error' => 'No punches.'],400);
+            $employee = Employee::query()->findOrFail($request->input('employee_id'));
+            if ($punches = $employee->punches->latest()->get()) {
+                $punches->first()->update(['task' => $request->input('task')]);
+                return response()->json(['status' => 'ok']);
+            } else {
+                return response()->json(['error' => 'No punches.'],400);
+            }
         }
     }
 
