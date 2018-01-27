@@ -98,6 +98,8 @@ Route::group(['middleware' => 'auth'], function () use ($resources) {
 	Route::resource('/schedule', 'ScheduleController', $resources);
 
 	/* Punch Routes */
+    Route::get('/punch/{id}', 'PunchController@getPunch')->name('getPunch');
+    Route::post('/punch/clockout', 'PunchController@clockOut')->name('clockOut');
 	Route::post('/punch', 'PunchController@add');
 	Route::get('/punches', 'PunchController@index')->name('punch');
     Route::get('/punches/employees', 'PunchController@employees')->name('punch.employees');

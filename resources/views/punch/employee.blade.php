@@ -26,6 +26,8 @@
 
 @section('content')
     <div id="app">
+        <div class="modal fade" id="getPunchModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
+
         <div class="page-title-header">
             <h1 class="page-title">
                 Périodes de travail de {{$employee->user->fullname}}
@@ -39,7 +41,7 @@
             <div class="row layout">
                 @if (count($punches) > 0)
                     <div class="centre custom-container">
-                        <table class="table custom-table"style="margin: 0px !important;">
+                        <table class="table custom-table" style="margin: 0px !important;">
                             <thead>
                             <tr class="section-title">
                                 <th>Début <span id="sortDateDebut" v-on:click="sortDateDebut()" class="sort"></span></th>
@@ -50,7 +52,7 @@
                             <tbody class="section">
                             @php($i = 0)
                             @foreach($punches as $punch)
-                                <tr style="cursor:default;" class="@if ($i % 2 == 0 ) section-index-2 @else section-index @endif">
+                                <tr class="@if ($i % 2 == 0 ) section-index-2 @else section-index @endif" v-on:click="getPunch({{$punch->id}})">
                                     @php(\Carbon\Carbon::setLocale('fr'))
                                     <td>{{\Carbon\Carbon::parse($punch->datebegin)->toDateTimeString()}}</td>
                                     @if($punch->dateend)
@@ -188,6 +190,20 @@
                             $('#sortDuration').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
                         @endif
                     @endif
+                },
+                getPunch: function($id) {
+                    let modal = $('#getPunchModal');
+                    $.ajax({
+                        method: 'GET',
+                        url: '/punch/' + $id,
+                        success: function (view) {
+                            modal.html(view);
+                            modal.on('hidden.bs.modal', function () {
+                                $(this).empty();
+                            });
+                            modal.modal();
+                        }
+                    })
                 },
                 sortDateDebut: function () {
                     // TODO

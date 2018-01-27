@@ -22,6 +22,7 @@
                 line-height: 60px; /* Vertically center the text there */
                 background-color: #696969;
             }
+
         </style>
         @yield('styles')
         @yield('headerscript')

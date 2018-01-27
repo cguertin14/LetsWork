@@ -85,6 +85,46 @@
     </nav>
 
     @if(\Illuminate\Support\Facades\Auth::check())
+
+        <div class="modal fade" id="clockInModal" tabindex="-1" role="dialog" aria-hidden="true">
+            @component('components.modal')
+                @slot('title')
+                    Confirmation de début de travail
+                @endslot
+                @slot('body')
+                    <p style="color: white;">Êtes vous sûr(e) de vouloir commencer à travailler?</p>
+                @endslot
+                @slot('submitbtn')
+                    <button type="button" id="confirm" class="btn purplebtn letswork" data-dismiss="modal" style="font-size: 17px !important;">Confirmer</button>
+                @endslot
+                @slot('events')
+                @endslot
+            @endcomponent
+        </div>
+
+        <div class="modal fade" id="clockOutModal" tabindex="-1" role="dialog" aria-hidden="true">
+            @component('components.modal')
+                @slot('title')
+                    Confirmation de fin de travail
+                @endslot
+                @slot('body')
+                    {!! Form::open(['method' => 'POST','action' => 'PunchController@clockOut','id' => 'clockOutForm']) !!}
+                        <div class="form-group">
+                            {!! Form::label('task', 'Qu\'avez-vous fait lors de votre période de travail?', ['class' => 'section-title']); !!}
+                            <br>
+                            {!! Form::textarea('task',null,['class' => 'form-control','placeholder' => 'Description de la/les tâche(s) effectuée(s)...','rows' => 3,'required']); !!}
+                        </div>
+                    {!! Form::submit('Submit',['class' => 'btn','style' => 'display:none','id' => 'submit']) !!}
+                    {!! Form::close() !!}
+                @endslot
+                @slot('submitbtn')
+                    <button type="button" id="confirm" class="btn purplebtn letswork clockout" style="font-size: 17px !important;">Confirmer</button>
+                @endslot
+                @slot('events')
+                @endslot
+            @endcomponent
+        </div>
+
         <div id="wrapper">
             <div id="sidebar-wrapper">
                 <div id="mySidenav" class="sidenav">
@@ -208,19 +248,59 @@
 
 @section("scriptsm")
     <script>
+        var cancel = false;
+        $('.closeout').click(function (e) {
+            cancel = true;
+        });
+        $('.letswork').click(function (eve) {
+            eve.preventDefault();
+            cancel = false;
+        });
+        $('.clockout').click(function (e) {
+            let modal = $('#clockOutModal');
+            punch();
+            modal.find('#clockOutForm').submit(function (e) {
+                $.ajax({
+                    method: modal.find('#clockOutForm').attr('method'),
+                    url: modal.find('#clockOutForm').attr('action'),
+                    data: modal.find('#clockOutForm').serialize(),
+                    success: function(data) {
+                        modal.modal('hide');
+                    }
+                });
+                e.preventDefault();
+                return false;
+            });
+            modal.find('#submit').trigger('click');
+        });
+        let punch = function () {
+            if (!cancel) {
+                $.ajax({
+                    url: '/punch',
+                    method: 'POST',
+                    data: { _token: "{{ csrf_token() }}" },
+                    success: function (data) {
+                        if(data.status)
+                            $('#punch').text("{{\App\Tools\Helper::punchMessage(true)}}");
+                        else
+                            $('#punch').text("{{\App\Tools\Helper::punchMessage(false)}}");
+                    }
+                });
+            }
+        };
+        $('#clockInModal').on('hidden.bs.modal', function () {
+            punch();
+        });
+
         $("#punch").click(function () {
             var self = this;
-            $.ajax({
-                url: '/punch',
-                method: 'POST',
-                data: { _token: "{{ csrf_token() }}" },
-                success: function (data) {
-                    if(data == true)
-                        $(self).text("{{\App\Tools\Helper::punchMessage(true)}}");
-                    else
-                        $(self).text("{{\App\Tools\Helper::punchMessage(false)}}");
-                }
-            });
+            if (self.text.trim() === '{{\App\Tools\Helper::punchMessage(false)}}') {
+                 // Open modal to validate either yes or no employee wants to start working
+                $('#clockInModal').modal({backdrop: 'static'});
+            } else {
+                // Open modal to en shift of current employee with description
+                $('#clockOutModal').modal({backdrop: 'static'});
+            }
         })
     </script>
     @yield('scripts')

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\Http\Requests\ClockOutRequest;
 use App\Punch;
 use App\Tools\Collection;
 use App\Tools\Helper;
@@ -36,17 +37,36 @@ class PunchController extends BaseController
     {
         $lastpunch = self::CEmployee()->punches()->where([['dateend', null], ['company_id', self::CCompany()->id]])->get();
         if ($lastpunch->count() > 0) {
-            $lastpunch->first()->dateend = Carbon::now();
-            $lastpunch->first()->update();
-            return 0;
+            $lastpunch->first()->update(['dateend' => Carbon::now()]);
+            return response()->json(['status' => false]);
         } else {
             Punch::query()->create([
                 'datebegin' => Carbon::now(),
                 'employee_id' => self::CEmployee()->id,
                 'company_id' => self::CCompany()->id,
             ]);
-            return 1;
+            return response()->json(['status' => true]);
         }
+    }
+
+    /**
+     * @param ClockOutRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function clockOut(ClockOutRequest $request)
+    {
+        Punch::query()->latest()->first()->update(['task' => $request->input('task')]);
+        return response()->json(['status' => 'ok']);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getPunch($id)
+    {
+        $punch = Punch::query()->findOrFail($id);
+        return view('punch.getpunch',compact('punch'));
     }
 
     /**
