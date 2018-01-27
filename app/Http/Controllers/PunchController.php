@@ -78,9 +78,9 @@ class PunchController extends BaseController
         if (Session::has('sortPunches')) {
             $sesh = session('sortPunches');
             if ($sesh['column'] === 'duration') {
-                $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(10);
+                $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(5);
             } else {
-                $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(10);
+                $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(5);
             }
         } else {
             $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->latest()->paginate(5);
@@ -97,22 +97,22 @@ class PunchController extends BaseController
         if (Session::has('sortPunchesEmployees')) {
             $sesh = session('sortPunchesEmployees');
             if ($sesh['column'] === 'duration') {
-                $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(8);
+                $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(5);
             } else if ($sesh['column'] === 'username') {
                 if ($sesh['order'] == 'ASC') {
                     $punches = (new Collection(self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()))->sortBy(function (Punch $punch) {
                         return $punch->employee->user->fullname;
-                    })->paginate(8);
+                    })->paginate(5);
                 } else {
                     $punches = (new Collection(self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()))->sortByDesc(function (Punch $punch) {
                         return $punch->employee->user->fullname;
-                    })->paginate(8);
+                    })->paginate(5);
                 }
             } else {
-                $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(8);
+                $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(5);
             }
         } else {
-            $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->latest()->paginate(8);
+            $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->latest()->paginate(5);
             $sesh = [];
         }
         $employees = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()->map(function (Punch $punch) { return $punch->employee; })->unique();
@@ -161,12 +161,12 @@ class PunchController extends BaseController
         if (Session::has("sortPunchesEmployee{$employee->id}")) {
             $sesh = session("sortPunchesEmployee{$employee->id}");
             if ($sesh['column'] === 'duration') {
-                $punches = $employee->punches()->where("company_id", self::CCompany()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(10);
+                $punches = $employee->punches()->where("company_id", self::CCompany()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(5);
             } else {
-                $punches = $employee->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(10);
+                $punches = $employee->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(5);
             }
         } else {
-            $punches = $employee->punches()->paginate(8);
+            $punches = $employee->punches()->paginate(5);
             $sesh = [];
         }
         return view('punch.employee',compact('employee','punches','sesh'));
