@@ -21,7 +21,7 @@ class PunchController extends BaseController
      */
     public function __construct()
     {
-        $this->middleware('employee',['except' => ['addIpad','']]);
+        $this->middleware('employee',['except' => ['addIpad','clockOut']]);
         $this->middleware('highranked',['only' => [
                 'employees','sortEmployees','lastWeekEmployees','lastMonthEmployees',
                 'lastTwoWeeksEmployees','lastYearEmployees','sortEmployeesByName',
@@ -75,7 +75,7 @@ class PunchController extends BaseController
      */
     public function clockOut(ClockOutRequest $request)
     {
-        if ($punches = Punch::query()->latest()) {
+        if ($punches = Punch::query()->latest()->get()) {
             $punches->first()->update(['task' => $request->input('task')]);
             return response()->json(['status' => 'ok']);
         } else {
