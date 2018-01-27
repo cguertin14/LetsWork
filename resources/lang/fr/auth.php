@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => 'Ces informations d\'identification ne correspondent pas à nos enregistrements.',
-    'throttle' => 'Limite de tentatives de connexion atteinte. Veuillez réessayer dans :seconds secondes.',
+    'failed'   => 'Ces identifiants ne correspondent pas à nos enregistrements',
+    'throttle' => 'Tentatives de connexion trop nombreuses. Veuillez essayer de nouveau dans :seconds secondes.',
 
 ];

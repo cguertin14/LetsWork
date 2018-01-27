@@ -112,7 +112,7 @@
                         <div class="form-group">
                             {!! Form::label('task', 'Qu\'avez-vous fait lors de votre période de travail?', ['class' => 'section-title']); !!}
                             <br>
-                            {!! Form::textarea('task',null,['class' => 'form-control','placeholder' => 'Description de la/les tâche(s) effectuée(s)...','rows' => 3,'required']); !!}
+                            {!! Form::textarea('task',null,['class' => 'form-control','id' => 'tasktxt','placeholder' => 'Description de la/les tâche(s) effectuée(s)...','rows' => 3,'required']); !!}
                         </div>
                     {!! Form::submit('Submit',['class' => 'btn','style' => 'display:none','id' => 'submit']) !!}
                     {!! Form::close() !!}
@@ -258,20 +258,24 @@
         });
         $('.clockout').click(function (e) {
             let modal = $('#clockOutModal');
-            punch();
-            modal.find('#clockOutForm').submit(function (e) {
-                $.ajax({
-                    method: modal.find('#clockOutForm').attr('method'),
-                    url: modal.find('#clockOutForm').attr('action'),
-                    data: modal.find('#clockOutForm').serialize(),
-                    success: function(data) {
-                        modal.modal('hide');
-                    }
+            if (modal.find('#tasktxt').text().trim() !== '') {
+                punch();
+                modal.find('#clockOutForm').submit(function (e) {
+                    $.ajax({
+                        method: modal.find('#clockOutForm').attr('method'),
+                        url: modal.find('#clockOutForm').attr('action'),
+                        data: modal.find('#clockOutForm').serialize(),
+                        success: function(data) {
+                            modal.modal('hide');
+                        }
+                    });
+                    e.preventDefault();
+                    return false;
                 });
-                e.preventDefault();
-                return false;
-            });
-            modal.find('#submit').trigger('click');
+                modal.find('#submit').trigger('click');
+            } else {
+                modal.find('#submit').trigger('click');
+            }
         });
         let punch = function () {
             if (!cancel) {
