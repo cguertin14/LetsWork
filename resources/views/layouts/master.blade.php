@@ -257,8 +257,9 @@
             cancel = false;
         });
         $('.clockout').click(function (e) {
+            e.preventDefault();
             let modal = $('#clockOutModal');
-            if (modal.find('#tasktxt').text().trim() !== '') {
+            if (modal.find('#tasktxt').val().trim() !== '') {
                 punch();
                 modal.find('#clockOutForm').submit(function (e) {
                     $.ajax({
