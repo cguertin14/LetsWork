@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-/* UNAUTHENTICATED PUNCHES ROUTES. */
-Route::post('/punch/clockout', 'PunchController@clockOut')->name('clockOut');
-Route::post('/punch/ipad/{id}', 'PunchController@addIpad');
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+	return $request->user();
+});
