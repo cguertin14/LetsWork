@@ -38,10 +38,6 @@ Route::post('/company/sort', 'CompanyController@sortCompanies')->name('company.s
 Auth::routes();
 Route::post('/login/facebook','FacebookAuthController@login')->name('facebook_login')->middleware('guest');
 
-/* UNAUTHENTICATED PUNCHES ROUTES. */
-Route::post('/punch/clockout', 'PunchController@clockOut')->name('clockOut');
-Route::post('/punch/ipad/{id}', 'PunchController@addIpad');
-
 Route::group(['middleware' => 'auth'], function () use ($resources) {
 	/* Profile Routes */
 	Route::get('/profile/{slug}', 'ProfileController@view')->name('profile.view');
