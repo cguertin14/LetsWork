@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Session;
+use Validator;
 
 class PunchController extends BaseController
 {
@@ -83,6 +84,10 @@ class PunchController extends BaseController
                 return response()->json(['error' => 'No punches.'],400);
             }
         } else {
+            $validator = Validator::make($request->all(), [ 'employee_id' => 'required|exists:employees,id' ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors());
+            }
             $employee = Employee::query()->findOrFail($request->input('employee_id'));
             if ($punches = $employee->punches->latest()->get()) {
                 $punches->first()->update(['task' => $request->input('task')]);
