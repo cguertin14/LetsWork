@@ -70,14 +70,14 @@ class PunchController extends BaseController
                 return response()->json($validator->errors(),406);
             }
             $lastpunch->first()->update(['dateend' => Carbon::now()]);
-            return response()->json(['clocked_in' => false]);
+            return response()->json(['clocked_in' => false, 'employee_id' => $employee->id]);
         } else {
             Punch::query()->create([
                 'datebegin' => Carbon::now(),
                 'employee_id' => $employee->id,
                 'company_id' => $employee->id,
             ]);
-            return response()->json(['clocked_in' => true]);
+            return response()->json(['clocked_in' => true, 'employee_id' => $employee->id]);
         }
     }
 
