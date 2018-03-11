@@ -51,6 +51,31 @@ class PunchController extends BaseController
     }
 
     /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function validatePunch(Request $request)
+    {
+        $payload = $request->all();
+        $validator = Validator::make($payload, [ 'employee_id' => 'required|exists:employees,id' ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(),406);
+        }
+
+        $employee  = Employee::query()->findOrFail($payload['employee_id']);
+        $company   = $employee->companies()->latest()->first();
+        $lastpunch = $employee->punches()->where([['dateend', null], ['company_id', $company->id]])->get();
+
+        $employee = $employee->setVisible(['id','fullname']);
+        $employee->setAttribute('fullname',$employee->user->fullname);
+
+        return response()->json([
+            'clocked_in' => $lastpunch->count() > 0,
+            'employee'   => $employee
+        ]);
+    }
+
+    /**
      * @param $request Request
      * @return \Illuminate\Http\JsonResponse
      */
