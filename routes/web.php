@@ -40,7 +40,6 @@ Route::post('/login/facebook','FacebookAuthController@login')->name('facebook_lo
 
 /* UNAUTHENTICATED PUNCHES ROUTES. */
 Route::post('/punch/clockout', 'PunchController@clockOut')->name('clockOut');
-Route::post('/punch/ipad/{id}', 'PunchController@addIpad');
 
 Route::group(['middleware' => 'auth'], function () use ($resources) {
 	/* Profile Routes */

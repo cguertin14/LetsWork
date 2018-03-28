@@ -22,7 +22,7 @@ class PunchController extends BaseController
      */
     public function __construct()
     {
-        $this->middleware('employee',['except' => ['addIpad','clockOut']]);
+        $this->middleware('employee',['except' => ['punchIpad','clockOut']]);
         $this->middleware('highranked',['only' => [
                 'employees','sortEmployees','lastWeekEmployees','lastMonthEmployees',
                 'lastTwoWeeksEmployees','lastYearEmployees','sortEmployeesByName',
@@ -51,22 +51,58 @@ class PunchController extends BaseController
     }
 
     /**
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function addIpad($id)
+    public function validatePunch(Request $request)
     {
-        $employee = Employee::query()->findOrFail($id);
-        $lastpunch = $employee->punches()->where([['dateend', null], ['company_id', self::CCompany()->id]])->get();
+        $payload = $request->all();
+        $validator = Validator::make($payload, [ 'employee_id' => 'required|exists:employees,id' ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(),406);
+        }
+
+        $employee  = Employee::query()->findOrFail($payload['employee_id']);
+        $company   = $employee->companies()->latest()->first();
+        $lastpunch = $employee->punches()->where([['dateend', null], ['company_id', $company->id]])->get();
+
+        $employee = $employee->setVisible(['id','fullname']);
+        $employee->setAttribute('fullname',$employee->user->fullname);
+
+        return response()->json([
+            'clocked_in' => $lastpunch->count() > 0,
+            'employee'   => $employee
+        ]);
+    }
+
+    /**
+     * @param $request Request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function punchIpad(Request $request)
+    {
+        $payload = $request->all();
+        $validator = Validator::make($payload, [ 'employee_id' => 'required|exists:employees,id' ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(),406);
+        }
+        $employee = Employee::query()->findOrFail($payload['employee_id']);
+        $company = $employee->companies()->latest()->first();
+        $lastpunch = $employee->punches()->where([['dateend', null], ['company_id', $company->id]])->get();
         if ($lastpunch->count() > 0) {
+            $validator = Validator::make($payload, [ 'description' => 'required' ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(),406);
+            }
             $lastpunch->first()->update(['dateend' => Carbon::now()]);
-            return response()->json(['status' => false]);
+            return response()->json(['clocked_in' => false, 'employee_id' => $employee->id]);
         } else {
             Punch::query()->create([
                 'datebegin' => Carbon::now(),
                 'employee_id' => $employee->id,
                 'company_id' => $employee->id,
             ]);
-            return response()->json(['status' => true]);
+            return response()->json(['clocked_in' => true, 'employee_id' => $employee->id]);
         }
     }
 
@@ -86,7 +122,7 @@ class PunchController extends BaseController
         } else {
             $validator = Validator::make($request->all(), [ 'employee_id' => 'required|exists:employees,id' ]);
             if ($validator->fails()) {
-                return response()->json($validator->errors());
+                return response()->json(['errors' => $validator->errors()],406);
             }
             $employee = Employee::query()->findOrFail($request->input('employee_id'));
             if ($punches = $employee->punches->latest()->get()) {
@@ -350,7 +386,8 @@ class PunchController extends BaseController
                         $this->makeSum($employee,$today,28,8),
                         $this->makeSum($employee,$today,28,9),
                         $this->makeSum($employee,$today,28,10),
-                        $this->makeSum($employee,$today,28,11)],
+                        $this->makeSum($employee,$today,28,11)
+                    ],
                 ]
             ]
         ];
