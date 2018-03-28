@@ -10,7 +10,7 @@
                                 <div class="card">
                                     <img class="profile-image" style="overflow: hidden;border-radius: 50%;margin-top: 1.5em;" src="@if ($employee->user->photo) data:image/png;base64,{{$employee->user->photo->source}} @else {{asset('image/default-profile.png')}} @endif">
                                     <h1 class="fullname" style="overflow: hidden;"><a href="{{route('profile.view',$employee->user->slug)}}" style="text-decoration: none !important; color: inherit">{{$employee->user->fullname}}</a></h1>
-                                    <p style="overflow: hidden;" class="title">{{$employee->specialroles()->get()->first()->name}}</p>
+                                    <p style="overflow: hidden;" class="title">{{($role = $employee->specialroles()->get()->first()) !== null ? $role->name : 'Aucun rôle'}}</p>
                                     <p>{{\App\Tools\Helper::CCompany()->name}}</p>
                                     <a style="overflow: hidden;bottom: 0;position: absolute;left: 0;right: 0;margin-bottom: 1em;margin-right: 2em;margin-left: 2em" href="{{route('punches.employee',$employee->id)}}" class="btn purplebtn">Voir les heures</a>
                                 </div>
