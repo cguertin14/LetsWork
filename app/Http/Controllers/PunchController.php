@@ -64,7 +64,7 @@ class PunchController extends BaseController
 
         $employee  = Employee::query()->findOrFail($payload['employee_id']);
         $company   = $employee->companies()->latest()->first();
-        $lastpunch = $employee->punches()->where([['dateend', null], ['company_id', $company->id]])->get();
+        $lastpunch = $employee->punches()->where('dateend', null)->where('company_id', $company->id)->get();
 
         $employee = $employee->setVisible(['id','fullname']);
         $employee->setAttribute('fullname',$employee->user->fullname);
@@ -88,7 +88,7 @@ class PunchController extends BaseController
         }
         $employee = Employee::query()->findOrFail($payload['employee_id']);
         $company = $employee->companies()->latest()->first();
-        $lastpunch = $employee->punches()->where([['dateend', null], ['company_id', $company->id]])->get();
+        $lastpunch = $employee->punches()->where('dateend', null)->where('company_id', $company->id)->get();
         if ($lastpunch->count() > 0) {
             $validator = Validator::make($payload, [ 'description' => 'required' ]);
             if ($validator->fails()) {
@@ -100,7 +100,7 @@ class PunchController extends BaseController
             Punch::query()->create([
                 'datebegin' => Carbon::now(),
                 'employee_id' => $employee->id,
-                'company_id' => $employee->id,
+                'company_id' => $company->id,
             ]);
             return response()->json(['clocked_in' => true, 'employee_id' => $employee->id]);
         }
