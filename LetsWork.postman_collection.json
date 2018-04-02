@@ -1,0 +1,76 @@
+{
+	"id": "9921a4d5-7451-46d6-bbca-5700523aa5e2",
+	"name": "LetsWork",
+	"description": "",
+	"auth": null,
+	"events": null,
+	"variables": [],
+	"order": [
+		"a32666ce-1b7b-49e9-9152-66cab3ff30d3",
+		"4690f4f4-ad10-42d6-9d06-b73da3261247"
+	],
+	"folders_order": [],
+	"folders": [],
+	"requests": [
+		{
+			"id": "4690f4f4-ad10-42d6-9d06-b73da3261247",
+			"name": "Validate Punch",
+			"url": "letswork.guijethostingtools.com/punch/validate",
+			"description": "Validate a punch with employee id.",
+			"data": [
+				{
+					"key": "employee_id",
+					"value": "10",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "a32666ce-1b7b-49e9-9152-66cab3ff30d3",
+			"name": "Punch Ipad",
+			"url": "letswork.guijethostingtools.com/punch/ipad",
+			"description": "Punch In using the ipad.",
+			"data": [
+				{
+					"key": "employee_id",
+					"value": "10",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\n",
+			"pathVariables": {}
+		}
+	]
+}

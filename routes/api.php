@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::post('/punch/ipad','PunchController@validatePunch');
+Route::post('/punch/validate','PunchController@validatePunch');
 Route::post('/punch/ipad', 'PunchController@punchIpad');
