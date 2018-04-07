@@ -90,11 +90,11 @@ class PunchController extends BaseController
         $company = $employee->companies()->latest()->first();
         $lastpunch = $employee->punches()->where('dateend', null)->where('company_id', $company->id)->get();
         if ($lastpunch->count() > 0) {
-            $validator = Validator::make($payload, [ 'description' => 'required' ]);
+            $validator = Validator::make($payload, [ 'task' => 'required' ]);
             if ($validator->fails()) {
                 return response()->json($validator->errors(),406);
             }
-            $lastpunch->first()->update(['dateend' => Carbon::now(),'description' => $payload['description']]);
+            $lastpunch->first()->update(['dateend' => Carbon::now(),'task' => $payload['task']]);
             return response()->json(['clocked_in' => false, 'employee_id' => $employee->id]);
         } else {
             Punch::query()->create([
