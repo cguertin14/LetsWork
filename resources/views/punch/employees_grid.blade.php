@@ -18,7 +18,7 @@
                         @endforeach
                     </div>
                     @php(++$j)
-                    @if ($j == $employees->chunk(3)->count() - 1)
+                    @if ($j < $employees->chunk(3)->count())
                         <br>
                     @endif
                 @endforeach

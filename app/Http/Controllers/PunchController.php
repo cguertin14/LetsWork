@@ -241,7 +241,7 @@ class PunchController extends BaseController
                 $punches = $employee->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(5);
             }
         } else {
-            $punches = $employee->punches()->paginate(5);
+            $punches = $employee->punches()->latest()->paginate(5);
             $sesh = [];
         }
         return view('punch.employee',compact('employee','punches','sesh'));
