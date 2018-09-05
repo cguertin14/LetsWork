@@ -32,7 +32,7 @@ class FacebookAuthController extends Controller
         $fb = new Facebook([
             'app_id' => '905290879647809',
             'app_secret' => 'f51264b59f17fbcee194452f19cf35ae',
-            'default_graph_version' => 'v2.2'
+            'default_graph_version' => 'v2.12'
         ]);
 
         try {
