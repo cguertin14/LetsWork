@@ -34,7 +34,7 @@
                             @foreach($specialRoles as $specialRole)
                                 <tr class="clickable-section @if ($i % 2 == 0 ) section-index-2 @else section-index @endif" data-href="{{route('specialrole.edit',$specialRole->slug)}}">
                                     <td>{{$specialRole->name}}</td>
-                                    <td>{{$specialRole->description}}</td>
+                                    <td>{!! $specialRole->description !!}</td>
                                     <td>
                                         @foreach($specialRole->roles as $role)
                                             @if($role !== $specialRole->roles->get(count($specialRole->roles->toArray()) - 1))
