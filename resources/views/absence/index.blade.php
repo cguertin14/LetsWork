@@ -45,7 +45,7 @@
                                             <div style="height: auto;vertical-align: middle;margin-top: 20px" class="col-md-12">
                                                 <div class="row" style="padding: 1em">
                                                     <p style="font-size: 1.2em;font-weight:700;color: white">Raison: </p>
-                                                    <p style="font-size: 1.2em;color: white">{{$absence->reason}}</p>
+                                                    <p style="font-size: 1.2em;color: white">{!! $absence->reason !!}</p>
                                                 </div>
                                                 <div class="row" style="padding: 1em">
                                                     @if (\App\Tools\Helper::CIsHighRanked())

@@ -190,8 +190,8 @@ class PunchController extends BaseController
             $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->latest()->paginate(5);
             $sesh = [];
         }
-        $employees = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()->map(function (Punch $punch) { return $punch->employee; })->unique();
-        return view('punch.employees',compact('punches','sesh','employees'));
+        $employees = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()->map(function (Punch $punch) { return $punch->employee; })->filter(function($employee) { return isset($employee); })->unique();
+	return view('punch.employees',compact('punches','sesh','employees'));
     }
 
     /**

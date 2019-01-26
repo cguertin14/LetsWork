@@ -32,7 +32,7 @@
                             @foreach($skills as $skill)
                                 <tr class="clickable-section @if ($i % 2 == 0 ) section-index-2 @else section-index @endif" data-href="{{route('skill.edit',$skill->slug)}}">
                                     <td>{{$skill->name}}</td>
-                                    <td>{{$skill->description}}</td>
+                                    <td>{!! $skill->description !!}</td>
                                 </tr>
                                 @php(++$i)
                             @endforeach
