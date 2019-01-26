@@ -44,11 +44,11 @@
         ],
         "post-install-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "npm i && npm run production"
+            "npm run production"
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "npm i && npm run production"
+            "npm run production"
         ]
     },
     "config": {
