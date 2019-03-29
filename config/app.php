@@ -51,7 +51,7 @@ return [
 		    |
 	*/
 
-	'url' => env('APP_URL', 'http://letswork.test'),
+	'url' => env('APP_URL', 'https://letswork.test'),
 
 	/*
 		    |--------------------------------------------------------------------------

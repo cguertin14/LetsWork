@@ -9,6 +9,7 @@ use App\Http\Middleware\CheckHighRanked;
 use App\Http\Middleware\CheckManager;
 use App\Http\Middleware\Confirmation;
 use App\Http\Middleware\ConnectedUserOnly;
+use App\Http\Middleware\HttpsMiddleware;
 use App\Http\Middleware\ProfileMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
