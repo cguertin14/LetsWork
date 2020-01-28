@@ -26,6 +26,8 @@
 
 @section('content')
     <div id="app">
+        <div class="modal fade" id="getPunchModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
+
         <div class="page-title-header">
             <h1 class="page-title">Mes périodes de travail</h1>
             <hr class="separator">
@@ -34,7 +36,7 @@
             <div class="row layout">
                 @if (count($punches) > 0)
                 <div class="centre custom-container">
-                    <table class="table custom-table"style="margin: 0px !important;">
+                    <table class="table custom-table" style="margin: 0px !important;">
                         <thead>
                         <tr class="section-title">
                             <th>Début <span id="sortDateDebut" v-on:click="sortDateDebut()" class="sort"></span></th>
@@ -45,12 +47,13 @@
                         <tbody class="section">
                         @php($i = 0)
                         @foreach($punches as $punch)
-                            <tr style="cursor:default;" class="@if ($i % 2 == 0 ) section-index-2 @else section-index @endif">
+                            <tr class="@if ($i % 2 == 0 ) section-index-2 @else section-index @endif" v-on:click="getPunch({{$punch->id}})">
                                 @php(\Carbon\Carbon::setLocale('fr'))
                                 <td>{{\Carbon\Carbon::parse($punch->datebegin)->toDateTimeString()}}</td>
                                 @if($punch->dateend)
                                     <td>{{\Carbon\Carbon::parse($punch->dateend)->toDateTimeString()}}</td>
-                                    <td>{{\Carbon\Carbon::parse($punch->dateend)->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)}}</td>
+                                    <td>{{round(\Carbon\Carbon::parse($punch->dateend)->diffInMinutes(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin)) / 60,2)}} heure(s)</td>
+                                    {{--->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$punch->datebegin),true)--}}
                                 @else
                                     <td>Période de travail non terminée</td>
                                     <td>Période de travail non terminée</td>
@@ -78,8 +81,8 @@
         </div>
         @if (count($punches) > 0)
         <div class="col-md-12" id="chart">
-            <div class="row layout">
-                <div class="centre custom-container custom-table" style="padding: 1em;margin-bottom: 2em">
+            <div class="row layout" style="margin-bottom: -40px">
+                <div class="centre custom-container custom-table" style="padding: 1em;margin-bottom: 1em">
                     <div class="text-center">
                         <h2 class="row page-title">Trier par</h2>
                         <br>
@@ -109,39 +112,39 @@
             template: '<canvas id="chartid" v-cloak></canvas>',
             methods: {
                 load: function () {
-                    $('#chartid').html($('<canvas id="chartid" v-cloak></canvas>'));
-                    var ctx = document.getElementById('chartid').getContext('2d');
-                    var chart = new Chart(ctx, {
-                        // The type of chart we want to create
-                        type: 'bar',
+                    $('#chartid').replaceWith('<canvas id="chartid" v-cloak></canvas>');
+                    let ctx = document.getElementById('chartid').getContext('2d');
+                    new Chart(ctx, {
+                            // The type of chart we want to create
+                            type: 'bar',
 
-                        // The data for our dataset
-                        data: this.chartdata,
+                            // The data for our dataset
+                            data: this.chartdata,
 
-                        // Configuration options go here
-                        options: {
-                            responsive: true,
-                            legend: {
-                                position: 'top',
-                            },
-                            title:{
-                                display:true,
-                                text: 'Mes heures travaillées'
-                            },
-                            scales: {
-                                yAxes: [
-                                    {
-                                        ticks: {
-                                            // Include a h sign in the ticks
-                                            callback: function (value, index, values) {
-                                                return value.toFixed(2) + 'h';
+                            // Configuration options go here
+                            options: {
+                                responsive: true,
+                                legend: {
+                                    position: 'top',
+                                },
+                                title:{
+                                    display: true,
+                                    text: 'Mes heures travaillées'
+                                },
+                                scales: {
+                                    yAxes: [
+                                        {
+                                            ticks: {
+                                                // Include a h sign in the ticks
+                                                callback: function (value, index, values) {
+                                                    return value.toFixed(2) + 'h';
+                                                }
                                             }
                                         }
-                                    }
-                                ]
+                                    ]
+                                }
                             }
-                        }
-                    });
+                        });
                 }
             },
             watch: {
@@ -149,7 +152,7 @@
                     this.chartdata = newVal;
                     this.load();
                     if (this.isRecreated)
-                        $("html, body").animate({ scrollTop: $("#chart").offset().top - 65 }, 1000);
+                        $("html, body").animate({ scrollTop: $("#chart").offset().top - 65 }, 300);
                     this.isRecreated = true;
                 }
             },
@@ -179,6 +182,20 @@
                             $('#sortDuration').css('background-image',order === 'ASC' ? this.sortUp : this.sortDown);
                         @endif
                     @endif
+                },
+                getPunch: function($id) {
+                    let modal = $('#getPunchModal');
+                    $.ajax({
+                        method: 'GET',
+                        url: '/punch/' + $id,
+                        success: function (view) {
+                            modal.html(view);
+                            modal.on('hidden.bs.modal', function () {
+                                $(this).empty();
+                            });
+                            modal.modal();
+                        }
+                    })
                 },
                 sortDateDebut: function () {
                     // TODO

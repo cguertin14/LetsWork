@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\Http\Requests\ClockOutRequest;
 use App\Punch;
 use App\Tools\Collection;
 use App\Tools\Helper;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Session;
+use Validator;
 
 class PunchController extends BaseController
 {
@@ -20,7 +22,7 @@ class PunchController extends BaseController
      */
     public function __construct()
     {
-        $this->middleware('employee');
+        $this->middleware('employee',['except' => ['punchIpad','clockOut','validatePunch']]);
         $this->middleware('highranked',['only' => [
                 'employees','sortEmployees','lastWeekEmployees','lastMonthEmployees',
                 'lastTwoWeeksEmployees','lastYearEmployees','sortEmployeesByName',
@@ -30,25 +32,116 @@ class PunchController extends BaseController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function add()
     {
         $lastpunch = self::CEmployee()->punches()->where([['dateend', null], ['company_id', self::CCompany()->id]])->get();
         if ($lastpunch->count() > 0) {
-            $lastpunch->first()->dateend = Carbon::now();
-            $lastpunch->first()->update();
-            return 0;
+            $lastpunch->first()->update(['dateend' => Carbon::now()]);
+            return response()->json(['status' => false]);
         } else {
-            Punch::create([
-                "datebegin" => Carbon::now(),
-                "employee_id" => self::CEmployee()->id,
-                "company_id" => self::CCompany()->id,
+            Punch::query()->create([
+                'datebegin' => Carbon::now(),
+                'employee_id' => self::CEmployee()->id,
+                'company_id' => self::CCompany()->id,
             ]);
-            return 1;
+            return response()->json(['status' => true]);
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function validatePunch(Request $request)
+    {
+        $payload = $request->all();
+        $validator = Validator::make($payload, [ 'employee_id' => 'required|exists:employees,id' ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(),406);
+        }
+
+        $employee  = Employee::query()->findOrFail($payload['employee_id']);
+        $company   = $employee->companies()->latest()->first();
+        $lastpunch = $employee->punches()->where('dateend', null)->where('company_id', $company->id)->get();
+
+        $employee = $employee->setVisible(['id','fullname']);
+        $employee->setAttribute('fullname',$employee->user->fullname);
+
+        return response()->json([
+            'clocked_in' => $lastpunch->count() > 0,
+            'employee'   => $employee
+        ]);
+    }
+
+    /**
+     * @param $request Request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function punchIpad(Request $request)
+    {
+        $payload = $request->all();
+        $validator = Validator::make($payload, [ 'employee_id' => 'required|exists:employees,id' ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(),406);
+        }
+        $employee = Employee::query()->findOrFail($payload['employee_id']);
+        $company = $employee->companies()->latest()->first();
+        $lastpunch = $employee->punches()->where('dateend', null)->where('company_id', $company->id)->get();
+        if ($lastpunch->count() > 0) {
+            $validator = Validator::make($payload, [ 'task' => 'required' ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(),406);
+            }
+            $lastpunch->first()->update(['dateend' => Carbon::now(),'task' => $payload['task']]);
+            return response()->json(['clocked_in' => false, 'employee_id' => $employee->id]);
+        } else {
+            Punch::query()->create([
+                'datebegin' => Carbon::now(),
+                'employee_id' => $employee->id,
+                'company_id' => $company->id,
+            ]);
+            return response()->json(['clocked_in' => true, 'employee_id' => $employee->id]);
+        }
+    }
+
+    /**
+     * @param ClockOutRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function clockOut(ClockOutRequest $request)
+    {
+        if ($employee = self::CEmployee()) {
+            if ($punches = $employee->punches()->latest()->get()) {
+                $punches->first()->update(['task' => $request->input('task')]);
+                return response()->json(['status' => 'ok']);
+            } else {
+                return response()->json(['error' => 'No punches.'],400);
+            }
+        } else {
+            $validator = Validator::make($request->all(), [ 'employee_id' => 'required|exists:employees,id' ]);
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()],406);
+            }
+            $employee = Employee::query()->findOrFail($request->input('employee_id'));
+            if ($punches = $employee->punches->latest()->get()) {
+                $punches->first()->update(['task' => $request->input('task')]);
+                return response()->json(['status' => 'ok']);
+            } else {
+                return response()->json(['error' => 'No punches.'],400);
+            }
+        }
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getPunch($id)
+    {
+        $punch = Punch::query()->findOrFail($id);
+        return view('punch.getpunch',compact('punch'));
     }
 
     /**
@@ -60,12 +153,12 @@ class PunchController extends BaseController
         if (Session::has('sortPunches')) {
             $sesh = session('sortPunches');
             if ($sesh['column'] === 'duration') {
-                $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(10);
+                $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(5);
             } else {
-                $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(10);
+                $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(5);
             }
         } else {
-            $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->paginate(5);
+            $punches = self::CEmployee()->punches()->where("company_id", self::CCompany()->id)->latest()->paginate(5);
             $sesh = [];
         }
         return view("punch.index", compact('punches','sesh'));
@@ -79,26 +172,26 @@ class PunchController extends BaseController
         if (Session::has('sortPunchesEmployees')) {
             $sesh = session('sortPunchesEmployees');
             if ($sesh['column'] === 'duration') {
-                $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(8);
+                $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(5);
             } else if ($sesh['column'] === 'username') {
                 if ($sesh['order'] == 'ASC') {
                     $punches = (new Collection(self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()))->sortBy(function (Punch $punch) {
                         return $punch->employee->user->fullname;
-                    })->paginate(8);
+                    })->paginate(5);
                 } else {
                     $punches = (new Collection(self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()))->sortByDesc(function (Punch $punch) {
                         return $punch->employee->user->fullname;
-                    })->paginate(8);
+                    })->paginate(5);
                 }
             } else {
-                $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(8);
+                $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(5);
             }
         } else {
-            $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->paginate(8);
+            $punches = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->latest()->paginate(5);
             $sesh = [];
         }
-        $employees = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()->map(function (Punch $punch) { return $punch->employee; })->unique();
-        return view('punch.employees',compact('punches','sesh','employees'));
+        $employees = self::CCompany()->punches()->where('employee_id','<>',self::CEmployee()->id)->get()->map(function (Punch $punch) { return $punch->employee; })->filter(function($employee) { return isset($employee); })->unique();
+	return view('punch.employees',compact('punches','sesh','employees'));
     }
 
     /**
@@ -143,12 +236,12 @@ class PunchController extends BaseController
         if (Session::has("sortPunchesEmployee{$employee->id}")) {
             $sesh = session("sortPunchesEmployee{$employee->id}");
             if ($sesh['column'] === 'duration') {
-                $punches = $employee->punches()->where("company_id", self::CCompany()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(10);
+                $punches = $employee->punches()->where("company_id", self::CCompany()->id)->orderByRaw('(dateend - datebegin) ' . $sesh['order'])->paginate(5);
             } else {
-                $punches = $employee->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(10);
+                $punches = $employee->punches()->where("company_id", self::CCompany()->id)->orderBy($sesh['column'], $sesh['order'])->paginate(5);
             }
         } else {
-            $punches = $employee->punches()->paginate(8);
+            $punches = $employee->punches()->latest()->paginate(5);
             $sesh = [];
         }
         return view('punch.employee',compact('employee','punches','sesh'));
@@ -201,6 +294,7 @@ class PunchController extends BaseController
     }
 
     /**
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function lastweek($id)
@@ -210,7 +304,7 @@ class PunchController extends BaseController
             "labels" => $this->getlastweek(Carbon::today()),
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées par {$employee->user->fullname} cette semaine",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce jour-là",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => $this->getLastWeekSum(Carbon::today(),$employee),
@@ -230,7 +324,7 @@ class PunchController extends BaseController
             "labels" => $this->getLastTwoWeeks(Carbon::today()),
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées par {$employee->user->fullname} au cours des 2 dernières semaines",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce jour-là",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => $this->getLastTwoWeeksSum(Carbon::today(),$employee),
@@ -251,7 +345,7 @@ class PunchController extends BaseController
             "labels" => ["1ère semaine", "2ième semaine", "3ième semaine", "4ième semaine"],
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce mois-ci",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} cette semaine-là",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => [
@@ -277,7 +371,7 @@ class PunchController extends BaseController
             "labels" => $this->getlastyearmonth(Carbon::today()),
             "datasets" => [
                 [
-                    "label" => "La somme des heures travaillées par {$employee->user->fullname} cette année",
+                    "label" => "La somme des heures travaillées par {$employee->user->fullname} ce mois-là",
                     "backgroundColor" => '#552AD6',
                     "borderColor" => '#552AD6',
                     "data" => [
@@ -292,7 +386,8 @@ class PunchController extends BaseController
                         $this->makeSum($employee,$today,28,8),
                         $this->makeSum($employee,$today,28,9),
                         $this->makeSum($employee,$today,28,10),
-                        $this->makeSum($employee,$today,28,11)],
+                        $this->makeSum($employee,$today,28,11)
+                    ],
                 ]
             ]
         ];

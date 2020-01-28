@@ -11,6 +11,7 @@ use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Config;
 
 class CompanyController extends BaseController {
     /**
@@ -95,6 +96,7 @@ class CompanyController extends BaseController {
 			$data['photo'] = $request->session()->get('CompanyPhoto');
 		}
 
+		$data['pays'] = Config::get('countries')[$data['pays']];
 		$company = Company::create($data);
         session(['CurrentCompany' => $company]);
 
@@ -170,22 +172,22 @@ class CompanyController extends BaseController {
 		return view('company.edit2', compact(['data', 'companyTypes']));
 	}
 
+    /**
+     * @param Request $request
+     */
 	public function uploadphoto(Request $request) {
-		$file = $request->file('file');
 		// Encode image to base64
-		$filedata = file_get_contents($file);
-		session(['CompanyPhoto' => base64_encode($filedata)]);
+		session(['CompanyPhoto' => base64_encode(file_get_contents($request->file('file')))]);
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request $request
-	 * @param  int $id
-	 * @return \Illuminate\Http\Response
-	 */
+    /**
+     * @param ModifyCompanyRequest $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     */
 	public function update(ModifyCompanyRequest $request, $id) {
 		$data = $request->all();
+        $data['pays'] = Config::get('countries')[$data['pays']];
 		if ($data['user_id'] != Auth::id()) {
 			return redirect()->back();
 		}
@@ -213,6 +215,10 @@ class CompanyController extends BaseController {
 		return redirect()->action("CompanyController@index");
 	}
 
+    /**
+     * @param $slug
+     * @return \Illuminate\Http\RedirectResponse
+     */
 	public function select($slug) {
 		$company = Company::findBySlugOrFail($slug);
 		session(['CurrentCompany' => $company]);

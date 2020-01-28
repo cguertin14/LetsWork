@@ -23,7 +23,7 @@
 
     <div class="col-md-12">
         <div class="row layout">
-            @if (count($jobOffers) > 0)
+            @if ($jobOffers->count() > 0)
             <div class="centre custom-container">
                 <table id="headerTable" class="table custom-table" style="margin: 0px !important;">
                     <thead>

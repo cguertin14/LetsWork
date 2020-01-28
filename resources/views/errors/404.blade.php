@@ -95,7 +95,7 @@
             <h3>LetsWork</h3>
             <hr>
             <!---728x90--->
-            <h1 class="title">Oups, page introuvable</h1>
+            <h1 class="title" style="font-size: 2.7em;">Oups, page introuvable</h1>
             <p>Il y a beaucoup de raison pourquoi cette page est
                 <span class="error">404</span>.<br>
                 <span>Ne perdez pas trop de temps ici!</span>
@@ -119,31 +119,31 @@
                 if (window.matchMedia('(max-width: 767px)').matches) {
                     $('.wrap')[0].style.setProperty('width','600px','important');
                     $('.title').css({
-                        fontSize: '4em'
+                        fontSize: '2.7em'
                     });
                     matches = true;
                 } if (window.matchMedia('(max-width: 1060px)').matches) {
                     $('.wrap')[0].style.setProperty('width','800px','important');
                     $('.title').css({
-                        fontSize: '4em'
+                        fontSize: '2.7em'
                     });
                     matches = true;
                 } if (window.matchMedia('(max-width: 820px)').matches) {
                     $('.wrap')[0].style.setProperty('width','600px','important');
                     $('.title').css({
-                        fontSize: '4em'
+                        fontSize: '2.7em'
                     });
                     matches = true;
                 } if (window.matchMedia('(max-width: 750px)').matches) {
                     $('.wrap')[0].style.setProperty('width','500px','important');
                     $('.title').css({
-                        fontSize: '4em'
+                        fontSize: '2.7em'
                     });
                     matches = true;
                 } if (window.matchMedia('(max-width: 667px)').matches) {
                     $('.wrap')[0].style.setProperty('width','350px','important');
                     $('.title').css({
-                        fontSize: '3.2em'
+                        fontSize: '2.7em'
                     });
                     matches = true;
                 }

@@ -43,7 +43,7 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         $request->session()->save(); //ligne qui a pris 3 heures a trouver...
-        Helper::setLogedRedisUsers();
+        //Helper::setLogedRedisUsers();
     }
 
     public function logout(Request $request)
@@ -52,7 +52,7 @@ class LoginController extends Controller
 
         $request->session()->invalidate();
 
-        Helper::setLogedRedisUsers();
+        //Helper::setLogedRedisUsers();
 
         return redirect('/');
     }

@@ -3,6 +3,11 @@
         color: #ffffff;
         font-size: 1.5em;
         display: inline-block;
+        font-family: Montserrat,sans-serif;
+    }
+    .modal-body {
+        font-family: Ubuntu,sans-serif;
+        font-size: 1.2em;
     }
     .close {
         float: right;
@@ -37,7 +42,7 @@
             <div class="modal-footer">
                 <!-- Bouton submit pour confirmer le modal -->
                 {{$submitbtn}}
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 17px !important;">Fermer</button>
+                <button id="cancel" type="button" class="btn btn-secondary closeout" data-dismiss="modal" style="font-size: 17px !important;">Fermer</button>
             </div>
         </div>
     </div>

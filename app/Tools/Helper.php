@@ -36,11 +36,13 @@ trait Helper
     }
 
     /**
-     * @return Employee
+     * @return Employee|null
      */
     public static function CEmployee()
     {
-        return self::CCompany()->employees()->where('user_id', Auth::user()->id)->first();
+        if ($company = self::CCompany()) {
+            return self::CCompany()->employees()->where('user_id', Auth::user()->id)->first();
+        } else return null;
     }
 
     public static function verifyEmployeeStatus()

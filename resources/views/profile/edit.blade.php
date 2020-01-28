@@ -5,10 +5,10 @@
         body {
             background-color: #5d5d5d;
         }
-        .dropzone {
-            background-color: #c9c9c9 !important;
-        }
         .employee > p {
+            font-family: 'Montserrat',sans-serif;
+        }
+        .information > .row > .col-md-6 > p, .information > .row > .col-md-6 > label, .information > p {
             font-family: 'Montserrat',sans-serif;
         }
         .form-group > label {
@@ -20,7 +20,7 @@
 @section('content')
     <div class="row" style="padding: 5em;margin-top: 5em">
         <div class="col-md-4">
-            <img id="image" width="440px" height="580px" src="{{asset('image/default-profile.png')}}" style="border-radius: 5%; border: 0.8em solid #b9b9b9;cursor: pointer;">
+            <img id="image" src="{{asset('image/default-profile.png')}}" style="border-radius: 5%; border: 0.8em solid #b9b9b9;cursor: pointer;width: auto;height: auto;max-height: 440px; max-width: 500px">
             <div style="display: none">
                 {!! Form::open(['method' => 'PATCH', 'action' => 'ProfileController@uploadphoto', 'class' => 'dropzone','id' => 'files']) !!}
                 <div class="text-center">
@@ -41,7 +41,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="">Compagnie</label>
-                        <p>{{ \App\Tools\Helper::CCompany() ? \App\Tools\Helper::CCompany()->name : 'Aucun emploi' }}</p>
+                        <p>{{ $user->employees()->first() ? $user->employees()->first()->specialroles()->first()->company->name : 'Aucun emploi' }}</p>
                     </div>
                     <div class="col-md-6">
                         <label for="">Poste</label>
@@ -96,10 +96,6 @@
                 @endif
                 <div class="form-group">
                     {!! Form::submit('Modifier le profil', ['class' => 'btn purplebtn pull-left']) !!}
-                    {!! Form::close() !!}
-
-                    {!! Form::open(['method' => 'DELETE','action' => ['ProfileController@deleteuser',$user->slug]]) !!}
-                    {!! Form::submit('Supprimer le profil', ['class' => 'btn btn-danger pull-right confirm_action','c_m_text' => 'Voulez-vous vraiment supprimer votre profil?', 'style' => 'font-size: 17px !important;']) !!}
                     {!! Form::close() !!}
                 </div>
             </div>

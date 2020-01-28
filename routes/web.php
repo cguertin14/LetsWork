@@ -21,8 +21,8 @@ $resources = ['only' => ['create', 'edit', 'destroy', 'store', 'update', 'index'
 /* Basic Routes */
 Route::get('/', 'OtherController@homepage')->name('homepage.content');
 Route::get('/aboutus', 'OtherController@aboutus')->name('information.aboutus');
-Route::get('/userguide', 'OtherController@userguide')->name('information.userguide');
-Route::get('/termsofservice', 'OtherController@termsofservice')->name('information.termsofservice');
+//Route::get('/userguide', 'OtherController@userguide')->name('information.userguide');
+//Route::get('/termsofservice', 'OtherController@termsofservice')->name('information.termsofservice');
 
 /* JobOffer Routes */
 Route::resource('/joboffer', 'JobOfferController');
@@ -37,6 +37,9 @@ Route::post('/company/sort', 'CompanyController@sortCompanies')->name('company.s
 /* Auth Routes */
 Auth::routes();
 Route::post('/login/facebook','FacebookAuthController@login')->name('facebook_login')->middleware('guest');
+
+/* UNAUTHENTICATED PUNCHES ROUTES. */
+Route::post('/punch/clockout', 'PunchController@clockOut')->name('clockOut');
 
 Route::group(['middleware' => 'auth'], function () use ($resources) {
 	/* Profile Routes */
@@ -98,7 +101,8 @@ Route::group(['middleware' => 'auth'], function () use ($resources) {
 	Route::resource('/schedule', 'ScheduleController', $resources);
 
 	/* Punch Routes */
-	Route::post('/punch', 'PunchController@add');
+    Route::post('/punch', 'PunchController@add');
+    Route::get('/punch/{id}', 'PunchController@getPunch')->name('getPunch');
 	Route::get('/punches', 'PunchController@index')->name('punch');
     Route::get('/punches/employees', 'PunchController@employees')->name('punch.employees');
 	Route::get('/punches/lastweek/{id}', 'PunchController@lastweek');
@@ -117,9 +121,9 @@ Route::group(['middleware' => 'auth'], function () use ($resources) {
 	Route::get('/isauthmanager', 'OtherController@userIsManager')->middleware('employee');
 
 	/* Chat Routes*/
-	Route::get('/chat', 'ChatController@index')->name('chat');
-	Route::post('/savemessages', 'ChatController@save');
-	Route::get('/lastmessages', 'ChatController@last');
+	//Route::get('/chat', 'ChatController@index')->name('chat');
+	//Route::post('/savemessages', 'ChatController@save');
+	//Route::get('/lastmessages', 'ChatController@last');
 
 	/* Employee Routes */
 	Route::get('/employees/names','EmployeeController@employeesNames')->name('employees.names');

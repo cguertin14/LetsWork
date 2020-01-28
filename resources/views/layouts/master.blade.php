@@ -11,7 +11,7 @@
 @section('contenu')
     <nav class="navbar navbar-default navbar-theme navbar-fixed-top navbar-toggleable-md bg-faded" style="margin-bottom: 0">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarNavDropdown">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only" style="border-color: white">Toggle navigation</span>
                 <span class="icon-bar" style="background-color: white; border-color: white"></span>
                 <span class="icon-bar" style="background-color: white; border-color: white"></span>
@@ -26,9 +26,9 @@
             <div class="navbar-right" style="margin-right: 20px">
                 @if(Auth::check() && Session::has('CurrentCompany'))
                     <ul class="nav navbar-nav" style="margin-right: 10px">
-                        @if (\App\Tools\Helper::CIsEmployee())
-                        <li><a href="{{route('chat')}}" style="color: white"><span class="fa fa-comments" aria-hidden="true" style="color: white"></span> Messagerie</a></li>
-                        @endif
+                        {{--@if (\App\Tools\Helper::CIsEmployee())--}}
+                        {{--<li><a href="{{route('chat')}}" style="color: white"><span class="fa fa-comments" aria-hidden="true" style="color: white"></span> Messagerie</a></li>--}}
+                        {{--@endif--}}
                         <li><a href="{{route('information.aboutus')}}" style="color: white"><span class="glyphicon glyphicon-question-sign" style="color: white"></span> À Propos</a></li>
                         <li>
                             <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-expanded="false" style="color: white"><span class="fa fa-globe" style="color: white"></span> Mon travail</a>
@@ -85,6 +85,46 @@
     </nav>
 
     @if(\Illuminate\Support\Facades\Auth::check())
+
+        <div class="modal fade" id="clockInModal" tabindex="-1" role="dialog" aria-hidden="true">
+            @component('components.modal')
+                @slot('title')
+                    Confirmation de début de travail
+                @endslot
+                @slot('body')
+                    <p style="color: white;">Êtes vous sûr(e) de vouloir commencer à travailler?</p>
+                @endslot
+                @slot('submitbtn')
+                    <button type="button" id="confirm" class="btn purplebtn letswork" data-dismiss="modal" style="font-size: 17px !important;">Confirmer</button>
+                @endslot
+                @slot('events')
+                @endslot
+            @endcomponent
+        </div>
+
+        <div class="modal fade" id="clockOutModal" tabindex="-1" role="dialog" aria-hidden="true">
+            @component('components.modal')
+                @slot('title')
+                    Confirmation de fin de travail
+                @endslot
+                @slot('body')
+                    {!! Form::open(['method' => 'POST','action' => 'PunchController@clockOut','id' => 'clockOutForm']) !!}
+                        <div class="form-group">
+                            {!! Form::label('task', 'Qu\'avez-vous fait lors de votre période de travail?', ['class' => 'section-title']); !!}
+                            <br>
+                            {!! Form::textarea('task',null,['class' => 'form-control','id' => 'tasktxt','placeholder' => 'Description de la/les tâche(s) effectuée(s)...','rows' => 3,'required']); !!}
+                        </div>
+                    {!! Form::submit('Submit',['class' => 'btn','style' => 'display:none','id' => 'submit']) !!}
+                    {!! Form::close() !!}
+                @endslot
+                @slot('submitbtn')
+                    <button type="button" id="confirm" class="btn purplebtn letswork clockout" style="font-size: 17px !important;">Confirmer</button>
+                @endslot
+                @slot('events')
+                @endslot
+            @endcomponent
+        </div>
+
         <div id="wrapper">
             <div id="sidebar-wrapper">
                 <div id="mySidenav" class="sidenav">
@@ -107,12 +147,18 @@
                                 @endif
                             </ul>
                         </li>
-                        @if(count(Illuminate\Support\Facades\Auth::user()->companies()->get()) > 1)
+                        @php
+                            $jobs = \Illuminate\Support\Facades\Auth::user()->employees()->get()->map(function (\App\Employee $employee) { return $employee->companies()->get()->unique(); })->first();
+                            if ($jobs != null) $jobs = $jobs->merge(\Illuminate\Support\Facades\Auth::user()->companies()->get())->unique();
+                        @endphp
+                        @if($jobs != null && $jobs->count() > 1)
                         <li>
                             <a id="dropdown2Title" href="#">@if (!Session::has('CurrentCompany')) Choisir un emploi @else Changer d'emploi @endif<span id="img2" class="glyphicon glyphicon-chevron-down pull-right" style="margin-top: .2em"></span></a>
                             <ul id="dropdown2" style="list-style-type: none;height: 0px;transition: height 0.5s;overflow: hidden;">
-                                @foreach(\Illuminate\Support\Facades\Auth::user()->companies()->get() as $company)
-                                    <li onclick="selectCompany('{{$company->slug}}')"><a href="#">@if(strlen($company->name) > 15){{ substr($company->name,0,15) . '..'}} @else{{$company->name}} @endif</a></li>
+                                @foreach($jobs as $company)
+                                    @if ($company->slug !== \App\Tools\Helper::CCompany()->slug)
+                                        <li onclick="selectCompany('{{$company->slug}}')"><a href="#">@if(strlen($company->name) > 15){{ substr($company->name,0,15) . '..'}} @else{{$company->name}} @endif</a></li>
+                                    @endif
                                 @endforeach
                             </ul>
                         </li>
@@ -176,7 +222,7 @@
                         <li><a href="{{route('information.aboutus')}}">À Propos</a></li>
                         <li style="bottom: 0;position: fixed;background-color: rgba(255, 255, 255, 0.04);line-height: 60px;width: 300px;">
                             <div class="text-center">
-                                <span style="color: white;font-family: Ubuntu,sans-serif;font-weight: 500">© Confidentialité | LetsWork 2017</span>
+                                <span style="color: white;font-family: Ubuntu,sans-serif;font-weight: 500">Confidentialité | © LetsWork 2018</span>
                             </div>
                         </li>
                     </ul>
@@ -202,19 +248,64 @@
 
 @section("scriptsm")
     <script>
+        var cancel = false;
+        $('.closeout').click(function (e) {
+            cancel = true;
+        });
+        $('.letswork').click(function (eve) {
+            eve.preventDefault();
+            cancel = false;
+        });
+        $('.clockout').click(function (e) {
+            e.preventDefault();
+            let modal = $('#clockOutModal');
+            if (modal.find('#tasktxt').val().trim() !== '') {
+                punch();
+                modal.find('#clockOutForm').submit(function (e) {
+                    $.ajax({
+                        method: modal.find('#clockOutForm').attr('method'),
+                        url: modal.find('#clockOutForm').attr('action'),
+                        data: modal.find('#clockOutForm').serialize(),
+                        success: function(data) {
+                            modal.modal('hide');
+                        }
+                    });
+                    e.preventDefault();
+                    return false;
+                });
+                modal.find('#submit').trigger('click');
+            } else {
+                modal.find('#submit').trigger('click');
+            }
+        });
+        let punch = function () {
+            if (!cancel) {
+                $.ajax({
+                    url: '/punch',
+                    method: 'POST',
+                    data: { _token: "{{ csrf_token() }}" },
+                    success: function (data) {
+                        if(data.status)
+                            $('#punch').text("{{\App\Tools\Helper::punchMessage(true)}}");
+                        else
+                            $('#punch').text("{{\App\Tools\Helper::punchMessage(false)}}");
+                    }
+                });
+            }
+        };
+        $('#clockInModal').on('hidden.bs.modal', function () {
+            punch();
+        });
+
         $("#punch").click(function () {
             var self = this;
-            $.ajax({
-                url: '/punch',
-                method: 'POST',
-                data: { _token: "{{ csrf_token() }}" },
-                success: function (data) {
-                    if(data == true)
-                        $(self).text("{{\App\Tools\Helper::punchMessage(true)}}");
-                    else
-                        $(self).text("{{\App\Tools\Helper::punchMessage(false)}}");
-                }
-            });
+            if (self.text.trim() === '{{\App\Tools\Helper::punchMessage(false)}}') {
+                 // Open modal to validate either yes or no employee wants to start working
+                $('#clockInModal').modal({backdrop: 'static'});
+            } else {
+                // Open modal to en shift of current employee with description
+                $('#clockOutModal').modal({backdrop: 'static'});
+            }
         })
     </script>
     @yield('scripts')

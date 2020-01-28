@@ -43,7 +43,7 @@ mix.scripts([
     'resources/assets/js/libs/masonry.pkgd.js',
     'resources/assets/js/libs/infinite-scroll.pkgd.js',
     'resources/assets/js/libs/isotope.pkgd.js',
-    'resources/assets/js/libs/vue.js',
+    'resources/assets/js/libs/vue.min.js',
     'resources/assets/js/libs/pdfobject.js',
     'resources/assets/js/schedule/modernizr.js',
     'resources/assets/js/schedule/tools.js',

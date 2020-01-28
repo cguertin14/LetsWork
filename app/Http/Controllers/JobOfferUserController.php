@@ -109,7 +109,7 @@ class JobOfferUserController extends BaseController
         // Send email then update entry in database
         try {
             Mail::send('jobofferuser.accept', $data,function ($message) use ($jobofferuser) {
-                $message->from('support@letswork.dev',$jobofferuser->joboffer->company->name);
+                $message->from('support@letswork.guijethostingtools.com',$jobofferuser->joboffer->company->name);
                 $message->to($jobofferuser->user->email,$jobofferuser->user->name)
                         ->subject($jobofferuser->joboffer->specialrole->name);
             });
@@ -133,7 +133,7 @@ class JobOfferUserController extends BaseController
         // Send email then delete entry in database
         try {
             Mail::send('jobofferuser.refuse', $data,function ($message) use ($jobofferuser) {
-                $message->from('support@letswork.dev',$jobofferuser->joboffer->company->name);
+                $message->from('support@letswork.guijethostingtools.com',$jobofferuser->joboffer->company->name);
                 $message->to($jobofferuser->user->email,$jobofferuser->user->name)
                         ->subject($jobofferuser->joboffer->specialrole->name);
             });
@@ -162,7 +162,7 @@ class JobOfferUserController extends BaseController
         // Send email then update entry in database
         try {
             Mail::send('jobofferuser.interview', $data,function ($message) use ($jobofferuser) {
-                $message->from('support@letswork.dev',$jobofferuser->joboffer->company->name);
+                $message->from('support@letswork.guijethostingtools.com',$jobofferuser->joboffer->company->name);
                 $message->to($jobofferuser->user->email,$jobofferuser->user->name)
                         ->subject($jobofferuser->joboffer->specialrole->name);
             });

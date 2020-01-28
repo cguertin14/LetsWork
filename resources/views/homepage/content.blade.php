@@ -83,7 +83,7 @@
             <div class="centre" style="margin-bottom: 10px">
                 <!-- Jumbotron -->
                 <div class="jumbotron" style="margin-top: 10%">
-                    <h1 class="welcome" style="font-weight: 500">Bienvenue, {{\Illuminate\Support\Facades\Auth::user()->fullname}}</h1>
+                    <h1 class="welcome" style="font-weight: 500;font-size:3em">Bienvenue, {{\Illuminate\Support\Facades\Auth::user()->fullname}}</h1>
                     <p class="lead">Toute l'équipe de LetsWork vous souhaite la bienvenue dans notre application web. Nous espérons que vous saurez vous l'approprier!</p>
                     <br>
                     <p><a id="bigbtn" class="btn btn-lg purplebtn" style="font-size: 20px!important;" href="{{route('company.index')}}" role="button">Voir les compagnies</a></p>

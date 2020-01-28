@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Punch extends Model
 {
 	protected $fillable=[
-        'datebegin','dateend','employee_id','company_id'
+        'datebegin','dateend','employee_id','company_id','task'
     ];
 
 	public function employee() {
